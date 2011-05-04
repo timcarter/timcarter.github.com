@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title>Command Prompt</title>
+		<style type='text/css'>
+			body {
+				background:#000;
+				color:#0f0;
+				font-family:monospace sans-serif;
+			}
+
+			input[type=text] {
+				background:#000;
+				border:0px;
+				color:#0f0;
+				outline:none;
+			}
+
+			*.focus { outline:none; }
+		</style>
+	</head>
+	<body>
+		<div id="page_bash-container">
+		</div>
+
+		<script type='text/javascript' src="js/Uize.js"></script>
+		<script type='text/javascript'>
+			Uize.module ({
+				required:[
+					'ShellCommand.Bash',
+					'Uize.Widget.Page',
+					'Uize.Node'
+				],
+				builder:function () {
+					window.page = new Uize.Widget.Page;
+					
+					window.page.addChild (
+						'bash',
+						ShellCommand.Bash
+					);
+
+					Uize.Node.wire (
+						document,
+						'click',
+						function () {
+						// focus on the currently selected input
+							page.children.bash.getCurrentInput ().focus ()
+						}
+					);
+					window.page.wireUi ();
+				}
+			});
+		</script>
+	</body>
+</html>
