@@ -39,7 +39,7 @@ Uize.module ({
 			);
 
 			(function _appendY () {
-				_this.echo ('y');
+				_this.echo (_this.get ('optionString') || 'y');
 				_timeout = setTimeout ( _appendY, 50 );
 			 })();
 

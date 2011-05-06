@@ -29,12 +29,17 @@ Uize.module ({
 				_history = _this._history
 			;
 
-			// split the string based by space, ignoring spaces that occur within quotations.
+			/*
+				Parses anything that comes after the program name and attempts to sort them into an arguments array.
+				The recognized format is a subset of Unix's cli argument convention. Arguments can either be single
+				words (commandName argument1 argument2) or follow the "--argumentName=argumentValue" pattern.
+			*/
 			function _parseArguments (_inputString) {
 				var
 					_argv = [],
 					_quotationStack = [], // put quotations here to keep track of them
-					_currArgument = ''
+					_currArgument = '',
+					_optionString = ''
 				;
 
 				for (var _currCharIdx = -1, _inputStringLength = _inputString.length; ++_currCharIdx < _inputStringLength;) {
@@ -42,6 +47,9 @@ Uize.module ({
 
 					if (!_currChar.search (/\s/) && !_quotationStack.length && _currArgument) { // if we're not in quotes
 						_argv.push (_currArgument);
+						if (!_optionString)
+							_optionString = _inputString.substring (_currCharIdx)
+						;
 						_currArgument = '';
 					}
 					else {
@@ -55,14 +63,21 @@ Uize.module ({
 
 				_currArgument && _argv.push (_currArgument);
 
-				return _argv;
-
+				return {
+					argv:_argv,
+					optionString:_optionString
+				};
 			}
 
 			if (_this.isWired) {
+
 				Uize.Node.injectHtml (
 					_containerNode,
-					'<span>anon@timcarter $ </span><input id=\'' + _this.get('idPrefix') + '-' + _inputCounter + '\' type=\'text\' /><br/>',
+					_this._template ({
+						username:_this._username,
+						host:_this._host,
+						id:_this.get ('idPrefix') + '-' + _inputCounter
+					}),
 					'inner bottom'
 				);
 			
@@ -77,7 +92,7 @@ Uize.module ({
 						function _informError (_command) {
 							Uize.Node.injectHtml (
 								_containerNode,
-								'&nbsp;&nbsp;&nbsp;&nbsp;The command \'' + _command + '\' does not exist. Try again.<br/><br/>',
+								'bash: ' + _command + ': command not found<br/><br/>',
 								'inner bottom'	
 							);
 							_this.execute ();
@@ -87,6 +102,23 @@ Uize.module ({
 							return {
 								'clear':'ShellCommand.Clear',
 								'date':'ShellCommand.Date',
+								'history':function () {
+									for (
+										var
+											_echoedString = '',
+											_historyIdx = -1,
+											_historyLength = _history.length
+										;
+										++_historyIdx < _historyLength;
+									)
+										_echoedString += (_historyIdx+1) + ' ' + _history [_historyIdx] + '<br/>'
+									;
+									_this.echo (_echoedString)
+								},
+								'echo':function (_argumentsObject) {
+									_this.echo (_argumentsObject.optionString)
+								},//'ShellCommand.Echo',
+								'show_args':'ShellCommand.ShowArgs',
 								'yes':'ShellCommand.Yes'
 							} [_command]
 						}
@@ -97,12 +129,19 @@ Uize.module ({
 
 							var
 								_input = _this.getNodeValue (_inputNode), // input string
-								_arguments = _parseArguments (_input),
+								_argumentsObject = _parseArguments (_input),
+								_arguments = _argumentsObject.argv,
 								_commandName = _arguments [0],
 								_commandClassName = _getClassName (_commandName)
 							;
 
-							if (_commandClassName)
+							_input && _history.push (_input);
+
+							if (typeof _commandClassName == 'function') {
+								_commandClassName (_argumentsObject);
+								_this.updateUi ();
+							}
+							else if (_commandClassName)
 								Uize.module ({
 									required:_commandClassName,
 									builder:function () {
@@ -113,14 +152,11 @@ Uize.module ({
 												(new Function ('try {return ' + _commandClassName + '} catch (e) {}')) (),
 												{
 													shellNode:_this.getNode ('container'),
-													arguments:_arguments,
-													callback:function () {
-														_this.execute ()
-													}
+													argv:_arguments,
+													optionString:_argumentsObject.optionString,
+													callback:function () {_this.updateUi ()}
 												}
 											);
-											
-											_history.push (_input); // this might be moved
 
 											_currCommand.wireUi ();
 											_currCommand.execute ();	
@@ -131,50 +167,89 @@ Uize.module ({
 									}
 								})
 							;
+							else if (!_commandName) _this.execute ();
 							else _informError (_commandName);
+
+							Uize.Node.Event.abort (_event);
 						}
-						/*else if (Uize.Node.Event.isKeyUpArrow (_event)) {
+
+						if (++_this._keyUpCounter < _history.length && Uize.Node.Event.isKeyUpArrow (_event))
 							// show the history
 							_this.setNodeValue (
 								_inputCounter,
 								_history [(++_this._keyUpCounter || (_this._keyUpCounter = 0))]
 							)
-						}
-						else if (!Uize.Node.Event.isKeyUpArrow (_event)
+						;
+						else
 							_this._keyUpCounter = -1
-						;*/
+						;
 					}	
 				);
 
-				_inputNode.focus ();	
+				_inputNode.focus ();
 			}
 		};
 
 		_classPrototype._clearHistory = function () { this._history = [] };
 
-		_classPrototype.wireUi = function () {
+		_classPrototype.updateUi = function () {
 			var
 				_this = this
 			;
 
-			if (!_this.isWired) {
-				_this.wireNode (
-					'input',
-					'keydown',
-					function (_event) {
-						var
-							_isEnter = Uize.Node.Event.isKeyEnter (_event)
-						;
-
-						if (_isEnter)
-							alert ('at this point, the command should execute');	
-					}
+			if (_this.isWired) {
+				Uize.Node.injectHtml (
+					_this.getNode ('container'),
+					'<br/>',
+					'inner bottom'
 				);
+				_this.execute ();
+
+				_superclass.prototype.updateUi.call (_this);
 			}
-			_superclass.prototype.wireUi.call (_this);
-			
-			_this.execute ();
 		};
+
+		_classPrototype.wireUi = function () {
+			var _this = this;
+			if (!_this.isWired) {
+				var
+					_shellNode = _this.get ('shellNode')
+				;
+				!_shellNode && _this.set ({shellNode:_this.getNode ('container')});
+
+				_superclass.prototype.wireUi.call (_this);
+			}
+		};
+
+		_class.registerProperties ({
+			_username:{
+				name:'username',
+				value:'anonymous'
+			},
+			_history:{},
+			_host:{
+				name:'host',
+				value:'localhost'
+			},
+			_commandLineTemplate:{
+				name:'commandLineTemplate',
+				onChange:function () {
+					this._template =
+						Uize.Template.compile (
+							this._commandLineTemplate,
+							{
+								openerToken:'[%',
+								closerToken:'%]'
+							}
+						)
+				},
+				value:'<span>[% .username %]@[% .host %] $</span><input id=\'[% .id %]\' type=\'text\' />'
+			},
+			_keyUpCounter:{
+				value:-1
+			},
+			_template:{}
+		});
 
 		return _class;
 	}	

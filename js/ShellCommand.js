@@ -54,7 +54,7 @@ Uize.module ({
 		_classPrototype.getopt = function () {
 			var
 				_this = this,
-				_arguments = _this._arguments,
+				_arguments = _this._argv,
 				_argumentsLength = _arguments.length,
 				_longOptions = _this._longOptions,
 				_currentIndex = _this._currentIndex || (_this._currentIndex = 0),
@@ -141,7 +141,7 @@ Uize.module ({
 		_classPrototype.echo = function (_text) {
 			Uize.Node.injectHtml (
 				this.get ('shellNode'),
-				_text + '<br/><br/>',
+				_text + '<br/>',
 				'inner bottom'
 			)
 		};
@@ -158,11 +158,11 @@ Uize.module ({
 			/*
 				Not necessarily related in naming convention to this widget, =shellNode= merely contains the ID of the node (or the node) that simulates the flowing nature of the command prompt. It should get passed in whenever a command is entered by the user. The subclass =ShellCommand.Bash= sets it on its own, as it is usually the (new ShellCommand.Base).getNode ('container') that is the shellNode.
 			*/
-			_arguments:{
-				name:'arguments',
+			_argv:{
+				name:'argv',
 				value:[]
 			/*
-				An arguments array that emulates that found in C. The first argument is always the name of the command, so if you want the actual args, you need to start with arguments[1].
+				An argv array that emulates that found in C. The first argument is always the name of the command, so if you want the actual args, you need to start with arguments[1].
 			*/
 			},
 			_optionString:'optionString',
