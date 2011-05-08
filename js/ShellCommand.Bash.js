@@ -119,7 +119,10 @@ Uize.module ({
 									_this.echo (_argumentsObject.optionString)
 								},//'ShellCommand.Echo',
 								'show_args':'ShellCommand.ShowArgs',
-								'yes':'ShellCommand.Yes'
+								'yes':'ShellCommand.Yes',
+								'whoami':function () {
+									_this.echo (_this._username)
+								}
 							} [_command]
 						}
 
