@@ -16,8 +16,8 @@ Uize.module ({
 			overridden toString method in the Uize base class can still provide
 			good debugging information.
 		*/
-		_class.getContents = function () {
-			return _class._value
+		_class.getContents = function (_callback) {
+			_callback (_class._value)
 		};
 
 		_class.registerProperties ({
@@ -28,7 +28,7 @@ Uize.module ({
 				name:'permissions',
 				value:'777' // default rwx for all
 			},
-			_value:'value'
+			_value:'value' // use getContents, not this
 		});
 
 		return _class;

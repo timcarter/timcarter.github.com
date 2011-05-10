@@ -11,16 +11,29 @@ Uize.module ({
 			_class = _superclass.subclass ()
 		;
 
+		_class.getContents = function (_callback) {
+			!_this.get ('loaded') ? Uize.module ({
+					required:[
+						'JsTerm.FileSystemObject.File.Readme'
+					],
+					builder:function () {
+						_class.set ({
+							loaded:true,
+							value:[
+								JsTerm.FileSystemObject.File.Readme
+							]
+						})
+						_superclass.getContents.call (_class, _callback)
+					}
+				}) :
+				_superclass.getContents.call (_class, _callback)
+		};
+
 		_class.set ({
 			author:'root',
 			name:'root',
 			dateCreated:new Date,
 			permissions:'744',
-			value:[
-				{
-					// maybe use the declarative syntax here
-				}
-			]
 		});
 
 		return _class;
