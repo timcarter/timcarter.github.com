@@ -1,11 +1,11 @@
 /*
-	Name: ShellCommand.ShowArgs
+	Name: JsTerm.Command.Echo
 	Author: Tim Carter
-	Description: displays the contents of the program instance's argv, excluding the program name.
+	Description: echoes the arguments
 */
 
 Uize.module ({
-	name:'ShellCommand.ShowArgs',
+	name:'JsTerm.Command.Echo',
 	required:[
 		'Uize.Node',
 		'Uize.Node.Event'
@@ -19,16 +19,10 @@ Uize.module ({
 		_classPrototype.execute = function () {
 			var
 				_this = this,
-				_arguments = _this.get ('argv'),
-				_argumentsLength = _arguments.length,
-				_callback = _this.get ('callback'),
-				_currArgumentIdx = 0
+				_callback = _this.get ('callback')
 			;
 
-			for (;++_currArgumentIdx < _argumentsLength;)
-				_this.echo (_arguments [_currArgumentIdx])
-			;
-			
+			_this.echo (_this.get ('optionString'));
 			_callback && typeof _callback == 'function' && _callback ();
 		};
 

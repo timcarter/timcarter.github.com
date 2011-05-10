@@ -1,11 +1,11 @@
 /*
-	Name: ShellCommand.Bash
+	Name: JsTerm.Command.Bash
 	Author: Tim Carter
 	Description: Drops a bash prompt UI onscreen, waits for user input, attempts to execute the user command, gets control back afterwards
 */
 
 Uize.module ({
-	name:'ShellCommand.Bash',
+	name:'JsTerm.Command.Bash',
 	required:[
 		'Uize.Template',
 		'Uize.Node',
@@ -100,8 +100,8 @@ Uize.module ({
 
 						function _getClassName (_command) {
 							return {
-								'clear':'ShellCommand.Clear',
-								'date':'ShellCommand.Date',
+								'clear':'JsTerm.Command.Clear',
+								'date':'JsTerm.Command.Date',
 								'history':function () {
 									for (
 										var
@@ -117,9 +117,9 @@ Uize.module ({
 								},
 								'echo':function (_argumentsObject) {
 									_this.echo (_argumentsObject.optionString)
-								},//'ShellCommand.Echo',
-								'show_args':'ShellCommand.ShowArgs',
-								'yes':'ShellCommand.Yes',
+								},//'JsTerm.Command.Echo',
+								'show_args':'JsTerm.Command.ShowArgs',
+								'yes':'JsTerm.Command.Yes',
 								'whoami':function () {
 									_this.echo (_this._username)
 								}

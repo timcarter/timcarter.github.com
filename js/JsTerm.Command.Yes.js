@@ -1,11 +1,11 @@
 /*
-	Name: ShellCommand.Yes
+	Name: JsTerm.Command.Yes
 	Author: Tim Carter
 	Description: Simulates the bash command 'yes.' Unfortunately, support for Ctrl+C doesn't seem to work completely in javascript, so just pressing 'c' kills the loop.
 */
 
 Uize.module ({
-	name:'ShellCommand.Yes',
+	name:'JsTerm.Command.Yes',
 	required:[
 		'Uize.Node',
 		'Uize.Node.Event'

@@ -25,7 +25,7 @@
 		<script type='text/javascript'>
 			Uize.module ({
 				required:[
-					'ShellCommand.Bash',
+					'JsTerm.Command.Bash',
 					'Uize.Widget.Page',
 					'Uize.Node'
 				],
@@ -34,7 +34,7 @@
 					
 					window.page.addChild (
 						'bash',
-						ShellCommand.Bash,
+						JsTerm.Command.Bash,
 						{
 							host:'timcarter.github.com',
 							commandLineTemplate:document.getElementById ('page-template').innerHTML

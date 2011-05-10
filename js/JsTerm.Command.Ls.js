@@ -1,15 +1,12 @@
 /*
-	Name: ShellCommand.Ls
+	Name: JsTerm.Command.Ls
 	Author: Tim Carter
-	Description: Lists all the files available in the current directory. Uses the ShellCommand.Data.Ls class as the data
+	Description: Lists all the files available in the current directory. Uses the JsTerm.Command.Data.Ls class as the data
 		source.
 */
 
 Uize.module ({
-	name:'ShellCommand.Ls',
-	required:[
-		'ShellCommand.Data.Ls'
-	],
+	name:'JsTerm.Command.Ls',
 	builder:function (_superclass) {
 		var
 			_class = _superclass.subclass (),
@@ -21,7 +18,7 @@ Uize.module ({
 			// worry about the command line switches later
 			var
 				_this = this,
-				_currentFiles = ShellCommand.Data.Ls.get ('value'),
+				_currentFiles = JsTerm.Command.Data.Ls.get ('value'),
 				_resultString = ''
 			;
 
