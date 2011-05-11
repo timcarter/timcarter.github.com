@@ -1,0 +1,33 @@
+\ jpeg2ascii
+	shrink image
+	foreach pixel
+		get pixel using canvas
+		identify color
+		map color->character
+	echo
+
+	learn how to decompress jpeg or bitmap?
+
+\ '|' and '>' operators
+	identify and treat special cli operators
+
+\ getopt
+	works right now, but probably a superset of what getopt should be doing
+
+\ re-write mapping of commands to execution steps (modules or functions)
+	JsTerm assumes control and JsTerm.Program.Bash dies?
+	commands like history shouldn't be independent programs
+
+\ execute for other contexts
+	don't tie execution of a program to cli...allow other programs to call
+	a program and handle its output
+
+\ de-couple view from model
+	assumptions that html will provide the UI should be removed.
+	possibly use xHtml extensions for the UI
+
+\ add more test data to filesystem
+
+\ jsterm-mountfs to load saved data
+
+\ js method to convert binary data to base64?
