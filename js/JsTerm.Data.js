@@ -1,11 +1,11 @@
 /*
-	Name: JsTerm.FileSystemObject
+	Name: JsTerm.Data
 	Author: Tim Carter
 	Description: Static class representing an object in the file system
 */
 
 Uize.module ({
-	name:'JsTerm.FileSystemObject',
+	name:'JsTerm.Data',
 	builder:function (_superclass) {
 		var
 			_class = _superclass.subclass ()

@@ -1,11 +1,11 @@
 /*
-	Name: JsTerm.Command.Date
+	Name: JsTerm.Program.Date
 	Author: Tim Carter
 	Description: Simulates the bash command 'date'
 */
 
 Uize.module ({
-	name:'JsTerm.Command.Date',
+	name:'JsTerm.Program.Date',
 	required:'Uize.Node',
 	builder:function (_superclass) {
 		var

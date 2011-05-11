@@ -1,11 +1,11 @@
 /*
-	Name: JsTerm.FileSystemObject.Folder
+	Name: JsTerm.Data.Folder
 	Author: Tim Carter
 	Description: Static class representing the root directory
 */
 
 Uize.module ({
-	name:'JsTerm.FileSystemObject.Folder.Root',
+	name:'JsTerm.Data.Folder.Root',
 	builder:function (_superclass) {
 		var
 			_class = _superclass.subclass ()
@@ -14,13 +14,13 @@ Uize.module ({
 		_class.getContents = function (_callback) {
 			!_this.get ('loaded') ? Uize.module ({
 					required:[
-						'JsTerm.FileSystemObject.File.Readme'
+						'JsTerm.Data.File.Readme'
 					],
 					builder:function () {
 						_class.set ({
 							loaded:true,
 							value:[
-								JsTerm.FileSystemObject.File.Readme
+								JsTerm.Data.File.Readme
 							]
 						})
 						_superclass.getContents.call (_class, _callback)

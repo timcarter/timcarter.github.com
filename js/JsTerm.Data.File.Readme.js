@@ -1,11 +1,11 @@
 /*
-	Name: JsTerm.FileSystemObject.File
+	Name: JsTerm.Data.File
 	Author: Tim Carter
 	Description: Readme file
 */
 
 Uize.module ({
-	name:'JsTerm.FileSystemObject.File.Readme',
+	name:'JsTerm.Data.File.Readme',
 	builder:function (_superclass) {
 		var
 			_class = _superclass.subclass ()

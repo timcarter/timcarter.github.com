@@ -1,11 +1,11 @@
 /*
-	Name: JsTerm.Command.Clear
+	Name: JsTerm.Program.Clear
 	Author: Tim Carter
 	Description: Simulates the bash command 'clear'
 */
 
 Uize.module ({
-	name:'JsTerm.Command.Clear',
+	name:'JsTerm.Program.Clear',
 	required:'Uize.Node',
 	builder:function (_superclass) {
 		var

@@ -1,11 +1,11 @@
 /*
-	Name: JsTerm.FileSystemObject.Folder
+	Name: JsTerm.Data.Folder
 	Author: Tim Carter
 	Description: Static class representing a folder
 */
 
 Uize.module ({
-	name:'JsTerm.FileSystemObject.Folder',
+	name:'JsTerm.Data.Folder',
 	builder:function (_superclass) {
 		var
 			_class = _superclass.subclass ()

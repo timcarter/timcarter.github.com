@@ -25,7 +25,8 @@
 		<script type='text/javascript'>
 			Uize.module ({
 				required:[
-					'JsTerm.Command.Bash',
+					'JsTerm.Program.Bash',
+					'JsTerm.FileSystemObject.Folder.Root',
 					'Uize.Widget.Page',
 					'Uize.Node'
 				],
@@ -37,7 +38,8 @@
 						JsTerm.Command.Bash,
 						{
 							host:'timcarter.github.com',
-							commandLineTemplate:document.getElementById ('page-template').innerHTML
+							commandLineTemplate:document.getElementById ('page-template').innerHTML,
+							root:JsTerm.FileSystemObject.Folder.Root
 						}
 					);
 

@@ -1,11 +1,11 @@
 /*
-	Name: JsTerm.Command.History
+	Name: JsTerm.Program.History
 	Author: Tim Carter
 	Description: Simulates the bash command 'history'
 */
 
 Uize.module ({
-	name:'JsTerm.Command.History',
+	name:'JsTerm.Program.History',
 	required:'Uize.Node',
 	builder:function (_superclass) {
 		var

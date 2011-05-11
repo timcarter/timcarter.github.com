@@ -1,11 +1,11 @@
 /*
-	Name: JsTerm.FileSystemObject.File
+	Name: JsTerm.Data.File
 	Author: Tim Carter
 	Description: Static class representing a file
 */
 
 Uize.module ({
-	name:'JsTerm.FileSystemObject.File',
+	name:'JsTerm.Data.File',
 	builder:function (_superclass) {
 		return _superclass.subclass ()
 	}
