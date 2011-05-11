@@ -76,7 +76,8 @@ Uize.module ({
 					_this._template ({
 						username:_this._username,
 						host:_this._host,
-						id:_this.get ('idPrefix') + '-' + _inputCounter
+						id:_this.get ('idPrefix') + '-' + _inputCounter,
+						path:_this._workingDirectory.get ('name')
 					}),
 					'inner bottom'
 				);
@@ -117,7 +118,10 @@ Uize.module ({
 								},
 								'echo':function (_argumentsObject) {
 									_this.echo (_argumentsObject.optionString)
-								},//'JsTerm.Program.Echo',
+								},
+								'pwd':function () {
+									_this.echo (_this._workingDirectory.get ('name'))
+								},
 								'show_args':'JsTerm.Program.ShowArgs',
 								'yes':'JsTerm.Program.Yes',
 								'whoami':function () {
@@ -246,12 +250,14 @@ Uize.module ({
 							}
 						)
 				},
-				value:'<span>[% .username %]@[% .host %] $</span><input id=\'[% .id %]\' type=\'text\' />'
+				value:'<span>[% .username %]@[% .host %]:[% .path %]$</span><input id=\'[% .id %]\' type=\'text\' />'
 			},
 			_keyUpCounter:{
 				value:-1
 			},
-			_template:{}
+			_root:'root',
+			_template:{},
+			_workingDirectory:'workingDirectory'
 		});
 
 		return _class;

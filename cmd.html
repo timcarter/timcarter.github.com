@@ -19,27 +19,30 @@
 		</div>
 
 		<script id="page-template" type='text/jst'>
-			<span>[% .username %]@[% .host %] $ </span><span class="input" id="[% .id %]" contenteditable="true"></span><br/>
+			<span>[% .username %]@[% .host %]:[% .path %]$ </span><span class="input" id="[% .id %]" contenteditable="true"></span><br/>
 		</script>
 		<script type='text/javascript' src="js/Uize.js"></script>
 		<script type='text/javascript'>
 			Uize.module ({
 				required:[
 					'JsTerm.Program.Bash',
-					'JsTerm.FileSystemObject.Folder.Root',
+					'JsTerm.Data.Folder.Root',
 					'Uize.Widget.Page',
 					'Uize.Node'
 				],
 				builder:function () {
+					var _root = JsTerm.Data.Folder.Root;
+
 					window.page = new Uize.Widget.Page;
 					
 					window.page.addChild (
 						'bash',
-						JsTerm.Command.Bash,
+						JsTerm.Program.Bash,
 						{
 							host:'timcarter.github.com',
 							commandLineTemplate:document.getElementById ('page-template').innerHTML,
-							root:JsTerm.FileSystemObject.Folder.Root
+							root:_root,
+							workingDirectory:_root
 						}
 					);
 

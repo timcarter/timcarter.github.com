@@ -31,7 +31,7 @@ Uize.module ({
 
 		_class.set ({
 			author:'root',
-			name:'root',
+			name:'/',
 			dateCreated:new Date,
 			permissions:'744',
 		});
