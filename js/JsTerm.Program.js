@@ -1,12 +1,12 @@
 /*
-	Name: JsTerm.Command
+	Name: JsTerm.Program
 	Author: Tim Carter (timcarter@stanfordalumni.org)
 	Description:
 		Superclass that contains common functionality for all javascript classes representing shell commands. This class encompasses the handling of commandline arguments and the container node.
 */
 
 Uize.module ({
-	name:'JsTerm.Command',
+	name:'JsTerm.Program',
 	superclass:'Uize.Widget',
 	builder:function (_superclass) {
 		var
@@ -151,12 +151,12 @@ Uize.module ({
 				name:'callback',
 				value: function () {}
 			/*
-				The function to call once execution is completed. In most cases, this will be JsTerm.Command.Bash's updateUi method. Yes, this is forecasting of a subclass in a superclass, but this is a comment, so I can do whatever the bleep I want (including bleeping instances of the word "fuck".
+				The function to call once execution is completed. In most cases, this will be JsTerm.Program.Bash's updateUi method. Yes, this is forecasting of a subclass in a superclass, but this is a comment, so I can do whatever the bleep I want (including bleeping instances of the word "fuck".
 			*/
 			},
 			_shellNode:'shellNode',
 			/*
-				Not necessarily related in naming convention to this widget, =shellNode= merely contains the ID of the node (or the node) that simulates the flowing nature of the command prompt. It should get passed in whenever a command is entered by the user. The subclass =JsTerm.Command.Bash= sets it on its own, as it is usually the (new JsTerm.Command.Base).getNode ('container') that is the shellNode.
+				Not necessarily related in naming convention to this widget, =shellNode= merely contains the ID of the node (or the node) that simulates the flowing nature of the command prompt. It should get passed in whenever a command is entered by the user. The subclass =JsTerm.Program.Bash= sets it on its own, as it is usually the (new JsTerm.Program.Base).getNode ('container') that is the shellNode.
 			*/
 			_argv:{
 				name:'argv',
