@@ -12,7 +12,7 @@ Uize.module ({
 		;
 
 		_class.set ({
-			_value:'Once I figure out how to properly explain my whims, I\'ll add it here'
+			value:'Once I figure out how to properly explain my whims, I\'ll add it here'
 		});
 
 		return _class;

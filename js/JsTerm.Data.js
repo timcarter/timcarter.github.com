@@ -11,12 +11,7 @@ Uize.module ({
 			_class = _superclass.subclass ()
 		;
 
-		/*
-			By default, returns the value of the class. This is here so that the
-			overridden toString method in the Uize base class can still provide
-			good debugging information.
-		*/
-		_class.getContents = function (_callback) {
+		_class.getValue = function (_callback) {
 			_callback (_class._value)
 		};
 
@@ -28,7 +23,7 @@ Uize.module ({
 				name:'permissions',
 				value:'777' // default rwx for all
 			},
-			_value:'value' // use getContents, not this
+			_value:'value'
 		});
 
 		return _class;

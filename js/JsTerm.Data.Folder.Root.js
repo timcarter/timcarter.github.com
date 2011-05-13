@@ -11,29 +11,14 @@ Uize.module ({
 			_class = _superclass.subclass ()
 		;
 
-		_class.getContents = function (_callback) {
-			!_this.get ('loaded') ? Uize.module ({
-					required:[
-						'JsTerm.Data.File.Readme'
-					],
-					builder:function () {
-						_class.set ({
-							loaded:true,
-							value:[
-								JsTerm.Data.File.Readme
-							]
-						})
-						_superclass.getContents.call (_class, _callback)
-					}
-				}) :
-				_superclass.getContents.call (_class, _callback)
-		};
-
 		_class.set ({
 			author:'root',
 			name:'/',
 			dateCreated:new Date,
 			permissions:'744',
+			deferredValue:[
+				'JsTerm.Data.File.Readme'
+			]
 		});
 
 		return _class;
