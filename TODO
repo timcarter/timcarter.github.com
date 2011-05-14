@@ -31,3 +31,19 @@
 \ jsterm-mountfs to load saved data
 
 \ js method to convert binary data to base64?
+
+\ Static class versus singleton
+
+\ FILESYSTEM DOCUMENTATION
+	jstermfs is the file system for the JsTerm program.
+
+	What it does
+		jstermfs supports read and write operations to file system objects
+
+	How it does it
+		jstermfs maintains a tree-like organization of file system objects, which are categorized as files or folders. The tree's root corresponds to jstermfs' =root= property, which holds an object of type JsTerm.FileSystemObject.Folder. =root='s value is a string array with the names of the classes of its contents. So, if the root of a jstermfs instance has a file called "README" and a folder called "pics", then the array might be ["JsTerm.Files.Readme", "JsTerm.Folders.Pics"].
+		When a caller requests a file for reading, the fs will call Uize.module (to ensure that the file or folder is loaded). The fs will then create an instance of the file or folder's class, setting the path property-- as only the fs knows it-- and then returning that instance, which acts as a pointer.
+		When the caller tries to write a file, the instance's contents (ie, value) will be read by the fs and a _class.set call will be made so that the contents of all the file instances of that class will occur. If any validation is required, it is up to the folder or file to conduct it.
+
+	What it will do
+		Saving to local disk (ie, local storage on Chrome or HTML5 equipped browsers)
