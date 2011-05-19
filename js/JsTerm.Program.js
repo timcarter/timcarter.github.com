@@ -146,6 +146,41 @@ Uize.module ({
 			)
 		};
 
+		_classPrototype.output = function (_message, _callback) {
+			this.fire ({
+				name:'Standard Output',
+				message:_message,
+				callback:_callback
+			})
+			/*
+				Acts like standard output.
+			*/
+		};
+
+		_classPrototype.input = function (_prompt, _callback) {
+			this.fire ({
+				name:'Standard Input',
+				prompt:_prompt,
+				callback:_callback
+			})
+			/*
+				Acts like standard input; invokes the shell's input UI to get user data, which is then
+				piped through the callback.
+			*/
+		};
+
+		_classPrototype.error = function (_message, _callback) {
+			this.fire ({
+				name:'Standard Error',
+				message:_message,
+				callback:_callback
+			});
+
+			/*
+				Acts like stderr.
+			*/
+		};
+
 		_class.registerProperties ({
 			_callback:{
 				name:'callback',

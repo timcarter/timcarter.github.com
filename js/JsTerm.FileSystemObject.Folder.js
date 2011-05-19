@@ -6,7 +6,21 @@ Uize.module ({
 			_classPrototype = _class.prototype
 		;
 
-		_classPrototype.getContents = function (_callback) {
+		_classPrototype.resolve = function (_path, _callback) {
+			var
+				_this = this,
+				_contents = _this._contents
+			;
+
+
+			/*
+				Returns the name of the class that corresponds to the given path.
+				This function is recursive, so it will fail after a certain
+				number of attempts.
+			*/
+		};
+
+		_classPrototype.read = function (_callback) {
 			var
 				_this = this
 			;
@@ -38,7 +52,7 @@ Uize.module ({
 			}
 		};
 
-		_classPrototype.setContents = function (_newContents, _callback) {
+		_classPrototype.write = function (_newContents, _callback) {
 		};
 
 		_class.registerProperties ({

@@ -6,13 +6,24 @@ Uize.module ({
 			_classPrototype = _class.prototype
 		;
 
-		_classPrototype.getContents = function () {
-			// overridden in the children
-			return '';
-		},
+		_classPrototype.read = function (_callback) {
+			_callback (this._contents)
+			/*
+				Returns the contents of the file or folder, in whatever format they might be.
+				Check the subclasses for any specific implementations.
+			*/
+		};
 
-		_classPrototype.setContents = function (_newContents) {
-			// overridden in the children
+		_classPrototype.write = function (_data, _callback) {
+			this.set ({_contents:_data});
+			_class.set ({_contents:_data});
+			_callback ();
+			/*
+				Writes the data to both the current instance of the file and the file itself (ie, the class).
+				TODO:
+					Add an integration point with the file system, so that upon writing to the file, all the
+					instances of that file can be updated with the correct contents.
+			*/
 		};
 
 		_class.registerProperties ({
