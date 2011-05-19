@@ -17,7 +17,7 @@ Uize.module ({
 				_root = _this._root
 			;
 
-			_root ? _root.resolve (_path, _callback) : _callback (_null);
+			_root ? _root.resolve (_path.toLowerCase ().split ('/'), _callback) : _callback (_null);
 			/*
 				Resolves the object found at the given path.
 			*/
