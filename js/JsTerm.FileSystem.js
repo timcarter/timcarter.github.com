@@ -80,7 +80,7 @@ Uize.module ({
 				/*
 					A private property used to create unique identifiers for the resources.
 				*/
-			}
+			},
 			_resources:{
 				value:{}
 				/*

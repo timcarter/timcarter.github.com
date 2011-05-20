@@ -11,7 +11,7 @@ Uize.module ({
 				_this = this,
 				_contents = _this._contents,
 				_immediatePath = _path.shift (),
-				_contentName,
+				_contentName
 			;
 			
 			for (_contentName in _contents) {
@@ -20,13 +20,21 @@ Uize.module ({
 					if (_path.length) {
 						// we haven't reached the final object we want, so keep going
 						!_content.indexOf ('JsTerm.FileSystemObject.Folder') ?
-							_content.resolve (_path, _callback) :
+							Uize.module ({
+								required:[_content],
+								builder:function () {
+									_content.resolve (_path, _callback)
+								}
+							}) :
 							_callback (null) // the content is a file, so there's an error
 					}
 					else
 						// return what we've found
 						_callback (_content)
 					;
+
+					// as if it weren't obvious enough
+					break;
 				}
 			}
 
@@ -44,59 +52,15 @@ Uize.module ({
 			*/
 		};
 
-		_classPrototype.read = function (_callback) {
-			var
-				_this = this
-			;
-
-			if (_this._loaded)
-				_callback (_this._contents)
-			;
-			else {
-				var
-					_deferredContents = _this._deferredContents,
-					_deferredContentsLength = _deferredContents.length,
-					_deferredContentsIndex = -1,
-					_evaluatedContents = [],
-					_evaluatedContent
-				;
-
-				Uize.module ({
-					required:_deferredContents,
-					builder:function () {
-						for (;++_deferredContentsIndex < _deferredContentsLength;)
-							(_evaluatedContent = (new _Function ('try {return ' + _deferredContents [_deferredContentsIndex]+ '} catch (e) {}')) ()) && (_evaluatedContents.push (_evaluatedContent))
-						;
-
-						_this.set ({contents:_evaluatedContents, _loaded:true});
-
-						_callback (_this._contents);
-					}
-				});
-			}
-		};
-
-		_classPrototype.write = function (_newContents, _callback) {
-		};
-
-		_class.registerProperties ({
-			_deferredContents:{
-				name:'deferredContents',
-				value:[]
+		_class.set ({
+			contents:{
 				/*
-					Using =deferredContents= means we probably don't have to add the content files to the required property
+					=contents= is a dictionary; the keys correspond to the path name of the file system object (relative to this folder) and the values correspond to the JsTerm.FileSystemObject subclass for the object.
 				*/
 			},
-			_loaded:{
-				name:'loaded',
-				value:false
-			}
+			type:'folder'
 		});
 
-		_class.set ({
-			contents:[],
-			type:'folder'
-		}); // initialize to an empty array
 		return _class;
 	}
 });

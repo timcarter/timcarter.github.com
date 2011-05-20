@@ -38,4 +38,5 @@ Uize.module ({
 		});
 
 		return _class;
+	}
 });

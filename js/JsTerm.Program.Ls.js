@@ -11,23 +11,24 @@ Uize.module ({
 		var
 			_class = _superclass.subclass (),
 			_classPrototype = _class.prototype,
-			_br = '<br/>'
+			_eol = '<br/>'
 		;
 
 		_classPrototype.execute = function () {
-			// worry about the command line switches later
 			var
 				_this = this,
-				_currentFiles = JsTerm.Program.Data.Ls.get ('value'),
-				_resultString = ''
+				_resultsString = '',
+				_workingDirectory = _this.getInherited ('workingDirectory'), // the parent must provide this somehow
+				_workingDirectoryContents = _workingDirectory.get ('contents'),
+				_contentName
 			;
 
-			for (var fileName in _currentFiles) {
-				_resultString += _currentFiles [_fileName] + _br
-			}
-			_resultsString = _resultsString.substring (0, _resultsString.length - _br.length); // strip the final <br/>
+			for (_contentName in _workingDirectoryContents)
+				_resultsString += _contentName + _eol
+			;
 
-			_this.echo (_resultsString);
+			// strip the final <br/>
+			_this.echo (_resultsString.substring (0, _resultsString.length - _eol.length));
 		};
 
 		_classPrototype.wireUi = function () {

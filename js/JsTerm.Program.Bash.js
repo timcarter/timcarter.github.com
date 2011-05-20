@@ -9,11 +9,35 @@ Uize.module ({
 	required:[
 		'Uize.Template',
 		'Uize.Node',
-		'Uize.Node.Event'
+		'Uize.Node.Event',
+		'JsTerm.FileSystem',
+		'JsTerm.FileSystemObject.Folder.Root'
 	],
 	builder:function (_superclass) {
 		var
-			_class = _superclass.subclass ( function () { this._clearHistory () } ), // init the history
+			_class = _superclass.subclass (
+			function () { this._clearHistory () },
+			function () {
+				var
+					_this = this
+				;
+
+				!_this._filesystem
+					&& _this.set ({
+						_filesystem:
+							new JsTerm.FileSystem ({
+								root:new JsTerm.FileSystemObject.Folder.Root
+							})
+						})
+				;
+
+				!_this._workingDirectory
+					&& _this.set ({
+							_workingDirectory:_this._filesystem.get ('root')
+						})
+				;
+			}
+			),
 			_classPrototype = _class.prototype
 		;
 
@@ -119,6 +143,7 @@ Uize.module ({
 								'echo':function (_argumentsObject) {
 									_this.echo (_argumentsObject.optionString)
 								},
+								'ls':'JsTerm.Program.Ls',
 								'pwd':function () {
 									_this.echo (_this._workingDirectory.get ('name'))
 								},
@@ -255,7 +280,7 @@ Uize.module ({
 			_keyUpCounter:{
 				value:-1
 			},
-			_root:'root',
+			_filesystem:'filesystem',
 			_template:{},
 			_workingDirectory:'workingDirectory'
 		});
