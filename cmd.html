@@ -31,8 +31,6 @@
 					'Uize.Node'
 				],
 				builder:function () {
-					var _root = JsTerm.Data.Folder.Root;
-
 					window.page = new Uize.Widget.Page;
 					
 					window.page.addChild (
@@ -40,9 +38,7 @@
 						JsTerm.Program.Bash,
 						{
 							host:'timcarter.github.com',
-							commandLineTemplate:document.getElementById ('page-template').innerHTML,
-							root:_root,
-							workingDirectory:_root
+							commandLineTemplate:document.getElementById ('page-template').innerHTML
 						}
 					);
 

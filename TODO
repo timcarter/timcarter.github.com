@@ -1,3 +1,9 @@
+SHORT TERM IDEAS
+	JsTerm.Program.Ls should output the fso metadata and handle commandline switches properly.
+	jstermfs-mount should be implemented so that the cli can use it to mount a default fs.
+
+LONG TERM IDEAS
+
 \ jpeg2ascii
 	shrink image
 	foreach pixel

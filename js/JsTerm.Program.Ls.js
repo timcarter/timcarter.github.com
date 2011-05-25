@@ -7,6 +7,7 @@
 
 Uize.module ({
 	name:'JsTerm.Program.Ls',
+	required:'Uize.Template',
 	builder:function (_superclass) {
 		var
 			_class = _superclass.subclass (),
@@ -17,6 +18,7 @@ Uize.module ({
 		_classPrototype.execute = function () {
 			var
 				_this = this,
+				_callback = _this.get ('callback'),
 				_resultsString = '',
 				_workingDirectory = _this.getInherited ('workingDirectory'), // the parent must provide this somehow
 				_workingDirectoryContents = _workingDirectory.get ('contents'),
@@ -24,17 +26,39 @@ Uize.module ({
 			;
 
 			for (_contentName in _workingDirectoryContents)
-				_resultsString += _contentName + _eol
+				_resultsString += _this._contentMarkupSimple({name:_contentName})
 			;
 
-			// strip the final <br/>
-			_this.echo (_resultsString.substring (0, _resultsString.length - _eol.length));
+			_this.echo (_resultsString);
+			_callback && typeof _callback == 'function' && _callback ()	
 		};
 
 		_classPrototype.wireUi = function () {
 			_superclass.prototype.wireUi.call (this);
 		};
 
+		_class.registerProperties ({
+			_contentMarkupSimple:{
+				value:
+					Uize.Template.compile (
+						'<span style="padding-right:30px">[% .name %]</span>',
+						{
+							openerToken:'[%',
+							closerToken:'%]'
+						}
+					)
+			},
+			_contentMarkup:{
+				value:
+					Uize.Template.compile (
+						'',
+						{
+							openerToken:'[%',
+							closerToken:'%]'
+						}
+					)
+			}
+		});
 		return _class;
 	}
 });
