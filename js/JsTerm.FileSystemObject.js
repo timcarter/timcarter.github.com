@@ -26,8 +26,28 @@ Uize.module ({
 			*/
 		};
 
+		_class.convertPermissionsToString = function (_permissions, _type) {
+			var
+				_permissionsString = _type == 'folder' ? 'd' : '-',
+				_permissionsLength = _permissions.length,
+				_permissionNo = -1
+			;
+
+			for (;++_permissionNo < _permissionsLength;) {
+				var
+					_currPermission = +_permissions [_permissionNo]
+				;
+				_permissionsString += _currPermission & 4 ? 'r' : '-';
+				_permissionsString += _currPermission & 2 ? 'w' : '-';
+				_permissionsString += _currPermission & 1 ? 'x' : '-';
+			}
+
+			return _permissionsString;
+		};
+
 		_class.registerProperties ({
 			_author:'author',
+			_group:'group',
 			_contents:'contents', // for files, this will be a string; for folders, an array
 			_timestamp:'timestamp',
 			_type:'type', // either 'file' or 'folder'

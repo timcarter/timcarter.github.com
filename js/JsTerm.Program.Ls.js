@@ -11,8 +11,7 @@ Uize.module ({
 	builder:function (_superclass) {
 		var
 			_class = _superclass.subclass (),
-			_classPrototype = _class.prototype,
-			_eol = '<br/>'
+			_classPrototype = _class.prototype
 		;
 
 		_classPrototype.execute = function () {
@@ -22,15 +21,33 @@ Uize.module ({
 				_resultsString = '',
 				_workingDirectory = _this.getInherited ('workingDirectory'), // the parent must provide this somehow
 				_workingDirectoryContents = _workingDirectory.get ('contents'),
+				_arguments = _this.get ('argv'),
+				_argumentNo = 0, // start at 1 (after initial increment) because argv[0] is the command name
+				_argumentsLength = _arguments.length,
+				_useSimple = true,
 				_contentName
 			;
 
-			for (_contentName in _workingDirectoryContents)
-				_resultsString += _this._contentMarkupSimple({name:_contentName})
-			;
+			// determine whether -l was passed
+			for (;++_argumentNo < _argumentsLength;) {
+				if (_arguments [_argumentNo] == 'l') {
+					_useSimple = false;
+					break;
+				}
+			}
 
-			_this.echo (_resultsString);
-			_callback && typeof _callback == 'function' && _callback ()	
+			if (_useSimple) {
+				for (_contentName in _workingDirectoryContents)
+					_resultsString +=
+						_this._contentMarkupSimple({
+							name:_contentName,
+							isFolder:!_workingDirectoryContents [_contentName].indexOf ('JsTerm.FileSystemObject.Folder')
+						})
+				;
+
+				_this.echo (_resultsString);
+				_callback && typeof _callback == 'function' && _callback ();
+			}
 		};
 
 		_classPrototype.wireUi = function () {
@@ -41,7 +58,7 @@ Uize.module ({
 			_contentMarkupSimple:{
 				value:
 					Uize.Template.compile (
-						'<span style="padding-right:30px">[% .name %]</span>',
+						'<span style="padding-right:30px">[% if (input.isFolder) { %]<strong>[% } %][% .name %][% if (input.isFolder) { %]</strong>[% } %]</span>',
 						{
 							openerToken:'[%',
 							closerToken:'%]'
@@ -51,7 +68,7 @@ Uize.module ({
 			_contentMarkup:{
 				value:
 					Uize.Template.compile (
-						'',
+						'<div>[% .permissions %] [% .links %] [% .owner %] [% .group %] [% .timestamp %] [% .name %]</div>',
 						{
 							openerToken:'[%',
 							closerToken:'%]'

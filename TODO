@@ -4,6 +4,9 @@ SHORT TERM IDEAS
 
 LONG TERM IDEAS
 
+\ figure out where to put the template markup
+	Look at how uize.com handles template generation
+
 \ jpeg2ascii
 	shrink image
 	foreach pixel
