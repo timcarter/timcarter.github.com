@@ -30,7 +30,7 @@ Uize.module ({
 
 			// determine whether -l was passed
 			for (;++_argumentNo < _argumentsLength;) {
-				if (_arguments [_argumentNo] == 'l') {
+				if (_arguments [_argumentNo] == '-l') {
 					_useSimple = false;
 					break;
 				}
@@ -47,6 +47,8 @@ Uize.module ({
 
 				_this.echo (_resultsString);
 				_callback && typeof _callback == 'function' && _callback ();
+			} else {
+				
 			}
 		};
 
