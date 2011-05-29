@@ -1,0 +1,121 @@
+<html>
+	<head>
+		<title>Canvas Test</title>
+	</head>
+	<body>
+		<label for="chooser">pick image</label>
+		<select id="chooser">
+			<option value="kimmy">supreme leader</option>
+			<option value="kitty">ceiling cat</option>
+			<option value="funding">funding</option>
+			<option value="raptor">raptor</option>
+		</select>
+		<br/>
+		<a href="javascript://" id="toggle">toggle between image and original</a>
+		<hr/>
+		<canvas width="500" height="350" id="canvas" style="display:none">
+		</canvas>
+		<div id="ascii" style="font:10px monospace;"></div>
+		<script type="text/javascript">
+			/*
+				Notes
+					- ascii palette from http://livedocs.adobe.com/flex/3/html/help.html?content=09_Working_with_Strings_11.html
+			*/
+			var
+				images = {
+					kimmy:'kimmy.jpg',
+					kitty:'kitty.jpg',
+					funding:'funding.png',
+					raptor:'raptor.jpg'
+				},
+				shownScreen = 'ascii',
+				canvas = document.getElementById('canvas').getContext('2d'),
+				ascii_palette = ["@", "#", "$", "%", "&", "8", "B", "M", "W", "*", "m", "w", "q", "p", "d", "b", "k", "h", "a", "o", "Q", "0", "O", "Z", "X", "Y", "U", "J", "C", "L", "t", "f", "j", "z", "x", "n", "u", "v", "c", "r", "[", "]", "{", "}", "1", "(", ")", "|", "/", "?", "I", "l", "!", "i", ">", "<", "+", "_", "~", "-", ";", ",", ".", "&nbsp;"],
+				ascii_palette_len = ascii_palette.length,
+				lum_palette = [],
+				img,
+				n = -1
+			;
+
+			// explode the ascii palette to 256, so that it matches all possible color values
+			for (; ++n < 256;)
+				lum_palette [n] = ascii_palette [Math.min(Math.round (ascii_palette_len * n / 255), ascii_palette_len - 1)]
+			;
+
+			function img2ascii (src_key) {
+				img = new Image;
+				img.onload = function () {
+					canvas.clearRect (0, 0, 500, 350);
+					canvas.drawImage(img, 0, 0);
+					//var imageData = canvas.getImageData(0, 0, img.width, img.height);
+					//var pixels = imageData.data;
+					var ascii = '';
+					var eol = '<br/>'
+					colorsRepresented = {};
+
+					var asciiPixelWidth = 3;
+					var asciiPixelHeight = 5.5;
+					var numRows = img.height/ asciiPixelHeight;
+					var numCols = img.width / asciiPixelWidth;
+	console.log ('rows: ' + numRows + ' columns: ' + numCols);
+					for (var y = 0; y < numRows; ++y) {
+						ascii += '<div>';
+						for (var x = 0; x < numCols; ++x) {
+							var cellData = canvas.getImageData (x * asciiPixelWidth, y * asciiPixelHeight, asciiPixelWidth, asciiPixelHeight);
+							var pixels = cellData.data;
+							var average = 0;
+							// convert the pixels to grayscale and average out the colors
+							for (var i = 0, pixelLength = pixels.length; i < pixelLength; ++i) {
+								var rgba = i + 1 % 4;
+								(i + 1 % 4) && (average += pixels [i] * (rgba == 1 ? .3 : (rgba = 2 ? .59 : .11)));
+							}
+
+							average = Math.round (average / pixels.length);
+							//console.log ('cell[' + x + '][' + y + ']: ' + average);
+							ascii += lum_palette [Math.min (average, 255)];
+						}
+						ascii += '</div>';
+					}
+
+					/*for (var i = 0, pixelsLength = pixels.length; i < pixelsLength; i++) {
+						//((i + 1) % 4) && (pixels [i] = 255 - pixels[i]); // for inversion
+
+						// for grayscale conversion
+						if (((i + 1) % (img.width * 4)) < (img.width * 4 / 10) && ((i + 1) % img.width * 4) < (img.height)) {
+							var gray = Math.round ((pixels [i] + pixels [i + 1] + pixels [i + 2]) / 3);
+							//pixels [i] = pixels [++i] = pixels [++i] = gray;
+						//	pixels [i] = 0;
+						//	pixels [++i] = 255;
+						//	pixels [++i] = 0;
+						}
+						// skip the fourth pixel, as that represents that alpha channel
+						ascii += lum_palette [Math.min (gray, 255)];
+						if (!((i + 1) % img.width * 4)) ascii += eol;
+					}*/
+
+					document.getElementById("ascii").innerHTML = ascii;
+					//canvas.putImageData (imageData, 0, 0);
+				};
+				img.src = 'pics/' + images [src_key];
+			}
+
+			document.getElementById('toggle').onchange = function () {
+				if (shownScreen == 'ascii') {
+					shownScreen = 'image';
+					document.getElementById('canvas').style.display = 'block';
+					document.getElementById('ascii').style.display = 'none';
+				}
+				else {
+					shownScreen = 'ascii';
+					document.getElementById('ascii').style.display = 'block';
+					document.getElementById('canvas').style.display = 'none';
+				}
+			};
+
+			document.getElementById('chooser').onchange = function () {
+				img2ascii(this.options [this.selectedIndex].value)
+			};
+
+		</script>
+	</body>
+</html>
