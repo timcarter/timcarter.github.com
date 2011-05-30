@@ -86,7 +86,7 @@
 							}
 
 							//console.log ('cell[' + x + '][' + y + ']: ' + average);
-							ascii += lum_palette [Math.min (Math.round (averageRed / pixelLength * .3 + averageGreen / pixelLength * .59 + averageBlue / pixelLength * .11), 255)];
+							ascii += lum_palette [Math.min (Math.round ((averageRed * .3 + averageGreen * .59 + averageBlue * .11) / pixelLength), 255)];
 						}
 						ascii += '</div>';
 					}
