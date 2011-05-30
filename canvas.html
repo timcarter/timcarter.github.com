@@ -57,13 +57,12 @@
 					var asciiPixelHeight = 5.5;
 					var numRows = img.height/ asciiPixelHeight;
 					var numCols = img.width / asciiPixelWidth;
-	console.log ('rows: ' + numRows + ' columns: ' + numCols);
+
 					for (var y = 0; y < numRows; ++y) {
 						ascii += '<div>';
 						for (var x = 0; x < numCols; ++x) {
-							var cellData = canvas.getImageData (x * asciiPixelWidth, y * asciiPixelHeight, asciiPixelWidth, asciiPixelHeight);
-							var pixels = cellData.data;
-							var
+							var 
+								cellData = canvas.getImageData (x * asciiPixelWidth, y * asciiPixelHeight, asciiPixelWidth, asciiPixelHeight),
 								pixels = cellData.data,
 								pixelLength = pixels.length,
 								averageRed = 0,
@@ -86,7 +85,7 @@
 							}
 
 							//console.log ('cell[' + x + '][' + y + ']: ' + average);
-							ascii += lum_palette [Math.min (Math.round ((averageRed * .3 + averageGreen * .59 + averageBlue * .11) / pixelLength), 255)];
+							ascii += lum_palette [Math.min (Math.round ((averageRed * .3 + averageGreen * .59 + averageBlue * .11) / pixelLength / 4), 255)];
 						}
 						ascii += '</div>';
 					}
