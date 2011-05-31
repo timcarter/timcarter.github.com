@@ -65,6 +65,7 @@
 								cellData = canvas.getImageData (x * asciiPixelWidth, y * asciiPixelHeight, asciiPixelWidth, asciiPixelHeight),
 								pixels = cellData.data,
 								pixelLength = pixels.length,
+								singleColor = pixelLength / 4,
 								averageRed = 0,
 								averageGreen = 0,
 								averageBlue = 0
@@ -85,7 +86,7 @@
 							}
 
 							//console.log ('cell[' + x + '][' + y + ']: ' + average);
-							ascii += lum_palette [Math.min (Math.round ((averageRed / pixelLength * .25 * .3 + averageGreen / pixelLength * .25 * .59 + averageBlue / pixelLength * .25 * .11)), 255)];
+							ascii += lum_palette [Math.min (Math.round ((averageRed / singleColor * .3 + averageGreen / singleColor * .59 + averageBlue / singleColor * .11)), 255)];
 						}
 						ascii += '</div>';
 					}
