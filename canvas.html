@@ -72,13 +72,13 @@
 
 							// convert the pixels to grayscale and average out the colors
 							for (var i = 0; i < pixelLength; ++i) {
-								if (i + 1 % 4 == 1)
+								if ((i + 1) % 4 == 1)
 									averageRed += pixels [i]
 								;
-								else if (i + 1 % 4 == 2)
+								else if ((i + 1) % 4 == 2)
 									averageGreen += pixels [i]
 								;
-								else if (i + 1 % 4 == 3)
+								else if ((i + 1) % 4 == 3)
 									averageBlue += pixels [i]
 								;
 								// ignore the fourth entry because that governs the alpha
