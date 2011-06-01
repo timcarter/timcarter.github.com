@@ -14,7 +14,7 @@
 		<br/>
 		<a href="javascript://" id="toggle">toggle between image and original</a>
 		<hr/>
-		<canvas width="500" height="350" id="canvas" style="display:none">
+		<canvas width="2000" height="2000" id="canvas" style="display:none">
 		</canvas>
 		<div id="ascii" style="font:10px monospace;"></div>
 		<script type="text/javascript">
@@ -47,7 +47,7 @@
 			function img2ascii (src_key) {
 				img = new Image;
 				img.onload = function () {
-					canvas.clearRect (0, 0, 500, 350);
+					canvas.clearRect (0, 0, 2000, 2000);
 					canvas.drawImage(img, 0, 0);
 					//var imageData = canvas.getImageData(0, 0, img.width, img.height);
 					//var pixels = imageData.data;
