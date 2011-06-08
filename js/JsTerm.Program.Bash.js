@@ -22,20 +22,19 @@ Uize.module ({
 					_this = this
 				;
 
-				!_this._filesystem
-					&& _this.set ({
+				if (!_this._filesystem) {
+					var
+						_root = new JsTerm.FileSystemObject.Folder.Root
+					;
+
+					_this.set ({
 						_filesystem:
 							new JsTerm.FileSystem ({
-								root:new JsTerm.FileSystemObject.Folder.Root
+								root:_root,
+								workingDirectory:_root
 							})
-						})
-				;
-
-				!_this._workingDirectory
-					&& _this.set ({
-							_workingDirectory:_this._filesystem.get ('root')
-						})
-				;
+					})
+				}
 			}
 			),
 			_classPrototype = _class.prototype
@@ -101,7 +100,7 @@ Uize.module ({
 						username:_this._username,
 						host:_this._host,
 						id:_this.get ('idPrefix') + '-' + _inputCounter,
-						path:_this._workingDirectory.get ('name')
+						path:_this._filesystem.get ('workingDirectory').get ('name')
 					}),
 					'inner bottom'
 				);
@@ -125,9 +124,23 @@ Uize.module ({
 
 						function _getClassName (_command) {
 							return {
+								'cd':function (_argumentsObject, _callback) {
+									_this._filesystem.open (
+										_argumentsObject.argv[1],
+										function (_fp) {
+											console.log (_fp)
+											_fp != JsTerm.FileSystem.UNDEFINED_FILE_HANDLE &&
+												_this._filesystem.set ({
+													workingDirectory:_this._filesystem.get ('resources')[_fp]
+												})
+											;
+											_callback ();
+										}
+									)
+								},
 								'clear':'JsTerm.Program.Clear',
 								'date':'JsTerm.Program.Date',
-								'history':function () {
+								'history':function (_argumentsObject, _callback) {
 									for (
 										var
 											_echoedString = '',
@@ -138,19 +151,23 @@ Uize.module ({
 									)
 										_echoedString += (_historyIdx+1) + ' ' + _history [_historyIdx] + '<br/>'
 									;
-									_this.echo (_echoedString)
+									_this.echo (_echoedString);
+									_callback ();
 								},
-								'echo':function (_argumentsObject) {
-									_this.echo (_argumentsObject.optionString)
+								'echo':function (_argumentsObject,_callback) {
+									_this.echo (_argumentsObject.optionString);
+									_callback ();
 								},
 								'ls':'JsTerm.Program.Ls',
-								'pwd':function () {
-									_this.echo (_this._workingDirectory.get ('name'))
+								'pwd':function (_argumentsObject, _callback) {
+									_this.echo (_this._filesystem.get ('workingDirectory').get ('name'));
+									_callback ();
 								},
 								'show_args':'JsTerm.Program.ShowArgs',
 								'yes':'JsTerm.Program.Yes',
-								'whoami':function () {
-									_this.echo (_this._username)
+								'whoami':function (_argumentsObject, _callback) {
+									_this.echo (_this._username);
+									_callback ();
 								}
 							} [_command]
 						}
@@ -169,10 +186,9 @@ Uize.module ({
 
 							_input && _history.push (_input);
 
-							if (typeof _commandClassName == 'function') {
-								_commandClassName (_argumentsObject);
-								_this.updateUi ();
-							}
+							if (typeof _commandClassName == 'function')
+								_commandClassName (_argumentsObject,function (){_this.updateUi ()})
+							;
 							else if (_commandClassName)
 								Uize.module ({
 									required:_commandClassName,
@@ -281,8 +297,7 @@ Uize.module ({
 				value:-1
 			},
 			_filesystem:'filesystem',
-			_template:{},
-			_workingDirectory:'workingDirectory'
+			_template:{}
 		});
 
 		return _class;

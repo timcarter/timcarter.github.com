@@ -49,6 +49,7 @@ Uize.module ({
 			_author:'author',
 			_group:'group',
 			_contents:'contents', // for files, this will be a string; for folders, an array
+			_name:'name',
 			_timestamp:'timestamp',
 			_type:'type', // either 'file' or 'folder'
 			_permissions:{

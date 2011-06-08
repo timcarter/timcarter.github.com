@@ -13,7 +13,6 @@ Uize.module ({
 				_immediatePath = _path.shift (),
 				_contentName
 			;
-			
 			for (_contentName in _contents) {
 				if (_contentName == _immediatePath) {
 					var _content = _contents [_contentName];
@@ -26,15 +25,14 @@ Uize.module ({
 									_content.resolve (_path, _callback)
 								}
 							}) :
-							_callback (null) // the content is a file, so there's an error
+							_callback (null); // the content is a file, so there's an error
+							return;
 					}
-					else
+					else {
 						// return what we've found
-						_callback (_content)
-					;
-
-					// as if it weren't obvious enough
-					break;
+						_callback (_content);
+						return;
+					}
 				}
 			}
 

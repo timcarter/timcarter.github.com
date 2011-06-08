@@ -4,8 +4,11 @@ Uize.module ({
 		var _class = _superclass.subclass ();
 
 		_class.set ({
+			name:'pics',
 			author:'timcarter',
-			// no contents yet
+			contents:{
+				'dick.jpg':'JsTerm.FileSystemObject.File.DickJpg'
+			},
 			timestamp:'1305875485014',
 			permissions:'777'
 		});

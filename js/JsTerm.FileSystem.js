@@ -7,17 +7,17 @@ Uize.module ({
 			_null = null
 		;
 
-		/* Private Constants */
-		_class._UNDEFINED_FILE_HANDLE = -1;
+		/* Public Constants */
+		_class.UNDEFINED_FILE_HANDLE = -1;
 
 		/* Private Methods */
 		_classPrototype._getObjectFromPath = function (_path, _callback) {
 			var
 				_this = this,
-				_root = _this._root
+				_workingDirectory = _this._workingDirectory
 			;
 
-			_root ? _root.resolve (_path.toLowerCase ().split ('/'), _callback) : _callback (_null);
+			_workingDirectory ? _workingDirectory.resolve (_path.toLowerCase ().split ('/'), _callback) : _callback (_null);
 			/*
 				Resolves the object found at the given path.
 			*/
@@ -27,7 +27,7 @@ Uize.module ({
 		_classPrototype.open = function (_path, _callback) {
 			var
 				_this = this,
-				_pointer = _class._UNDEFINED_FILE_HANDLE
+				_pointer = _class.UNDEFINED_FILE_HANDLE
 			;
 
 			_this._getObjectFromPath (
@@ -35,15 +35,14 @@ Uize.module ({
 				function (_results) {
 					if (_results)
 						Uize.module ({
-							required:[_results.fileSystemObject],
+							required:[_results],
 							builder:function () {
 								var
-									_fileSystemObjectInstance = (new Function ('try { return new ' + _results.fileSystemObject + '} catch (e) {}'))()
+									_fileSystemObjectInstance = (new Function ('try { return new ' + _results + '} catch (e) {}'))()
 								;
-
 								if (_fileSystemObjectInstance) {
 									_this._resources [_this._referenceCounter] = _fileSystemObjectInstance;
-									_pointer = ++_this._referenceCounter;
+									_pointer = _this._referenceCounter++;
 								}
 
 								_callback (_pointer);
@@ -82,14 +81,16 @@ Uize.module ({
 				*/
 			},
 			_resources:{
-				value:{}
+				name:'resources',
+				value:[]
 				/*
 					An array containing references to file system objects that are currently in use. To add
 					an object to this array, call open. To remove a resource, call
 					close.
 				*/
 			},
-			_root:'root'
+			_root:'root',
+			_workingDirectory:'workingDirectory'
 		});
 
 		return _class;

@@ -19,7 +19,7 @@ Uize.module ({
 				_this = this,
 				_callback = _this.get ('callback'),
 				_resultsString = '',
-				_workingDirectory = _this.getInherited ('workingDirectory'), // the parent must provide this somehow
+				_workingDirectory = _this.getInherited ('filesystem').get ('workingDirectory'), // the parent must provide this somehow
 				_workingDirectoryContents = _workingDirectory.get ('contents'),
 				_arguments = _this.get ('argv'),
 				_argumentNo = 0, // start at 1 (after initial increment) because argv[0] is the command name
