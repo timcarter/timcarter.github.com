@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title>JavaScript Sandbox</title>
+		<style type="text/css">
+			#page_dragged {
+				width:120px;
+				height:120px;
+				border:1px solid #000;
+				position:absolute;
+				cursor:move;
+				left:200px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id='page_dragged'></div>
+		<div id='page-stats'></div>
+		<script type="text/javascript" src="js/Uize.js"></script>
+		<script type="text/javascript">
+			Uize.module ({
+				required:[
+					'Uize.Node',
+					'Uize.Widget.Drag.Move',
+					'Uize.Widget.Page'
+				],
+				builder:function () {
+					window.page = new Uize.Widget.Page;
+
+					var drag = page.addChild (
+						'dragged',
+						Uize.Widget.Drag.Move
+					);
+
+					function _getStats () {
+						var _coords = Uize.Node.getCoords (drag.getNode ());
+
+						page.setNodeInnerHtml (
+							'stats',
+							'x: ' + _coords.x + '<br/>' +
+							'y: ' + _coords.y + '<br/>' +
+							'width: ' + _coords.width + '<br/>' +
+							'height: ' + _coords.height + '<br/>' +
+							'area: ' + _coords.area + '<br/>' +
+							'left: ' + _coords.left + '<br/>' +
+							'top: ' + _coords.top + '<br/>' +
+							'right: ' + _coords.right + '<br/>' +
+							'bottom: ' + _coords.bottom + '<br/>' +
+							'seen: ' + _coords.seen + '<br/>'
+						)
+					}
+					drag.wire ({
+						'Drag Update':_getStats
+					});
+					page.wireUi ();
+
+					_getStats ();
+				}
+			});
+		</script>
+	</body>
+</html>
