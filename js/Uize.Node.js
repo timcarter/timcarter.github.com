@@ -77,6 +77,7 @@ Uize.module ({
 				_navigator = _isBrowser ? navigator : {userAgent:'',appName:''},
 				_userAgent = _navigator.userAgent.toLowerCase (),
 				_isIe = _navigator.appName == 'Microsoft Internet Explorer',
+				_isIe6 = _isIe && _navigator.appVersion.indexOf ('MSIE 6') > -1,
 				_isSafari = _userAgent.indexOf ('applewebkit') > -1,
 				_isMozilla = _userAgent.indexOf ('gecko') > -1,
 				_isOpera = _userAgent.indexOf ('opera') > -1,
@@ -561,6 +562,7 @@ Uize.module ({
 					_width = 0,
 					_height = 0,
 					_seen = _true,
+					_percentSeen = 100,
 					_documentElement = _getDocumentScrollElement (),
 					_windowDims = _getDimensions (window)
 				;
@@ -606,7 +608,13 @@ Uize.module ({
 					var
 						_nodeVisible = _seen = !_nodeHidden (_node),
 						_offsetParent = _node,
-						_currentNode = _node
+						_currentNode = _node,
+						_windowWidth = _windowDims.width,
+						_windowHeight = _windowDims.height,
+						_documentElementScrollLeft = _documentElement.scrollLeft,
+						_documentElementScrollTop = _documentElement.scrollTop,
+						_documentElementRight = _documentElementScrollLeft + _windowWidth,
+						_documentElementBottom = _documentElementScrollTop + _windowHeight
 					;
 					while (_currentNode.parentNode && typeof _currentNode.parentNode != 'unknown') {
 						var
@@ -658,10 +666,19 @@ Uize.module ({
 						if (_seen)
 							_seen = _doRectanglesOverlap (
 								_x,_y,_width,_height,
-								_documentElement.scrollLeft,_documentElement.scrollTop,_windowDims.width,_windowDims.height
+								_documentElementScrollLeft,_documentElementScrollTop,_windowWidth,_windowHeight
 							)
 						;
-				}
+
+						// if the node is seen, calculate how much of its area is seen
+						_percentSeen = _seen ?
+							((Math.min (_x + _width, _documentElementRight) - Math.min (Math.max (_x, _documentElementScrollLeft), _documentElementRight))
+								* (Math.min (_y + _height, _documentElementBottom) - Math.min (Math.max (_y, _documentElementScrollTop), _documentElementBottom)))
+								/ (_width * _height)
+								* 100 :
+							0
+						;
+					}
 				return {
 					x:_x,
 					y:_y,
@@ -672,7 +689,8 @@ Uize.module ({
 					top:_y,
 					right:_x + _width - 1,
 					bottom:_y + _height - 1,
-					seen:_seen
+					seen:_seen,
+					percentSeen:_percentSeen
 				};
 				/*?
 					Static Methods
@@ -1001,15 +1019,16 @@ Uize.module ({
 					(_isInnerBottom = _true)
 				);
 				_htmlToInject += ''; // coerce to a string value by invoking valueOf method
+
 				_doForAll (
 					_nodeBlob,
 					function (_node) {
 						var _nodeChildNodes = _node.childNodes;
 						function _htmlHasScript (_html) {
-							return _html && /<script/i.test (_html);
+							return _html && /<script/i.test (_html)
 						}
 						function _htmlToInjectHasScript () {
-							return _htmlHasScript (_htmlToInject);
+							return _htmlHasScript (_htmlToInject)
 						}
 						if (
 							(_isInnerReplace || (!_nodeChildNodes.length && (_isInnerTop || _isInnerBottom))) &&
@@ -1021,7 +1040,9 @@ Uize.module ({
 						} else {
 							if (_isInnerReplace) _node.innerHTML = '';
 							var _dummyNode = document.createElement ('DIV');
-							_dummyNode.innerHTML = _htmlToInject;
+							_dummyNode.innerHTML = '<i>e</i>'	// fix for IE NoScope issue (http://www.thecssninja.com/javascript/noscope)
+								+ _htmlToInject
+							;
 							var
 								_nodeToInsertBefore = _isInnerTop
 									? _nodeChildNodes [0]
@@ -1057,8 +1078,8 @@ Uize.module ({
 									;
 								}
 							}
-							while (_nodesToInject.length) {
-								var _childNodeToInject = _nodesToInject [0];
+							while (_nodesToInject.length > 1) {	// should always have at least one node because of NoScope fix
+								var _childNodeToInject = _nodesToInject [1];	// Skip the scope node
 								if (_isInnerBottom || _isInnerReplace) {
 									_node.appendChild (_childNodeToInject);
 								} else if (_isInnerTop) {
@@ -2485,7 +2506,17 @@ Uize.module ({
 							A boolean, indicating whether or not the browser is a version of Microsoft Internet Explorer.
 
 							NOTES
-							- see also the =Uize.Node.isSafari= and =Uize.Node.isMozilla= static properties
+							- see also the =Uize.Node.isIe6=, =Uize.Node.isSafari= and =Uize.Node.isMozilla= static properties
+				*/
+				
+			_package.isIe6 = _isIe6;
+				/*?
+					Static Properties
+						Uize.Node.isIe6
+							A boolean, indicating whether or not the browser is a version of Microsoft Internet Explorer version 6.
+
+							NOTES
+							- see also the =Uize.Node.isIe=, =Uize.Node.isSafari= and =Uize.Node.isMozilla= static properties
 				*/
 
 			_package.isSafari = _isSafari;
@@ -2495,7 +2526,7 @@ Uize.module ({
 							A boolean, indicating whether or not the browser is a version of Apple Safari.
 
 							NOTES
-							- see also the =Uize.Node.isIe= and =Uize.Node.isMozilla= static properties
+							- see also the =Uize.Node.isIe=, =Uize.Node.isIe6= and =Uize.Node.isMozilla= static properties
 				*/
 
 			_package.isMozilla = _isMozilla;
