@@ -72,8 +72,8 @@ input:focus, textarea:focus {
 }
 
 textarea {
-	height:100px;
-	width:100%;
+	height:150px;
+	width:337px;
 }
 
 form {
@@ -104,6 +104,7 @@ fieldset p label {
 	font-size:14px;
 	width:75px;
 	text-align:right;
+	vertical-align:top;
 }
 
 fieldset p input {
