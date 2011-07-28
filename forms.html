@@ -1,154 +1,53 @@
 <html>
 	<head>
 		<title>Restaurant Application</title>
-		<style type="text/css">
-			body {
-				font-family:sans-serif;
-				font-size:12px;
-				line-height:1.5em;
-			}
-
-			.content {
-				margin:0 auto;
-				position:relative;
-				width:1000px;
-			}
-
-			button {
-				background:#222;
-				background:	-moz-linear-gradient(top, #666, #222);
-				background:	-webkit-linear-gradient(top, #666, #222);
-				color:#fff;
-				cursor:pointer;
-				font-weight:bold;
-				font-size:14px;
-				padding:5px 10px 6px;
-				text-decoration:none;
-				border:0;
-				border-bottom:1px solid #aaa;
-				box-shadow: 0 1px 3px #999;
-				border-radius:5px;
-				line-height:1;
-				margin:0;
-				padding:8px 14px 9px;
-				position:relative;
-				text-shadow:0 -1px 1px rgba(0, 0, 0, 0.25);
-			}
-			button:hover {
-				background:#333;
-				background:	-moz-linear-gradient(top, #777, #333);
-				background:	-webkit-linear-gradient(top, #777, #333);
-			}
-			button:active {
-				top:1px;
-			}
-
-			button.submit {
-				/*background:#ff6c00;
-				background-image:    -moz-linear-gradient(top, #ff9c00, #ff6c00);
-				background-image:    -webkit-linear-gradient(top, #ff9c00, #ff6c00);*/
-				background:#66cc00;
-				background-image: -moz-linear-gradient(top, #78f000, #66cc00);
-				background-image: -webkit-linear-gradient(top, #78f000, #66cc00);
-			}
-			button.submit:hover {
-				/*background:#f45500;
-				background-image:	-moz-linear-gradient(top, #f49500, #f45500);
-				background-image:    -webkit-linear-gradient(top, #ff9c00, #ff6c00);*/
-				background:#69bd00;
-				background-image: -moz-linear-gradient(top, #69e800, #69bd00);
-				background-image: -webkit-linear-gradient(top, #69e800, #69bd00);
-			}
-			label {
-				margin:0 5px 5px 0;
-				text-align:right;
-				font-size:14px;
-				font-weight:bold;
-			}
-			input {
-				border:none;
-				border-radius:5px;
-				box-shadow:0 0 5px #666 inset;
-				height:32px;
-				font-size:20px;
-				min-width:200px;
-				text-indent:5px;
-			}
-			input:focus {
-				outline:none;
-				background-color:#E6F1F7;
-				/*box-shadow:0 0 5px #ccc, 0 0 5px #aaa inset;*/
-			}
-
-			form {
-				margin:0 auto;
-				width:450px;
-				position:relative;
-			}
-
-			form p {
-				width:100%;
-			}
-
-			form h2:not(:first-child) {
-				padding-top:10px;
-			}
-
-			form p label {
-				display:inline-block;
-				text-align:right;
-				width:120px;
-				margin-right:15px;
-			}
-
-			form p input {
-				width:310px;
-			}
-
-			.buttons {
-				text-align:right;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="forms.css" />
 	</head>
 	<body>
 		<div class="content">
-			<form method="POST" action="">
-				<h2>Name</h2>
-				<p>
-					<label for="first" title="Type your first name here">First:</label><input type="text" name="first" title="Type your first name here" />
-				</p>
-				<p>
-					<label for="last" title="Type your last name here">Last:</label><input type="text" name="last" title="Type your last name here" />
-				</p>
+			<form method="GET" action="">
+				<fieldset>
+					<legend>Name</legend>
+					<p>
+						<label for="first">First:</label><input placeholder="Enter your first name" type="text" name="first" required autofocus/>
+					</p>
+					<p>
+						<label for="last">Last:</label><input placeholder="Enter your last name" type="text" name="last" required/>
+					</p>
+				</fieldset>
 
-				<h2>Address</h2>
-				<p>
-					<label for="address1" title="Type your address here">Line 1:</label><input type="text" name="address1" title="Type your address here" />
-				</p>
-				<p>
-					<label for="address2" title="Continue your address here">Line 2:</label><input type="text" name="address2" title="Continue your address here" />
-				</p>
-				<p>
-					<label for="city" title="Type your city here">City:</label><input type="text" name="city" title="Type your city here" />
-				</p>
-				<p>
-					<label for="state" title="Select your state">State:</label>
-					<select name="state">
-						<option value="ca" selected="selected">ca</option>
-						<option value="nj">nj</option>
-					</select>
-				</p>
-				<p>
-					<label for="zip" title="Type your zip code here">Zip:</label><input type="text" name="zip" title="Type your zip code here" />
-				</p>
+				<fieldset>
+					<legend>Address</legend>
+					<p>
+						<label for="address1">Line 1:</label><input placeholder="Enter your apt/house number and street" type="text" name="address1"/>
+					</p>
+					<p>
+						<label for="address2">Line 2:</label><input placeholder="Continue your address (optional)" type="text" name="address2"/>
+					</p>
+					<p>
+						<label for="city">City:</label><input placeholder="Enter your city" type="text" name="city"/>
+					</p>
+					<p>
+						<label for="state" title="Select your state">State:</label>
+						<select name="state">
+							<option value="ca" selected="selected">ca</option>
+							<option value="nj">nj</option>
+						</select>
+					</p>
+					<p>
+						<label for="zip">Zip:</label><input type="text" name="zip" placeholder="Enter your zip code" />
+					</p>
+				</fieldset>
 
-				<h2>Contact</h2>
-				<p>
-					<label for="phone" title="Type your phone number here">Phone:</label><input type="text" name="phone" title="Type your phone number here" />
-				</p>
-				<p>
-					<label for="phone2" title="Type any additional phone number here">Alternate:</label><input type="text" name="phone2" title="Type any additional phone number here" />
-				</p>
+				<fieldset>
+					<legend>Contact</legend>
+					<p>
+						<label for="phone">Phone:</label><input type="text" name="phone" placeholder="Enter your phone number" />
+					</p>
+					<p>
+						<label for="phone2">Additional:</label><input type="text" name="phone2" placeholder="Enter another phone number (optional)" />
+					</p>
+				</fieldset>
 
 				<p class="buttons">
 					<button title="Cancel and leave this page">Cancel</button>&nbsp;<button class="submit" title="Continue to the next set of questions">Next &gt;&gt;</button>

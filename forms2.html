@@ -1,0 +1,77 @@
+<html>
+	<head>
+		<title>Restaurant Application</title>
+		<link rel="stylesheet" type="text/css" href="forms.css" />
+	</head>
+	<body>
+		<div class="content">
+			<form method="GET" action="">
+				<h2>Looking For</h2>
+				<p>
+					<label for="position" title="Choose your desired position">Position:</label>
+					<select name="position">
+						<option value="General Manager">General Manager</option>
+						<option value="Server" selected="selected">Server</option>
+					</select>
+				</p>
+
+				<h2>Availability</h2>
+				<p>
+					<label for="seasonal">Seasonal</label><input type="checkbox" id="seasonal" name="seasonal" />
+				</p>
+				<p>
+					<label for="part">Part Time</label><input type="checkbox" id="part" name="part" />
+				</p>
+				<p>
+					<label for="full">Full Time</label><input type="checkbox" id="full" name="full" />
+				</p>
+				<p>
+					<label for="temporary">Temporary</label><input type="checkbox" id="temporary" name="temporary" />
+				</p>
+				<p>
+					<h3>Most restaurants are open 364-365 days a year. Please list specific days you cannot work.</h3>
+					<textarea name="details"></textarea>
+				</p>
+
+				<h2>History</h2>
+				<p>
+					<label for="employer">Employer:</label><input type="text" name="employer" id="employer" />
+				</p>
+				<p>
+					<label for="eaddress">Address:</label><input type="text" name="eaddress" id="eaddress" />
+				</p>
+				<p>
+					<label for="ecity">City:</label><input type="text" name="ecity" id="ecity" />
+				</p>
+				<p>
+					<label for="estate" title="Select your state">State:</label>
+					<select name="estate">
+						<option value="ca" selected="selected">ca</option>
+						<option value="nj">nj</option>
+					</select>
+				</p>
+				<p>
+					<label for="ezip">Zip:</label><input type="text" name="ezip" id="ezip" />
+				</p>
+				<p>
+					<label for="eposition">Position:</label><input type="text" name="eposition" id="eposition" />
+				</p>
+				<p>
+					<label for="estart">Date Started:</label><input type="text" name="estart" id="estart" />
+				</p>
+				<p>
+					<label for="eend">Date Ended:</label><input type="text" name="eend" id="eend" />
+				</p>
+				<p>
+					<label for="ereason">Reason for leaving:</label><input type="text" name="ereason" id="ereason" />
+				</p>
+				<p>
+					<label for="econtact">May we contact this employer:</label><input type="checkbox" name="econtact" id="econtact" selected="selected" />
+				</p>
+				<p>
+					<label for="ephone">Phone:</label><input type="text" name="ephone" id="ephone" />
+				</p>
+			</form>
+		</div>
+	</body>
+</html>
