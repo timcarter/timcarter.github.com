@@ -28,8 +28,8 @@
 						<label for="full">Full Time</label><input type="checkbox" id="full" name="full" />
 					</p>
 					<p>
+						<label>What shifts are you available to work?</label>
 						<div class="shiftpicker">
-							<label>What shifts are you available to work?</label>
 							<table>
 								<thead>
 									<tr>
