@@ -56,9 +56,9 @@ button.submit:hover {
 	background-image: -webkit-linear-gradient(top, #69e800, #69bd00);
 }
 input[type="text"], textarea {
-	border:none;
+	border:1px solid #aaa;
 	border-radius:5px;
-	box-shadow:0 0 5px #a2a2a2 inset;
+	box-shadow:0 0 5px #727272 inset;
 	height:32px;
 	font-size:16px;
 	min-width:200px;
