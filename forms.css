@@ -144,11 +144,11 @@ th {
 	font-size:14px;
 }
 
-.error label {
+label.error {
 	font-weight:bold;
 	color:#c00;
 }
 
-.error input[type="text"],textarea {
+input[type="text"].error ,textarea.error {
 	background:#ffb5c5;
 }

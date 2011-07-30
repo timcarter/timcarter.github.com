@@ -8,8 +8,8 @@
 			<form method="GET" action="" id="page_form">
 				<fieldset>
 					<legend>Name</legend>
-					<p class="error">
-						<label for="first">First:</label><input placeholder="Enter your first name" type="text" name="first" autofocus/>
+					<p>
+						<label class="error" for="first">First:</label><input class="error" placeholder="Enter your first name" type="text" name="first" autofocus/>
 					</p>
 					<p>
 						<label for="last">Last:</label><input placeholder="Enter your last name" type="text" name="last"/>
@@ -59,6 +59,63 @@
 				widgetClass:'Uize.Widget.Form',
 				method:'GET'
 			};
+
+			$page_form_first = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:100;
+				minLength:1
+			};
+
+			$page_form_last = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:100;
+				minLength:1
+			};
+
+			$page_form_address1 = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:100;
+				minLength:1
+			};
+
+			$page_form_address2 = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:100;
+				minLength:0
+			};
+
+			$page_form_city = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:100;
+				minLength:1
+			};
+
+			$page_form_state = {
+				widgetClass:'Uize.Widget.FormElement'
+			};
+
+			$page_form_zip = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:10;
+				minLength:5,
+				validator:/^\d{5}(-\d{4})?$/
+			};
+
+			$page_form_phone1 = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:100;
+				minLength:1,
+				valueConformer:function (_value) {
+					return _value.replace (/[^0-9xX]/g, '') // keep 'x' for extension
+				}
+			};
+
+			$page_form_phone2 = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:100;
+				minLength:1
+			};
+
 		</script>
 		<script type="text/javascript" src="js/Uize.js"></script>
 		<script type="text/javascript">
