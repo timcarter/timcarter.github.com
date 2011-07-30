@@ -5,14 +5,14 @@
 	</head>
 	<body>
 		<div class="content">
-			<form method="GET" action="">
+			<form method="GET" action="" id="page_form">
 				<fieldset>
 					<legend>Name</legend>
-					<p>
-						<label for="first">First:</label><input placeholder="Enter your first name" type="text" name="first" required autofocus/>
+					<p class="error">
+						<label for="first">First:</label><input placeholder="Enter your first name" type="text" name="first" autofocus/>
 					</p>
 					<p>
-						<label for="last">Last:</label><input placeholder="Enter your last name" type="text" name="last" required/>
+						<label for="last">Last:</label><input placeholder="Enter your last name" type="text" name="last"/>
 					</p>
 				</fieldset>
 
@@ -50,9 +50,36 @@
 				</fieldset>
 
 				<p class="buttons">
-					<button title="Cancel and leave this page">Cancel</button>&nbsp;<button class="submit" title="Continue to the next set of questions">Next &gt;&gt;</button>
+					<button type="button" id="page_cancel" title="Cancel and leave this page">Cancel</button>&nbsp;<button id="page_form-submit" class="submit" title="Continue to the next set of questions">Next &gt;&gt;</button>
 				</p>
 			</form>
 		</div>
+		<script type="text/javascript">
+			$page_form = {
+				widgetClass:'Uize.Widget.Form',
+				method:'GET'
+			};
+		</script>
+		<script type="text/javascript" src="js/Uize.js"></script>
+		<script type="text/javascript">
+			Uize.module ({
+				required:[
+					'Uize.Widget.Page',
+					'Uize.Widget.Button'
+				],
+				builder:function () {
+					window.page = new Uize.Widget.Page;
+
+					Uize.Widget.Button.addChildButton.call (
+						page,
+						'cancel',
+						function () {
+							alert ('at some point, this will cancel');
+						}
+					);
+					page.wireUi ();
+				}
+			})
+		</script>
 	</body>
 </html>

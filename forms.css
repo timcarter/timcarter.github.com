@@ -107,7 +107,6 @@ label {
 fieldset p label {
 	width:75px;
 	text-align:right;
-	vertical-align:top;
 }
 
 fieldset p input[type="text"] {
@@ -145,3 +144,11 @@ th {
 	font-size:14px;
 }
 
+.error label {
+	font-weight:bold;
+	color:#c00;
+}
+
+.error input[type="text"],textarea {
+	background:#ffb5c5;
+}
