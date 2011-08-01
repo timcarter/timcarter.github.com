@@ -5,47 +5,59 @@
 	</head>
 	<body>
 		<div class="content">
-			<form method="GET" action="" id="page_form">
+			<form method="GET" action="" id="page_form-form">
 				<fieldset>
 					<legend>Name</legend>
 					<p>
-						<label class="error" for="first">First:</label><input class="error" placeholder="Enter your first name" type="text" name="first" autofocus/>
+						<label id="page_form_elements_first-label" for="page_form_elements_first-input">First:</label>
+						<input id="page_form_elements_first-input" placeholder="Enter your first name" type="text" name="first" autofocus/>
 					</p>
 					<p>
-						<label for="last">Last:</label><input placeholder="Enter your last name" type="text" name="last"/>
+						<label id="page_form_elements_last-label" for="page_form_elements_last-input">Last:</label>
+						<input id="page_form_elements_last-input" placeholder="Enter your last name" type="text" name="last"/>
 					</p>
 				</fieldset>
 
 				<fieldset>
 					<legend>Address</legend>
 					<p>
-						<label for="address1">Line 1:</label><input placeholder="Enter your apt/house number and street" type="text" name="address1"/>
+						<label id="page_form_elements_address1-label" for="page_form_elements_address1-input">Line 1:</label>
+						<input id="page_form_elements_address1-input" placeholder="Enter your apt/house number and street" type="text" name="address1"/>
 					</p>
 					<p>
-						<label for="address2">Line 2:</label><input placeholder="Continue your address (optional)" type="text" name="address2"/>
+						<label id="page_form_elements_address2-label" for="page_form_elements_address2-input">Line 2:</label>
+						<input id="page_form_elements_address2-input" placeholder="Continue your address (optional)" type="text" name="address2"/>
 					</p>
 					<p>
-						<label for="city">City:</label><input placeholder="Enter your city" type="text" name="city"/>
+						<label id="page_form_elements_city-label" for="page_form_elements_city-input">City:</label>
+						<input id="page_form_elements_city-input" placeholder="Enter your city" type="text" name="city"/>
 					</p>
 					<p>
-						<label for="state" title="Select your state">State:</label>
-						<select name="state">
+						<label id="page_form_elements_state-label" for="page_form_elements_state-input" title="Select your state">State:</label>
+						<select id="page_form_elements_state-input" name="state">
 							<option value="ca" selected="selected">ca</option>
 							<option value="nj">nj</option>
 						</select>
 					</p>
 					<p>
-						<label for="zip">Zip:</label><input type="text" name="zip" placeholder="Enter your zip code" />
+						<label id="page_form_elements_zip-label" for="page_form_elements_zip-input">Zip:</label>
+						<input id="page_form_elements_zip-input" type="text" name="zip" placeholder="Enter your zip code" />
 					</p>
 				</fieldset>
 
 				<fieldset>
 					<legend>Contact</legend>
 					<p>
-						<label for="phone">Phone:</label><input type="text" name="phone" placeholder="Enter your phone number" />
+						<label id="page_form_elements_phone1-label" for="page_form_elements_phone1-input">Phone:</label>
+						<input id="page_form_elements_phone1-input" type="text" name="phone" placeholder="Enter your phone number" />
 					</p>
 					<p>
-						<label for="phone2">Additional:</label><input type="text" name="phone2" placeholder="Enter another phone number (optional)" />
+						<label id="page_form_elements_phone2-label" for="page_form_elements_phone2-input">Additional:</label>
+						<input id="page_form_elements_phone2-input" type="text" name="phone2" placeholder="Enter another phone number (optional)" />
+					</p>
+					<p>
+						<label id="page_form_elements_email-label" for="page_form_elements_email-input">Email:</label>
+						<input id="page_form_elements_email-input" type="text" name="email" placeholder="Enter your email address (employers will see this)" />
 					</p>
 				</fieldset>
 
@@ -55,67 +67,83 @@
 			</form>
 		</div>
 		<script type="text/javascript">
-			$page_form = {
+			window.$page_form = {
 				widgetClass:'Uize.Widget.Form',
-				method:'GET'
+				method:'GET',
+				warningShownWhen:'validatedAfterFirstFinish',
+				validateWhen:'valueChanged'
 			};
 
-			$page_form_first = {
+			window.$page_form_elements_first = {
 				widgetClass:'Uize.Widget.FormElement.Text',
-				maxLength:100;
-				minLength:1
+				maxLength:100,
+				minLength:1,
+				expandedClassName:'error'
 			};
 
-			$page_form_last = {
+			window.$page_form_elements_last = {
 				widgetClass:'Uize.Widget.FormElement.Text',
-				maxLength:100;
-				minLength:1
+				maxLength:100,
+				minLength:1,
+				expandedClassName:'error'
 			};
 
-			$page_form_address1 = {
+			window.$page_form_elements_address1 = {
 				widgetClass:'Uize.Widget.FormElement.Text',
-				maxLength:100;
-				minLength:1
+				maxLength:100,
+				minLength:1,
+				expandedClassName:'error'
 			};
 
-			$page_form_address2 = {
+			window.$page_form_elements_address2 = {
 				widgetClass:'Uize.Widget.FormElement.Text',
-				maxLength:100;
+				maxLength:100,
+				expandedClassName:'error',
 				minLength:0
 			};
 
-			$page_form_city = {
+			window.$page_form_elements_city = {
 				widgetClass:'Uize.Widget.FormElement.Text',
-				maxLength:100;
+				maxLength:100,
+				expandedClassName:'error',
 				minLength:1
 			};
 
-			$page_form_state = {
+			window.$page_form_elements_state = {
+				expandedClassName:'error',
 				widgetClass:'Uize.Widget.FormElement'
 			};
 
-			$page_form_zip = {
+			window.$page_form_elements_zip = {
 				widgetClass:'Uize.Widget.FormElement.Text',
-				maxLength:10;
+				maxLength:10,
 				minLength:5,
+				expandedClassName:'error',
 				validator:/^\d{5}(-\d{4})?$/
 			};
 
-			$page_form_phone1 = {
+			window.$page_form_elements_phone1 = {
 				widgetClass:'Uize.Widget.FormElement.Text',
-				maxLength:100;
+				maxLength:100,
 				minLength:1,
+				expandedClassName:'error',
 				valueConformer:function (_value) {
 					return _value.replace (/[^0-9xX]/g, '') // keep 'x' for extension
 				}
 			};
 
-			$page_form_phone2 = {
+			window.$page_form_elements_phone2 = {
 				widgetClass:'Uize.Widget.FormElement.Text',
-				maxLength:100;
+				maxLength:100,
+				expandedClassName:'error',
 				minLength:1
 			};
 
+			window.$page_form_elements_email = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:100,
+				expandedClassName:'error'
+			}
 		</script>
 		<script type="text/javascript" src="js/Uize.js"></script>
 		<script type="text/javascript">
