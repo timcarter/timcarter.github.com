@@ -7,7 +7,7 @@
 		<div class="content">
 			<form method="GET" action="" id="page_form-form">
 				<fieldset>
-					<legend>Name</legend>
+					<legend>Name and Age</legend>
 					<p>
 						<label id="page_form_elements_first-label" for="page_form_elements_first-input">First:</label>
 						<input id="page_form_elements_first-input" placeholder="Enter your first name" type="text" name="first" autofocus/>
@@ -15,6 +15,10 @@
 					<p>
 						<label id="page_form_elements_last-label" for="page_form_elements_last-input">Last:</label>
 						<input id="page_form_elements_last-input" placeholder="Enter your last name" type="text" name="last"/>
+					</p>
+					<p>
+						<label id="page_form_elements_dob-label" for="page_form_elements_dob-input">Birthdate:</label>
+						<input id="page_form_elements_dob-input" type="text" name="dob" placeholder="Enter your birth date (MM-DD-YYYY)" />
 					</p>
 				</fieldset>
 
@@ -57,7 +61,7 @@
 					</p>
 					<p>
 						<label id="page_form_elements_email-label" for="page_form_elements_email-input">Email:</label>
-						<input id="page_form_elements_email-input" type="text" name="email" placeholder="Enter your email address (employers will see this)" />
+						<input id="page_form_elements_email-input" type="text" name="email" placeholder="Enter an email address (visible to employers)" />
 					</p>
 				</fieldset>
 
@@ -86,6 +90,28 @@
 				maxLength:100,
 				minLength:1,
 				expandedClassName:'error'
+			};
+
+			window.$page_form_elements_dob = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				maxLength:100,
+				minLength:10,
+				expandedClassName:'error',
+				validator:function (_value) {
+					var _dateArray = _value.split ('-');
+					if (_dateArray && _dateArray.length == 3) {
+						var _month = +_dateArray [0];
+						if (!(_month % 1) && _month > 0 && _month <= 12) {
+							var _day = +_dateArray [1];
+							if (!(_day % 1) && _date > 0 && _date <= 31) {
+								var _year = +_dateArray [2];
+								if (!(_year % 1) && _year > 1900 && _year < (new Date).getFullYear)
+									return !isNaN((new Date (_value)).getTime ());
+							}
+						}
+					}
+					return false;
+				}
 			};
 
 			window.$page_form_elements_address1 = {
