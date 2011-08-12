@@ -1,0 +1,230 @@
+<html>
+	<head>
+		<title>Restaurant Application</title>
+		<link rel="stylesheet" type="text/css" href="forms.css" />
+	</head>
+	<body>
+		<div class="content">
+			<form method="GET" action="" id="page_form-form">
+				<div id="page_form-elements">
+				</div>
+				<button type="button" id="page_addAnother" class="sub">Add another</button>
+				<p class="buttons">
+					<button type="button" id="page_back" title="Go back and edit your availability">&lt;&lt; Back</button>&nbsp;<button type="button" id="page_cancel" title="Cancel and leave this page">Cancel</button>&nbsp;<button id="page_form-submit" class="submit" title="Finish your application">Finish &gt;&gt;</button>
+				</p>
+			</form>
+		</div>
+		<script type="text/javascript" src="js/Uize.js"></script>
+		<script type="text/jst" id="page-historyTemplate">
+			<fieldset>
+				<legend>History [% .index + 1 %]</legend>
+				<p>
+					<label for="[% .idPrefix %]_employer[% .index %]-input">Employer:</label><input id="[% .idPrefix %]_employer[% .index %]-input" type="text" name="employer[% .index %]" placeholder="Enter employer name"/>
+				</p>
+				<p>
+					<label for="[% .idPrefix %]_address[% .index %]-input">Address:</label><input id="[% .idPrefix %]_address[% .index %]-input" type="text" name="address[% .index %]" placeholder="Enter employer address"/>
+				</p>
+				<p>
+					<label for="[% .idPrefix %]_position[% .index %]-input">Position:</label><input id="[% .idPrefix %]_position[% .index %]-input" type="text" name="position[% .index %]" placeholder="Enter your job title"/>
+				</p>
+				<p>
+					<label for="[% .idPrefix %]_start[% .index %]-input">Dates:</label><input id="[% .idPrefix %]_start[% .index %]-input" type="text" name="start[% .index %]" class="daterange" placeholder="MM-DD-YYYY"/> to <input id="[% .idPrefix %]_end[% .index %]-input" type="text" name="end[% .index %]" class="daterange" placeholder="MM-DD-YYYY" />
+				</p>
+				<p>
+					<label for="[% .idPrefix %]_phone[% .index %]-input">Phone:</label><input id="[% .idPrefix %]_phone[% .index %]-input" type="text" name="phone[% .index %]" placeholder="Enter employer phone (optional)"/>
+				</p>
+				<p>
+					<label for="[% .idPrefix %]_email[% .index %]-input">Email:</label><input id="[% .idPrefix %]_email[% .index %]-input" type="text" name="email[% .index %]" placeholder="Enter employer email (optional)"/>
+				</p>
+				<p>
+					<label for="[% .idPrefix %]_reason[% .index %]-input" class="textarealabel">Reason for leaving:</label><br/>
+					<textarea id="[% .idPrefix %]_reason[% .index %]-input" name="reason[% .idPrefix %]"></textarea>
+				</p>
+			</fieldset>
+		</script>
+		<script type="text/jst" id="page-historyVariables">
+			page.children.form.addFormElement (
+				'employer[% .index %]',
+				Uize.Widget.FormElement.Text,
+				{
+					minLength:1,
+					maxLength:100,
+					errorClass: "error"
+				}
+			);
+
+			page.children.form.addFormElement (
+				'address[% .index %]',
+				Uize.Widget.FormElement.Text,
+				{
+					minLength:1,
+					maxLength:100,
+					errorClass: "error"
+				}
+			);
+
+			page.children.form.addFormElement (
+				'position[% .index %]',
+				Uize.Widget.FormElement.Text,
+				{
+					minLength:1,
+					maxLength:100,
+					errorClass: "error"
+				}
+			);
+
+			page.children.form.addFormElement (
+				'start[% .index %]',
+				Uize.Widget.FormElement.Text,
+				{
+					minLength:1,
+					maxLength:100,
+					errorClass: "error",
+					validator:function (_value) {
+						var _dateArray = _value.split ('-');
+						if (_dateArray && _dateArray.length == 3) {
+							var _month = +_dateArray [0];
+							if (!(_month % 1) && _month > 0 && _month <= 12) {
+								var _day = +_dateArray [1];
+								if (!(_day % 1) && _date > 0 && _date <= 31) {
+									var _year = +_dateArray [2];
+									if (!(_year % 1) && _year > 1900 && _year < (new Date).getFullYear)
+										return !isNaN((new Date (_value)).getTime ());
+								}
+							}
+						}
+						return false;
+					}
+				}
+			);
+
+			page.children.form.addFormElement (
+				'end[% .index %]',
+				Uize.Widget.FormElement.Text,
+				{
+					minLength:1,
+					maxLength:100,
+					errorClass: "error",
+					validator:function (_value) {
+						var _dateArray = _value.split ('-');
+						if (_dateArray && _dateArray.length == 3) {
+							var _month = +_dateArray [0];
+							if (!(_month % 1) && _month > 0 && _month <= 12) {
+								var _day = +_dateArray [1];
+								if (!(_day % 1) && _date > 0 && _date <= 31) {
+									var _year = +_dateArray [2];
+									if (!(_year % 1) && _year > 1900 && _year < (new Date).getFullYear)
+										return !isNaN((new Date (_value)).getTime ());
+								}
+							}
+						}
+						return false;
+					}
+				}
+			);
+
+			page.children.form.addFormElement (
+				'phone[% .index %]',
+				Uize.Widget.FormElement.Text,
+				{
+					maxLength:100,
+					errorClass: "error",
+					valueConformer:function (_value) {
+						return _value.replace (/[^0-9xX]/g, '') // keep 'x' for extension
+					}
+				}
+			);
+
+			page.children.form.addFormElement (
+				'email[% .index %]',
+				Uize.Widget.FormElement.Text,
+				{
+					maxLength:100,
+					errorClass:'error'
+				}
+			);
+
+			page.children.form.addFormElement (
+				'reason[% .index %]',
+				Uize.Widget.FormElement.Text,
+				{errorClass:'error'}
+			);
+		</script>
+		<script type="text/javascript">
+			Uize.module ({
+				required:[
+					'Uize.Widget.Page',
+					'Uize.Widget.Button',
+					'Uize.Template',
+					'Uize.Widget.Form',
+					'Uize.Widget.FormElement.Text'
+				],
+				builder:function () {
+					window.page = new Uize.Widget.Page;
+					page.addChild (
+						'form',
+						Uize.Widget.Form,
+						{
+							method:'GET',
+							warningShownWhen:'validatedAfterFirstFinish',
+							validateWhen:'valueChanged'
+						}
+					);
+					page.wireUi ();
+
+					var
+						_template = Uize.Template.compile (
+							page.getNode ('historyTemplate').innerHTML,
+							{
+								openerToken:'[%',
+								closerToken:'%]'
+							}
+						),
+						_scriptTemplate = Uize.Template.compile (
+							'<script type="text/javascript">' + page.getNode ('historyVariables').innerHTML + "</" + "script>",
+							{
+								openerToken:'[%',
+								closerToken:'%]'
+							}
+						),
+						_numHistories = 0,
+						_form = page.children.form
+					;
+
+					function _addHistoryField () {
+						var
+							_idPrefix = _form.children.elements.get ('idPrefix')
+						;
+
+						Uize.Node.injectHtml (
+							_form.getNode ('elements'),
+							_template ({
+								index:_numHistories,
+								idPrefix:_idPrefix
+							})
+						);
+
+						Uize.Node.injectHtml (
+							_form.getNode ('elements'),
+							_scriptTemplate ({
+								index:_numHistories++,
+								idPrefix:_idPrefix
+							})
+						);
+					}
+
+					Uize.Widget.Button.addChildButton.call (
+						page,
+						'addAnother',
+						function () {
+							_addHistoryField ()
+						}
+					);
+					page.children.addAnother.wireUi ();
+
+					_addHistoryField ();
+				}
+			});
+		</script>
+	</body>
+</html>

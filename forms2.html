@@ -5,12 +5,12 @@
 	</head>
 	<body>
 		<div class="content">
-			<form method="GET" action="">
+			<form method="GET" action="" id="page_form-form">
 				<fieldset>
 					<legend>Looking For</legend>
 					<p>
-						<label for="position" title="Choose your desired position">Position:</label>
-						<select name="position">
+						<label id="page_form_elements_position-label" for="page_form_elements_position-input" title="Choose your desired position">Position:</label>
+						<select name="position" id="page_form_elements_position-input">
 							<option value="General Manager">General Manager</option>
 							<option value="Server" selected="selected">Server</option>
 						</select>
@@ -20,12 +20,16 @@
 				<fieldset>
 					<legend>Availability</legend>
 					<p>
-						<label for="seasonal">Seasonal</label><input type="checkbox" id="seasonal" name="seasonal" />
-						<label for="temporary">Temporary</label><input type="checkbox" id="temporary" name="temporary" />
+						<label id="page_form_elements_seasonal-label" for="page_form_elements_seasonal-input">Seasonal</label>
+						<input id="page_form_elements_seasonal-input" type="checkbox" id="seasonal" name="seasonal" />
+						<label id="page_form_elements_temporary-label" for="page_form_elements_temporary-input">Temporary</label>
+						<input id="page_form_elements_temporary-input" type="checkbox" id="temporary" name="temporary" />
 					</p>
 					<p>
-						<label for="part">Part Time</label><input type="checkbox" id="part" name="part" />
-						<label for="full">Full Time</label><input type="checkbox" id="full" name="full" />
+						<label id="page_form_elements_part-label" for="page_form_elements_part-input">Part Time</label>
+						<input id="page_form_elements_part-input" type="checkbox" name="part" />
+						<label id="page_form_elements_full-label" for="page_form_elements_full-input">Full Time</label>
+						<input id="page_form_elements_full-input" type="checkbox" name="full" />
 					</p>
 					<p>
 						<div class="shiftpicker">
@@ -33,88 +37,174 @@
 							<table>
 								<thead>
 									<tr>
-										<th><button class="sub">All</button></th>
-										<th>Monday</th>
-										<th>Tuesday</th>
-										<th>Wednesday</th>
-										<th>Thursday</th>
-										<th>Friday</th>
-										<th>Saturday</th>
-										<th>Sunday</th>
+										<th><button type="button" id="page-allShifts" class="sub">All</button></th>
+										<th>Mon</th>
+										<th>Tues</th>
+										<th>Wed</th>
+										<th>Thurs</th>
+										<th>Fri</th>
+										<th>Sat</th>
+										<th>Sun</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td><button class="sub">AM</button></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
+										<td><button type="button" id="page-amShifts" class="sub">AM</button></td>
+										<td><input type="checkbox" id="page_form_elements_monAm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_tuesAm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_wedAm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_thursAm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_friAm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_satAm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_sunAm-input" /></td>
 									</tr>
 									<tr>
-										<td><button class="sub">PM</button></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
-										<td><input type="checkbox" /></td>
+										<td><button type="button" id="page-pmShifts" class="sub">PM</button></td>
+										<td><input type="checkbox" id="page_form_elements_monPm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_tuesPm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_wedPm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_thursPm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_friPm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_satPm-input" /></td>
+										<td><input type="checkbox" id="page_form_elements_sunPm-input" /></td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</p>
 					<p>
-						<label class="textarealabel">Most restaurants are open 364-365 days a year. Please list specific days you cannot work.</label><br/>
-						<textarea name="details"></textarea>
+						<label id="page_form_elements_details-label" for="page_form_elements_details-input" class="textarealabel">Most restaurants are open every day. Please list specific days you cannot work.</label><br/>
+						<textarea id="page_form_elements_details-input" name="details"></textarea>
 					</p>
 				</fieldset>
 
-				<fieldset>
-					<legend>History</legend>
-					<p>
-						<label for="employer">Employer:</label><input type="text" name="employer" id="employer" />
-					</p>
-					<p>
-						<label for="eaddress">Address:</label><input type="text" name="eaddress" id="eaddress" />
-					</p>
-					<p>
-						<label for="ecity">City:</label><input type="text" name="ecity" id="ecity" />
-					</p>
-					<p>
-						<label for="estate" title="Select your state">State:</label>
-						<select name="estate">
-							<option value="ca" selected="selected">ca</option>
-							<option value="nj">nj</option>
-						</select>
-					</p>
-					<p>
-						<label for="ezip">Zip:</label><input type="text" name="ezip" id="ezip" />
-					</p>
-					<p>
-						<label for="eposition">Position:</label><input type="text" name="eposition" id="eposition" />
-					</p>
-					<p>
-						<label for="estart">Date Started:</label><input type="text" name="estart" id="estart" />
-					</p>
-					<p>
-						<label for="eend">Date Ended:</label><input type="text" name="eend" id="eend" />
-					</p>
-					<p>
-						<label for="ereason">Reason for leaving:</label><input type="text" name="ereason" id="ereason" />
-					</p>
-					<p>
-						<label for="econtact">May we contact this employer:</label><input type="checkbox" name="econtact" id="econtact" selected="selected" />
-					</p>
-					<p>
-						<label for="ephone">Phone:</label><input type="text" name="ephone" id="ephone" />
-					</p>
-				</fieldset>
+				<p class="buttons">
+					<button type="button" id="page_back" title="Go back to edit your general information">&lt;&lt; Back</button>&nbsp;<button type="button" id="page_cancel" title="Cancel and leave this page">Cancel</button>&nbsp;<button id="page_form-submit" class="submit" title="Enter your job history next">Next &gt;&gt;</button>
+				</p>
 			</form>
 		</div>
+		<script type="text/javascript">
+			window.$page_form = {
+				widgetClass:'Uize.Widget.Form',
+				method:'GET',
+				warningShownWhen:'validatedAfterFirstFinish',
+				validateWhen:'valueChanged'
+			};
+
+			window.$page_form_elements_position = {
+				widgetClass:'Uize.Widget.FormElement',
+				errorClass:'error'
+			};
+
+			window.$page_form_elements_seasonal = {
+				widgetClass:'Uize.Widget.FormElement',
+				errorClass:'error'
+			};
+
+			window.$page_form_elements_temporary = {
+				widgetClass:'Uize.Widget.FormElement',
+				errorClass:'error'
+			};
+
+			window.$page_form_elements_part = {
+				widgetClass:'Uize.Widget.FormElement',
+				errorClass:'error'
+			};
+
+			window.$page_form_elements_full = {
+				widgetClass:'Uize.Widget.FormElement',
+				errorClass:'error'
+			};
+
+			window.$page_form_elements_details = {
+				widgetClass:'Uize.Widget.FormElement.Text',
+				errorClass:'error'
+			};
+
+			// set up the am/pm items
+			var
+				_weekdays = ['mon', 'tues', 'wed', 'thurs', 'fri', 'sat', 'sun'],
+				_weekday = -1,
+				_weekdaysLength = _weekdays.length
+			;
+
+			for (;++_weekday < _weekdaysLength;) {
+				window['$page_form_elements_' + _weekdays [_weekday] + 'Am'] = {
+					widgetClass:'Uize.Widget.FormElement'
+				};
+			}
+
+			for (_weekday = -1;++_weekday < _weekdaysLength;) {
+				window['$page_form_elements_' + _weekdays [_weekday] + 'Pm'] = {
+					widgetClass:'Uize.Widget.FormElement'
+				};
+			}
+
+		</script>
+		<script type="text/javascript" src="js/Uize.js"></script>
+		<script type="text/javascript">
+			Uize.module ({
+				required:[
+					'Uize.Widget.Page',
+					'Uize.Widget.Button'
+				],
+				builder:function () {
+					window.page = new Uize.Widget.Page;
+
+					Uize.Widget.Button.addChildButton.call (
+						page,
+						'cancel',
+						function () {
+							alert ('at some point, this will cancel');
+						}
+					);
+					page.wireUi ();
+
+
+					function _selectShifts (_type) {
+						var
+							_elements = page.children.form.children.elements.children,
+							_selectAllAm = false,
+							_selectAllPm = false,
+							_all = _type == 'all'
+						;
+
+						// if any button is false in the list, set all the buttons to true
+						// if they're all true, set them all to false
+
+						for (_weekday = -1; ++_weekday < _weekdaysLength;) {
+							!_elements[_weekdays[_weekday] + 'Am'].get ('value') && (_selectAllAm = true);
+							!_elements[_weekdays[_weekday] + 'Pm'].get ('value') && (_selectAllPm = true);
+						}
+
+						_selectAll = _selectAllAm || _selectAllPm;
+
+						for (_weekday = -1; ++_weekday < _weekdaysLength;) {
+							if (_all || _type == 'am')
+								_elements[_weekdays[_weekday] + 'Am'].set ({value:_all ? _selectAll : _selectAllAm});
+							if (_all || _type == 'pm')
+								_elements[_weekdays[_weekday] + 'Pm'].set ({value:_all ? _selectAll : _selectAllPm});
+						}
+					}
+
+					page.wireNode (
+						'allShifts',
+						'click',
+						function () {_selectShifts ('all')}
+					);
+					page.wireNode (
+						'amShifts',
+						'click',
+						function () {_selectShifts ('am')}
+					);
+					page.wireNode (
+						'pmShifts',
+						'click',
+						function () {_selectShifts ('pm')}
+					);
+
+				}
+			})
+		</script>
 	</body>
 </html>

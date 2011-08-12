@@ -137,11 +137,30 @@ button:hover {
 
 table {
 	text-align:center;
+	border-spacing:0;
 }
 
 th {
 	font-weight:normal;
 	font-size:14px;
+}
+
+table button {
+	width:41px;
+}
+
+table td, th {
+	border-right:1px solid #000;
+	border-collapse:collapse;
+	padding:10px;
+}
+
+table td:last-child, th:last-child {
+	border-right:0;
+}
+
+table tbody td {
+	border-top:1px solid #000;
 }
 
 label.error {
@@ -151,4 +170,9 @@ label.error {
 
 input[type="text"].error , input[type="date"].error, textarea.error {
 	background:#ffb5c5;
+}
+
+input[type="text"].daterange {
+	min-width:160px;
+	width:160px;
 }
