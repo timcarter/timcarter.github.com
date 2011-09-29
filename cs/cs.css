@@ -7,7 +7,7 @@
      body {
         background: #ffffff;
         color: #222;
-        font: 12px/20px "Gentium Basic", Georgia, "Times New Roman", Times, serif;
+        font-size: 12px/20px;
         padding-top: 25px;
         text-align: center;
         width:700px;
