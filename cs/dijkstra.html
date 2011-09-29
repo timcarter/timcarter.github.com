@@ -4,4 +4,28 @@ title: Dijkstra's algorithm
 ---
 
 Dijkstra's algorithm is a graph search algorithm that calculates the shortest path between an
-origin node and all the other nodes in the graph. 
+origin node and all the other nodes in the graph. The algorithm assumes that the each edge
+in the graph has a non-negative cost associated with traversing it.
+
+The algorithm begins by assigning initial travel costs to all nodes in the graph. The origin node
+has a cost of zero while all other nodes are assigned a cost of infinity, as their true cost has
+not yet been calculated. The origin node is then inserted into a structure that is used to keep
+track of nodes that have not been processed. In most implementations this structure is a min-priority
+queue.
+
+The node in the structure with the lowest associated cost is chosen to be processed. Initially, that
+node is the origin node. The cost of traveling from the origin to each of the current node's neighbors
+is then calculated. This cost is the cost of the current node plus the cost of the edge between the
+current node and neighbor. If this newly calculated cost is less than the cost currently associated
+with the neighbor, it is assigned to the neighbor. The neighbor is then added to the structure so
+that it can be processed later.
+
+Once all the neighbors' costs have been calculated, the current node is marked as processed. It will
+never be visited again during the current run of the algorithm. Choose the next node to be processed
+from the structure-- this node should have the lowest associated cost among all nodes within the
+structure. Repeat the process described in the paragraph above.
+
+Once the structure contains no more nodes, the algorithm has completed. All nodes in the graph should
+now have associated with them the lowest travel cost from the origin. It is now possible to compute
+shortest paths between specific nodes by working backwards from the destination and comparing the edge
+costs all the way to the origin.
