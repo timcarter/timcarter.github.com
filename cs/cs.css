@@ -7,15 +7,11 @@
      body {
         background: #ffffff;
         color: #222;
-        font-size: 12px/20px;
+        font: 12px/20px "Gentium Basic", Georgia, "Times New Roman", Times, serif;
         padding-top: 25px;
         text-align: center;
         width:700px;
         margin: 0 auto;
-     }
-
-     h1, h2, h3, hQ {
-        font-family: "Gentium Basic";
      }
 
      h1 {
