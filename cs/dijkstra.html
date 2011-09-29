@@ -2,10 +2,5 @@
 layout: cs
 title: Dijkstra's
 usage: Calculate the shortest path to any node in a graph from an origin node
-description: Given a node n and a destination node d in a graph g, Dijkstra's Algorithm can be used to determine the shortest path between n and d. The Algorithm assumes that the cost of traversing the intermediate edges can be calculated in a manner that provides sortable costs.
-	Begin the algorithm by initializing all nodes in the graph with a cost. n will be given a cost of 0, since it requires no effort to travel to n. Because no exploration has been done yet, all other nodes should be given a cost of Infinity.
-	For the current node, calculate the cost of traveling to each of its neighbors. If the just-calculated cost is less than the currently-assigned cost, replace the currently-assigned cost with the just-calculated. If this is the first iteration of the algorithm, the replacement should always happen, as the currently-assigned cost of all other nodes will be Infinity.
-	Once all the neighbors' costs have been calculated, determine which neighbor is the easiest to travel to. Mark the current node as visited and travel to that neighbor. Redo the previous paragraph.
-	If the next neighbor is the destination node, terminate the algorithm. Alternatively, if the goal is to calculate the shortest paths to all nodes from the origin, continue until all nodes have been marked visited.
 implementation: todo
 ---
