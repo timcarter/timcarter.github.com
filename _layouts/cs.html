@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>{{ page.title }}</title>
+		<meta name="description" content="" />
+		<meta name="if:Show description" content="1" />
+		<meta name="if:Show search" content="1" />
+		<meta name="text:Twitter name" content="" />
+		<meta name="text:Disqus Shortname" content="" />
+		<meta name="text:Google Analytics ID" content="" />
+
+		<link type="text/css" rel="stylesheet" href="algo.css" />
+		<link href='http://fonts.googleapis.com/css?family=Gentium+Basic' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+		<header id="masthead" class="clearfix">
+			<div id="thehead">
+				<h1 class="cufon"><a href="#" title="/">{{ page.title }}</a></h1>
+			</div>
+		</header>
+
+		<section id="main" class="clearfix">
+			<div class="layout">
+				 <div id="designline">
+					<h5 class="postDate">
+						<abbr>Usage</abbr>
+					</h5>
+				 </div>
+				 <article>
+					<div>
+						{{ page.usage }}
+					</div>
+				 </article>
+				 <div id="designline">
+					<h5 class="postDate">
+						<abbr>Description</abbr>
+					</h5>
+				 </div>
+				 <article>
+					<div>
+						{{ page.description }}
+					</div>
+				 </article>
+				 <div id="designline">
+					<h5 class="postDate">
+						<abbr>Implementation</abbr>
+					</h5>
+				 </div>
+				 <article>
+					<div>
+						{{ page.implementation }}
+					</div>
+				 </article>
+			</div>
+		</section>
+
+		<footer id="sitemeta">
+			<div class="clearfix">
+				<div class="thefooter">
+					Not for external use.
+			   </div>
+			</div>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,21 @@
+FEATURES
+	\ JsTerm.FileSystem
+		Rather than providing JsTerm.Command.Bash with a direct reference to the root directory, provide it a reference to a class that manages the file system. JsTerm.FileSystem will maintain the file system structure and provide the necessary API to access and query files and folders. The abstraction provided with JsTerm.FileSystem should increase the abilities of the client-side program-- modifying, saving (offline, if serialization mechanisms are provided), and memory management are possible with the appropriate abstraction. JsTerm.FileSystem data blobs could contain all the saved profile information and modified files necessary for a user to actually use JsTerm in a meaningful way.
+
+	\ Utilize HTML5
+		Use local storage to save the JsTerm.FileSystem feature, and see if modern browsers' synchronization features can be used to maintain the same user profile, programs, and files across multiple browsers and computers. At worst, the local storage method will provide enhanced serialization.
+
+	\ Build files
+		Use build files to generate the javascript modules that emulate file system objects (files and folders, not the controller). This way, creation of those objects can be accelerated. A way to use javascript in the linux cli will have to be found.
+
+	\ JsTerm.Program.Jpeg2Ascii
+		Convert picture files to ASCII, so that they can appear on the CLI.
+
+	\ JsTerm.Command -> JsTerm.Program
+		It makes more semantic sense to have JsTerm.Command renamed to JsTerm.Program
+
+	\ Everything is a file system object
+		Is it possible to make a distinction between data and a program? It might be necessary to, otherwise everything can be opened and viewed (which makes the representation far more difficult).
+
+	\ Difference between files and folders
+		For files, the _file.get ('value') call is straightforward; all the files will have a string that can be returned. For folders, the content is different-- it is an array of JsTerm subclasses (or instances) that point to folders and files. 

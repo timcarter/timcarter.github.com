@@ -489,7 +489,6 @@ Uize.module ({
 					},
 					onChange:function() {
 						var _this = this;
-
 						// As long as the widget is not wired & the value changes, update the initial value
 						// so that when the widget is wired we have something restore to. We need to do it here
 						// so that if value is set after construction but before wiring, we'll still capture

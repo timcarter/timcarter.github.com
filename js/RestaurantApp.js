@@ -1,0 +1,1 @@
+Uize.module ({name:'RestaurantApp'});
