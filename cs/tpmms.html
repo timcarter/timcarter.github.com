@@ -1,5 +1,12 @@
 ---
 layout: cs
-title: Two-phase, multiway merge Sort
+title: Two-phase, multiway merge sort
 ---
 
+Two-phase, multiway merge sort (tpmms) is a flavor of merge sort that can be used to sort large data sets that cannot fit into the current buffer. It relies on the presence of secondary buffers-- whose combined sizes are greater than the size of the data set-- to hold the unprocessed and partially processed results. For example, the sort can be particularly effective when used by a database management system; the results of a query might exceed the available allocated memory, forcing the dbms to rely on tpmms to utilize secondary storage (e.g. the hard drive).
+
+The first phase of tpmms uses a divide and conquer strategy to sort subsets of the data. Portions of the overall set that are able to fit in the primary buffer are sorted. This sort does not have to be merge sort; the most efficient sorting algorithm can be used since the size of the current dataset does not exceed the space restrictions. Once sorted, the portion is moved out of the primary buffer into secondary storage. Another portion is then moved into the primary buffer and the process repeats itself.
+
+Once all sub-portions of the data set have been sorted, the next phase of tpmms commences. A segment of each sorted subset is copied back to the primary buffer such that there is additional space left for an output set. The sort then looks for the lowest (or highest, depending on the order of the sort) ranking element among all the subsets. Since the subsets are already all sorted, this element will be the first element in its respective subset. That element is given the primary position in the output set. The sort then searches for the second lowest (or highest) element and places that in the output set. When a subset segment is exhausted of elements, the next segment of that subset is copied from secondary storage. If there are no segments left, the sort skips the subset. Periodically, when the output set is filled, it is copied out to secondary storage.
+
+Two-phase, multiway merge sort only reads and writes elements to and from secondary storage twice: once in each phase. This is important because the slowest part of the algorithm-- at least in current computer systems-- will be the transfer of data between buffers. The actual calculation and sorting is trivial.
