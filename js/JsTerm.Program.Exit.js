@@ -18,7 +18,7 @@ Uize.module ({
 				_callback = this.get ('callback')
 			;
 
-			_this.echo ('Goodbye.');
+			this.echo ('Goodbye.');
 
 			// no callback, because you'll be redirected to Google.
 			setTimeout (
