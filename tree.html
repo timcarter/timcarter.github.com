@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<title>Tree Sample</title>
+	</head>
+	<body>
+		<h1>At some point, this will test the Uize.TreeNode class</h1>
+		<ul id="shell">
+		</ul>
+		<script type="text/javascript" src="js/Uize.js"></script>
+		<script type="text/javascript">
+			Uize.module ({
+				required:[
+					'Uize.Node',
+					'Uize.TreeNode',
+					'Uize.Template'
+				],
+				builder:function () {
+					var
+						_nodeMarkup = Uize.Template.compile (
+							'<li id="{% .id %}">' +
+								'<strong>{% .data %}</strong> ' +
+								'<a href="javascript://" onclick="addChild (\'{% .id %}\')">add child</a>' +
+								'<ul id="{% .id %}-children"></ul>' +
+							'</li>',
+							{
+								openerToken:'{%',
+								closerToken:'%}'
+							}
+						),
+						totalCreated = 0
+					;
+
+					window.addChild = function(parent) {
+						tree.walk (
+							'level-order',
+							function (node, callback) {
+								if (node.instanceId === parent) {
+									node.graft (new Uize.TreeNode ({data:'node ' + ++totalCreated}))
+								}
+								callback (node.instanceId !== parent);
+							}
+						)
+					}
+
+					window.tree = new Uize.TreeNode ({data:'root'});
+
+					function wireNode (nodeToWire) {
+						nodeToWire.wire ({
+							'Subtree Grafted':function (_event) {
+								Uize.Node.injectHtml (_event.source.instanceId + '-children', _nodeMarkup ({data:_event.subtree.get ('data'), id:_event.subtree.instanceId}));
+								wireNode (_event.subtree);
+							},
+							'Subtree Pruned':function (_event) {
+							}
+						});
+					}
+
+					wireNode (tree)
+					Uize.Node.setInnerHtml ('shell', _nodeMarkup ({data:tree.get ('data'), id:tree.instanceId}));
+				}
+			});
+		</script>
+	</body>
+</html>
