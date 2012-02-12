@@ -140,6 +140,7 @@ Uize.module ({
 								},
 								'clear':'JsTerm.Program.Clear',
 								'date':'JsTerm.Program.Date',
+								'exit':'JsTerm.Program.Exit',
 								'history':function (_argumentsObject, _callback) {
 									for (
 										var
