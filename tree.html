@@ -19,7 +19,8 @@
 						_nodeMarkup = Uize.Template.compile (
 							'<li id="{% .id %}">' +
 								'<strong>{% .data %}</strong> ' +
-								'<a href="javascript://" onclick="addChild (\'{% .id %}\')">add child</a>' +
+								'<a href="javascript://" onclick="addChild (\'{% .id %}\')">add child</a> ' +
+								'<a href="javascript://" onclick="deleteNode (\'{% .id %}\')">[x]</a>' +
 								'<ul id="{% .id %}-children"></ul>' +
 							'</li>',
 							{
@@ -30,9 +31,21 @@
 						totalCreated = 0
 					;
 
+					window.deleteNode = function (nodeToRemove) {
+						tree.walk (
+							'pre-order',
+							function (node, callback) {
+								if (node.instanceId === nodeToRemove)
+									node.getParent ().prune (node);
+
+								callback (node.instanceId !== nodeToRemove)
+							}
+						);
+					}
+
 					window.addChild = function(parent) {
 						tree.walk (
-							'level-order',
+							'pre-order',
 							function (node, callback) {
 								if (node.instanceId === parent) {
 									node.graft (new Uize.TreeNode ({data:'node ' + ++totalCreated}))
@@ -48,9 +61,10 @@
 						nodeToWire.wire ({
 							'Subtree Grafted':function (_event) {
 								Uize.Node.injectHtml (_event.source.instanceId + '-children', _nodeMarkup ({data:_event.subtree.get ('data'), id:_event.subtree.instanceId}));
-								wireNode (_event.subtree);
+								wireNode (_event.subtree.instanceId);
 							},
 							'Subtree Pruned':function (_event) {
+								Uize.Node.remove (_event.subtree);
 							}
 						});
 					}

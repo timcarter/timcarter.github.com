@@ -101,39 +101,53 @@ Uize.module ({
 				*/
 				var
 					_this = this,
-					_nodes = _this._nodes
+					_nodes = _this._nodes,
+					_isModePreOrder = _mode === 'pre-order',
+					_nodesToWalk = [_this],
+					_nodesToOrder = (_nodes || []).concat (),
+					_currNodeToOrder,
+					_potentialParent,
+					_currNodeToOrderChildren
 				;
 
-				if (_mode === 'level-order') {
-					var
-						_queue = [_this],
-						_index = -1,
-						_currNode,
-						_childIndex,
-						_currNodeChildren,
-						_currNodeChildrenLength
-					;
-					// don't store _queue.length in a variable because it keeps changing
-					for (;++_index < _queue.length;) {
-						_currNode = _queue [_index];
-						_currNodeChildren = _currNode.getChildNodes ();
+				_isModePreOrder && _nodesToOrder.reverse ();
 
-						if (_superclass.isArray (_currNodeChildren)) {
-							_childIndex = -1;
-							_currNodeChildrenLength = _currNodeChildren.length;
-							for (;++_childIndex < _currNodeChildrenLength;)
-								_queue.push (_currNodeChildren [_childIndex])
-							;
+				while (_currNodeToOrder = _nodesToOrder.shift ()) {
+					_currNodeToOrderChildren = _currNodeToOrder.getChildNodes ();
+					if (_mode !== 'level-order') {
+						for (var _index = _nodesToWalk.length; --_index >= 0;) {
+							_potentialParent = _nodesToWalk [_index];
+							if (_potentialParent == _currNodeToOrder._parent) {
+								if (_mode === 'in-order' && _potentialParent._nodes.length === 2) {
+									_nodesToWalk.splice (
+										_potentialParent._nodes [0] == _currNodeToOrder ? _index : _index + 1,
+										0,
+										_currNodeToOrder
+									);
+								} else if (_isModePreOrder || _mode === 'post-order') {
+									_nodesToWalk.splice (
+										_mode === 'post-order' ? _index : _index + 1,
+										0,
+										_currNodeToOrder
+									);
+
+									// the order of the children need to be reversed so that they're added
+									// to the walk list correctly for 'pre-order'
+									_isModePreOrder && (_currNodeToOrderChildren = [].concat (_currNodeToOrderChildren)).reverse ();
+								}
+							}
 						}
+					} else {
+						// level order maintains a strict queue
+						_nodesToWalk.push (_currNodeToOrder);
 					}
+
+					// shift the current node's children to the queue to process
+					_nodesToOrder = _nodesToOrder.concat (_currNodeToOrderChildren);
 				}
 
 				_superclass.Comm.processArrayAsync (
-					_mode === 'pre-order' ? [_this].concat (_nodes) :
-						_mode === 'post-order' ? _nodes.concat (_this) :
-							_mode === 'in-order' && _nodes.length === 2 ? [_nodes[0], _this, _nodes[1]] :
-								_mode === 'level-order' ? _queue :
-									[],
+					_nodesToWalk,
 					_walkFunction,
 					_callback
 				);
