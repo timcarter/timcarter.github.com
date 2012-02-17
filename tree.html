@@ -61,10 +61,10 @@
 						nodeToWire.wire ({
 							'Subtree Grafted':function (_event) {
 								Uize.Node.injectHtml (_event.source.instanceId + '-children', _nodeMarkup ({data:_event.subtree.get ('data'), id:_event.subtree.instanceId}));
-								wireNode (_event.subtree.instanceId);
+								wireNode (_event.subtree);
 							},
 							'Subtree Pruned':function (_event) {
-								Uize.Node.remove (_event.subtree);
+								Uize.Node.remove (_event.subtree.instanceId);
 							}
 						});
 					}
