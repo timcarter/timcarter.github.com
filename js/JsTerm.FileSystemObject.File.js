@@ -9,7 +9,8 @@ Uize.module ({
 		_class.set ({
 			contents:'',
 			type:'file'
-		})
+		});
+
 		return _class;
 	}
 });

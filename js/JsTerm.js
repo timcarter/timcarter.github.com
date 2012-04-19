@@ -5,6 +5,6 @@
 */
 Uize.module ({
 	name:'JsTerm',
-	superclass:'Uize',
+	superclass:'Uize.Class',
 	builder:function (_superclass) {return _superclass.subclass ()}
 });
