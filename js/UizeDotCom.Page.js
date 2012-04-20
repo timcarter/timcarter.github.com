@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : UizeDotCom.Page
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -67,8 +67,7 @@ Uize.module ({
 				Uize.module ({
 					required:'Uize.Comm.Ajax',
 					builder:function () {
-						var _commObject = new Uize.Comm.Ajax;
-						_commObject.request ({
+						Uize.Comm.Ajax ().request ({
 							url:_url,
 							requestMethod:'GET',
 							returnType:'text',

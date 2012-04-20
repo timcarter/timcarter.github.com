@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Options.Tabbed Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -54,12 +54,24 @@ Uize.module ({
 				return this.tabExists (_value) && this.getOptionButton (_value).get ('enabled')
 			};
 
+			_classPrototype._updateTabBodyClass = function(_valueNo, _currentValueNo) {
+				var _this = this;
+
+				if (_valueNo > -1)
+					_this.setNodeProperties (
+						_this._getTabBodyNode (_valueNo),
+						{className:_valueNo == _currentValueNo ? _this._bodyClassActive : _this._bodyClassInactive}
+					)
+				;
+			};
+
 			_classPrototype._updateUiTabContent = function () {
 				var _this = this;
 				if (_this.isWired) {
 					var _currentValueNo = _this.get ('valueNo');
 					if (_this._tabCanBeSelected (_currentValueNo)) {
-						_this.updateUiTabState (_this._lastShownTabBodyNo,_this._lastShownTabBodyNo = _currentValueNo);
+						_this.updateUiTabState (_this._lastShownTabBodyNo,_currentValueNo);
+						_this._lastShownTabBodyNo = _currentValueNo;
 					} else {
 						for (
 							var  _valueNo = -1, _values = _this.get ('values'), _valuesLength = _values.length;
@@ -96,26 +108,19 @@ Uize.module ({
 			};
 
 			_classPrototype.updateUiTabState = function (_lastShownTabBodyNo,_currentValueNo) {
-				var _this = this;
-				function _updateTabBodyClass (_valueNo) {
-					_valueNo > -1 &&
-						_this.setNodeProperties (
-							_this._getTabBodyNode (_valueNo),
-							{className:_valueNo == _currentValueNo ? _this._bodyClassActive : _this._bodyClassInactive}
-						)
-					;
-				}
-				_updateTabBodyClass (_lastShownTabBodyNo);
-				_updateTabBodyClass (_currentValueNo);
+				this._updateTabBodyClass (_lastShownTabBodyNo, _currentValueNo);
+				this._updateTabBodyClass (_currentValueNo, _currentValueNo);
 			};
 
 			_classPrototype.wireUi = function () {
 				var _this = this;
 				if (!_this.isWired) {
 					_superclass.prototype.wireUi.call (_this);
-
-					_this._lastShownTabBodyNo = _this.get ('valueNo');
-					_this._updateUiTabContent ();
+					var _valueNo = _this._lastShownTabBodyNo = _this.get ('valueNo');
+					Uize.forEach (
+						_this.get ('values'),
+						function (_value,_tabNo) {_this._updateTabBodyClass (_tabNo, _valueNo)}
+					);
 				}
 			};
 

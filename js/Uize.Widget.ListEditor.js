@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.ListEditor Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -109,7 +109,6 @@
 Uize.module ({
 	name:'Uize.Widget.ListEditor',
 	required:[
-		'Uize.Data',
 		'Uize.Widget.Button',
 		'Uize.Widget.TextInput',
 		'Uize.Node.Event'
@@ -353,8 +352,8 @@ Uize.module ({
 							/* or, if there was a filter out option in Uize.Data.filter...
 								_this.setNodeValue (
 									_listNode,
-									Uize.Data.getKeys (
-										Uize.Data.filter (Uize.Data.getLookup (_list),_this._lastDisplayedList,true)
+									Uize.keys (
+										Uize.Data.filter (Uize.lookup (_list),_this._lastDisplayedList,true)
 									)
 								)
 							*/

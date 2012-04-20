@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Color.xSvgColors Object Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -29,11 +29,11 @@
 		When you extend the =Uize.Color= object using the =Uize.Color.xSvgColors= extension module, it will then be possible to use the names of the colors defined in this extension when creating instances of the =Uize.Color= object, or when setting the color of =Uize.Color= instances using the =from= instance method.
 
 		EXAMPLE
-		..................................................
-		new Uize.Color ('#ffebcd');
-		new Uize.Color ('BlanchedAlmond');
-		new Uize.Color (Uize.Color.colors.blanchedalmond);
-		..................................................
+		..............................................
+		Uize.Color ('#ffebcd');
+		Uize.Color ('BlanchedAlmond');
+		Uize.Color (Uize.Color.colors.blanchedalmond);
+		..............................................
 
 		Each of the above three statements would create a new instance of the =Uize.Color= object initialized to the SVG color "BlanchedAlmond". And because the =Uize.Color= module is used by other modules, such as the =Uize.Fx= module, it is possible to use color names when specifying the values of color CSS style properties for fade effects, as in...
 

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Array.Order Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -88,8 +88,7 @@ Uize.module ({
 		/*** Variables for Scruncher Optimization ***/
 			var _package = function () {};
 
-		/*** Global Functions ***/
-			function _returnAsIs (_value) {return _value}
+		/*** Utility Functions ***/
 			function _randomSorter () {return Math.random () - .5}
 
 		/*** Public Static Methods ***/
@@ -133,13 +132,9 @@ Uize.module ({
 							return _index % 2 ? _sourceLengthMinus1 - (_index >> 1) : _index >> 1;
 						};
 					} else if (_reorderScheme == 'normal') {
-						_indexMapper = _returnAsIs;
+						_indexMapper = Uize.returnX;
 					} else {
-						var _jumbledOrder = [];
-						for (var _elementNo = _sourceLength; --_elementNo > -1;)
-							_jumbledOrder [_elementNo] = _elementNo
-						;
-						_jumbledOrder.sort (_randomSorter);
+						var _jumbledOrder = Uize.map (_sourceLength,'key').sort (_randomSorter);
 						_indexMapper = function (_index) {return _jumbledOrder [_index]};
 					}
 					for (var _elementNo = -1; ++_elementNo <= _sourceLengthMinus1;)

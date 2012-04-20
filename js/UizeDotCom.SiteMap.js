@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : UizeDotCom.SiteMap
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -98,18 +98,12 @@ Uize.module ({
 							_examplesByTheme ('featured'),
 							_divider
 						];
-						for (
-							var
-								_keywordNo = -1,
-								_keywords = _infoForSiteMap.keywords,
-								_keywordsLength = _keywords.length,
-								_keyword
-							;
-							++_keywordNo < _keywordsLength;
-						)
-							((_keyword = _keywords [_keywordNo]) != 'featured') &&
-								_examplesSubmenuItems.push (_examplesByTheme (_keyword))
-						;
+						Uize.forEach (
+							_infoForSiteMap.keywords,
+							function (_keyword) {
+								_keyword  != 'featured' && _examplesSubmenuItems.push (_examplesByTheme (_keyword));
+							}
+						);
 						_examplesSubmenuItems.push (
 							_divider,
 							_examplesByTheme ('all'),
@@ -120,26 +114,6 @@ Uize.module ({
 							}
 						);
 
-					/*** build the tools submenu's items ***/
-						var _toolsSubmenuItems = [
-							_item ('The DELVE Tool','','explainers/using-the-delve-tool'),
-							_explainer ('JavaScript Bookmarklets'),
-							_divider
-						];
-						for (
-							var _toolNo = -1, _tools = _infoForSiteMap.tools, _toolsLength = _tools.length, _tool;
-							++_toolNo < _toolsLength;
-						)
-							_toolsSubmenuItems.push ({
-								title:(_tool = _tools [_toolNo]).title,
-								link:_tool.path
-							})
-						;
-						_toolsSubmenuItems.push (
-							_divider,
-							_item ('Index of JavaScript Tools','','javascript-tool-examples')
-						);
-
 				_data = [
 					_item ('Home','','index'),
 					_item ('DOWNLOAD'),
@@ -148,6 +122,7 @@ Uize.module ({
 						title:'Latest News',
 						link:'latest-news.html',
 						items:[
+							_news (2012),
 							_news (2011),
 							_news (2010),
 							_news (2009),
@@ -169,7 +144,21 @@ Uize.module ({
 					{
 						title:'Tools',
 						link:'javascript-tool-examples.html',
-						items:_toolsSubmenuItems
+						items:
+							[
+								_item ('The DELVE Tool','','explainers/using-the-delve-tool'),
+								_explainer ('JavaScript Bookmarklets'),
+								_divider
+							].concat (
+								Uize.map (
+									_infoForSiteMap.tools,
+									function (_tool) {return {title:_tool.title,link:_tool.path}}
+								),
+								[
+									_divider,
+									_item ('Index of JavaScript Tools','','javascript-tool-examples')
+								]
+							)
 					},
 					_divider,
 					{
@@ -248,7 +237,6 @@ Uize.module ({
 							_divider,
 							_appendix ('JavaScript Fun'),
 							_appendix ('JavaScript Interview Questions'),
-							_appendix ('Code Fragments'),
 							_appendix ('Glossary')
 						]
 					},
@@ -281,7 +269,8 @@ Uize.module ({
 								items:[
 									_appendix ('TO DO - Modules'),
 									_appendix ('TO DO - Documentation'),
-									_appendix ('TO DO - General')
+									_appendix ('TO DO - General'),
+									_appendix ('TO DO - News Announcements')
 								]
 							}
 							/*

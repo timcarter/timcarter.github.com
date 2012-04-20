@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Date.Formatter Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -28,6 +28,10 @@
 
 Uize.module ({
 	name:'Uize.Test.Uize.Date.Formatter',
+	required:[
+		'Uize.Class',
+		'Uize.Class.Value'
+	],
 	builder:function () {
 		function _newDate (_year,_month,_dayNo,_hours,_minutes,_seconds,_milliseconds) {
 			var _date = new Date (
@@ -1319,23 +1323,23 @@ Uize.module ({
 
 						/*** test support for objects that implement valueOf interface ***/
 							['Test that a date specified as a Date object instance is handled correctly',
-								[new Uize ({value:_testDate})],
+								[Uize.Class.Value ({value:_testDate})],
 								_testDate
 							],
 							['Test that specifying the value null for the date to parse produces the value undefined',
-								[new Uize ({value:null})],
+								[Uize.Class.Value ({value:null})],
 								undefined
 							],
 							['Test that specifying an empty string for the date to parse produces the value undefined',
-								[new Uize ({value:''})],
+								[Uize.Class.Value ({value:''})],
 								undefined
 							],
 							['Test that a date specified as a number is handled correctly',
-								[new Uize ({value:+_testDate})],
+								[Uize.Class.Value ({value:+_testDate})],
 								_testDate
 							],
 							['Test that a date specified as a number is handled correctly',
-								[new Uize ({value:'2001-09-11'}),'{YYYY}-{MM}-{DD}'],
+								[Uize.Class.Value ({value:'2001-09-11'}),'{YYYY}-{MM}-{DD}'],
 								_newDate (2001,9,11)
 							],
 

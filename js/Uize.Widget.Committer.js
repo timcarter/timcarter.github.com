@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Committer Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -139,10 +139,7 @@ Uize.module ({
 					_undefined
 				;
 				for (var _watchedPropertyAlias in _committedValues) {
-					var
-						_watchedPropertyProfile = _watchedProperties [_watchedPropertyAlias],
-						_propertySetObject = {}
-					;
+					var _watchedPropertyProfile = _watchedProperties [_watchedPropertyAlias];
 					_watchedPropertyProfile.instance.set (
 						_watchedPropertyProfile.name,
 						_newValues && _newValues [_watchedPropertyAlias] != _undefined ? _newValues [_watchedPropertyAlias] : ''
@@ -277,12 +274,9 @@ Uize.module ({
 							_instance = _propertyToWatch.instance,
 							_watchedPropertyProfile = {instance:_instance, name:_name}
 						;
-
 						_propertiesAdded [_alias] = _watchedPropertyProfile;
 						_this._watchProperty (_alias, _watchedPropertyProfile);
-						_committedValues [_alias] =
-						_uncommittedValues [_alias] =
-						_initialValues [_alias] =
+						_committedValues [_alias] = _uncommittedValues [_alias] = _initialValues [_alias] =
 							_instance.get (_name)
 						;
 					}
@@ -357,9 +351,7 @@ Uize.module ({
 					;
 
 					if (_watchedPropertyProfile) {
-						var
-							_watchedPropertyInstance = _watchedPropertyProfile.instance
-						;
+						var _watchedPropertyInstance = _watchedPropertyProfile.instance;
 
 						// any events that are wired to the watched property instance in _classPrototype._watchProperty needs to be unwired here.
 						_watchedPropertyInstance.unwire ('Changed.isValid');
@@ -614,7 +606,7 @@ Uize.module ({
 								}
 								........................................
 
-								Each property of the =watchedProperties= object provides a profile for a watched property, where the property name is an alias for the watched property, and where the property value is an object identifying the property. The object identifying a watched property should contain an "instance" property, identifying the =Uize= subclass instance to which the property belongs, and a "name" property, identifying the name of the set-get property to watch.
+								Each property of the =watchedProperties= object provides a profile for a watched property, where the property name is an alias for the watched property, and where the property value is an object identifying the property. The object identifying a watched property should contain an "instance" property, identifying the instance (of a =Uize.Class= subclass) to which the property belongs, and a "name" property, identifying the name of the set-get property to watch.
 
 								NOTES
 								- see the related =committedValues= and =uncommittedValues= set-get properties

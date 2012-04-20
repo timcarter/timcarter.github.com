@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Util.Coupler Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -21,7 +21,7 @@
 
 /*?
 	Introduction
-		The =Uize.Util.Coupler= class implements a mechanism for coupling two or more instances of any =Uize= subclass by synchronizing values of set-get properties.
+		The =Uize.Util.Coupler= class implements a mechanism for coupling two or more instances of any =Uize.Class= subclass by synchronizing values of set-get properties.
 
 		*DEVELOPERS:* `Chris van Rensburg`
 
@@ -57,7 +57,7 @@
 
 			// couple the alignX, alignY, inUse properties between the collection items
 
-				var coupler = new Uize.Util.Coupler ({
+				var coupler = Uize.Util.Coupler ({
 					instances:[item0,item1,item2],
 					properties:['alignX','alignY','inUse']
 				});
@@ -70,9 +70,9 @@
 
 Uize.module ({
 	name:'Uize.Util.Coupler',
-	superclass:'Uize',
+	superclass:'Uize.Class',
 	builder:function (_superclass) {
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _syncFunctions = {};
 
 		/*** Class Constructor ***/

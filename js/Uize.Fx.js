@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Fx Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -52,7 +52,7 @@ Uize.module ({
 				_undefined
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_stylePropertiesProfiles = [],
 				_stylePropertiesProfilesMap,
@@ -385,7 +385,7 @@ Uize.module ({
 								Uize.Fx.fadeStyle ('myNode',null,{backgroundColor:'Rgb(255,255,255)');
 								Uize.Fx.fadeStyle ('myNode',null,{backgroundColor:{red:255,green:255,blue:255});
 								Uize.Fx.fadeStyle ('myNode',null,{backgroundColor:[255,255,255]});
-								Uize.Fx.fadeStyle ('myNode',null,{backgroundColor:new Uize.Color (255)});
+								Uize.Fx.fadeStyle ('myNode',null,{backgroundColor:Uize.Color (255)});
 								Uize.Fx.fadeStyle ('myNode',null,{backgroundColor:255});
 								................................................................................
 
@@ -510,8 +510,8 @@ Uize.module ({
 		/*** Initialization ***/
 			/*** fallback ***/
 				_defineStylePropertiesProfile ({
-					test:Uize.Node.returnTrue,
-					decoder:function (_value) {return _value},
+					test:Uize.returnTrue,
+					decoder:Uize.returnX,
 					encoderExpression:'VALUE'
 				});
 

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Resizer Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -61,7 +61,7 @@ Uize.module ({
 				_classPrototype = _class.prototype
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_ieQuirkyBoxes = _isIe && document.compatMode != 'CSS1Compat',
 				_pointIdsMap = {
@@ -216,12 +216,7 @@ Uize.module ({
 							);
 						}
 					}
-					for (
-						var _areaNodeNo = -1, _areaNodes = _this._areaNodes, _areaNodesLength = _areaNodes.length;
-						++_areaNodeNo < _areaNodesLength;
-					)
-						_setAreaDims (_areaNodes [_areaNodeNo])
-					;
+					Uize.forEach (_this._areaNodes,_setAreaDims);
 				}
 			};
 

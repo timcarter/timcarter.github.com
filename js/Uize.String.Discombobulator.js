@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.String.Discombobulator Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)1997-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)1997-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -35,7 +35,7 @@ Uize.module({
 				_package = function () {}
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _settings = {
 				_upperCasing:{},
 				_specialCharring:{

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Node.Util Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -95,7 +95,7 @@ Uize.module ({
 							..............................................
 
 							NOTES
-							- the =opacityFLOATorOBJ= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property)
+							- the =opacityFLOATorOBJ= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property)
 							- see also the =Uize.Node.Util.getOpacityStr= static method
 				*/
 			};

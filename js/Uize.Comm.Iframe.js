@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Comm.Iframe Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -41,7 +41,7 @@ Uize.module ({
 				_classPrototype = _class.prototype
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _iframeId;
 
 		/*** Public Instance Methods ***/

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Color.xUtil Object Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)1997-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)1997-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -36,7 +36,7 @@ Uize.module ({
 				_objectPrototype = _object.prototype
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_dummyColor1 = new _object,
 				_dummyColor2 = new _object,
@@ -55,7 +55,7 @@ Uize.module ({
 
 		/*** Public Instance Methods ***/
 			_objectPrototype.blend = function (_color1,_color2,_blendAmount) {
-				if (isNaN (_blendAmount = +_blendAmount)) _blendAmount = .5;
+				_blendAmount = Uize.toNumber (_blendAmount,.5);
 				_dummyColor1.from (_color1);
 				_dummyColor2.from (_color2);
 				var
@@ -169,8 +169,8 @@ Uize.module ({
 
 							EXAMPLES
 							........................................................................
-							var fuchsia = new Uize.Color ('fuchsia');
-							fuchsia.equal (new Uize.Color ('fuchsia'));             // produces true
+							var fuchsia = Uize.Color ('fuchsia');
+							fuchsia.equal (Uize.Color ('fuchsia'));                 // produces true
 							fuchsia.equal ('ff00ff');                               // produces true
 							fuchsia.equal ('#ff00ff');                              // produces true
 							fuchsia.equal ('fuchsia');                              // produces true
@@ -335,7 +335,7 @@ Uize.module ({
 
 							EXAMPLES
 							............................................................................
-							Uize.Color.equal ('fuchsia',new Uize.Color ('fuchsia'));             // true
+							Uize.Color.equal ('fuchsia',Uize.Color ('fuchsia'));                 // true
 							Uize.Color.equal ('ff00ff','#ff00ff');                               // true
 							Uize.Color.equal ([255,0,255],'hsl(300,100,50)');                    // true
 							Uize.Color.equal (16711935,{red:255,green:0,blue:255});              // true
@@ -372,7 +372,7 @@ Uize.module ({
 					_component0Divisions = _valuesPerComponent [0],
 					_component1Divisions = _valuesPerComponent [1],
 					_component2Divisions = _valuesPerComponent [2],
-					_color = new Uize.Color (_dummyColor1),
+					_color = Uize.Color (_dummyColor1),
 					_colorTuple = _color.tuple
 				;
 
@@ -506,7 +506,7 @@ Uize.module ({
 								'Rgb(64,224,208)',            // turquoise
 								{red:255,green:255,blue:0},   // yellow
 								0x808080,                     // gray
-								new Uize.Color (245,255,250)  // mintcream
+								Uize.Color (245,255,250)      // mintcream
 							]);
 							alert (mixedColor.to ());        // displays the text "#cf9e98"
 							...............................................................
@@ -536,7 +536,7 @@ Uize.module ({
 										'Rgb(64,224,208)',            // turquoise
 										{red:255,green:255,blue:0},   // yellow
 										0x808080,                     // gray
-										new Uize.Color (245,255,250)  // mintcream
+										Uize.Color (245,255,250)      // mintcream
 									],
 									'RGB string'
 								)

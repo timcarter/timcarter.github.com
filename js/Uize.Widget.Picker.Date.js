@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Picker.Date Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -143,7 +143,6 @@ Uize.module ({
 									- the initial value is =undefined=
 						*/
 				],
-				value:null,
 				valueFormatter:function (_value) {return Uize.Date.Formatter.format (_value,this._displayFormat)}
 			});
 

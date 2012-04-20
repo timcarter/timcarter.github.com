@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.HoverFader Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -389,22 +389,22 @@ Uize.module ({
 							- an *object*, being a find expression (see the =Uize.Node.find= static method)
 
 							EXAMPLE 1
-							..............................................
-							var hoverFader = new Uize.Widget.HoverFader ({
+							..........................................
+							var hoverFader = Uize.Widget.HoverFader ({
 								nodes:['link1Id','link2Id','link3Id']
 							});
-							..............................................
+							..........................................
 
 							EXAMPLE 2
-							..............................................
-							var hoverFader = new Uize.Widget.HoverFader ({
+							............................................
+							var hoverFader = Uize.Widget.HoverFader ({
 								nodes:document.getElementsByTagName ('A')
 							});
-							..............................................
+							............................................
 
 							EXAMPLE 3
 							................................................
-							var hoverFader = new Uize.Widget.HoverFader ({
+							var hoverFader = Uize.Widget.HoverFader ({
 								nodes:{tagName:'A',className:'hoverFadeLink'}
 							});
 							................................................

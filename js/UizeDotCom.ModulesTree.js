@@ -5,8 +5,13 @@ Uize.module ({
 			return {
 				Uize:{
 					Array:{
+						Dupes:0,
 						Order:0,
-						Sort:0
+						Sort:0,
+						Util:0
+					},
+					Class:{
+						Value:0
 					},
 					Color:{
 						xCmyk:0,
@@ -27,6 +32,7 @@ Uize.module ({
 						Rubber:0
 					},
 					Data:{
+						Combinations:0,
 						Csv:0,
 						NameValueRecords:0,
 						PathsTree:{
@@ -87,11 +93,16 @@ Uize.module ({
 						},
 						Uize:{
 							Array:{
+								Dupes:0,
 								Order:0,
-								Sort:0
+								Sort:0,
+								Util:0
 							},
+							Class:0,
 							Data:{
+								Combinations:0,
 								Csv:0,
+								NameValueRecords:0,
 								PathsTree:{
 									CompactString:0
 								}
@@ -135,6 +146,7 @@ Uize.module ({
 						PropertyAdapter:0
 					},
 					Widget:{
+						AutoSuggest:0,
 						AutoTooltip:0,
 						Bar:{
 							Progress:0,
@@ -148,7 +160,6 @@ Uize.module ({
 						Button:{
 							Checkbox:0,
 							Filter:0,
-							FullLink:0,
 							Toggle:0,
 							ValueDisplay:{
 								Selector:0
@@ -161,7 +172,9 @@ Uize.module ({
 						},
 						Collapsy:0,
 						Collection:{
-							Dynamic:0
+							Dynamic:{
+								Table:0
+							}
 						},
 						CollectionItem:{
 							Zooming:0
@@ -178,7 +191,10 @@ Uize.module ({
 							Form:0,
 							Iframe:0,
 							Picker:{
-								Date:0
+								Date:0,
+								Palette:{
+									Selector:0
+								}
 							},
 							xResizable:0
 						},
@@ -186,18 +202,15 @@ Uize.module ({
 						Drag:{
 							Move:0
 						},
-						Droplist:{
-							Navigate:0
-						},
 						EdgeHugger:0,
 						EggTimer:0,
-						FilteredInput:0,
 						FilterGroups:0,
 						Fleeting:0,
 						Flip:0,
 						Form:0,
 						FormDialog:0,
 						FormElement:{
+							Select:0,
 							Text:0
 						},
 						FormElements:0,
@@ -210,7 +223,7 @@ Uize.module ({
 							xPresets:0
 						},
 						InlinePicker:{
-							FilteredInput:0
+							Selector:0
 						},
 						ListEditor:0,
 						Log:{
@@ -233,9 +246,9 @@ Uize.module ({
 						Pagination:0,
 						Picker:{
 							Date:0,
-							FilteredInput:0,
-							Selector:0,
-							SelectorOld:0
+							Palette:{
+								Selector:0
+							}
 						},
 						Population:0,
 						PopupPalette:0,
@@ -246,7 +259,6 @@ Uize.module ({
 						SegmentDisplay:{
 							Seven:0
 						},
-						SelectorOption:0,
 						SlideShow:{
 							AutoAdvance:{
 								WithSlideSelectors:0
@@ -268,9 +280,6 @@ Uize.module ({
 							List:0,
 							Menu:0,
 							Select:0
-						},
-						ValueDisplay:{
-							Selector:0
 						}
 					},
 					Wsh:{

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Bar.Progress Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -45,7 +45,7 @@ Uize.module ({
 
 						/*** Private Instance Properties ***/
 							_this._totalProcesses = _this._totalProcessesTime = 0;
-							_this._fade = new Uize.Fade ({duration:4000});
+							_this._fade = Uize.Fade ({duration:4000});
 							_this._fade.wire (
 								'Changed.value',
 								function () {_this.set ({value:+_this._fade})}
@@ -77,7 +77,7 @@ Uize.module ({
 					onChange:function () {
 						var
 							_this = this,
-							_nowMs = +new Date
+							_nowMs = Uize.now ()
 						;
 						if (_this._inProgress) _this._startTime = _nowMs;
 						if (!_this._inProgress && typeof _this._startTime == 'number') {

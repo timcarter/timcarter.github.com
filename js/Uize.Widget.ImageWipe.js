@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.ImageWipe Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -170,7 +170,7 @@ Uize.module ({
 							_this._imagesLoaded = [];
 
 						/*** Public Instance Properties ***/
-							_this.fade = new Uize.Fade;
+							_this.fade = Uize.Fade ();
 							/*?
 								Instance Properties
 									fade

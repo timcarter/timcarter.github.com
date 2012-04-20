@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.SlideShow.AutoAdvance Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -114,9 +114,13 @@ Uize.module ({
 					onChange:function () {
 						var _this = this;
 						if (_this._playing) {
+						if (_this._interSlideTime && _this._interSlideTime < 0) {							
+							_this.set({ playing: false });
+						} else {
 							_this._clearResumeTimeout ();
 							_this._clearAutoAdvanceTimeout ();
 							_this._autoAdvanceTimeout = setTimeout (function () {_this._autoAdvance ()},_this._interSlideTime);
+						}
 						} else {
 							_this._clearAutoAdvanceTimeout ();
 							_this._clearResumeTimeout ();

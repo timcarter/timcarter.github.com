@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.String.Builder Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -25,7 +25,7 @@
 
 		*DEVELOPERS:* `Chris van Rensburg`
 
-		The =Uize.String.Builder= module is an object under the =Uize.String= namespace, and is *not* a =Uize= subclass.
+		The =Uize.String.Builder= module is an object under the =Uize.String= namespace, and is *not* a =Uize.Class= subclass.
 
 		In a Nutshell
 			Building strings using a traditional incremental concatenation approach using the =+&#61;= (incrementing assignment) operator can be slow in certain JavaScript interpreters when *very large* strings are being built.
@@ -59,7 +59,7 @@
 
 				AFTER
 				........................................................
-				var tableHtml = new Uize.String.Builder;
+				var tableHtml = Uize.String.Builder ();
 				for (var rowNo = -1; ++rowNo < rows.length;) {
 					tableHtml.append ('<tr>');
 					var cols = rows [rowNo];
@@ -83,10 +83,10 @@
 					The `Constructor` for the =Uize.String.Builder= object supports a single parameter, being the initial value for the instance being created.
 
 					EXAMPLE
-					........................................................
-					var myStringBuilder = new Uize.String.Builder ('hello');
+					......................................................
+					var myStringBuilder = Uize.String.Builder ('hello');
 					alert (myStringBuilder);  // displays the text "hello"
-					........................................................
+					......................................................
 
 					If you don't set the value for an instance during construction, the value for the instance will be initialized to =''= (empty string). There are still ways of `Initializing the Value After Construction`.
 
@@ -97,7 +97,7 @@
 
 					EXAMPLE
 					........................................................
-					var myStringBuilder = new Uize.String.Builder ('hello');
+					var myStringBuilder = Uize.String.Builder ('hello');
 					myStringBuilder.setValue ('goodbye');
 					alert (myStringBuilder);  // displays the text "goodbye"
 					........................................................
@@ -123,7 +123,7 @@
 
 				EXAMPLE
 				......................................................
-				var myStringBuilder = new Uize.String.Builder;
+				var myStringBuilder = Uize.String.Builder ();
 
 				myStringBuilder.append ('l');
 				myStringBuilder.prepend ('e');
@@ -146,7 +146,7 @@
 
 					EXAMPLE
 					........................................................................
-					var myStringBuilder = new Uize.String.Builder ('solar');
+					var myStringBuilder = Uize.String.Builder ('solar');
 					myStringBuilder.append (' power');
 					alert (myStringBuilder.getValue ());  // displays the text "solar power"
 					........................................................................
@@ -158,7 +158,7 @@
 
 					EXAMPLE
 					.....................................................................................
-					var myStringBuilder  = new Uize.String.Builder ('hello');
+					var myStringBuilder  = Uize.String.Builder ('hello');
 
 
 					// all of the alert statements below will display the text "hello"
@@ -179,44 +179,44 @@
 					When using a variable to store a reference to a =Uize.String.Builder= instance, one can easily convert that variable to the string equivalent of the =Uize.String.Builder= instance using the =+&#61;= (incrementing assignment) operator, as shown in the example below...
 
 					EXAMPLE
-					.........................................................................................
-					var fruitsTable = new Uize.String.Builder;  // set fruitsTable to string builder instance
+					........................................................................................
+					var fruitsTable = Uize.String.Builder ();  // set fruitsTable to string builder instance
 					for (var fruitNo = -1; ++fruitNo < fruits.length;) {
 						// ... ... ...
 						// code here to append stuff to fruitsTable
 						// ... ... ...
 					}
 					fruitsTable += '';  // force string builder to resolve value and reassign to fruitsTable
-					.........................................................................................
+					........................................................................................
 
 					After the above code has been executed, the value of the =fruitsTable= variable will be a string, being the value that was built up using the =Uize.String.Builder= object. This approach is certainly more concise than the statement =fruitsTable &#61; fruitsTable.getValue ()=. The re-assignment of the =fruitsTable= variable will cause the =Uize.String.Builder= instance to be thrown into the garbage collection pile.
 
 			Value to String Coercion
 				As a convenience, many of the instance methods that are provided for `Initializing the Value` or `Building the Value` of a =Uize.String.Builder= instance allow a value to be specified in any type.
 
-				Methods such as the =append=, =equals=, =prepend=, and =setValue= instance methods, along with the `Constructor`, all support a =valueANYTYPE= parameter. The value for this parameter can be of any type, and will be coerced to a string. If the value is an instance of an object or a =Uize= subclass, then it will be coerced to a string by invoking the object's =valueOf Intrinsic Method=. So, string type values, boolean type values, number type values, etc. can be used with these methods. As an example, following is a list of mappings between value and string equivalent...
+				Methods such as the =append=, =equals=, =prepend=, and =setValue= instance methods, along with the `Constructor`, all support a =valueANYTYPE= parameter. The value for this parameter can be of any type, and will be coerced to a string. If the value is an instance of an object or a =Uize.Class= subclass, then it will be coerced to a string by invoking the object's =valueOf Intrinsic Method=. So, string type values, boolean type values, number type values, etc. can be used with these methods. As an example, following is a list of mappings between value and string equivalent...
 
 				........................................................................................
 				<< table >>
 
 				title: HOW DIFFERENT TYPES OF VALUES ARE COERCED TO STRINGS
 				data
-				:|             TYPE            |          VALUE           |     STRING EQUIVALENT      |
-				:| string                      | 'fish'                   | 'fish'                     |
-				:| boolean                     | true                     | 'true'                     |
-				:| number                      | 42                       | '42'                       |
-				:| number                      | Infinity                 | 'Infinity'                 |
-				:| number                      | NaN                      | 'NaN'                      |
-				:| object                      | null                     | 'null'                     |
-				:| object (regular expression) | /\s+/                    | '/\\s+/'                   |
-				:| object (Uize instance)      | new Uize ({value:'foo'}) | 'foo'                      |
-				:| undefined                   | undefined                | 'undefined'                |
-				:| function                    | function () {alert (1)}  | 'function () {alert (1)}'  |
-				........................................................................................
+				:|             TYPE            |          VALUE             |     STRING EQUIVALENT     |
+				:| string                      | 'fish'                     | 'fish'                    |
+				:| boolean                     | true                       | 'true'                    |
+				:| number                      | 42                         | '42'                      |
+				:| number                      | Infinity                   | 'Infinity'                |
+				:| number                      | NaN                        | 'NaN'                     |
+				:| object                      | null                       | 'null'                    |
+				:| object (regular expression) | /\s+/                      | '/\\s+/'                  |
+				:| object (Uize instance)      | Uize.Class ({value:'foo'}) | 'foo'                     |
+				:| undefined                   | undefined                  | 'undefined'               |
+				:| function                    | function () {alert (1)}    | 'function () {alert (1)}' |
+				.........................................................................................
 
 				EXAMPLE
 				.......................................................
-				var myStringBuilder = new Uize.String.Builder;
+				var myStringBuilder = Uize.String.Builder ();
 				myStringBuilder.append ('hello');
 				myStringBuilder.append (true);
 				myStringBuilder.append (42);
@@ -237,7 +237,7 @@
 
 					EXAMPLE
 					...........................................................................
-					var myStringBuilder = new Uize.String.Builder ('solar');
+					var myStringBuilder = Uize.String.Builder ('solar');
 					myStringBuilder.append (' power');
 					alert (myStringBuilder.toUpperCase ());  // displays the text "SOLAR POWER"
 					...........................................................................
@@ -253,7 +253,7 @@
 
 					EXAMPLE
 					.........................................................
-					var myStringBuilder = new Uize.String.Builder;
+					var myStringBuilder = Uize.String.Builder ();
 					alert (myStringBuilder.length);  // displays the text "0"
 
 					myStringBuilder.append ('f');
@@ -283,7 +283,7 @@
 					.......................................................................
 					var
 						myString = 'solar',
-						myStringBuilder = new Uize.String.Builder ('solar')
+						myStringBuilder = Uize.String.Builder ('solar')
 					;
 					alert (myString);                    // displays the text "solar"
 					alert (myStringBuilder);             // displays the text "solar"
@@ -299,22 +299,24 @@ Uize.module ({
 	builder:function () {
 		/*** Constructor ***/
 			var
-				_object = function (_value) {
-					this._chunks = [];
-					this.setValue (arguments.length ? _value : '');
+				_object = Uize.noNew (
+					function (_value) {
+						this._chunks = [];
+						this.setValue (arguments.length ? _value : '');
+					}
 					/*?
 						Constructor
 							Returns a freshly constructed instance of the =Uize.String.Builder= object.
 
 							SYNTAX
-							..........................................................
-							stringBuilderOBJ = new Uize.String.Builder (valueANYTYPE);
-							..........................................................
+							......................................................
+							stringBuilderOBJ = Uize.String.Builder (valueANYTYPE);
+							......................................................
 
 							VARIATION
-							...........................................
-							stringBuilderOBJ = new Uize.String.Builder;
-							...........................................
+							..........................................
+							stringBuilderOBJ = Uize.String.Builder ();
+							..........................................
 
 							When no =valueANYTYPE= parameter is specified in the constructor, then the newly created =Uize.String.Builder= instance will be initialized to an empty string.
 
@@ -329,7 +331,7 @@ Uize.module ({
 
 								For an in-depth discussion of this property, see the section `length Property`.
 					*/
-				},
+				),
 				_objectPrototype = _object.prototype
 			;
 
@@ -353,7 +355,7 @@ Uize.module ({
 
 								EXAMPLE
 								...................................................................
-								var myStringBuilder = new Uize.String.Builder (' ');
+								var myStringBuilder = Uize.String.Builder (' ');
 								myStringBuilder.append ('power');
 								myStringBuilder.prepend ('solar');
 								alert (myStringBuilder.equals ('solar power'));  // displays "true"
@@ -441,11 +443,11 @@ Uize.module ({
 								......................................
 
 								EXAMPLE
-								........................................................
-								var myStringBuilder = new Uize.String.Builder ('solar');
+								....................................................
+								var myStringBuilder = Uize.String.Builder ('solar');
 								myStringBuilder.append (' power');
 								alert (myStringBuilder);  // displays "solar power"
-								........................................................
+								....................................................
 
 								NOTES
 								- see the companion =prepend= instance method
@@ -467,11 +469,11 @@ Uize.module ({
 								.......................................
 
 								EXAMPLE
-								........................................................
-								var myStringBuilder = new Uize.String.Builder ('power');
+								....................................................
+								var myStringBuilder = Uize.String.Builder ('power');
 								myStringBuilder.prepend ('solar ');
 								alert (myStringBuilder);  // displays "solar power"
-								........................................................
+								....................................................
 
 								NOTES
 								- see the companion =append= instance method
@@ -521,8 +523,12 @@ Uize.module ({
 					*/
 				};
 
-				for (var _methodName in {charAt:1, charCodeAt:1, concat:1, indexOf:1, lastIndexOf:1, match:1, replace:1, search:1, slice:1, split:1, substr:1, substring:1, toLowerCase:1, toUpperCase:1, anchor:1, big:1, blink:1, bold:1, fixed:1, fontcolor:1, fontsize:1, italics:1, link:1, small:1, strike:1, sub:1, sup:1})
-					_objectPrototype [_methodName] = String.prototype [_methodName]
+				var _StringPrototype = String.prototype;
+				Uize.forEach (
+					[
+						'charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'replace', 'search', 'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase', 'anchor', 'big', 'blink', 'bold', 'fixed', 'fontcolor', 'fontsize', 'italics', 'link', 'small', 'strike', 'sub', 'sup'
+					],
+					function (_methodName) {_objectPrototype [_methodName] = _StringPrototype [_methodName]}
 					/*?
 						Instance Methods
 							String Object Instance Methods
@@ -532,7 +538,7 @@ Uize.module ({
 
 								All of the =String= object instance methods implemented for the =Uize.String.Builder= object have exactly the same signatures and behave in exactly the same way as they do for the =String= object. Because of this, they have not been documented in detail here. For a detailed explanation for any of them, consult a good JavaScript reference. For some examples, you can read through the section `String Object Parity`.
 					*/
-				;
+				);
 
 		return _object;
 	}

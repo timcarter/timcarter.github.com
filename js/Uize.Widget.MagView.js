@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.MagView Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -48,7 +48,7 @@ Uize.module ({
 				_Uize_Node = Uize.Node
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _imagesCached = {};
 
 		/*** Class Constructor ***/
@@ -58,7 +58,7 @@ Uize.module ({
 						var _this = this;
 
 						/*** create the fade instance ***/
-							if (Uize.Fade) _this._fade = new Uize.Fade ({duration:450,curve:Uize.Fade.celeration (0,1)});
+							if (Uize.Fade) _this._fade = Uize.Fade ({duration:450,curve:Uize.Fade.celeration (0,1)});
 
 						/*** create the mag image port widget ***/
 							_this._magImagePort = _this.addChild (

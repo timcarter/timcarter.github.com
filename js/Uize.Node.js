@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Node Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -23,7 +23,7 @@
 	Introduction
 		The =Uize.Node= module facilitates [[http://en.wikipedia.org/wiki/Document_Object_Model][DOM]] manipulation, with support for finding nodes, and querying and modifying their properties, CSS styling, and more.
 
-		*DEVELOPERS:* `Chris van Rensburg`
+		*DEVELOPERS:* `Chris van Rensburg`, `Vinson Chuong`
 
 		Features
 			Node Blob
@@ -62,6 +62,7 @@
 
 Uize.module ({
 	name:'Uize.Node',
+	required:'Uize.Class',
 	builder:function () {
 		/*** Variables for Scruncher Optimization ***/
 			var
@@ -73,17 +74,33 @@ Uize.module ({
 				_true = true,
 				_false = false,
 				_null = null,
+				_hidden = 'hidden',
+				_Uize = Uize,
+				_Uize_copyInto = _Uize.copyInto,
+				_Uize_isPrimitive = _Uize.isPrimitive,
+				_Uize_returnFalse = _Uize.returnFalse
+			;
+
+		/*** General Variables ***/
+			var
 				_isBrowser = typeof navigator != 'undefined',
 				_navigator = _isBrowser ? navigator : {userAgent:'',appName:''},
 				_userAgent = _navigator.userAgent.toLowerCase (),
 				_isIe = _navigator.appName == 'Microsoft Internet Explorer',
-				_isIe6 = _isIe && _navigator.appVersion.indexOf ('MSIE 6') > -1,
+				_ieInnerHtmlReadOnly = {
+					TABLE:_true, THEAD:_true, TFOOT:_true, TBODY:_true, TR:_true, COL:_true, COLGRPUP:_true,
+					FRAMESET:_true, HEAD:_true, HTML:_true, STYLE:_true, TITLE:_true
+				},
 				_isSafari = _userAgent.indexOf ('applewebkit') > -1,
 				_isMozilla = _userAgent.indexOf ('gecko') > -1,
 				_isOpera = _userAgent.indexOf ('opera') > -1,
 				_isMozillaOrOpera = _isMozilla || _isOpera,
-				_hidden = 'hidden',
-				_Uize_copyInto = Uize.copyInto
+				_ieMajorVersion = +(_isIe && (_userAgent.match (/MSIE\s*(\d+)/i) || [0,0]) [1]),
+				_useHandForPointerCursor = _isIe && _ieMajorVersion < 9,
+				_wirings = _package._wirings = {},
+				_wiringIdsByOwnerId = {},
+				_totalWirings = 0,
+				_mousePos = {clientX:0,clientY:0,pageX:0,pageY:0}
 			;
 
 		/*** Utility Functions ***/
@@ -126,26 +143,6 @@ Uize.module ({
 						: _eventName
 				);
 			}
-
-			function _combineKeysValues (_keys,_values) {
-				/* NOTE: this may be a candidate for migration into the Uize base class at some point */
-				for (
-					var _valueNo = -1, _result = {}, _valuesLength = Math.min (_keys.length,_values.length);
-					++_valueNo < _valuesLength;
-				)
-					_result [_keys [_valueNo]] = _values [_valueNo]
-				;
-				return _result;
-			}
-
-		/*** Global Variables ***/
-			var
-				_wirings = _package._wirings = {},
-				_wiringIdsByOwnerId = {},
-				_totalWirings = 0,
-				_simpleTypesMap = {string:1,number:1,boolean:1},
-				_mousePos = {clientX:0,clientY:0,pageX:0,pageY:0}
-			;
 
 		/*** Public Static Methods ***/
 			var
@@ -300,7 +297,7 @@ Uize.module ({
 							Of course, you can use this technique to test for overlapping of any two line segments - it doesn't matter if those lines are from a vertical or horizontal axis, since we've collapsed a test in 2D space to being a test in 1D space.
 
 							NOTES
-							- any parameter of this method can be an object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property)
+							- any parameter of this method can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property)
 				*/
 			};
 
@@ -358,12 +355,12 @@ Uize.module ({
 				/*** narrow down node pool, consuming root, id, name, and tagName tests, where possible ***/
 					if (_root) {
 						var _tagName = _unusedProperties.tagName;
-						if ('id' in _unusedProperties && _simpleTypesMap [typeof _unusedProperties.id]) {
+						if ('id' in _unusedProperties && _Uize_isPrimitive (_unusedProperties.id)) {
 							/* NOTE: optimization for when id is specified and has a simple value */
 							var _node = _getElementById (_unusedProperties.id);
 							_node && _nodePool.push (_node);
 							delete _unusedProperties.id;
-						} else if ('name' in _unusedProperties && _simpleTypesMap [typeof _unusedProperties.name]) {
+						} else if ('name' in _unusedProperties && _Uize_isPrimitive (_unusedProperties.name)) {
 							/* NOTE: optimization for when name is specified and has a simple value */
 							_nodePool = _document.getElementsByName (_unusedProperties.name);
 							delete _unusedProperties.name;
@@ -371,7 +368,7 @@ Uize.module ({
 							/* NOTE:
 								populate the node pool using getElementsByTagName, with optimization for when tagName is specified and has a simple value
 							*/
-							var _tagNameIsSimplyType = _simpleTypesMap [typeof _tagName];
+							var _tagNameIsSimplyType = _Uize_isPrimitive (_tagName);
 							_tagNameIsSimplyType && delete _unusedProperties.tagName;
 							_nodePool = _root.getElementsByTagName (_tagName && _tagNameIsSimplyType ? _tagName : '*');
 							_root = _null;
@@ -407,11 +404,11 @@ Uize.module ({
 								var
 									_nodePropertyValue = _node [_propertyName],
 									_test = _unusedProperties [_propertyName],
-									_isFunction = Uize.isFunction
+									_isFunction = _Uize.isFunction
 								;
 								if (
 									!(
-										_simpleTypesMap [typeof _test]
+										_Uize_isPrimitive (_test)
 											? _nodePropertyValue == _test
 											: (
 												_test instanceof RegExp
@@ -678,7 +675,7 @@ Uize.module ({
 								* 100 :
 							0
 						;
-					}
+				}
 				return {
 					x:_x,
 					y:_y,
@@ -803,7 +800,7 @@ Uize.module ({
 								;
 							}
 							if (_opacityInIe) {
-								var _match = _value.match (/alpha\s*\(\s*opacity\s*=([^\)]*)\)/i);
+								var _match = (_value || '').match (/alpha\s*\(\s*opacity\s*=([^\)]*)\)/i);
 								_value = _match ? _match [1] / 100 : 1;
 							}
 						}
@@ -879,18 +876,7 @@ Uize.module ({
 							_text += _node.textContent;
 						} else {
 							if (_node.nodeType == 3) _text += _node.data;
-							if (_node.childNodes) {
-								for (
-									var
-										_childNodeNo = -1,
-										_childNodes = _node.childNodes,
-										_childNodesLength = _childNodes.length
-									;
-									++_childNodeNo < _childNodesLength;
-								)
-									_getText (_childNodes [_childNodeNo])
-								;
-							}
+							_node.childNodes && _Uize.forEach (_node.childNodes,_gatherText);
 						}
 					}
 					_gatherText (_node);
@@ -947,12 +933,10 @@ Uize.module ({
 						} else if (_nodeTagName == 'SELECT') {
 							if (_node.multiple) {
 								_value = [];
-								for (
-									var _optionNo = -1, _options = _node.options, _optionsLength = _options.length, _option;
-									++_optionNo < _optionsLength;
-								)
-									(_option = _options [_optionNo]).selected && _value.push (_option.value)
-								;
+								_Uize.forEach (
+									_node.options,
+									function (_option) {_option.selected && _value.push (_option.value)}
+								);
 							} else {
 								_value = _node.value;
 							}
@@ -962,7 +946,7 @@ Uize.module ({
 							_value = _node.innerHTML.replace (/<br\/?>/gi,'\n').replace (/&nbsp;/g,' ');
 						}
 					} else {
-						_value = (Uize.findRecord (_node,{tagName:'INPUT',type:'radio',checked:_true}) || {}).value;
+						_value = (_Uize.findRecord (_node,{tagName:'INPUT',type:'radio',checked:_true}) || {}).value;
 					}
 				}
 				return _value;
@@ -1009,7 +993,12 @@ Uize.module ({
 			};
 
 			_package.injectHtml = function (_nodeBlob,_htmlToInject,_mode) {
-				var _isInnerReplace, _isOuterReplace, _isInnerTop, _isOuterTop, _isOuterBottom, _isInnerBottom;
+				var
+					_isInnerReplace, _isOuterReplace, _isInnerTop, _isOuterTop, _isOuterBottom, _isInnerBottom,
+					_areNodes =
+						_Uize.isArray (_htmlToInject) ||
+						(_isNode (_htmlToInject) && (_htmlToInject = [_htmlToInject]))
+				;
 				(
 					(_isInnerReplace = _mode == 'inner replace') ||
 					(_isOuterReplace = _mode == 'outer replace') ||
@@ -1018,7 +1007,7 @@ Uize.module ({
 					(_isOuterBottom = _mode == 'outer bottom') ||
 					(_isInnerBottom = _true)
 				);
-				_htmlToInject += ''; // coerce to a string value by invoking valueOf method
+				_areNodes || (_htmlToInject += ''); // coerce to a string value by invoking valueOf method
 
 				_doForAll (
 					_nodeBlob,
@@ -1032,24 +1021,38 @@ Uize.module ({
 						}
 						if (
 							(_isInnerReplace || (!_nodeChildNodes.length && (_isInnerTop || _isInnerBottom))) &&
+							!_isNode &&
 							!_htmlToInjectHasScript ()
 						) {
 							_node.innerHTML = _htmlToInject;
-						} else if (_isOuterReplace && _isIe && !_htmlToInjectHasScript ()) {
+						} else if (_isOuterReplace && _isIe && !_isNode && !_htmlToInjectHasScript ()) {
 							_node.outerHTML = _htmlToInject;
 						} else {
-							if (_isInnerReplace) _node.innerHTML = '';
+							if (_isInnerReplace)
+								if (_isIe && _ieInnerHtmlReadOnly [_node.tagName]) {
+									var _newNode = _node.cloneNode ();
+									_node.replaceNode (_newNode);
+									_node = _newNode;
+								} else
+									_node.innerHTML = '';
+							if (_areNodes) {
+								var _nodesToInject = [];
+								for (var _nodeNo = -1, _nodesLength = _htmlToInject.length; ++_nodeNo < _nodesLength;)
+									_nodesToInject.push (_htmlToInject [_nodeNo].cloneNode (_true));
+							} else {
 							var _dummyNode = document.createElement ('DIV');
-							_dummyNode.innerHTML = '<i>e</i>'	// fix for IE NoScope issue (http://www.thecssninja.com/javascript/noscope)
-								+ _htmlToInject
-							;
+								_dummyNode.innerHTML = '<i>e</i>'	// fix for IE NoScope issue (http://www.thecssninja.com/javascript/noscope)
+									+ _htmlToInject
+								;
+								var _nodesToInject = _dummyNode.childNodes
+							}
 							var
 								_nodeToInsertBefore = _isInnerTop
 									? _nodeChildNodes [0]
 									: _isOuterBottom ? _node.nextSibling : _node
 								,
-								_nodesToInject = _dummyNode.childNodes,
-								_nodeParentNode = _node.parentNode
+								_nodeParentNode = _node.parentNode,
+								_nodesToSkip = +!_areNodes // IE NoScope fix not needed when given dom nodes
 							;
 							function _fixCrippledScripts (_node) {
 								if (_node.tagName == 'SCRIPT') {
@@ -1066,20 +1069,13 @@ Uize.module ({
 
 									_node.parentNode.replaceChild (_activatedScriptNode,_node);
 								} else if (_htmlHasScript (_node.innerHTML)) {
-									for (
-										var
-											_childNodeNo = -1,
-											_nodeChildNodes = _node.childNodes,
-											_nodeChildNodesLength = _nodeChildNodes.length
-										;
-										++_childNodeNo < _nodeChildNodesLength;
-									)
-										_fixCrippledScripts (_nodeChildNodes [_childNodeNo])
-									;
+									_Uize.forEach (_node.childNodes,_fixCrippledScripts);
 								}
 							}
-							while (_nodesToInject.length > 1) {	// should always have at least one node because of NoScope fix
-								var _childNodeToInject = _nodesToInject [1];	// Skip the scope node
+							while (_nodesToInject.length > _nodesToSkip) {
+								var _childNodeToInject = _areNodes ?
+									_nodesToInject.shift () :
+									_nodesToInject [_nodesToSkip];
 								if (_isInnerBottom || _isInnerReplace) {
 									_node.appendChild (_childNodeToInject);
 								} else if (_isInnerTop) {
@@ -1095,7 +1091,7 @@ Uize.module ({
 										: _nodeParentNode.appendChild (_childNodeToInject)
 									;
 								}
-								_fixCrippledScripts (_childNodeToInject);
+								_areNodes || _fixCrippledScripts (_childNodeToInject); // Assume if given nodes that the proper fixes have already been applied
 							}
 							_isOuterReplace && _nodeParentNode.removeChild (_node);
 						}
@@ -1104,7 +1100,7 @@ Uize.module ({
 				/*?
 					Static Methods
 						Uize.Node.injectHtml
-							Injects the specified HTML markup into the specified `Node Blob`.
+							Injects the specified HTML into the specified `Node Blob`.
 
 							The action of this method is different to simply setting the =innerHTML= property in that it does not replace the existing contents, but instead adds to it.
 
@@ -1113,7 +1109,7 @@ Uize.module ({
 							Uize.Node.injectHtml (nodeBLOB,htmlSTRorOBJ);
 							.............................................
 
-							The =htmlSTRorOBJ= parameter can be a string containing the HTML you wish to inject, or it can be any object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property).
+							The =htmlSTRorOBJ= parameter can be a DOM node, an array of DOM nodes, a string containing the HTML you wish to inject, or it can be any object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property).
 
 							VARIATION
 							...........................................................
@@ -1220,10 +1216,7 @@ Uize.module ({
 
 			var _coordNames = ['left','top','width','height'];
 			_package.setCoords = function (_nodeBlob,_coords) {
-				_setStyle (
-					_nodeBlob,
-					typeof _coords.length == 'number' ? _combineKeysValues (_coordNames,_coords) : _coords
-				);
+				_setStyle (_nodeBlob,_Uize.isArray (_coords) ? _Uize.meldKeysValues (_coordNames,_coords) : _coords);
 				/*?
 					Static Methods
 						Uize.Node.setCoords
@@ -1257,7 +1250,7 @@ Uize.module ({
 							[leftINTorSTRorOBJ,topINTorSTRorOBJ]
 							....................................
 
-							When number type values are specified for =leftINTorSTRorOBJ=, =topINTorSTRorOBJ=, =widthINTorSTRorOBJ=, or =heightINTorSTRorOBJ=, those values will be converted to strings by appending the "px" unit. When string type values are specified, the unit should already be present in the value. =Uize= subclass instances can also be specified, and they will be converted to values by invoking their =valueOf Intrinsic Method=.
+							When number type values are specified for =leftINTorSTRorOBJ=, =topINTorSTRorOBJ=, =widthINTorSTRorOBJ=, or =heightINTorSTRorOBJ=, those values will be converted to strings by appending the "px" unit. When string type values are specified, the unit should already be present in the value. =Uize.Class= subclass instances can also be specified, and they will be converted to values by invoking their =valueOf Intrinsic Method=.
 
 							EXAMPLES
 							.......................................................................................
@@ -1541,7 +1534,7 @@ Uize.module ({
 							Uize.Node.setInnerHtml (nodeBLOB,htmlSTRorOBJ);
 							...............................................
 
-							The =htmlSTRorOBJ= parameter can be a string containing the HTML you wish to inject, or it can be any object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property).
+							The =htmlSTRorOBJ= parameter can be a string containing the HTML you wish to inject, or it can be any object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property).
 
 							NOTES
 							- this method can operate on multiple nodes at a time. For more details, see the section on `Node Blob`
@@ -1567,7 +1560,7 @@ Uize.module ({
 
 							NOTES
 							- this method can operate on multiple nodes at a time. For more details, see the section on `Node Blob`
-							- the =opacityFLOATorOBJ= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property)
+							- the =opacityFLOATorOBJ= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property)
 				*/
 			};
 
@@ -1683,7 +1676,7 @@ Uize.module ({
 								This feature of the =Uize.Node.setStyle= method is provided as a convenience, so that the values of number type variables can be supplied - as is - when setting style properties such as =left=, =top=, =width=, =height=, =fontSize=, etc.
 
 							Specifying Instance Values
-								When an instance of a =Uize= subclass is specified for a CSS style property, the instance's =valueOf Intrinsic Method= is invoked in order to obtain the value of the instance's =value= set-get property.
+								When an instance of a =Uize.Class= subclass is specified for a CSS style property, the instance's =valueOf Intrinsic Method= is invoked in order to obtain the value of the instance's =value= set-get property.
 
 								So, for example, the following statement...
 
@@ -1697,7 +1690,7 @@ Uize.module ({
 								Uize.Node.setStyle ('myNodeId',{width:myWidthSlider});
 								......................................................
 
-								This feature of the =Uize.Node.setStyle= method is provided as a convenience, so that instances of =Uize= subclasses that are value selectors and that implement the =value= set-get property can be supplied - as is - when setting any style properties. If the value for an instance is a number type, then it will be further handled according to the rules for `Specifying Number Values`.
+								This feature of the =Uize.Node.setStyle= method is provided as a convenience, so that instances of =Uize.Class= subclasses that are value selectors and that implement the =value= set-get property can be supplied - as is - when setting any style properties. If the value for an instance is a number type, then it will be further handled according to the rules for `Specifying Number Values`.
 
 							NOTES
 							- this method can operate on multiple nodes at a time. For more details, see the section on `Node Blob`
@@ -1732,21 +1725,12 @@ Uize.module ({
 							} else {
 								var _options = _node.options;
 								if (_node.multiple && (_value == '*' || _value.indexOf (',') > -1)) {
-									var _valuesMap;
-									if (_value != '*') {
-										/* NOTE:
-											Code for creating a lookup object from an array exists in Uize.Data, but for page load reasons, I don't want Uize.Node to have a dependency on Uize.Data. Perhaps someday getKeys will migrate into the Uize base class, and then this code can be revisited.
-										*/
-										_valuesMap = {};
-										for (var _values = _value.split (','), _valueNo = _values.length; --_valueNo >= 0;)
-											_valuesMap [_values [_valueNo]] = 1
-										;
-									}
+									var _valuesMap = _value != '*' ? _Uize.lookup (_value.split (',')) : _undefined;
 									for (var _optionNo = _options.length, _option; --_optionNo >= 0;)
 										(_option = _options [_optionNo]).selected = !_valuesMap || _valuesMap [_option.value]
 									;
 								} else {
-									_node.selectedIndex = Uize.findRecordNo (_options,{value:_value},_node.selectedIndex);
+									_node.selectedIndex = _Uize.findRecordNo (_options,{value:_value},_node.selectedIndex);
 								}
 							}
 						} else if (_nodeTagName == 'IMG') {
@@ -1770,7 +1754,7 @@ Uize.module ({
 							Uize.Node.setValue (nodeBLOB,valueSTRorNUMorBOOLorOBJ);
 							.......................................................
 
-							In addition to being able to be a simple type value (like a string, boolean, or number), the =valueSTRorNUMorBOOLorOBJ= parameter can also be any object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property).
+							In addition to being able to be a simple type value (like a string, boolean, or number), the =valueSTRorNUMorBOOLorOBJ= parameter can also be any object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property).
 
 							This method provides a convenient abstraction that makes it easier to change a form's implementation, without having to worry about modifying the JavaScript application logic that sets values for the form's fields. For example, you could change the HTML of a form so that what was once a =select= tag becomes a =radio= button set, and the call to =Uize.Node.setValue= could remain unchanged.
 
@@ -1838,7 +1822,7 @@ Uize.module ({
 								Don't Pad Comma-separated Values
 									When the selected options are specified as a comma-separated string, the values in the string *should not* be padded with extra spaces, or the specified options will not become selected correctly.
 
-									WRONG! WRONG! WRONG!
+									INCORRECT
 									.......................................................................................
 									Uize.Node.setValue ('renewableEnergyList','Wind , Solar');  // padding around comma bad
 									Uize.Node.setValue ('renewableEnergyList','Wind, Solar');   // padding after comma bad
@@ -1910,7 +1894,7 @@ Uize.module ({
 							NOTES
 							- you can use the =Uize.Node.setValue= method to set values on readonly form elements
 							- see the corresponding =Uize.Node.getValue= static method
-							- the =value= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property)
+							- the =value= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property)
 				*/
 			};
 
@@ -1936,7 +1920,12 @@ Uize.module ({
 			_package.showClickable = function (_nodeBlob,_clickable) {
 				_setStyle (
 					_nodeBlob,
-					{cursor:_clickable || _clickable === _undefined ? (_isIe ? 'hand' : 'pointer') : 'default'}
+					{
+						cursor:
+							_clickable || _clickable === _undefined
+								? (_useHandForPointerCursor ? 'hand' : 'pointer')
+								: 'default'
+					}
 				);
 				/*?
 					Static Methods
@@ -2326,7 +2315,7 @@ Uize.module ({
 							var _handlerCaller =
 								(
 									_isVirtualDomEvent
-										? _package.returnFalse
+										? _Uize_returnFalse
 										: _node == window
 											? _makeWindowEventHandlerCaller
 											: _handlerCallerMakersByEvent [_eventName] || _makeGenericHandlerCaller
@@ -2361,10 +2350,10 @@ Uize.module ({
 									_nodeTagName == 'A' &&
 									(_eventName == 'mousedown' || _eventName == 'click') && !_node [_eventPropertyName]
 								)
-									_node [_eventPropertyName] = _package.returnFalse
+									_node [_eventPropertyName] = _Uize_returnFalse
 								;
 						} else if (_isVirtualDomEvent) {
-							_eventName.wire (_node,_handler,_wiring._subWiringsOwnerId = Uize.getGuid ());
+							_eventName.wire (_node,_handler,_wiring._subWiringsOwnerId = _Uize.getGuid ());
 						}
 					}
 				);
@@ -2460,45 +2449,18 @@ Uize.module ({
 				*/
 			};
 
-			_package.returnFalse = new Function ('return false');
-				/*?
-					Static Methods
-						Uize.Node.returnFalse
-							Returns the boolean value =false=.
-
-							This method can be assigned to event handlers to cancel their default action, as in the following example...
-
-							EXAMPLE
-							.......................................
-							myNode.onclick = Uize.Node.returnFalse;
-							.......................................
-
-							If you are cancelling the default action for many nodes in a page, then using this static method allows you to share a single function - by reference - across all these nodes.
-
-							NOTES
-							- see also the =Uize.Node.returnTrue= static method
-				*/
-
-			_package.returnTrue = new Function ('return true');
-				/*?
-					Static Methods
-						Uize.Node.returnTrue
-							Returns the boolean value =true=.
-
-							This method can be assigned to event handlers to enable their default action, as in the following example...
-
-							EXAMPLE
-							......................................
-							myNode.onclick = Uize.Node.returnTrue;
-							......................................
-
-							If you are enabling the default action for many nodes in a page, then using this static method allows you to share a single function - by reference - across all these nodes.
-
-							NOTES
-							- see also the =Uize.Node.returnFalse= static method
-				*/
-
 		/*** Public Static Properties ***/
+			_package.ieMajorVersion = _ieMajorVersion;
+				/*?
+					Static Properties
+						Uize.Node.ieMajorVersion
+							A number, indicating the major version of the Microsoft Internet Explorer browser being used, or the value =0= if the brower is not Internet Explorer.
+
+							NOTES
+							- see the related =Uize.Node.isIe= static property
+							- see also the =Uize.Node.isSafari= and =Uize.Node.isMozilla= static properties
+				*/
+
 			_package.isIe = _isIe;
 				/*?
 					Static Properties
@@ -2506,17 +2468,8 @@ Uize.module ({
 							A boolean, indicating whether or not the browser is a version of Microsoft Internet Explorer.
 
 							NOTES
-							- see also the =Uize.Node.isIe6=, =Uize.Node.isSafari= and =Uize.Node.isMozilla= static properties
-				*/
-				
-			_package.isIe6 = _isIe6;
-				/*?
-					Static Properties
-						Uize.Node.isIe6
-							A boolean, indicating whether or not the browser is a version of Microsoft Internet Explorer version 6.
-
-							NOTES
-							- see also the =Uize.Node.isIe=, =Uize.Node.isSafari= and =Uize.Node.isMozilla= static properties
+							- see the related =Uize.Node.ieMajorVersion= static property
+							- see also the =Uize.Node.isSafari= and =Uize.Node.isMozilla= static properties
 				*/
 
 			_package.isSafari = _isSafari;
@@ -2526,7 +2479,7 @@ Uize.module ({
 							A boolean, indicating whether or not the browser is a version of Apple Safari.
 
 							NOTES
-							- see also the =Uize.Node.isIe=, =Uize.Node.isIe6= and =Uize.Node.isMozilla= static properties
+							- see also the =Uize.Node.isIe= and =Uize.Node.isMozilla= static properties
 				*/
 
 			_package.isMozilla = _isMozilla;
@@ -2546,24 +2499,39 @@ Uize.module ({
 
 				/*** wire up window events to fire events on window event vehicle ***/
 					var
-						_windowEventVehicle = new Uize,
+						_windowEventVehicle = Uize.Class (),
 						_documentLoadedTimeout = setTimeout (function () {_windowEventVehicle.fire ('load')},15000)
 					;
-					function _wireUpWindowEvent (_windowEventName) {
-						var
-							_windowEventPropertyName = 'on' + _windowEventName,
-							_oldWindowEventHandler = window [_windowEventPropertyName] || _package.returnFalse
-						;
-						window [_windowEventPropertyName] = function (_event) {
-							_windowEventName == 'load' && clearTimeout (_documentLoadedTimeout);
-							_oldWindowEventHandler.call (window,_event || (_event = window.event));
-							_windowEventVehicle.fire ({name:_windowEventName,windowEvent:_event});
-						};
-					}
-					for (var _windowEventName in {focus:1,blur:1,load:1,beforeunload:1,unload:1,resize:1,scroll:1})
-						_wireUpWindowEvent (_windowEventName);
-					;
+					_Uize.forEach (
+						['focus','blur','load','beforeunload','unload','resize','scroll'],
+						function (_windowEventName) {
+							var
+								_windowEventPropertyName = 'on' + _windowEventName,
+								_oldWindowEventHandler = window [_windowEventPropertyName] || _Uize_returnFalse
+							;
+							window [_windowEventPropertyName] = function (_event) {
+								_windowEventName == 'load' && clearTimeout (_documentLoadedTimeout);
+								_oldWindowEventHandler.call (window,_event || (_event = window.event));
+								_windowEventVehicle.fire ({name:_windowEventName,windowEvent:_event});
+							};
+						}
+					);
 			}
+
+		/*** Deprecated Features ***/
+			_package.returnFalse = _Uize_returnFalse;
+				/*?
+					Deprecated Features
+						Uize.returnFalse
+							document...
+				*/
+
+			_package.returnTrue = _Uize.returnTrue;
+				/*?
+					Deprecated Features
+						Uize.returnTrue
+							document...
+				*/
 
 		return _package;
 	}

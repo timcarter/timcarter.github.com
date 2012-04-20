@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Scrolly Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -120,7 +120,7 @@ Uize.module ({
 						var _this = this;
 
 						/*** Public Instance Properties ***/
-							_this.fade = new Uize.Fade ({
+							_this.fade = Uize.Fade ({
 								duration:400,
 								curve:Uize.Fade.celeration (0,1),
 								quantization:1
@@ -402,7 +402,7 @@ Uize.module ({
 								Conformed
 									When setting the value for this property, the value is conformed in a number of ways.
 
-									+. The value will be coerced to a number type by invoking the =valueOf Intrinsic Method=. This means that one can specify a string value that is a valid formatted number, or an object (such as an instance of a =Uize= subclass) that implements the =value= interface.
+									+. The value will be coerced to a number type by invoking the =valueOf Intrinsic Method=. This means that one can specify a string value that is a valid formatted number, or an object (such as an instance of a =Uize.Class= subclass) that implements the =value= interface.
 									+. Values that cannot be successfully coerced to a number type (such as =null=, =NaN=, etc.) will result in the property not changing its value.
 									+. The value will be constrained so that it cannot go below =0= and cannot go above the value of the =maxPageX= set-get property.
 
@@ -424,7 +424,7 @@ Uize.module ({
 								Conformed
 									When setting the value for this property, the value is conformed in a number of ways.
 
-									+. The value will be coerced to a number type by invoking the =valueOf Intrinsic Method=. This means that one can specify a string value that is a valid formatted number, or an object (such as an instance of a =Uize= subclass) that implements the =value= interface.
+									+. The value will be coerced to a number type by invoking the =valueOf Intrinsic Method=. This means that one can specify a string value that is a valid formatted number, or an object (such as an instance of a =Uize.Class= subclass) that implements the =value= interface.
 									+. Values that cannot be successfully coerced to a number type (such as =null=, =NaN=, etc.) will result in the property not changing its value.
 									+. The value will be constrained so that it cannot go below =0= and cannot go above the value of the =maxPageY= set-get property.
 

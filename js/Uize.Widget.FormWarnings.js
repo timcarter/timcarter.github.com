@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.FormWarnings Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -92,13 +92,11 @@ Uize.module ({
 				_watchedElements:{
 					name:'watchedElements',
 					onChange:function() {
-						var
-							_watchedElements = this._watchedElements,
-							_watchedElementNo = -1
-						;
-						for (; ++_watchedElementNo < _watchedElements.length;)
-							this._wireWatchedElement(_watchedElements[_watchedElementNo])
-						;
+						var _this = this;
+						Uize.forEach (
+							_this._watchedElements,
+							function (_watchedElement) {_this._wireWatchedElement (_watchedElement)}
+						);
 					},
 					value:[]
 				}

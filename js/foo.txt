@@ -1,0 +1,303 @@
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   ../bugs/injectscript.html
+#	modified:   ../javascript.html
+#	modified:   JsTerm.Program.Bash.js
+#	modified:   Uize.Array.Order.js
+#	modified:   Uize.Array.Sort.js
+#	modified:   Uize.Array.js
+#	modified:   Uize.Color.js
+#	modified:   Uize.Color.xCmyk.js
+#	modified:   Uize.Color.xHsv.js
+#	modified:   Uize.Color.xSvgColors.js
+#	modified:   Uize.Color.xUtil.js
+#	modified:   Uize.Comm.Ajax.js
+#	modified:   Uize.Comm.Iframe.Upload.js
+#	modified:   Uize.Comm.Iframe.js
+#	modified:   Uize.Comm.Script.js
+#	modified:   Uize.Comm.js
+#	modified:   Uize.Cookie.js
+#	modified:   Uize.Curve.Mod.js
+#	modified:   Uize.Curve.Rubber.js
+#	modified:   Uize.Curve.js
+#	modified:   Uize.Data.Csv.js
+#	modified:   Uize.Data.NameValueRecords.js
+#	modified:   Uize.Data.PathsTree.CompactString.js
+#	modified:   Uize.Data.PathsTree.js
+#	modified:   Uize.Data.Simple.js
+#	modified:   Uize.Data.js
+#	modified:   Uize.Date.Formatter.js
+#	modified:   Uize.Date.js
+#	modified:   Uize.Doc.Simple.js
+#	modified:   Uize.Doc.Sucker.js
+#	modified:   Uize.Doc.js
+#	modified:   Uize.Fade.js
+#	modified:   Uize.Fade.xFactory.js
+#	modified:   Uize.Fade.xSeries.js
+#	modified:   Uize.Fx.js
+#	modified:   Uize.Fx.xShadows.js
+#	modified:   Uize.Fx.xTextShadow.js
+#	modified:   Uize.Json.js
+#	modified:   Uize.Node.Classes.js
+#	modified:   Uize.Node.Event.js
+#	modified:   Uize.Node.Form.js
+#	modified:   Uize.Node.Tree.js
+#	modified:   Uize.Node.Util.js
+#	modified:   Uize.Node.VirtualEvent.Edge.js
+#	modified:   Uize.Node.VirtualEvent.js
+#	modified:   Uize.Node.js
+#	modified:   Uize.Scruncher.js
+#	modified:   Uize.String.Builder.js
+#	modified:   Uize.String.Discombobulator.js
+#	modified:   Uize.String.Lines.js
+#	modified:   Uize.String.js
+#	modified:   Uize.Template.js
+#	modified:   Uize.Templates.List.js
+#	modified:   Uize.Templates.js
+#	modified:   Uize.Test.Performance.ArrayBuildingStyles.js
+#	modified:   Uize.Test.Performance.js
+#	modified:   Uize.Test.Uize.Array.Order.js
+#	modified:   Uize.Test.Uize.Array.Sort.js
+#	modified:   Uize.Test.Uize.Array.js
+#	modified:   Uize.Test.Uize.Data.Csv.js
+#	modified:   Uize.Test.Uize.Data.PathsTree.CompactString.js
+#	modified:   Uize.Test.Uize.Data.PathsTree.js
+#	modified:   Uize.Test.Uize.Data.js
+#	modified:   Uize.Test.Uize.Date.Formatter.js
+#	modified:   Uize.Test.Uize.Date.js
+#	modified:   Uize.Test.Uize.Doc.js
+#	modified:   Uize.Test.Uize.Node.Classes.js
+#	modified:   Uize.Test.Uize.Node.js
+#	modified:   Uize.Test.Uize.String.Builder.js
+#	modified:   Uize.Test.Uize.String.Lines.js
+#	modified:   Uize.Test.Uize.String.js
+#	modified:   Uize.Test.Uize.Template.js
+#	modified:   Uize.Test.Uize.Templates.Calculator.js
+#	modified:   Uize.Test.Uize.Templates.Calendar.js
+#	modified:   Uize.Test.Uize.Templates.Collection.js
+#	modified:   Uize.Test.Uize.Templates.CollectionItem.js
+#	modified:   Uize.Test.Uize.Templates.ColorInfo.js
+#	modified:   Uize.Test.Uize.Templates.HashTable.js
+#	modified:   Uize.Test.Uize.Templates.JstModule.js
+#	modified:   Uize.Test.Uize.Templates.List.js
+#	modified:   Uize.Test.Uize.Templates.SevenSegmentDisplay.js
+#	modified:   Uize.Test.Uize.Templates.js
+#	modified:   Uize.Test.Uize.Url.js
+#	modified:   Uize.Test.Uize.Util.PropertyAdapter.js
+#	modified:   Uize.Test.Uize.Util.js
+#	modified:   Uize.Test.Uize.Xml.js
+#	modified:   Uize.Test.Uize.js
+#	modified:   Uize.Test.js
+#	modified:   Uize.Tooltip.js
+#	modified:   Uize.Url.js
+#	modified:   Uize.Util.Coupler.js
+#	modified:   Uize.Util.Cycle.js
+#	modified:   Uize.Util.Oop.js
+#	modified:   Uize.Util.PropertyAdapter.js
+#	modified:   Uize.Util.js
+#	modified:   Uize.Widget.AutoTooltip.js
+#	modified:   Uize.Widget.Bar.Progress.js
+#	modified:   Uize.Widget.Bar.Slider.Plus.js
+#	modified:   Uize.Widget.Bar.Slider.js
+#	modified:   Uize.Widget.Bar.Slider.xSkin.js
+#	modified:   Uize.Widget.Bar.js
+#	modified:   Uize.Widget.Beam.js
+#	modified:   Uize.Widget.Bevel.js
+#	modified:   Uize.Widget.Button.Checkbox.js
+#	modified:   Uize.Widget.Button.Filter.js
+#	modified:   Uize.Widget.Button.Toggle.js
+#	modified:   Uize.Widget.Button.ValueDisplay.Selector.js
+#	modified:   Uize.Widget.Button.ValueDisplay.js
+#	modified:   Uize.Widget.Button.js
+#	modified:   Uize.Widget.Calculator.js
+#	modified:   Uize.Widget.Calendar.js
+#	modified:   Uize.Widget.Captcha.Recaptcha.js
+#	modified:   Uize.Widget.Captcha.js
+#	modified:   Uize.Widget.Collapsy.js
+#	modified:   Uize.Widget.Collection.Dynamic.js
+#	modified:   Uize.Widget.Collection.js
+#	modified:   Uize.Widget.CollectionItem.Zooming.js
+#	modified:   Uize.Widget.CollectionItem.js
+#	modified:   Uize.Widget.ColorCube.Draggable.js
+#	modified:   Uize.Widget.ColorCube.js
+#	modified:   Uize.Widget.ColorInfo.js
+#	modified:   Uize.Widget.ColorPicker.js
+#	modified:   Uize.Widget.Committer.js
+#	modified:   Uize.Widget.Count.js
+#	modified:   Uize.Widget.Dialog.Confirm.js
+#	modified:   Uize.Widget.Dialog.Form.js
+#	modified:   Uize.Widget.Dialog.Iframe.js
+#	modified:   Uize.Widget.Dialog.Picker.Date.js
+#	modified:   Uize.Widget.Dialog.Picker.js
+#	modified:   Uize.Widget.Dialog.js
+#	modified:   Uize.Widget.Dialog.xResizable.js
+#	modified:   Uize.Widget.DirectionalPad.js
+#	modified:   Uize.Widget.Drag.Move.js
+#	modified:   Uize.Widget.Drag.js
+#	modified:   Uize.Widget.EdgeHugger.js
+#	modified:   Uize.Widget.EggTimer.js
+#	modified:   Uize.Widget.FilterGroups.js
+#	modified:   Uize.Widget.FilteredInput.js
+#	modified:   Uize.Widget.Fleeting.js
+#	modified:   Uize.Widget.Flip.js
+#	modified:   Uize.Widget.Form.js
+#	modified:   Uize.Widget.FormDialog.js
+#	modified:   Uize.Widget.FormElement.Text.js
+#	modified:   Uize.Widget.FormElement.js
+#	modified:   Uize.Widget.FormElements.js
+#	modified:   Uize.Widget.FormWarnings.js
+#	modified:   Uize.Widget.HoverFader.js
+#	modified:   Uize.Widget.ImagePort.Draggable.js
+#	modified:   Uize.Widget.ImagePort.js
+#	modified:   Uize.Widget.ImageWipe.js
+#	modified:   Uize.Widget.ImageWipe.xPresets.js
+#	modified:   Uize.Widget.InlinePicker.FilteredInput.js
+#	modified:   Uize.Widget.InlinePicker.js
+#	modified:   Uize.Widget.ListEditor.js
+#	modified:   Uize.Widget.Log.InstanceEvents.js
+#	modified:   Uize.Widget.Log.js
+#	modified:   Uize.Widget.MagView.js
+#	modified:   Uize.Widget.Mask.js
+#	modified:   Uize.Widget.Options.Accordion.js
+#	modified:   Uize.Widget.Options.FilterGroup.js
+#	modified:   Uize.Widget.Options.Popup.js
+#	modified:   Uize.Widget.Options.Selector.js
+#	modified:   Uize.Widget.Options.Tabbed.Fading.js
+#	modified:   Uize.Widget.Options.Tabbed.js
+#	modified:   Uize.Widget.Options.js
+#	modified:   Uize.Widget.Page.js
+#	modified:   Uize.Widget.Page.xDeferredLinks.js
+#	modified:   Uize.Widget.Pagination.js
+#	modified:   Uize.Widget.Picker.Date.js
+#	modified:   Uize.Widget.Picker.FilteredInput.js
+#	modified:   Uize.Widget.Picker.js
+#	modified:   Uize.Widget.Population.js
+#	modified:   Uize.Widget.PopupPalette.js
+#	modified:   Uize.Widget.Resizer.Marquee.js
+#	modified:   Uize.Widget.Resizer.js
+#	modified:   Uize.Widget.Scrolly.js
+#	modified:   Uize.Widget.SegmentDisplay.Seven.js
+#	modified:   Uize.Widget.SegmentDisplay.js
+#	modified:   Uize.Widget.SlideShow.AutoAdvance.WithSlideSelectors.js
+#	modified:   Uize.Widget.SlideShow.AutoAdvance.js
+#	modified:   Uize.Widget.SlideShow.js
+#	modified:   Uize.Widget.Stretchy.js
+#	modified:   Uize.Widget.Swap.Deck.js
+#	modified:   Uize.Widget.Swap.Html.js
+#	modified:   Uize.Widget.Swap.Image.Cycle.js
+#	modified:   Uize.Widget.Swap.Image.js
+#	modified:   Uize.Widget.Swap.js
+#	modified:   Uize.Widget.Swap.xPresets.js
+#	modified:   Uize.Widget.TableSort.js
+#	modified:   Uize.Widget.TextInput.js
+#	modified:   Uize.Widget.ThumbZoom.js
+#	modified:   Uize.Widget.Tree.List.js
+#	modified:   Uize.Widget.Tree.Menu.js
+#	modified:   Uize.Widget.Tree.Select.js
+#	modified:   Uize.Widget.Tree.js
+#	modified:   Uize.Widget.ValueDisplay.Selector.js
+#	modified:   Uize.Widget.ValueDisplay.js
+#	modified:   Uize.Widget.js
+#	modified:   Uize.Wsh.AuditStrings.js
+#	modified:   Uize.Wsh.AutoScruncher.js
+#	modified:   Uize.Wsh.BuildSimpleDataPages.js
+#	modified:   Uize.Wsh.BuildUtils.js
+#	modified:   Uize.Wsh.CompileJstModules.js
+#	modified:   Uize.Wsh.NeatenJsFiles.js
+#	modified:   Uize.Wsh.UpdateCopyrightNotices.js
+#	modified:   Uize.Wsh.js
+#	modified:   Uize.Xml.js
+#	modified:   Uize.js
+#	modified:   UizeDotCom.BuildUtils.js
+#	modified:   UizeDotCom.Delve.js
+#	modified:   UizeDotCom.Delve.library.js
+#	modified:   UizeDotCom.DelvePageWriter.js
+#	modified:   UizeDotCom.DialogConfirm.js
+#	modified:   UizeDotCom.DialogDate.js
+#	modified:   UizeDotCom.Examples.js
+#	modified:   UizeDotCom.ModulesTree.js
+#	modified:   UizeDotCom.Page.Doc.js
+#	modified:   UizeDotCom.Page.Doc.library.js
+#	modified:   UizeDotCom.Page.Example.Test.js
+#	modified:   UizeDotCom.Page.Example.Test.library.js
+#	modified:   UizeDotCom.Page.Example.js
+#	modified:   UizeDotCom.Page.Example.library.js
+#	modified:   UizeDotCom.Page.Home.js
+#	modified:   UizeDotCom.Page.Home.library.js
+#	modified:   UizeDotCom.Page.Index.js
+#	modified:   UizeDotCom.Page.js
+#	modified:   UizeDotCom.Page.library.js
+#	modified:   UizeDotCom.ParamsInspector.InlinePresets.js
+#	modified:   UizeDotCom.ParamsInspector.js
+#	modified:   UizeDotCom.SiteMap.js
+#	modified:   UizeDotCom.Templates.DelvePageHtml.js
+#	modified:   UizeDotCom.Templates.DelvePageHtml.js.jst
+#	modified:   UizeDotCom.Templates.Footer.js
+#	modified:   UizeDotCom.Templates.Footer.js.jst
+#	modified:   UizeDotCom.Templates.IndexPage.js
+#	modified:   UizeDotCom.Templates.IndexPage.js.jst
+#	modified:   UizeDotCom.Templates.JavaScriptSourceSample.js
+#	modified:   UizeDotCom.Templates.JavaScriptSourceSample.js.jst
+#	modified:   UizeDotCom.Templates.ListingsPage.js
+#	modified:   UizeDotCom.Templates.ListingsPage.js.jst
+#	modified:   UizeDotCom.Templates.SimpleDoc.js
+#	modified:   UizeDotCom.Templates.SimpleDoc.js.jst
+#	modified:   UizeDotCom.Templates.SimpleDocSample.js
+#	modified:   UizeDotCom.Templates.SimpleDocSample.js.jst
+#	modified:   UizeDotCom.Templates.WidgetToGoHomepage.js
+#	modified:   UizeDotCom.Templates.WidgetToGoHomepage.js.jst
+#	modified:   UizeDotCom.Templates.WidgetToGoPage.js
+#	modified:   UizeDotCom.Templates.WidgetToGoPage.js.jst
+#	modified:   UizeDotCom.Templates.js
+#	modified:   UizeDotCom.TestDataFruits.js
+#	modified:   UizeDotCom.TestDataPhotos.js
+#	modified:   UizeDotCom.TestWidget.js
+#	modified:   UizeDotCom.WidgetToGoPage.Calculator.js
+#	modified:   UizeDotCom.WidgetToGoPage.Calculator.library.js
+#	modified:   UizeDotCom.WidgetToGoPage.Calendar.js
+#	modified:   UizeDotCom.WidgetToGoPage.Calendar.library.js
+#	modified:   UizeDotCom.WidgetToGoPage.js
+#	modified:   UizeDotCom.js
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	../TODO~
+#	../Uize.Node.js
+#	../canvas.html~
+#	../clone_bug.html
+#	../clone_bug.html~
+#	../cs/tpmms.html~
+#	../javascript.html~
+#	JsTerm.Program.Ls.js~
+#	Uize.Array.Dupes.js
+#	Uize.Array.Util.js
+#	Uize.Class.Value.js
+#	Uize.Class.js
+#	Uize.Data.Combinations.js
+#	Uize.Node.js~
+#	Uize.Test.Uize.Array.Dupes.js
+#	Uize.Test.Uize.Array.Util.js
+#	Uize.Test.Uize.Class.js
+#	Uize.Test.Uize.Data.Combinations.js
+#	Uize.Test.Uize.Data.NameValueRecords.js
+#	Uize.Widget.AutoSuggest.js
+#	Uize.Widget.Collection.Dynamic.Table.js
+#	Uize.Widget.Dialog.Picker.FilteredInput.js
+#	Uize.Widget.Dialog.Picker.Palette.Selector.js
+#	Uize.Widget.Dialog.Picker.Palette.js
+#	Uize.Widget.Drag.Move.js~
+#	Uize.Widget.Drag.js~
+#	Uize.Widget.FormElement.Select.js
+#	Uize.Widget.InlinePicker.Selector.js
+#	Uize.Widget.Picker.Palette.Selector.js
+#	Uize.Widget.Picker.Palette.js
+#	foo.txt
+#	../keys.html
+#	../keys.html~
+#	../pics/michaelscottno.gif
+#	../pics/tracymorganno.gif
+no changes added to commit (use "git add" and/or "git commit -a")

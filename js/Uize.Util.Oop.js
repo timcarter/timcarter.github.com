@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Util.Oop Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -13,10 +13,10 @@
 
 /* Module Meta Data
 	type: Class
-	importance: 8
-	codeCompleteness: 0
+	importance: 7
+	codeCompleteness: 80
 	testCompleteness: 0
-	docCompleteness: 0
+	docCompleteness: 10
 */
 
 /*?
@@ -36,7 +36,7 @@ Uize.module ({
 				_isFunction = Uize.isFunction
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_sacredEmptyArray = [],
 				_typicalPackageFunction = function () {},
@@ -193,8 +193,8 @@ Uize.module ({
 				);
 			};
 
-			_package.isUizeClassInstance = function (_object) {
-				return typeof _object == 'object' && _object != _undefined && _package.isUizeClass (_object.constructor);
+			_package.isUizeClassInstance = function (_value) {
+				return Uize.isObject (_value) && _package.isUizeClass (_value.constructor);
 			};
 
 			_package.getClassName = function (_class) {
@@ -284,9 +284,9 @@ Uize.module ({
 
 			_package.resolveToClass = function (_instanceOrClass) {
 				return (
-					_instanceOrClass == _undefined
-						? _undefined
-						: _isFunction (_instanceOrClass) ? _instanceOrClass : _instanceOrClass.constructor
+					_instanceOrClass == _undefined || _isFunction (_instanceOrClass)
+						? _instanceOrClass || _undefined
+						: _instanceOrClass.constructor
 				);
 			};
 

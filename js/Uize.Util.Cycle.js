@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Util.Cycle Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -28,7 +28,7 @@
 
 Uize.module ({
 	name:'Uize.Util.Cycle',
-	superclass:'Uize',
+	superclass:'Uize.Class',
 	builder:function (_superclass) {
 		/*** Variables for Scruncher Optimization ***/
 			var
@@ -83,16 +83,9 @@ Uize.module ({
 					) {
 						var
 							_binding = _bindings [_bindingNo],
-							_source = _binding.source,
+							_source = Uize.values (_binding.source),
 							_target = _binding.target
 						;
-						if (!(_source instanceof Array)) {
-							var _array = [];
-							for (var _propertyName in _source)
-								_array.push (_source [_propertyName])
-							;
-							_source = _array;
-						}
 						var _sourceValue = _source [_this._cycleNo % _source.length];
 						if (_binding.sourceProperty)
 							_sourceValue = _sourceValue [_binding.sourceProperty]

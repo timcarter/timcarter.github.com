@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Color.xCmyk Object Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -103,7 +103,7 @@ Uize.module ({
 										...............................
 
 									Decoding
-										When a color is decoded from =CMYK array=, the values of the array's four elements may be numbers, strings, or any object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property).
+										When a color is decoded from =CMYK array=, the values of the array's four elements may be numbers, strings, or any object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property).
 
 										The values will be coerced to number type by invoking the =valueOf Intrinsic Method=.
 
@@ -157,7 +157,7 @@ Uize.module ({
 										.......................................................
 
 									Decoding
-										When a color is decoded from =CMYK object=, the values of the object's =cyan=, =magenta=, =yellow=, and =key= properties may be numbers, strings, or any object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property).
+										When a color is decoded from =CMYK object=, the values of the object's =cyan=, =magenta=, =yellow=, and =key= properties may be numbers, strings, or any object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property).
 
 										The values will be coerced to number type by invoking the =valueOf Intrinsic Method=.
 

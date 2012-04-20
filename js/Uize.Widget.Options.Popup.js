@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Options.Popup Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -63,6 +63,8 @@ Uize.module ({
 								}
 							}
 						);
+						
+						_this.wire('Changed.value', function() { _this.updateUi() });
 					}
 				),
 				_classPrototype = _class.prototype

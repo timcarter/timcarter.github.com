@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : UizeDotCom.Delve
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -31,7 +31,6 @@ Uize.module ({
 		'Uize.Util.Oop',
 		'Uize.Node',
 		'Uize.String',
-		'Uize.Data',
 		'Uize.Data.PathsTree',
 		'Uize.Array.Sort',
 		'Uize.Json',
@@ -49,16 +48,16 @@ Uize.module ({
 				// REFERENCE: http://stackoverflow.com/questions/1700870/how-do-i-do-outerhtml-in-firefox
 			}
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_sacredEmptyObject = {},
 				_notInitialized = {},
-				_knownUizeModulesLookup = Uize.Data.getLookup (
+				_knownUizeModulesLookup = Uize.lookup (
 					Uize.Data.PathsTree.toList (UizeDotCom.ModulesTree (),'.'),
 					1,
 					true
 				),
-				_javaScriptBuiltInObjectsLookup = Uize.Data.getLookup (
+				_javaScriptBuiltInObjectsLookup = Uize.lookup (
 					['Array','Boolean','Function','Number','Object','RegExp','String','Window','XMLHttpRequest'],
 					1,
 					true
@@ -92,7 +91,7 @@ Uize.module ({
 											var
 												_childNo = -1,
 												_children = _widget.children,
-												_childNames = Uize.Data.getKeys (_children).sort (),
+												_childNames = Uize.keys (_children).sort (),
 												_childNamesLength = _childNames.length
 											;
 											++_childNo < _childNamesLength;
@@ -119,7 +118,7 @@ Uize.module ({
 								var
 									_this = this,
 									_instancesPerWidgetClassMap = _this._getInstancesPerWidgetClassMap (),
-									_widgetClasses = Uize.Data.getKeys (_instancesPerWidgetClassMap)
+									_widgetClasses = Uize.keys (_instancesPerWidgetClassMap)
 								;
 
 								/*** sort widget classes, from those with most instance to those with least instances ***/
@@ -141,9 +140,7 @@ Uize.module ({
 											_widgetClassesLength = _widgetClasses.length,
 											_widgetClass,
 											_widgetClassWidgets,
-											_widgetClassWidgetsLength,
-											_widgetClassItem,
-											_widgetClassItemItems
+											_widgetClassWidgetsLength
 										;
 										++_widgetClassNo < _widgetClassesLength;
 									) {
@@ -153,24 +150,25 @@ Uize.module ({
 													_widgetClassWidgets =
 														_instancesPerWidgetClassMap [_widgetClass = _widgetClasses [_widgetClassNo]]
 												).length
-										) {
-											_items.push (
-												_widgetClassItem = {
-													title:_widgetClass + ' (' + _widgetClassWidgetsLength + ')',
-													link:_treeItemLink,
-													expanded:false,
-													objectPath:_widgetClass,
-													items:_widgetClassItemItems = []
-												}
-											);
-											for (var _widgetNo = -1, _widgetPath; ++_widgetNo < _widgetClassWidgetsLength;)
-												_widgetClassItemItems.push ({
-													title:_widgetPath = _this._getWidgetPath (_widgetClassWidgets [_widgetNo]),
-													link:_treeItemLink,
-													objectPath:_widgetPath
-												})
-											;
-										}
+										)
+											_items.push ({
+												title:_widgetClass + ' (' + _widgetClassWidgetsLength + ')',
+												link:_treeItemLink,
+												expanded:false,
+												objectPath:_widgetClass,
+												items:Uize.map (
+													_widgetClassWidgets,
+													function (_widgetClassWidget) {
+														var _widgetPath = _this._getWidgetPath (_widgetClassWidget);
+														return {
+															title:_widgetPath,
+															link:_treeItemLink,
+															objectPath:_widgetPath
+														};
+													}
+												)
+											})
+										;
 									}
 
 								return _items;
@@ -237,7 +235,7 @@ Uize.module ({
 							_title:'Widgets for which localized strings are specified',
 							_itemsGenerator:function () {
 								return this._getMatchingWidgetsTreeListItems (
-									function (_widget) {return !Uize.Data.isEmpty (_widget.get ('localized'))}
+									function (_widget) {return !Uize.isEmpty (_widget.get ('localized'))}
 								);
 							}
 						},
@@ -245,7 +243,7 @@ Uize.module ({
 							_title:'Widgets that have some remapped DOM nodes',
 							_itemsGenerator:function () {
 								return this._getMatchingWidgetsTreeListItems (
-									function (_widget) {return !Uize.Data.isEmpty (_widget.get ('nodeMap'))}
+									function (_widget) {return !Uize.isEmpty (_widget.get ('nodeMap'))}
 								);
 							}
 						},
@@ -543,14 +541,12 @@ Uize.module ({
 					;
 					while (_parent = _parent.parent) _depth++;
 					_tooltipData ['depth in tree'] = _depth || 'this is the root widget';
-					_tooltipData.children =
-						Uize.Data.getTotalKeys (_object.children) || 'no children'
-					;
+					_tooltipData.children = Uize.totalKeys (_object.children) || 'no children';
 					_tooltipData.siblings =
-						(_object.parent && (Uize.Data.getTotalKeys (_object.parent.children) - 1)) || 'no siblings'
+						(_object.parent && (Uize.totalKeys (_object.parent.children) - 1)) || 'no siblings'
 					;
 					_tooltipData ['localized strings'] =
-						Uize.Data.getTotalKeys (_object.get ('localized')) || 'no localized strings'
+						Uize.totalKeys (_object.get ('localized')) || 'no localized strings'
 					;
 					_tooltipData ['DOM nodes'] = _this._getWidgetNodesInfo (_object)._summary;
 				} else if (_whatItIs == 'class') {
@@ -608,17 +604,11 @@ Uize.module ({
 			};
 
 			_classPrototype._getBuiltModules = function () {
-				var
-					_openerUize = this._window.Uize,
-					_builtModules = _openerUize.getModulesBuilt && _openerUize.getModulesBuilt ()
-						/* NOTE: Uize.getModulesBuilt is deprecated */
-				;
-				if (!_builtModules) {
-					_builtModules = [];
-					var _modulesByName = _openerUize.getModuleByName ('*');
-					for (var _moduleName in _modulesByName) _builtModules.push (_moduleName);
-				}
-				return _builtModules;
+				var _openerUize = this._window.Uize;
+				return (
+					(_openerUize.getModulesBuilt && _openerUize.getModulesBuilt ()) ||
+					Uize.keys (_openerUize.getModuleByName ('*')) // NOTE: Uize.getModulesBuilt is deprecated */
+				);
 			};
 
 			_classPrototype._getWidgetPath = function (_widget) {
@@ -774,23 +764,18 @@ Uize.module ({
 					_items = [],
 					_builtModules = _this._getBuiltModules ()
 				;
-				_moduleMatcher && _builtModules.sort ();
-				for (
-					var
-						_builtModuleNo = -1,
-						_builtModulesLength = _builtModules.length
-					;
-					++_builtModuleNo < _builtModulesLength;
-				) {
-					var _builtModule = _builtModules [_builtModuleNo];
-					_builtModule && (!_moduleMatcher || _moduleMatcher (_builtModule)) &&
-						_items.push ({
-							title:_builtModule,
-							link:_treeItemLink,
-							objectPath:_builtModule
-						})
-					;
-				}
+				Uize.forEach (
+					_moduleMatcher ? _builtModules.sort () : _builtModules,
+					function (_builtModule) {
+						_builtModule && (!_moduleMatcher || _moduleMatcher (_builtModule)) &&
+							_items.push ({
+								title:_builtModule,
+								link:_treeItemLink,
+								objectPath:_builtModule
+							})
+						;
+					}
+				);
 				return _items;
 			};
 
@@ -857,26 +842,17 @@ Uize.module ({
 			};
 
 			_classPrototype._getMatchingWidgetsTreeListItems = function (_widgetMatcher) {
-				var
-					_this = this,
-					_items = []
-				;
-				for (
-					var
-						_widgetNo = -1,
-						_widgets = _this._getMatchingWidgetsFromTree (_widgetMatcher).sort (),
-						_widgetsLength = _widgets.length
-					;
-					++_widgetNo < _widgetsLength;
-				) {
-					var _objectPath = _widgets [_widgetNo];
-					_items.push ({
-						title:_objectPath,
-						link:_treeItemLink,
-						objectPath:_objectPath
-					})
-				}
-				return _items;
+				var _this = this;
+				return Uize.map (
+					_this._getMatchingWidgetsFromTree (_widgetMatcher).sort (),
+					function (_widget) {
+						return {
+							title:_objectPath,
+							link:_treeItemLink,
+							objectPath:_objectPath
+						};
+					}
+				);
 			};
 
 			_classPrototype._getMatchingWidgetDomNodesTreeListItems = function (_nodeMatcher) {
@@ -956,15 +932,7 @@ Uize.module ({
 					_processWidget (_this._getPageWidget ());
 
 				return Uize.Array.Sort.sortBy (
-					Uize.Data.map (
-						function (_node) {
-							var _nodeId = _node.id;
-							return {
-								title:'#' + _nodeId,
-								link:_treeItemLink,
-								objectPath:'document.getElementById (\'' + _nodeId + '\')'
-							};
-						},
+					Uize.map (
 						_this._window.Uize.Node.find ({
 							id:function (_nodeId) {
 								if (!_nodeId || _accessedNodesLookup [_nodeId]) return false;
@@ -975,7 +943,15 @@ Uize.module ({
 								}
 								return _nodeBelongsToWidget == _widgetOrNotWidget;
 							}
-						})
+						}),
+						function (_node) {
+							var _nodeId = _node.id;
+							return {
+								title:'#' + _nodeId,
+								link:_treeItemLink,
+								objectPath:'document.getElementById (\'' + _nodeId + '\')'
+							};
+						}
 					),
 					'value.title'
 				);
@@ -1063,7 +1039,8 @@ Uize.module ({
 												'<td>WIDGET PATH</td>' +
 												'<td>CLASS</td>' +
 											'</tr>' +
-											Uize.Data.map (
+											Uize.map (
+												_widgets,
 												function (_widget) {
 													_widget = _this._resolveToObject (_widget);
 													return (
@@ -1076,8 +1053,7 @@ Uize.module ({
 															'</td>' +
 														'</tr>'
 													);
-												},
-												_widgets
+												}
 											).join ('') +
 										'</table>'
 									)
@@ -1124,7 +1100,7 @@ Uize.module ({
 									_nodesInfo = _this._getWidgetNodesInfo (_object),
 									_nodeCache = _nodesInfo._nodeCache,
 									_allNodesMap = _nodesInfo._allNodesMap,
-									_nodeNames = Uize.Data.getKeys (_allNodesMap).sort (),
+									_nodeNames = Uize.keys (_allNodesMap).sort (),
 									_getNodeMethodCallPrefix = _this._getWidgetPath (_object) + '.getNode (\''
 								;
 								_addTabContentsSection (
@@ -1141,7 +1117,8 @@ Uize.module ({
 													'<td>ID</td>' +
 													'<td>TAG</td>' +
 												'</tr>' +
-												Uize.Data.map (
+												Uize.map (
+													_nodeNames,
 													function (_nodeName) {
 														var
 															_node = _allNodesMap [_nodeName],
@@ -1169,8 +1146,7 @@ Uize.module ({
 																'</td>' +
 															'</tr>'
 														);
-													},
-													_nodeNames
+													}
 												).join ('') +
 											'</table>'
 										)
@@ -1180,7 +1156,7 @@ Uize.module ({
 							/*** determine localized strings ***/
 								var
 									_localized = _object.get ('localized'),
-									_stringNames = Uize.Data.getKeys (_localized).sort (),
+									_stringNames = Uize.keys (_localized).sort (),
 									_localizeMethodCallPrefix = _objectInspectedPath + '.localize ('
 								;
 								function _getLocalizeMethodCall (_stringName) {
@@ -1212,7 +1188,8 @@ Uize.module ({
 													'<td>NAME</td>' +
 													'<td>VALUE</td>' +
 												'</tr>' +
-												Uize.Data.map (
+												Uize.map (
+													_stringNames,
 													function (_stringName) {
 														return (
 															'<tr>' +
@@ -1222,8 +1199,7 @@ Uize.module ({
 																'<td>' + _localized [_stringName] + '</td>' +
 															'</tr>'
 														);
-													},
-													_stringNames
+													}
 												).join ('') +
 											'</table>'
 										)
@@ -1252,9 +1228,9 @@ Uize.module ({
 									_htmlChunks,
 									'INHERITANCE CHAIN',
 									'inheritance depth: ' + (_inheritanceChain.length - 1),
-									Uize.Data.map (
-										function (_class) {return _getObjectLink (_class.moduleName)},
-										_inheritanceChain
+									Uize.map (
+										_inheritanceChain,
+										function (_class) {return _getObjectLink (_class.moduleName)}
 									).join (' -> '),
 									'this is the root class',
 									true
@@ -1266,7 +1242,8 @@ Uize.module ({
 									_htmlChunks,
 									'SUBCLASSES (ON THIS PAGE)',
 									_subclasses.length + ' subclasses',
-									Uize.Data.map (
+									Uize.map (
+										_subclasses,
 										function (_item) {
 											return (
 												_getObjectLink (_item.title) +
@@ -1276,8 +1253,7 @@ Uize.module ({
 														: ''
 												)
 											);
-										},
-										_subclasses
+										}
 									),
 									'no subclasses on this page',
 									true
@@ -1363,7 +1339,7 @@ Uize.module ({
 							var
 								_propertyNo = -1,
 								_propertyValues = _object.get (),
-								_properties = Uize.Data.getKeys (_propertyValues).sort (),
+								_properties = Uize.keys (_propertyValues).sort (),
 								_propertiesLength = _properties.length,
 								_propertyGetMethodCallPrefix = _objectInspectedPath + '.get (\'',
 								_propertySetMethodCallPrefix = _objectInspectedPath + '.set (\'',

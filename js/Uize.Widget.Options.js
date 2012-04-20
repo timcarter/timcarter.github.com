@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Options Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -36,12 +36,16 @@ Uize.module ({
 	required:'Uize.Widget.Button',
 	builder:function (_superclass) {
 		/*** Variables for Scruncher Optimization ***/
-			var _undefined;
+			var
+				_false = false,
+				_null = null,
+				_undefined
+			;
 
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
-					null,
+					_null,
 					function () {
 						/*** Private Instance Properties ***/
 							this._lastValueNo = -1;
@@ -52,10 +56,23 @@ Uize.module ({
 			;
 
 		/*** Private Instance Methods ***/
+			_classPrototype._updateUiOptionSelected = function() {
+				var _this = this;
+				if (_this.isWired && _this._valueNo != _this._lastValueNo) {
+					function _setOptionSelected (_optionNo,_selected) {
+						_optionNo >= 0 &&
+							Uize.callOn (_this.children ['option' + _optionNo],'set',[{selected:_selected}])
+						;
+					}
+					_setOptionSelected (_this._lastValueNo,_false);
+					_setOptionSelected (_this._lastValueNo = _this._valueNo,true);
+				}
+			};
+
 			_classPrototype._updateValueNo = function () {
 				var _this = this;
 				_this.set ({_valueNo:_this.getValueNoFromValue (_this._value)});
-				_this.updateUi ();
+				_this._updateUiOptionSelected ();
 			};
 
 		/*** Public Instance Methods ***/
@@ -64,7 +81,7 @@ Uize.module ({
 					var _valueNo = -1, _valuesLength = this._values.length, _children = this.children;
 					++_valueNo < _valuesLength;
 				)
-					if (_function (_children ['option' + _valueNo],_valueNo) === false) break;
+					if (_function (_children ['option' + _valueNo],_valueNo) === _false) break;
 				;
 				/*?
 					Instance Methods
@@ -98,7 +115,7 @@ Uize.module ({
 						? (
 							typeof _values [0] == 'object'
 								? Uize.findRecordNo (_values,{name:_value})
-								: Uize.indexIn (_values,_value,false,false)
+								: Uize.indexIn (_values,_value,_false,_false)
 						)
 						: -1
 				);
@@ -114,16 +131,44 @@ Uize.module ({
 				*/
 			};
 
+			_classPrototype.getOptionProperties = function(_valueNo, _valueObject) {
+				return _null
+			};
+				/*?
+					Instance Methods
+						getOptionProperties
+							A hook method for subclasses to provide additional set-get properties to add to the general =optionWidgetProperties= for a specific child option button widget. The base implementation returns =null=.
+
+							SYNTAX
+							...................................................................................
+							optionPropertiesOBJ = myInstance.getOptionProperties (valueNoINT, valueObjectOBJ);
+							...................................................................................
+
+							=valueNoINT= contains the child widget button index. =valueObjectOBJ= is the object in the =values= set-get property at index =valueNoINT=.
+
+							This hook method is useful when a =Uize.Widget.Options= subclass wants specific data from each value object within the =values= set-get property passed to the option button child widget when it is created. This data is added to the =optionWidgetProperties= which are common accross all option buton child widgets.
+
+							EXAMPLE
+							...........................................................................................
+							_class.prototype.getOptionProperties = function(valueNo, valueObject) {
+								return Uize.copyInto(
+									_superclass.prototype.getOptionProperties.call (this, valueNo, valueObject) || {},
+									{
+										value:valueObject.name,
+										valueDetails:valueObject.valueDetails
+									}
+								);
+							};
+							...........................................................................................
+
+							In the above example, the =getOptionProperties= hook method was overridden in a subclass to add =value= and =valueDetails= properties to the set-get properties that will be set on the option button child widget. These values are retrieved from the =valueObjectOBJ=.
+				*/
+
 			_classPrototype.updateUi = function () {
 				var _this = this;
-				if (_this.isWired && _this._valueNo != _this._lastValueNo) {
-					function _setOptionSelected (_optionNo,_selected) {
-						_optionNo >= 0 &&
-							Uize.callOn (_this.children ['option' + _optionNo],'set',[{selected:_selected}])
-						;
-					}
-					_setOptionSelected (_this._lastValueNo,false);
-					_setOptionSelected (_this._lastValueNo = _this._valueNo,true);
+				if (_this.isWired) {
+					_this._updateUiOptionSelected();
+					_superclass.prototype.updateUi.call(_this);
 				}
 			};
 
@@ -139,7 +184,7 @@ Uize.module ({
 						_restoreValueTimeout, _tentativeValueTimeout
 					;
 					function _restoreValue () {
-						_restoreValueTimeout = null;
+						_restoreValueTimeout = _null;
 						_this.set ({
 							_tentativeValue:_this._value,
 							_tentativeValueNo:_this._valueNo
@@ -149,70 +194,70 @@ Uize.module ({
 						_restoreValueTimeout && clearTimeout (_restoreValueTimeout);
 						_tentativeValueTimeout && clearTimeout (_tentativeValueTimeout);
 					}
-					function _setupOption (_valueNo) {
-						var
-							_valueObject = _values [_valueNo],
-							_value =
+					Uize.forEach (
+						_values,
+						function _setupOption (_valueObject,_valueNo) {
+							var _value =
 								((typeof _valueObject == 'object' && _valueObject) || (_valueObject = {name:_valueObject})).name
-						;
-						function _setValue () {
-							_this.set (
-								_this._setValueOnMouseover
-									? {_value:_value}
-									: {_tentativeValue:_value,_tentativeValueNo:_valueNo}
-							);
-						}
-						_this.addChild (
-							'option' + _valueNo,
-							_optionWidgetClass,
-							_valueObject.enabled === false
-								? Uize.copyInto ({},_optionWidgetProperties,{enabled:false})
-								: _optionWidgetProperties
-						)
-							.wire (
-								'*',
-								function (_event) {
-									if (_event.name == 'Click') {
-										_this.fire ({name:'Before Value Change',value:_value,valueNo:_valueNo}).cancel ||
-											_this.set ({_value:_value})
+							;
+							function _setValue () {
+								_this.set (
+									_this._setValueOnMouseover
+										? {_value:_value}
+										: {_tentativeValue:_value,_tentativeValueNo:_valueNo}
+								);
+							}
+							_this.addChild (
+								'option' + _valueNo,
+								_optionWidgetClass,
+								Uize.copyInto (
+									{},
+									_optionWidgetProperties,
+									_this.getOptionProperties(_valueNo, _valueObject)
+								)
+							)
+								.wire (
+									'*',
+									function (_event) {
+										if (_event.name == 'Click') {
+											_this.fire ({name:'Before Value Change',value:_value,valueNo:_valueNo}).cancel ||
+												_this.set ({_value:_value})
+												/*?
+													Instance Events
+														Before Value Change
+															This event fires just as an option button is clicked, but before the =value= set-get property for the instance is updated.
+
+															This event offers the handler the opportunity to cancel the value change. The event contains a "value" property (which is the new value that would be set) and a "valueNo" property (which is the index of the new value that would be set). To cancel the set action, the handler can set the event object's "cancel" property to =true=. The handler can inspect the "value" and "valueNo" properties of the event to determine if the value change should be permitted.
+												*/
+											;
+											_this.fire (_event);
+										} else if (_event.name == 'Over') {
+											_clearTentativeValueTimeouts ();
+											_this._tentativeRestTime
+												? (_tentativeValueTimeout = setTimeout (_setValue,_this._tentativeRestTime))
+												: _setValue ()
+											;
+										} else if (_event.name == 'Out') {
+											_clearTentativeValueTimeouts ();
+											_restoreValueTimeout = setTimeout (_restoreValue,250);
+										}
+										_this.fire ({
+											name:'Option Event',
+											value:_value,
+											childEvent:_event
 											/*?
 												Instance Events
-													Before Value Change
-														This event fires just as an option button is clicked, but before the =value= set-get property for the instance is updated.
+													Option Event
+														Fires each time an event fires for one of the option button child widgets.
 
-														This event offers the handler the opportunity to cancel the value change. The event contains a "value" property (which is the new value that would be set) and a "valueNo" property (which is the index of the new value that would be set). To cancel the set action, the handler can set the event object's "cancel" property to =true=. The handler can inspect the "value" and "valueNo" properties of the event to determine if the value change should be permitted.
+														When this event fires, the event object will have a "value" property whose value corresponds to the value associated with the option, as well as a "childEvent" property that carries the event object associated with the option button event.
 											*/
-										;
-										_this.fire (_event);
-									} else if (_event.name == 'Over') {
-										_clearTentativeValueTimeouts ();
-										_this._tentativeRestTime
-											? (_tentativeValueTimeout = setTimeout (_setValue,_this._tentativeRestTime))
-											: _setValue ()
-										;
-									} else if (_event.name == 'Out') {
-										_clearTentativeValueTimeouts ();
-										_restoreValueTimeout = setTimeout (_restoreValue,250);
+										});
 									}
-									_this.fire ({
-										name:'Option Event',
-										value:_value,
-										childEvent:_event
-										/*?
-											Instance Events
-												Option Event
-													Fires each time an event fires for one of the option button child widgets.
-
-													When this event fires, the event object will have a "value" property whose value corresponds to the value associated with the option, as well as a "childEvent" property that carries the event object associated with the option button event.
-										*/
-									});
-								}
-							)
-						;
-					}
-					for (var _valueNo = -1; ++_valueNo < _valuesLength;)
-						_setupOption (_valueNo)
-					;
+								)
+							;
+						}
+					);
 
 					/*** seed root node references for buttons, if possible (performance optimization) ***/
 						/* NOTE:
@@ -240,7 +285,7 @@ Uize.module ({
 										!_childNodeId.indexOf (_idPrefix) &&
 										(_child = _children [_childNodeId.slice (_idPrefixLength + 1)])
 									)
-										_child.set ({nodeMap:{'':_childNode,shell:null,bed:null}})
+										_child.set ({nodeMap:{'':_childNode,shell:_null,bed:_null}})
 									;
 								}
 							}
@@ -252,7 +297,37 @@ Uize.module ({
 			};
 
 		/*** Register Properties ***/
+			function _getValidValue(_value) {
+				var
+					_this = this,
+					_values = this._values
+				;
+
+				return (
+					!_this._ensureValueInValues || !_values || !_values.length || _this.getValueNoFromValue(_value) > -1
+						? _value
+						: (typeof _values[0] == 'object' ? _values[0].name : _values[0])
+				);
+			}
 			_class.registerProperties ({
+				_ensureValueInValues:{
+					name:'ensureValueInValues',
+					onChange:function() {
+						var _this = this;
+						_this.set({_value:_getValidValue.call(_this, _this._value)});
+					},
+					value:_false
+					/*?
+						Set-get Properties
+							ensureValueInValues
+								A boolean, indicating whether or not the value of the =value= set-get property should be one of the values within the =values= set-get property.
+
+								When this property is set to =true=, the =value= set-get property will be enforced to be within the =values= set-get property. If the =value= set-get property is set with a value not within the =values= set-get property, the first value within the =values= set-get property will be chosen. When this is property is set to =false=, the value is no longer restricted to be one of the values within the =values= set-get property.
+
+								NOTES
+								- the initial value is =false=
+					*/
+				},
 				_optionWidgetClass:'optionWidgetClass',
 					/*?
 						Set-get Properties
@@ -276,7 +351,7 @@ Uize.module ({
 
 								NOTES
 								- see the companion =optionWidgetClass= set-get property
-								- the initial value is =false=
+								- the initial value is =undefined=
 					*/
 				_setValueOnMouseover:'setValueOnMouseover',
 					/*?
@@ -306,7 +381,7 @@ Uize.module ({
 				},
 				_tentativeValue:{
 					name:'tentativeValue',
-					value:null
+					value:_null
 					/*?
 						Set-get Properties
 							tentativeValue
@@ -334,12 +409,13 @@ Uize.module ({
 				},
 				_value:{
 					name:'value',
+					conformer:_getValidValue,
 					onChange:function () {
 						var _this = this;
 						_this._updateValueNo ();
 						_this.set ({_tentativeValueNo:_this._valueNo,_tentativeValue:_this._value});
 					},
-					value:null
+					value:_null
 					/*?
 						Set-get Properties
 							value
@@ -376,7 +452,7 @@ Uize.module ({
 								_this.removeChild ('option' + _valueNo)
 							;
 							_this.unwireUi ();
-							_this.get ('html') != _undefined && _this.set ({built:false});
+							_this.get ('html') != _undefined && _this.set ({built:_false});
 							_this.insertOrWireUi ();
 						}
 					},

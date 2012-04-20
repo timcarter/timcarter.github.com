@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Tree.Select Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -119,16 +119,7 @@ Uize.module ({
 						_this._levels [_nextLevelNo] = _itemSelected.items;
 						var _nextSelect = _this.getNode ('level' + _nextLevelNo);
 						_addOption (_this._chooseText);
-						for (
-							var
-								_itemNo = -1,
-								_itemSelectedItems = _itemSelected.items,
-								_itemSelectedItemsLength = _itemSelectedItems.length
-							;
-							++_itemNo < _itemSelectedItemsLength;
-						)
-							_addOption (_itemSelectedItems [_itemNo].title)
-						;
+						Uize.forEach (_itemSelected.items,function (_item) {_addOption (_item.title)});
 						_enableSelect (_nextSelect,_true);
 					}
 					if (_selectionComplete != _this._selectionComplete) {

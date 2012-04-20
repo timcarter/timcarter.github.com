@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Date Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -28,6 +28,10 @@
 
 Uize.module ({
 	name:'Uize.Test.Uize.Date',
+	required:[
+		'Uize.Class',
+		'Uize.Class.Value'
+	],
 	builder:function () {
 		function _dateToNumber (_date) {return +_date}
 		function _dateToString (_date) {return _date + ''}
@@ -104,7 +108,6 @@ Uize.module ({
 		function _resolveShouldReturnSpecificDateTest (_testTitle,_arguments,_specificDate) {
 			return _dateMethodShouldReturnSpecificDateTest (_testTitle,'resolve',_arguments,_specificDate);
 		}
-		function _returnAsIs (_value) {return _value}
 		function _isRecentDaysFromNowTest (_testTitle,_daysFromNow,_recencyWindow,_expectedValue,_dateEncoder) {
 			return {
 				title:_testTitle,
@@ -113,7 +116,7 @@ Uize.module ({
 					return this.expect (
 						_expectedValue,
 						Uize.Date.isRecent (
-							(_dateEncoder || _returnAsIs) (new Date (+_now + _daysFromNow * _oneDayInMilliseconds)),
+							(_dateEncoder || Uize.returnX) (new Date (+_now + _daysFromNow * _oneDayInMilliseconds)),
 							_recencyWindow,
 							_now
 						)
@@ -259,7 +262,11 @@ Uize.module ({
 							7200
 						],
 						['Test that the values for all the parameters can be Uize class instances',
-							[new Uize ({value:'2'}),new Uize ({value:'hours'}),new Uize ({value:'seconds'})],
+							[
+								Uize.Class.Value ({value:'2'}),
+								Uize.Class.Value ({value:'hours'}),
+								Uize.Class.Value ({value:'seconds'})
+							],
 							7200
 						]
 					]],
@@ -453,7 +460,7 @@ Uize.module ({
 								title:'Test that a badly formatted date string resolves to a Date object instance initialized to the time NaN',
 								test:function () {
 									var _result = Uize.Date.resolve ('THIS IS NOT A VALID DATE STRING');
-									return this.expectInstanceOf (Date,_result) && isNaN (_result);
+									return this.expectInstanceOf (Date,_result) && this.expectSameAs (NaN,+_result);
 								}
 							},
 							_resolveShouldReturnNowTest (

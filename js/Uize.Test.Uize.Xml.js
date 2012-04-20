@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Xml Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -28,6 +28,10 @@
 
 Uize.module ({
 	name:'Uize.Test.Uize.Xml',
+	required:[
+		'Uize.Class',
+		'Uize.Class.Value'
+	],
 	builder:function () {
 		return Uize.Test.declare ({
 			title:'Test for Uize.Xml Module',
@@ -112,7 +116,7 @@ Uize.module ({
 							'SOLAR POWER'
 						],
 						['Test that a Uize class instance is coerced to a string before being encoded',
-							[new Uize ({value:'SOLAR POWER'})],
+							[Uize.Class.Value ({value:'SOLAR POWER'})],
 							'SOLAR POWER'
 						]
 					]],
@@ -170,7 +174,7 @@ Uize.module ({
 							'SOLAR POWER'
 						],
 						['Test that a Uize class instance is coerced to a string before being decoded',
-							[new Uize ({value:'SOLAR POWER'})],
+							[Uize.Class.Value ({value:'SOLAR POWER'})],
 							'SOLAR POWER'
 						]
 					]],
@@ -240,7 +244,7 @@ Uize.module ({
 								stringObj:new String ('hello'),
 								numberObj:new Number (42),
 								boolObj:new Boolean (false),
-								uizeInstance:new Uize ({value:'hello'}),
+								uizeInstance:Uize.Class.Value ({value:'hello'}),
 								undefinedValue:undefined,
 								nullValue:null,
 								array:[1,2,3,4]

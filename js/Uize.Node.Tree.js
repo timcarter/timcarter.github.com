@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Node.Tree Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2003-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2003-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -685,7 +685,7 @@ Uize.module ({
 					_levelClassRegExp = [],
 					_tree = {title:'Contents'}
 				;
-				if (isNaN (_initialExpandedDepth -= 0)) _initialExpandedDepth = 1;
+				_initialExpandedDepth = Uize.toNumber (_initialExpandedDepth,1);
 				for (var _levelClassNo = -1, _levelClass; ++_levelClassNo < _levelClasses.length;) {
 					_levelClassMap [_levelClass = _levelClasses [_levelClassNo]] = _levelClassNo;
 					_levelClassRegExp.push ('\\b' + _levelClass + '\\b');

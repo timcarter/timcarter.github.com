@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Tree.Menu Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -37,7 +37,7 @@ Uize.module ({
 			_Uize_Node = Uize.Node
 		;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_pathToResources = Uize.pathToResources + 'Uize_Widget_Tree_Menu/',
 				_zIndex = 10000
@@ -63,22 +63,19 @@ Uize.module ({
 				;
 				if (!_itemsWiredMap [_itemSpecifier]) {
 					/*** iterate through and wire items ***/
-						function _wireItem (_itemSpecifier) {
-							_this.wireNode (
-								_itemSpecifier + 'TitleLink',
-								'mouseover',
-								function () {_this.collapseAllBut (_itemSpecifier)}
-							);
-						}
-						var _items = _itemSpecifier
-							? _this.getItemFromSpecifier (_itemSpecifier).items
-							: _this.get ('items')
-						;
-						if (_items && _items.length) {
-							for (var _itemNo = -1, _itemsLength = _items.length; ++_itemNo < _itemsLength;)
-								_wireItem (_itemSpecifier + (_itemSpecifier && 'x') + _itemNo)
-							;
-						}
+						Uize.forEach (
+							_itemSpecifier
+								? _this.getItemFromSpecifier (_itemSpecifier).items
+								: _this.get ('items'),
+							function (_item,_itemNo) {
+								var _subItemSpecifier = _itemSpecifier + (_itemSpecifier && 'x') + _itemNo;
+								_this.wireNode (
+									_subItemSpecifier + 'TitleLink',
+									'mouseover',
+									function () {_this.collapseAllBut (_subItemSpecifier)}
+								);
+							}
+						);
 
 					/*** code for managing dismiss when mousing out of the menu ***/
 						/* NOTE:

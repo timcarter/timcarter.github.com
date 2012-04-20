@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Button.ValueDisplay Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -21,44 +21,25 @@
 
 /*?
 	Introduction
-		The =Uize.Widget.Button.ValueDisplay= widget provides the base functionality for connecting a =Uize.Widget.Button= widget (or subclass) to a =Uize.Widget.ValueDisplay= widget (or subclass).
+		The =Uize.Widget.Button.ValueDisplay= widget provides the base functionality for button widget that wants to display details about a value.
 
 		*DEVELOPERS:* `Ben Ilegbodu`
 */
 
 Uize.module ({
 	name:'Uize.Widget.Button.ValueDisplay',
-	required:[
-		'Uize.Widget.ValueDisplay',
-		'Uize.Util.Coupler'
-	],
 	builder:function (_superclass) {
 		/*** Class Constructor ***/
-			var _class = _superclass.subclass (
-				null,
-				function() {
-					var
-						_this = this,
-						_valueDisplay = _this.addChild(
-							'valueDisplay',
-							_this._valueDisplayWidgetClass || Uize.Widget.ValueDisplay,
-							_this._valueDisplayWidgetProperties
-						)
-					;
-
-					new Uize.Util.Coupler({
-						instances:[_this, _valueDisplay],
-						properties:['value', 'valueDetails']
-					});
-				}
-			);
+			var _class = _superclass.subclass ();
 
 		/*** Register Properties ***/
 			_class.registerProperties ({
+				_defaultValueDetails:'defaultValueDetails',
 				_value:'value',
-				_valueDetails:'valueDetails',
-				_valueDisplayWidgetClass:'valueDisplayWidgetClass',
-				_valueDisplayWidgetProperties:'valueDisplayWidgetProperties'
+				_valueDetails:{
+					name:'valueDetails',
+					conformer:function(_valueDetails) { return _valueDetails || this._defaultValueDetails }
+				}
 			});
 
 		return _class;
