@@ -26,11 +26,13 @@
                 box-shadow: 0 1px 2px rgba(0,0,0,.05);
       }
 
-	  .input-append .btn-group > .btn:first-child {
-		-webkit-border-radius:0;
-		-moz-border-radius:0;
-		border-radius:0;
-	  }
+		.charset {
+			padding-bottom:1%;
+		}
+
+		.charset:last-child {
+			padding-bottom:0;
+		}
     </style>
   </head>
 
@@ -46,70 +48,72 @@
 		</div>
         <input type="number" min="1" class="input-block-level" placeholder="length"/>
 		<input type="number" min="1" class="input-block-level" placeholder="max repetition"/>
-		<div class="input-append">
-			<span class="input-mini uneditable-input">a-z</span>
+		<div class="charset">
 			<span class="controls">
 				<span class="btn-group" data-toggle="buttons-radio">
-					<button type="button" class="btn btn-inverse"><i class="icon-asterisk icon-white"></i></button>
-					<button type="button" class="btn"><i class="icon-ok-circle"></i></button>
-					<button type="button" class="btn btn-inverse"><i class="icon-ban-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
 				</span>
 			</span>
+			<span class="help-inline">a-z</span>
 		</div>
-		<div class="input-append">
-			<span class="input-mini uneditable-input">A-Z</span>
+		<div class="charset">
 			<span class="controls">
 				<span class="btn-group" data-toggle="buttons-radio">
-					<button type="button" class="btn btn-inverse"><i class="icon-asterisk icon-white"></i></button>
-					<button type="button" class="btn"><i class="icon-ok-circle"></i></button>
-					<button type="button" class="btn btn-inverse"><i class="icon-ban-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
 				</span>
 			</span>
+			<span class="help-inline">A-Z</span>
 		</div>
-		<div class="input-append">
-			<span class="input-mini uneditable-input">0-9</span>
+		<div class="charset">
 			<span class="controls">
 				<span class="btn-group" data-toggle="buttons-radio">
-					<button type="button" class="btn btn-inverse"><i class="icon-asterisk icon-white"></i></button>
-					<button type="button" class="btn"><i class="icon-ok-circle"></i></button>
-					<button type="button" class="btn btn-inverse"><i class="icon-ban-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
 				</span>
 			</span>
+			<span class="help-inline">0-9</span>
 		</div>
-		<div class="input-append">
-			<span class="input-mini uneditable-input">-/_</span>
+		<div class="charset">
 			<span class="controls">
 				<span class="btn-group" data-toggle="buttons-radio">
-					<button type="button" class="btn btn-inverse"><i class="icon-asterisk icon-white"></i></button>
-					<button type="button" class="btn"><i class="icon-ok-circle"></i></button>
-					<button type="button" class="btn btn-inverse"><i class="icon-ban-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
 				</span>
 			</span>
+			<span class="help-inline">-/_</span>
 		</div>
-		<div class="input-append">
-			<span class="input-mini uneditable-input">SPACE</span>
+		<div class="charset">
 			<span class="controls">
 				<span class="btn-group" data-toggle="buttons-radio">
-					<button type="button" class="btn btn-inverse"><i class="icon-asterisk icon-white"></i></button>
-					<button type="button" class="btn"><i class="icon-ok-circle"></i></button>
-					<button type="button" class="btn btn-inverse"><i class="icon-ban-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
 				</span>
 			</span>
+			<span class="help-inline">SPACE</span>
 		</div>
-		<div class="input-append">
-			<span class="input-mini uneditable-input">!@#$%</span>
+		<div class="charset">
 			<span class="controls">
 				<span class="btn-group" data-toggle="buttons-radio">
-					<button type="button" class="btn btn-inverse"><i class="icon-asterisk icon-white"></i></button>
-					<button type="button" class="btn"><i class="icon-ok-circle"></i></button>
-					<button type="button" class="btn btn-inverse"><i class="icon-ban-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+					<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
 				</span>
 			</span>
+			<span class="help-inline">!@#$%</span>
 		</div>
 
 		<hr>
-		<input type="text" class="input-block-level" placeholder="generation station" />
-
+		<div class="input-append">
+			<input type="text" class="input-block-level" placeholder="generation station" />
+			<button class="btn" type="button"><i class="icon-share"></i></button>
+		</div>
       </form>
 
     </div>
