@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Page Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -47,6 +47,7 @@ Uize.module ({
 			var
 				_true = true,
 				_false = false,
+				_null = null,
 				_undefined,
 				_Uize_Node = Uize.Node
 			;
@@ -54,7 +55,7 @@ Uize.module ({
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
-					null,
+					_null,
 					function() { _class.xDeferredLinks && this.wireDeferredLinks() }
 				),
 				_classPrototype = _class.prototype
@@ -62,7 +63,7 @@ Uize.module ({
 
 		/*** Utility Functions ***/
 			function _getCallbackFromDirectives (_directives) {
-				return (Uize.isFunction (_directives) && _directives) || _directives.callback || Object;
+				return (Uize.isFunction (_directives) && _directives) || (_directives && _directives.callback) || Object
 			}
 
 		/*** Private Instance Methods ***/
@@ -77,8 +78,8 @@ Uize.module ({
 						message:(_params.message + '').replace (/\n/g,'<br/>'),
 						mode:_mode,
 						state:_params.state || _defaultState,
-						okText:_params.okText || null,
-						cancelText:_params.cancelText || null
+						okText:_params.okText || _null,
+						cancelText:_params.cancelText || _null
 					},
 					submitHandler:function (_confirmed) {
 						var _handler = _params.callback || (_confirmed ? _params.yesHandler : _params.noHandler);
@@ -91,23 +92,9 @@ Uize.module ({
 				_callback = _callback || Object;
 				var
 					_this = this,
-					_idPrefix = _this.get ('idPrefix')
+					_idPrefix = _this.get ('idPrefix'),
+					_window = window
 				;
-				function _mergeCopyInto (_targetObject,_sourceObject) {
-					var
-						_targetObjectPropertyValue,
-						_sourceObjectPropertyValue
-					;
-					for (var _propertyName in _sourceObject)
-						(
-							typeof (_targetObjectPropertyValue = _targetObject [_propertyName]) == 'object' &&
-							typeof (_sourceObjectPropertyValue = _sourceObject [_propertyName]) == 'object' &&
-							_targetObjectPropertyValue && _sourceObjectPropertyValue
-						)
-							? _mergeCopyInto (_targetObjectPropertyValue,_sourceObjectPropertyValue)
-							: (_targetObject [_propertyName] = _sourceObject [_propertyName])
-					;
-				}
 
 				/*** find $... properties in window object, whose values are objects with widgetClass property ***/
 					var
@@ -115,14 +102,14 @@ Uize.module ({
 						_hasChildrenToAdopt = _false,
 						_childPropertiesPrefix = '$' + _idPrefix + '_',
 						_childPropertiesPrefixLength = _childPropertiesPrefix.length,
-						_propertyValue
+						_widgetProperties
 					;
-					for (var _propertyName in window) {
+					for (var _propertyName in _window) {
 						if (
 							_propertyName.charAt (0) == '$' && /* reduce impact of this feature with quick elimination */
 							_propertyName.substr (0,_childPropertiesPrefixLength) == _childPropertiesPrefix &&
-							typeof (_propertyValue = window [_propertyName]) == 'object' && _propertyValue &&
-							_propertyValue.widgetClass
+							typeof (_widgetProperties = _window [_propertyName]) == 'object' && _widgetProperties &&
+							_widgetProperties.widgetClass
 						) {
 							_hasChildrenToAdopt = _true;
 							for (
@@ -130,25 +117,23 @@ Uize.module ({
 									_widgetLevelNo = -1,
 									_levelChildren = _childrenToAdoptTree,
 									_widgetLevels = _propertyName.substr (_childPropertiesPrefixLength).split ('_'),
+									_widgetLevelName,
 									_widgetLevelsLength = _widgetLevels.length
 								;
 								++_widgetLevelNo < _widgetLevelsLength;
 							) {
-								var
-									_widgetLevelName = _widgetLevels [_widgetLevelNo],
-									_levelWidget = _levelChildren [_widgetLevelName]
-								;
+								var _levelWidget = _levelChildren [_widgetLevelName = _widgetLevels [_widgetLevelNo]];
 								if (_widgetLevelNo < _widgetLevelsLength - 1) {
-									if (!_levelWidget)
-										_levelWidget = _levelChildren [_widgetLevelName] = {}
+									_levelChildren =
+										(_levelWidget || (_levelWidget = _levelChildren [_widgetLevelName] = {})).children ||
+										(_levelWidget.children = {})
 									;
-									_levelChildren = _levelWidget.children || (_levelWidget.children = {});
 								} else {
 									_levelWidget
-										? _mergeCopyInto (_levelWidget,_propertyValue)
-										: (_levelChildren [_widgetLevelName] = _propertyValue)
+										? Uize.mergeInto (_levelWidget,_widgetProperties)
+										: (_levelChildren [_widgetLevelName] = _widgetProperties)
 									;
-									window [_propertyName] = _undefined;
+									_window [_propertyName] = _undefined;
 								}
 							}
 						}
@@ -191,29 +176,27 @@ Uize.module ({
 						Uize.module ({
 							required:_requiredModules,
 							builder:function () {
-								_traverseChildrenToAdoptTree (
-									function (_parent,_childName,_childProperties) {
-										var
-											_child = _parent.children [_childName],
-											_widgetClass = _childProperties.widgetClass || Uize.Widget
-										;
-										delete _childProperties.widgetClass;
-										delete _childProperties.children;
-										_child
-											? _child.set (_childProperties)
-											: (
+								_this.set ({children:_childrenToAdoptTree});
+
+								/*** recurse tree, adopting all widgets ***/
+									_traverseChildrenToAdoptTree (
+										function (_parent,_childName,_childProperties) {
+											var _child = _parent.children [_childName];
+											if (!_child) {
+												var _widgetClass = eval (_childProperties.widgetClass || 'Uize.Widget');
 												_child = _childName.charCodeAt (0) == 36 && _childName.charCodeAt (1) == 36
-													? eval (_widgetClass).spawn (_childProperties,_parent)
-													: _parent.addChild (_childName,eval (_widgetClass),_childProperties)
-											)
-										;
-										return _child;
-									},
-									_this.isWired ? function (_child) {Uize.callOn (_child,'insertOrWireUi')} : 0
-										/* NOTE:
-											Don't wire adopted child widgets if page widget isn't wired yet (this code could be executed before the page widget is wired if all modules required by adopted children are already loaded, and the builder for this anonymous module is executed immediately).
-										*/
-								);
+													? _widgetClass.spawn (_childProperties,_parent)
+													: _parent.addChild (_childName,_widgetClass)
+												;
+											}
+											return _child;
+										},
+										_this.isWired && function (_child) {Uize.callOn (_child,'insertOrWireUi')}
+											/* NOTE:
+												Don't wire adopted child widgets if page widget isn't wired yet (this code could be executed before the page widget is wired if all modules required by adopted children are already loaded, and the builder for this anonymous module is executed immediately).
+											*/
+									);
+
 								_callback ();
 							}
 						});
@@ -393,10 +376,6 @@ Uize.module ({
 			};
 
 			_classPrototype.useDialog = function (_params) {
-				/* TO DO:
-					- may want to also track to see if people move dialogs, or other interactions
-					- should track dismiss events
-				*/
 				var
 					_this = this,
 					_dialogWidgetProperties = Uize.copyInto ({},_this._dialogProperties,_params.widgetProperties),
@@ -416,14 +395,6 @@ Uize.module ({
 						params:Uize.copyInto ({idPrefix:_rootNodeId},_component.params)
 					};
 				}
-				function _trackDialogEvent (_extra) {
-					var _productType = _this.get ('productType');
-					_dialogWidget.fire ({
-						name:'Track Event',
-						extra:_extra + (_productType ? (' (' + _productType + ')') : ''),
-						bubble:_true
-					});
-				}
 				function _showDialog (_loadType) {
 					setTimeout(
 						/* NOTE:
@@ -439,6 +410,12 @@ Uize.module ({
 								var _handlerParams = [_event];
 								_callHandler (_event.name.toLowerCase () + 'Handler',_handlerParams);
 								_callHandler ('dismissHandler',_handlerParams);
+							}
+							function _handleShownOrHide(_event) {
+								_this.fire({
+									name:'Dialog ' + _event.name,
+									dialogWidget:_event.source
+								})
 							}
 							/*** store handlers as properties of widget, in order to be able to remove them on reuse ***/
 								/* WORKAROUND:
@@ -461,13 +438,16 @@ Uize.module ({
 									'Submission Complete':
 										function (_event) {_callHandler ('submitHandler',[_event.result,_event])},
 									Close:_handleCloseOrCancel,
-									Cancel:_handleCloseOrCancel
+									Cancel:_handleCloseOrCancel,
+									'Before Show':_handleShownOrHide,
+									'After Show':_handleShownOrHide,
+									'Before Hide':_handleShownOrHide,
+									'After Hide':_handleShownOrHide
 								};
 								_dialogWidget.wire (_dialogWidget.eventHandlersForUseDialog);
 
 							_dialogWidget.set (_dialogWidgetProperties);
 							_dialogWidget.set ({shown:_true});
-							_trackDialogEvent (_loadType);
 						},
 						0
 					);
@@ -515,7 +495,10 @@ Uize.module ({
 								alwaysReplace:_false
 							},
 							Uize.copyInto ({cp:_componentProfile.name},_componentProfile.params),
-							_createDialogWidget
+							{
+								cache:'memory',
+								callback:_createDialogWidget
+							}
 						)
 						: _createDialogWidget ()
 					;
@@ -735,7 +718,7 @@ Uize.module ({
 							Uize.Widget.Page.launchPopup ({name:'window1',url:'http://www.wikipedia.org'});
 
 							// calling the instance method on a page widget instance
-							page = new Uize.Widget.Page;
+							page = Uize.Widget.Page ();
 							page.launchPopup ({name:'window2',url:'http://www.zazzle.com'});
 
 							// using callInherited to access instance method of root page widget from child

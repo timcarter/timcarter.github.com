@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.ColorCube.Draggable Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -41,8 +41,8 @@ Uize.module ({
 				_Uize_Node = Uize.Node
 			;
 
-		/*** Global Variables ***/
-			var _dummyColor = new Uize.Color;
+		/*** General Variables ***/
+			var _dummyColor = Uize.Color ();
 
 		/*** Class Constructor ***/
 			var
@@ -87,7 +87,7 @@ Uize.module ({
 				if (!_this.isWired) {
 					var
 						_shell = _this.getNode (),
-						_drag = new Uize.Widget.Drag ({node:_shell}),
+						_drag = Uize.Widget.Drag ({node:_shell}),
 						_xSideNames = ['Left','Right'],
 						_ySideNames = ['Top','Bottom'],
 						_eventStartPos = _drag.eventStartPos,
@@ -106,7 +106,7 @@ Uize.module ({
 								function _initCornerColorAtDragStart (_cornerName) {
 									(
 										_cornerColorsAtDragStart [_cornerName] ||
-										(_cornerColorsAtDragStart [_cornerName] = new Uize.Color)
+										(_cornerColorsAtDragStart [_cornerName] = Uize.Color ())
 									).from (_this.get (_cornerName));
 								}
 								_initCornerColorAtDragStart ('colorTopLeft');

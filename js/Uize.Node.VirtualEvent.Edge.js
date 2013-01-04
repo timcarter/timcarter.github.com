@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Node.VirtualEvent Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -104,10 +104,10 @@ Uize.module ({
 				_false = false
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _edgeNames = ['left','right','top','bottom'];
 
-		/*** Global Functions ***/
+		/*** Utility Functions ***/
 			function _makeEdgeEventMaker (_isExit,_edgeNo) {
 				var
 					_edgeName = _edgeNames [_edgeNo],

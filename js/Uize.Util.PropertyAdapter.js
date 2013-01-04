@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Util.PropertyAdapter Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -16,7 +16,7 @@
 	importance: 2
 	codeCompleteness: 100
 	testCompleteness: 100
-	docCompleteness: 10
+	docCompleteness: 100
 */
 
 /*?
@@ -35,7 +35,7 @@
 
 				EXAMPLE
 				................................
-				new Uize.Util.PropertyAdapter ({
+				Uize.Util.PropertyAdapter ({
 					propertyA:{
 						instance:sliderA,
 						property:'minValue'
@@ -89,7 +89,7 @@
 							}
 							......................................................................................
 
-							The value of the =instance= property should be a reference to an instance of a =Uize= subclass, and the value of the =property= property should be a string specifying the name of a set-get property on the instance specified by the =instance= property. If the value of the =property= property is =null= or =undefined=, then the property name will be defaulted to ='value'=.
+							The value of the =instance= property should be a reference to an instance of a =Uize.Class= subclass, and the value of the =property= property should be a string specifying the name of a set-get property on the instance specified by the =instance= property. If the value of the =property= property is =null= or =undefined=, then the property name will be defaulted to ='value'=.
 
 							Because the `property specifier object form` is the canonical form for a `property specifier`, when a property is specified using either the `property specifier array form` or the `property specifier instance form`, the property specifier is resolved to the object form.
 
@@ -104,10 +104,10 @@
 							]
 							...........................................................................
 
-							The value of the first element of the array should be a reference to an instance of a =Uize= subclass, and the value of the second element of the array should be a string specifying the name of a set-get property on the instance specified by the =instance= property. If the value of the second element is =null= or =undefined=, then the property name will be defaulted to ='value'=.
+							The value of the first element of the array should be a reference to an instance of a =Uize.Class= subclass, and the value of the second element of the array should be a string specifying the name of a set-get property on the instance specified by the =instance= property. If the value of the second element is =null= or =undefined=, then the property name will be defaulted to ='value'=.
 
 						Property Specifier Instance Form
-							In the special case where one wishes to specify the =value= property of an instance of a =Uize= subclass, the property can be specified simply by specifying a reference to the instance.
+							In the special case where one wishes to specify the =value= property of an instance of a =Uize.Class= subclass, the property can be specified simply by specifying a reference to the instance.
 
 							SYNTAX
 							...........................................................
@@ -119,7 +119,7 @@
 						Versatile Conformer
 							When using a `property specifier` to specify a value for either of the =propertyA= or =propertyB= set-get properties, the `property specifier` is resolved to the canonical `property specifier object form` using a versatile conformer.
 
-							Because the values of the =propertyA= or =propertyB= set-get properties are conformed, a `property specifier` expressed in either the `property specifier array form` or the `property specifier instance form` will not be stored internally in those alternate forms, but will instead for conformed to the canonical `property specifier object form`.
+							Because the values of the =propertyA= or =propertyB= set-get properties are conformed, a `property specifier` expressed in either the `property specifier array form` or the `property specifier instance form` will not be stored internally in those alternate forms, but will instead be conformed to the canonical `property specifier object form`.
 
 				Value Adapter
 					A powerful feature of the =Uize.Util.PropertyAdapter= class is its support for a value adapter, which allows transformation of the values of `property A` and `property B` in both directions.
@@ -161,7 +161,7 @@
 
 							EXAMPLE
 							..........................................................................
-							new Uize.Util.PropertyAdapter ({
+							Uize.Util.PropertyAdapter ({
 								propertyA:numberTextInput,         // instance of Uize.Widget.TextInput
 								propertyB:numberSquaredTextInput,  // instance of Uize.Widget.TextInput
 								valueAdapter:{
@@ -178,7 +178,7 @@
 
 							EXAMPLE
 							........................................................
-							new Uize.Util.PropertyAdapter ({
+							Uize.Util.PropertyAdapter ({
 								propertyA:colorAsHexTextInput,
 								propertyB:colorAsRgbTextInput,
 								valueAdapter:Uize.Color.adapter ('#hex','RGB string')
@@ -268,7 +268,7 @@
 
 							EXAMPLE
 							...............................................
-							new Uize.Util.PropertyAdapter ({
+							Uize.Util.PropertyAdapter ({
 								propertyA:sliderA,
 								propertyB:sliderB,
 								valueAdapter:{
@@ -297,7 +297,7 @@
 
 						USING A COUPLER...
 						...................................
-						new Uize.Util.Coupler ({
+						Uize.Util.Coupler ({
 							instances:[instanceA,instanceB],
 							properties:['someProperty']
 						});
@@ -305,7 +305,7 @@
 
 						USING A PROPERTY ADAPTER...
 						........................................
-						new Uize.Util.PropertyAdapter ({
+						Uize.Util.PropertyAdapter ({
 							propertyA:[instanceA,'someProperty'],
 							propertyA:[instanceB,'someProperty']
 						});
@@ -314,7 +314,7 @@
 
 Uize.module ({
 	name:'Uize.Util.PropertyAdapter',
-	superclass:'Uize',
+	superclass:'Uize.Class',
 	builder:function (_superclass) {
 		/*** Class Constructor ***/
 			var

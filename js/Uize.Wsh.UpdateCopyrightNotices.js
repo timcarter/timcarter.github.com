@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Wsh.UpdateCopyrightNotices Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -35,7 +35,7 @@ Uize.module ({
 		/*** Variables for Scruncher Optimization ***/
 			var _package = function () {};
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_copyrightNoticeRegExp = /\(c\)\s*\d{4}(?:\s*-\s*(\d{4}))?/i,
 				_copyrightNoticeEndYearRegExp = /(-\s*)(\d{4})/

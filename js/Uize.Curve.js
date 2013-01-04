@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Curve Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -65,7 +65,7 @@ Uize.module ({
 								- compare to the =Uize.Curve.makeBlender= static method
 					*/
 				},
-				_linear = _package.linear = function (_value) {return _value},
+				_linear = _package.linear = Uize.returnX,
 					/*?
 						Static Methods
 							Uize.Curve.linear
@@ -819,7 +819,7 @@ Uize.module ({
 
 				_package.saw = function (_repeats,_amount) {
 					return (
-						_repeats == 1 || !(_amount = isNaN (_amount += 0) ? 1 : _amount)
+						_repeats == 1 || !(_amount = Uize.toNumber (_amount,1))
 							? _linear
 							: function (_value) {
 								return _blendFloats (_value,_value && ((_value * _repeats) % 1 || 1),_amount)

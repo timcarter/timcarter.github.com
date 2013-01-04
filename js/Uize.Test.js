@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Test Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -32,6 +32,7 @@
 
 Uize.module ({
 	name:'Uize.Test',
+	superclass:'Uize.Class',
 	required:[
 		'Uize.Data',
 		'Uize.Json',
@@ -45,7 +46,7 @@ Uize.module ({
 				_undefined
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_forceAsync = typeof navigator == 'object',
 					/* NOTE:
@@ -113,7 +114,7 @@ Uize.module ({
 
 			_classPrototype.expectSameAs = function (_expectedValue,_value) {
 				return this._expectSuccess (
-					_expectedValue === _value,
+					Uize.isSameAs (_value,_expectedValue),
 					_valueToJsonSerializer (_expectedValue),
 					_valueToJsonSerializer (_value)
 				);
@@ -209,19 +210,19 @@ Uize.module ({
 									- the value of the value's =constructor= property is a reference to the class
 
 								Built-in Objects Supported
-									The "class" specified by the =classOBJorSTR= parameter can be a built-in JavaScript object (such as =Function=) or a =Uize= subclass.
+									The "class" specified by the =classOBJorSTR= parameter can be a built-in JavaScript object (such as =Function=) or a =Uize.Class= subclass.
 
 									So, for example, the statement =myTest.expectInstanceOf (RegExp,/^\s+$/)= would return the value =true=.
 
 								Uize Subclasses Supported
-									The class specified by the =classOBJorSTR= parameter can be a =Uize= subclass.
+									The class specified by the =classOBJorSTR= parameter can be a =Uize.Class= subclass.
 
-									So, for example, the statement =myTest.expectInstanceOf (Uize.Widget.Bar,new Uize.Widget.Bar)= would return the value =true=.
+									So, for example, the statement =myTest.expectInstanceOf (Uize.Widget.Bar,Uize.Widget.Bar ())= would return the value =true=.
 
 								Instances of Subclasses Don't Qualify
 									A value will *not* be considered to be an instance of a specified class if it is, in fact, an instance of a *subclass* of the specified class.
 
-									So, for example, the statement =myTest.expectInstanceOf (Uize.Widget,new Uize.Widget.Bar)= would return the value =false=.
+									So, for example, the statement =myTest.expectInstanceOf (Uize.Widget,Uize.Widget.Bar ())= would return the value =false=.
 
 								Expecting Arrays or Regular Expressions
 									While you can use the =expectInstanceOf= method to test for instances of arrays or regular expressions, there are dedicated `Expectation Methods` to test for instances of those built-in JavaScript objects.
@@ -337,7 +338,7 @@ Uize.module ({
 								- constructors for the built-in JavaScript objects, such as =String=, =Boolean=, =Number=, =RegExp=, =Function=, etc.
 								- pure =Uize= namespace modules, such as =Uize.Templates=, =Uize.Util=, etc.
 								- package modules, such as =Uize.Data=, =Uize.Fx=, =Uize.Node=, etc.
-								- class modules, such as =Uize=, =Uize.Fade=, =Uize.Widget=, etc.
+								- class modules, such as =Uize.Class=, =Uize.Fade=, =Uize.Widget=, etc.
 
 								EXAMPLE
 								................................................................................
@@ -415,7 +416,7 @@ Uize.module ({
 								myTest.expectObject (['foo','bar']);                          // returns true
 								myTest.expectObject (/^\s+$/);                                // returns true
 								myTest.expectObject (new Boolean (false));                    // returns true
-								myTest.expectObject (new Uize.Widget.Bar.Slider);             // returns true
+								myTest.expectObject (Uize.Widget.Bar.Slider ());              // returns true
 								myTest.expectObject (null);                                   // returns true
 
 								myTest.expectObject (undefined);                              // returns false
@@ -576,19 +577,19 @@ Uize.module ({
 									// range boundaries and value are class instances
 
 										myTest.expectInRange (    // returns false
-											new Uize ({value:0}),
-											new Uize ({value:1}),
-											new Uize ({value:-1})
+											Uize.Class ({value:0}),
+											Uize.Class ({value:1}),
+											Uize.Class ({value:-1})
 										);
 										myTest.expectInRange (    // returns true
-											new Uize ({value:0}),
-											new Uize ({value:1}),
-											new Uize ({value:.5})
+											Uize.Class ({value:0}),
+											Uize.Class ({value:1}),
+											Uize.Class ({value:.5})
 										);
 										myTest.expectInRange (    // returns false
-											new Uize ({value:0}),
-											new Uize ({value:1}),
-											new Uize ({value:1.5})
+											Uize.Class ({value:0}),
+											Uize.Class ({value:1}),
+											Uize.Class ({value:1.5})
 										);
 									.........................................................................
 
@@ -667,15 +668,15 @@ Uize.module ({
 									The =expectNegativeNumber= method uses the =expectNumberInRange= method in its implementation. The statement =myTest.expectNegativeNumber (value)= would be equivalent to the statement =myTest.expectNumberInRange (-Infinity,0,value)=.
 
 									EXAMPLE
-									......................................................................
-									myTest.expectNegativeNumber (0);                      // returns true
-									myTest.expectNegativeNumber (-.5);                    // returns true
-									myTest.expectNegativeNumber (-Infinity);              // returns true
+									........................................................................
+									myTest.expectNegativeNumber (0);                        // returns true
+									myTest.expectNegativeNumber (-.5);                      // returns true
+									myTest.expectNegativeNumber (-Infinity);                // returns true
 
-									myTest.expectNegativeNumber (1.333);                  // returns false
-									myTest.expectNegativeNumber ('-5');                   // returns false
-									myTest.expectNegativeNumber (new Uize ({value:-5}));  // returns false
-									......................................................................
+									myTest.expectNegativeNumber (1.333);                    // returns false
+									myTest.expectNegativeNumber ('-5');                     // returns false
+									myTest.expectNegativeNumber (Uize.Class ({value:-5}));  // returns false
+									........................................................................
 
 									NOTES
 									- see the companion =expectPositiveNumber= instance method
@@ -704,15 +705,15 @@ Uize.module ({
 									The =expectPositiveNumber= method uses the =expectNumberInRange= method in its implementation. The statement =myTest.expectPositiveNumber (value)= would be equivalent to the statement =myTest.expectNumberInRange (0,Infinity,value)=.
 
 									EXAMPLE
-									......................................................................
-									myTest.expectPositiveNumber (0);                      // returns true
-									myTest.expectPositiveNumber (5);                      // returns true
-									myTest.expectPositiveNumber (Infinity);               // returns true
+									.......................................................................
+									myTest.expectPositiveNumber (0);                       // returns true
+									myTest.expectPositiveNumber (5);                       // returns true
+									myTest.expectPositiveNumber (Infinity);                // returns true
 
-									myTest.expectPositiveNumber (-1.333);                 // returns false
-									myTest.expectPositiveNumber ('5');                    // returns false
-									myTest.expectPositiveNumber (new Uize ({value:5}));   // returns false
-									......................................................................
+									myTest.expectPositiveNumber (-1.333);                  // returns false
+									myTest.expectPositiveNumber ('5');                     // returns false
+									myTest.expectPositiveNumber (Uize.Class ({value:5}));  // returns false
+									.......................................................................
 
 									NOTES
 									- see the companion =expectNegativeNumber= instance method
@@ -786,7 +787,7 @@ Uize.module ({
 				};
 
 				_classPrototype.expectNonEmpty = function (_value) {
-					return this._expectSuccess (!Uize.Data.isEmpty (_value),'non-empty',_valueToJsonSerializer (_value));
+					return this._expectSuccess (!Uize.isEmpty (_value),'non-empty',_valueToJsonSerializer (_value));
 					/*?
 						Instance Methods
 							expectNonEmpty
@@ -836,18 +837,18 @@ Uize.module ({
 								- the value does not have a fractional component
 
 								EXAMPLES
-								...............................................................
-								myTest.expectInteger (10);                     // returns true
-								myTest.expectInteger (0);                      // returns true
-								myTest.expectInteger (-10);                    // returns true
-								myTest.expectInteger (Infinity);               // returns true
+								.................................................................
+								myTest.expectInteger (10);                       // returns true
+								myTest.expectInteger (0);                        // returns true
+								myTest.expectInteger (-10);                      // returns true
+								myTest.expectInteger (Infinity);                 // returns true
 
-								myTest.expectInteger (10.5);                   // returns false
-								myTest.expectInteger ('10');                   // returns false
-								myTest.expectInteger (new Number (10));        // returns false
-								myTest.expectInteger (new Uize ({value:10}));  // returns false
-								myTest.expectInteger (NaN);                    // returns false
-								...............................................................
+								myTest.expectInteger (10.5);                     // returns false
+								myTest.expectInteger ('10');                     // returns false
+								myTest.expectInteger (new Number (10));          // returns false
+								myTest.expectInteger (Uize.Class ({value:10}));  // returns false
+								myTest.expectInteger (NaN);                      // returns false
+								.................................................................
 
 								NOTES
 								- this method is one of the many available `Expectation Methods`
@@ -921,17 +922,17 @@ Uize.module ({
 								The =expectNegativeInteger= method uses the =expectIntegerInRange= method in its implementation. The statement =myTest.expectNegativeInteger (value)= would be equivalent to the statement =myTest.expectIntegerInRange (-Infinity,0,value)=.
 
 								EXAMPLE
-								.......................................................................
-								myTest.expectNegativeInteger (0);                      // returns true
-								myTest.expectNegativeInteger (-1);                     // returns true
-								myTest.expectNegativeInteger (-Infinity);              // returns true
+								.........................................................................
+								myTest.expectNegativeInteger (0);                        // returns true
+								myTest.expectNegativeInteger (-1);                       // returns true
+								myTest.expectNegativeInteger (-Infinity);                // returns true
 
-								myTest.expectNegativeInteger (-1.5);                   // returns false
-								myTest.expectNegativeInteger ('-1');                   // returns false
-								myTest.expectNegativeInteger (new Uize ({value:-1}));  // returns false
-								myTest.expectNegativeInteger (1);                      // returns false
-								myTest.expectNegativeInteger (1.5);                    // returns false
-								.......................................................................
+								myTest.expectNegativeInteger (-1.5);                     // returns false
+								myTest.expectNegativeInteger ('-1');                     // returns false
+								myTest.expectNegativeInteger (Uize.Class ({value:-1}));  // returns false
+								myTest.expectNegativeInteger (1);                        // returns false
+								myTest.expectNegativeInteger (1.5);                      // returns false
+								.........................................................................
 
 								NOTES
 								- see the companion =expectPositiveInteger= instance method
@@ -961,17 +962,17 @@ Uize.module ({
 								The =expectPositiveInteger= method uses the =expectIntegerInRange= method in its implementation. The statement =myTest.expectPositiveInteger (value)= would be equivalent to the statement =myTest.expectIntegerInRange (0,Infinity,value)=.
 
 								EXAMPLE
-								......................................................................
-								myTest.expectPositiveInteger (0);                     // returns true
-								myTest.expectPositiveInteger (1);                     // returns true
-								myTest.expectPositiveInteger (Infinity);              // returns true
+								........................................................................
+								myTest.expectPositiveInteger (0);                       // returns true
+								myTest.expectPositiveInteger (1);                       // returns true
+								myTest.expectPositiveInteger (Infinity);                // returns true
 
-								myTest.expectPositiveInteger (1.5);                   // returns false
-								myTest.expectPositiveInteger ('1');                   // returns false
-								myTest.expectPositiveInteger (new Uize ({value:1}));  // returns false
-								myTest.expectPositiveInteger (-1);                    // returns false
-								myTest.expectPositiveInteger (-1.5);                  // returns false
-								......................................................................
+								myTest.expectPositiveInteger (1.5);                     // returns false
+								myTest.expectPositiveInteger ('1');                     // returns false
+								myTest.expectPositiveInteger (Uize.Class ({value:1}));  // returns false
+								myTest.expectPositiveInteger (-1);                      // returns false
+								myTest.expectPositiveInteger (-1.5);                    // returns false
+								........................................................................
 
 								NOTES
 								- see the companion =expectNegativeInteger= instance method
@@ -982,7 +983,7 @@ Uize.module ({
 
 				_classPrototype.expectNoRepeats = function (_value) {
 					return this._expectSuccess (
-						Uize.Data.getTotalKeys (Uize.Data.getLookup (_value)) == _value.length,
+						Uize.totalKeys (Uize.lookup (_value)) == _value.length,
 						'array with no repeated values',
 						_valueToJsonSerializer (_value)
 					);
@@ -1022,18 +1023,18 @@ Uize.module ({
 								This method uses the =expectArray= and =expectNonEmpty= methods in its implementation. The statement =myTest.expectNonEmptyArray (value)= is equivalent to the statement =this.expectArray (value) && this.expectNonEmpty (value)=.
 
 								EXAMPLES
-								..........................................................................
-								myTest.expectNonEmptyArray (['foo','bar']);               // returns true
-								myTest.expectNonEmptyArray (new Array ('foo','bar'));     // returns true
-								myTest.expectNonEmptyArray (new Array (5));               // returns true
+								............................................................................
+								myTest.expectNonEmptyArray (['foo','bar']);                 // returns true
+								myTest.expectNonEmptyArray (new Array ('foo','bar'));       // returns true
+								myTest.expectNonEmptyArray (new Array (5));                 // returns true
 
-								myTest.expectNonEmptyArray ([]);                          // returns false
-								myTest.expectNonEmptyArray (new Array);                   // returns false
-								myTest.expectNonEmptyArray (new Uize ({value:['foo']}));  // returns false
-								myTest.expectNonEmptyArray ({foo:'bar'});                 // returns false
-								myTest.expectNonEmptyArray (1.2345);                      // returns false
-								myTest.expectNonEmptyArray (true);                        // returns false
-								..........................................................................
+								myTest.expectNonEmptyArray ([]);                            // returns false
+								myTest.expectNonEmptyArray (new Array);                     // returns false
+								myTest.expectNonEmptyArray (Uize.Class ({value:['foo']}));  // returns false
+								myTest.expectNonEmptyArray ({foo:'bar'});                   // returns false
+								myTest.expectNonEmptyArray (1.2345);                        // returns false
+								myTest.expectNonEmptyArray (true);                          // returns false
+								............................................................................
 
 								NOTES
 								- compare to the =expectNonEmpty=, =expectNonEmptyObject=, and =expectNonEmptyString= instance methods
@@ -1056,19 +1057,19 @@ Uize.module ({
 								This method uses the =expectObject= and =expectNonEmpty= methods in its implementation. The statement =myTest.expectNonEmptyObject (value)= is equivalent to the statement =this.expectObject (value) && this.expectNonEmpty (value)=.
 
 								EXAMPLES
-								...............................................................................
-								myTest.expectNonEmptyObject ({foo:'bar'});                     // returns true
-								myTest.expectNonEmptyObject (new Object ({foo:'bar'}));        // returns true
-								myTest.expectNonEmptyObject (['foo','bar']);                   // returns true
-								myTest.expectNonEmptyObject (new Array (5));                   // returns true
-								myTest.expectNonEmptyObject (new Uize ({value:'foo'}));        // returns true
-								myTest.expectNonEmptyObject ({});                              // returns false
-								myTest.expectNonEmptyObject (new Object);                      // returns false
-								myTest.expectNonEmptyObject ([]);                              // returns false
-								myTest.expectNonEmptyObject (new Array);                       // returns false
-								myTest.expectNonEmptyObject (1.2345);                          // returns false
-								myTest.expectNonEmptyObject (true);                            // returns false
-								...............................................................................
+								...........................................................................
+								myTest.expectNonEmptyObject ({foo:'bar'});                 // returns true
+								myTest.expectNonEmptyObject (new Object ({foo:'bar'}));    // returns true
+								myTest.expectNonEmptyObject (['foo','bar']);               // returns true
+								myTest.expectNonEmptyObject (new Array (5));               // returns true
+								myTest.expectNonEmptyObject (Uize.Class ({value:'foo'}));  // returns true
+								myTest.expectNonEmptyObject ({});                          // returns false
+								myTest.expectNonEmptyObject (new Object);                  // returns false
+								myTest.expectNonEmptyObject ([]);                          // returns false
+								myTest.expectNonEmptyObject (new Array);                   // returns false
+								myTest.expectNonEmptyObject (1.2345);                      // returns false
+								myTest.expectNonEmptyObject (true);                        // returns false
+								...........................................................................
 
 								Not Only Object Instances Are Object Type
 									The =expectNonEmptyObject= method relies on JavaScript's built-in =typeof= operator to determine the type of the specified actual value.
@@ -1096,15 +1097,15 @@ Uize.module ({
 								This method uses the =expectString= and =expectNonEmpty= methods in its implementation. The statement =myTest.expectNonEmptyString (value)= is equivalent to the statement =this.expectString (value) && this.expectNonEmpty (value)=.
 
 								EXAMPLES
-								.........................................................................
-								myTest.expectNonEmptyString ('foo');                     // returns true
+								...........................................................................
+								myTest.expectNonEmptyString ('foo');                       // returns true
 
-								myTest.expectNonEmptyString ('');                        // returns false
-								myTest.expectNonEmptyString (new String ('foo'));        // returns false
-								myTest.expectNonEmptyString (new Uize ({value:'foo'}));  // returns false
-								myTest.expectNonEmptyString (1.2345);                    // returns false
-								myTest.expectNonEmptyString (true);                      // returns false
-								.........................................................................
+								myTest.expectNonEmptyString ('');                          // returns false
+								myTest.expectNonEmptyString (new String ('foo'));          // returns false
+								myTest.expectNonEmptyString (Uize.Class ({value:'foo'}));  // returns false
+								myTest.expectNonEmptyString (1.2345);                      // returns false
+								myTest.expectNonEmptyString (true);                        // returns false
+								...........................................................................
 
 								NOTES
 								- compare to the =expectNonEmpty=, =expectNonEmptyArray=, and =expectNonEmptyObject= instance methods
@@ -1222,15 +1223,8 @@ Uize.module ({
 			};
 
 			_classPrototype.stop = function () {
-				var
-					_this = this,
-					_subtests = _this._test
-				;
-				if (Uize.isArray (_subtests)) {
-					for (var _subtestNo = -1, _subtestsLength = _subtests.length; ++_subtestNo < _subtestsLength;)
-						_subtests [_subtestNo].stop ()
-					;
-				}
+				var _this = this;
+				Uize.isArray (_this._test) && Uize.callOn (_this._test,'stop');
 				_this.set ({_inProgress:false});
 				/*?
 					Instance Methods
@@ -1282,6 +1276,9 @@ Uize.module ({
 							- see the companion =Done= instance event
 				*/
 				function _updateResultProperty () {
+					if (_testResult !== _true && _testResult !== _undefined && _testResult != _isAsync)
+						_testResult = _false
+					;
 					_this.set ({_result:_testResult});
 					if (_testResult == _isAsync) {
 						_this.set ({_isAsync:_true});
@@ -1831,19 +1828,20 @@ Uize.module ({
 				};
 
 				_class.staticMethodsTest = function (_staticMethodsTest) {
-					var _test = [];
-					for (
-						var _staticMethodTestNo = -1, _staticMethodsTestLength = _staticMethodsTest.length;
-						++_staticMethodTestNo < _staticMethodsTestLength;
-					) {
-						var _staticMethodTest = _staticMethodsTest [_staticMethodTestNo];
-						_test.push (
-							Uize.isArray (_staticMethodTest)
-								? this.staticMethodTest.apply (this,_staticMethodTest)
-								: _staticMethodTest
-						);
-					}
-					return this.declare ({title:'Static Method Tests',test:_test});
+					var _this = this;
+					return _this.declare ({
+						title:'Static Method Tests',
+						test:Uize.map (
+							_staticMethodsTest,
+							function (_staticMethodTest) {
+								return (
+									Uize.isArray (_staticMethodTest)
+										? _this.staticMethodTest.apply (_this,_staticMethodTest)
+										: _staticMethodTest
+								);
+							}
+						)
+					});
 					/*?
 						Static Methods
 							Uize.Test.staticMethodsTest
@@ -2012,14 +2010,14 @@ Uize.module ({
 				};
 
 				_class.testSuite = function (_testSuiteTitle,_testSuiteModules) {
-					var _test = [];
-					for (
-						var _testSuiteModuleNo = -1, _testSuiteModulesLength = _testSuiteModules.length;
-						++_testSuiteModuleNo < _testSuiteModulesLength;
-					)
-						_test.push (this.testModuleTest (_testSuiteModules [_testSuiteModuleNo]))
-					;
-					return this.declare ({title:_testSuiteTitle,test:_test});
+					var _this = this;
+					return _this.declare ({
+						title:_testSuiteTitle,
+						test:Uize.map (
+							_testSuiteModules,
+							function (_testSuiteModule) {return _this.testModuleTest (_testSuiteModule)}
+						)
+					});
 					/*?
 						Static Methods
 							Uize.Test.testSuite
@@ -2186,21 +2184,18 @@ Uize.module ({
 					name:'test',
 					conformer:function (_value) {
 						if (Uize.isArray (_value)) {
-							var _subtests = _value;
-							_value = [];
-							for (var _subtestNo = -1, _subtestsLength = _subtests.length; ++_subtestNo < _subtestsLength;)
-								_value.push (new _subtests [_subtestNo] ({parent:this}))
-								/*?
-									Instance Properties
-										parent
-											A reference to the =Uize.Test= instance that serves as the parent for the test instance.
+							var _this = this;
+							_value = Uize.map (_value,function (_subtest) {return new _subtest ({parent:_this})});
+							/*?
+								Instance Properties
+									parent
+										A reference to the =Uize.Test= instance that serves as the parent for the test instance.
 
-											A test instance is parented when it is instantiated by its parent test. The root test in a test tree is never parented, and so the value of the =parent= property for the root test remains =undefined=.
+										A test instance is parented when it is instantiated by its parent test. The root test in a test tree is never parented, and so the value of the =parent= property for the root test remains =undefined=.
 
-											NOTES
-											- the initial value is =undefined=
-								*/
-							;
+										NOTES
+										- the initial value is =undefined=
+							*/
 						}
 						return _value;
 					}

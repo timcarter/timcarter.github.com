@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Collection.Dynamic Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -23,7 +23,7 @@
 	Introduction
 		The =Uize.Widget.Collection.Dynamic= class extends =Uize.Widget.Collection= by adding dynamic adding, removing, and drag-and-drop re-ordering of items.
 
-		*DEVELOPERS:* `Chris van Rensburg`, `Jan Borgersen`, `Rich Bean`, `Tim Carter`
+		*DEVELOPERS:* `Chris van Rensburg`, `Jan Borgersen`, `Rich Bean`, `Tim Carter`, `Vinson Chuong`
 */
 
 Uize.module ({
@@ -39,6 +39,7 @@ Uize.module ({
 				_true = true,
 				_false = false,
 				_null = null,
+				_emptyString = '',
 				_Uize_Node = Uize.Node,
 				_Uize_Tooltip = Uize.Tooltip
 			;
@@ -345,18 +346,18 @@ Uize.module ({
 					_itemWidgetsAdded = []
 				;
 
-					if (!Uize.isArray (_itemsToAdd)) _itemsToAdd = [_itemsToAdd];
-					var _itemsToAddLength = _itemsToAdd.length;
-					if (_itemsToAddLength) {
-						_this._makeNewlyAddedSelected && _this.selectAll (_false);
-						var _commonProperties = _this._makeNewlyAddedSelected ? _selectedProperty : _null;
-						for (var _itemToAddNo = -1; ++_itemToAddNo < _itemsToAddLength;)
-							_itemWidgetsAdded.push (
-								_this._addItem (Uize.copyInto (_itemsToAdd [_itemToAddNo],_commonProperties))
-							)
-						;
-					}
-					_this._fireItemsChangedEvent ();
+				if (!Uize.isArray (_itemsToAdd)) _itemsToAdd = [_itemsToAdd];
+				var _itemsToAddLength = _itemsToAdd.length;
+				if (_itemsToAddLength) {
+					_this._makeNewlyAddedSelected && _this.selectAll (_false);
+					var _commonProperties = _this._makeNewlyAddedSelected ? _selectedProperty : _null;
+					for (var _itemToAddNo = -1; ++_itemToAddNo < _itemsToAddLength;)
+						_itemWidgetsAdded.push (
+							_this._addItem (Uize.copyInto (_itemsToAdd [_itemToAddNo],_commonProperties))
+						)
+					;
+				}
+				_this._fireItemsChangedEvent ();
 
 				return _itemWidgetsAdded;
 			};
@@ -402,10 +403,20 @@ Uize.module ({
 					/*** splice item into new position ***/
 						var _spliceInPos = _insertionPointItem
 							? Uize.indexIn (_itemWidgets,_insertionPointItem)
-							: _itemWidgets.length - (_insertAfter ? 0 : 1)
+							: _itemWidgets.length
 						;
 						_itemWidgets.splice (_spliceInPos,0,_itemWidgetToMove);
 						_items.splice (_spliceInPos,0,_item);
+			};
+
+			_classPrototype.processItemTemplate = function (_templateNode) {
+				// NOTE: This code is pretty much identical to the code in buildHtml (of Uize.Widget), but there's no
+				// easy way to get the template into the markup so that it can do what it does.
+				var _nodeInnerHtml = _templateNode.innerHTML;
+				return	Uize.Template &&_templateNode.tagName == 'SCRIPT' && _templateNode.type == 'text/jst'
+					? Uize.Template.compile (_nodeInnerHtml, {openerToken:'[%',closerToken:'%]'})
+					: function (_input) {return _nodeInnerHtml.replace (/ITEMWIDGETNAME/g, _input.name)}
+				;
 			};
 
 			_classPrototype.wireUi = function () {
@@ -413,19 +424,32 @@ Uize.module ({
 
 				if (!_this.isWired) {
 					var
+						_docBody = document.body,
+						_insertionMarkerNode = _this.getNode ('insertionMarker'),
 						_itemWidgetProperties = {},
 						_itemTemplateNode = _this.getNode ('itemTemplate')
 					;
 
-					// NOTE: This code is pretty much identical to the code in buildHtml (of Uize.Widget), but there's no
-					// easy way to get the template into the markup so that it can do what it does.
-					if (_itemTemplateNode) {
-						var _nodeInnerHtml = _itemTemplateNode.innerHTML;
-						_itemWidgetProperties.html = Uize.Template &&_itemTemplateNode.tagName == 'SCRIPT' && _itemTemplateNode.type == 'text/jst'
-							? Uize.Template.compile(_nodeInnerHtml, {openerToken:'[%',closerToken:'%]'})
-							: function(_input) { return _nodeInnerHtml.replace (/ITEMWIDGETNAME/g, _input.name) }
-						;
+					// Pull insertion marker to root
+					if (_insertionMarkerNode && _insertionMarkerNode.parentNode != _docBody) {
+						_docBody.insertBefore (_insertionMarkerNode, _docBody.childNodes[0]);
+						_this.setNodeStyle (
+							_insertionMarkerNode,
+							{
+								display:'none',
+								position:'absolute',
+								zIndex:10000,
+								left:_emptyString,
+								top:_emptyString,
+								right:_emptyString,
+								bottom:_emptyString
+							}
+						);
 					}
+
+					if (_itemTemplateNode)
+						_itemWidgetProperties.html = _this.processItemTemplate (_itemTemplateNode)
+						;
 
 					_itemWidgetProperties.built = _false;
 					_itemWidgetProperties.container = _this.getNode ('items');
@@ -433,10 +457,10 @@ Uize.module ({
 
 					// Update the already created item widgets if the UI hasn't been built yet
 					_this.get('built')
-						|| _this.forAll( function(_itemWidget) { _itemWidget.set(_widgetProperties) } );
+						|| _this.forAll( function(_itemWidget) { _itemWidget.set(_itemWidgetProperties) } );
 
 					// For future creation of item widgets we need to update the item widget properties to have all the UI building stuff
-					_this.set({itemWidgetProperties:Uize.copyInto(_this.get('itemWidgetProperties') || {}, _itemWidgetProperties)});
+					_this.set({itemWidgetProperties:Uize.copyInto(_itemWidgetProperties, _this.get('itemWidgetProperties') || {})});
 
 					_superclass.prototype.wireUi.call (_this);
 				}

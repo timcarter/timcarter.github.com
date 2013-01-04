@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Tooltip Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -42,7 +42,7 @@ Uize.module ({
 				_Uize_Node = Uize.Node
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_packageGuid = Uize.getGuid (),
 				_tooltips = [],
@@ -116,7 +116,7 @@ Uize.module ({
 			};
 
 		/*** Fadeout Management ***/
-			var _fade = _package.fade = new Uize.Fade ({duration:0});
+			var _fade = _package.fade = Uize.Fade ({duration:0});
 			function _endFade () {
 				_shownTooltip._manualPositioning || _Uize_Node.unwireEventsByOwnerId (_packageGuid);
 				_Uize_Node.display (_shownTooltip._node,_false);

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Resizer.Marquee Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -37,7 +37,7 @@ Uize.module ({
 				_Uize_Node = Uize.Node
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_centerAlign = [.5,.5],
 				_sacredEmptyObject = {}

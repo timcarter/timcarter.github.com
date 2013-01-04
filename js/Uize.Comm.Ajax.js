@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Comm.Ajax Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -23,7 +23,7 @@
 	Introduction
 		The =Uize.Comm.Ajax= class implements support for [[http://en.wikipedia.org/wiki/Ajax_(programming)][Ajax]] (Asynchronous JavaScript And XML) communication through the XMLHttpRequest (XHR) object.
 
-		*DEVELOPERS:* `Jan Borgersen`, `Chris van Rensburg`, `Ben Ilegbodu`, original code donated by `Zazzle Inc.`
+		*DEVELOPERS:* `Jan Borgersen`, `Chris van Rensburg`, `Ben Ilegbodu`, `Tim Carter`, original code donated by `Zazzle Inc.`
 
 		In order to implement support for communication through the XMLHttpRequest object, this class overrides the implementation of the =performRequest= instance method inherited from the =Uize.Comm= base class. There are no additional methods or properties provided by this class - all the interface is provided in the =Uize.Comm= superclass.
 */
@@ -38,8 +38,8 @@ Uize.module ({
 				_classPrototype = _class.prototype
 			;
 
-		/*** Global Variables ***/
-			var _doNothing = new Function;
+		/*** General Variables ***/
+			var _nop = Uize.nop;
 
 		/*** Public Instance Methods ***/
 			_classPrototype.performRequest = function (_request,_callback) {
@@ -47,13 +47,16 @@ Uize.module ({
 					_this = this,
 					_returnType = _request.returnType,
 					_returnTypeIsObject = _returnType == 'object',
+					_origUrl = Uize.Url.fromParams(_request.url),
 					_requestUrl = Uize.Url.resolve (
 						_request.url,
+						Uize.copyInto (
 						{
-							comm_mode:'ajax',
-							output:'js',
 							rnd:_request.cache == 'never' ? Uize.Url.getCacheDefeatStr () : null
-						}
+							},
+							_origUrl.comm_mode ? null : {comm_mode:'ajax'},
+							_origUrl.output ? null : {output:'js'}
+						)
 					),
 					_requestData = _request.data || '',
 					_requestMethod = _request.requestMethod,
@@ -66,7 +69,7 @@ Uize.module ({
 					;
 				_this._xmlHttpRequest.onreadystatechange = function () {
 					if (_this._xmlHttpRequest.readyState == 4) {
-						_this._xmlHttpRequest.onreadystatechange = _doNothing;
+						_this._xmlHttpRequest.onreadystatechange = _nop;
 						if (_this._xmlHttpRequest.status == 200) {
 							var _responseText = _this._xmlHttpRequest.responseText;
 							if (_returnTypeIsObject || _returnType == 'xml')

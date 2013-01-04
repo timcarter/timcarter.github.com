@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.ThumbZoom Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -48,7 +48,7 @@ Uize.module ({
 				_Uize_Widget = Uize.Widget
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _shield;
 
 		/*** Class Constructor ***/
@@ -58,7 +58,7 @@ Uize.module ({
 						var _this = this;
 
 						/*** Public Instance Properties ***/
-							_this.showFade = new Uize.Fade ({
+							_this.showFade = Uize.Fade ({
 								duration:350,
 								curve:Uize.Fade.celeration (1,0),
 								quantization:1
@@ -71,7 +71,7 @@ Uize.module ({
 											- see the related =hideFade= and =shieldFade= instance properties
 								*/
 							});
-							_this.hideFade = new Uize.Fade ({
+							_this.hideFade = Uize.Fade ({
 								duration:250,
 								curve:Uize.Fade.celeration (0,1),
 								startValue:1,
@@ -85,7 +85,7 @@ Uize.module ({
 											- see the related =showFade= and =shieldFade= instance properties
 								*/
 							});
-							_this.shieldFade = new Uize.Fade ({
+							_this.shieldFade = Uize.Fade ({
 								duration:3000,
 								curve:Uize.Fade.celeration (1,0),
 								startValue:0,
@@ -292,7 +292,7 @@ Uize.module ({
 						_Uize_Node.doForAll (
 							_Uize_Node.find (_this._thumbNodes),
 							function (_node) {
-								_node.onclick = _Uize_Node.returnFalse;
+								_node.onclick = Uize.returnFalse;
 								_this.wireNode (_node,'click',_handleThumbNodeClick);
 							}
 						);

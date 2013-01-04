@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.SegmentDisplay Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -28,10 +28,7 @@
 
 Uize.module ({
 	name:'Uize.Widget.SegmentDisplay',
-	required:[
-		'Uize.Data',
-		'Uize.Node.Classes'
-	],
+	required:'Uize.Node.Classes',
 	builder:function (_superclass) {
 		var
 			_class = _superclass.subclass (),
@@ -126,7 +123,7 @@ Uize.module ({
 			_class.configureDisplay = function (_segmentCodes,_valueToSegmentsStateLookup) {
 				var segmentCodesLength = (this.segmentCodes = _segmentCodes).length;
 				this.segmentsStateToValueLookup =
-					Uize.Data.getReverseLookup (this.valueToSegmentsStateLookup = _valueToSegmentsStateLookup)
+					Uize.reverseLookup (this.valueToSegmentsStateLookup = _valueToSegmentsStateLookup)
 				;
 				this._allSegmentsMask = (1 << segmentCodesLength) - 1;
 				this._firstSegmentMask = 1 << (segmentCodesLength - 1);

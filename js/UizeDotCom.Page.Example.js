@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : UizeDotCom.Page.Example
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -120,20 +120,15 @@ Uize.module ({
 
 									/*** wire up tour page tooltip behavior ***/
 										function _getTourExampleByUrl (_url) {
-											var _tourExamplesMap = arguments.callee._map;
+											var _tourExamplesMap = _getTourExampleByUrl._map;
 											if (!_tourExamplesMap) {
-												_tourExamplesMap = arguments.callee._map = {};
-												for (
-													var
-														_tourExampleNo = -1,
-														_tourExamples = UizeDotCom.Examples (),
-														_tourExamplesLength = _tourExamples.length
-													;
-													++_tourExampleNo < _tourExamplesLength;
-												) {
-													var _tourExample = _tourExamples [_tourExampleNo];
-													_tourExamplesMap [Uize.Url.from (_tourExample.path).fileName] = _tourExample;
-												}
+												_tourExamplesMap = _getTourExampleByUrl._map = {};
+												Uize.forEach (
+													UizeDotCom.Examples (),
+													function (_tourExample) {
+														_tourExamplesMap [Uize.Url.from (_tourExample.path).fileName] = _tourExample;
+													}
+												);
 											}
 											return _tourExamplesMap [Uize.Url.from (_url).fileName];
 										}

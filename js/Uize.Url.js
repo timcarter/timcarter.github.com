@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Url Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -36,7 +36,7 @@ Uize.module ({
 				_Uize_isArray = Uize.isArray
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_sacredEmptyArray = [],
 				_sacredEmptyObject = {},
@@ -481,7 +481,7 @@ Uize.module ({
 				*/
 
 			_package.getCacheDefeatStr = function () {
-				return +new Date + '' + Math.round (Math.random () * 1000) + _cacheDefeatStrCallCount++;
+				return Uize.now () + '' + Math.round (Math.random () * 1000) + _cacheDefeatStrCallCount++;
 				/*?
 					Static Methods
 						Uize.Url.getCacheDefeatStr

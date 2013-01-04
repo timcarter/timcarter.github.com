@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Recaptcha Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -41,7 +41,7 @@ Uize.module ({
 				null,
 				function () {
 					var _this = this;
-					_this._commObject = new Uize.Comm.Script ({callbackMode:'client'});
+					_this._commObject = Uize.Comm.Script ({callbackMode:'client'});
 					_this.initializeCaptcha ();
 				}
 			),

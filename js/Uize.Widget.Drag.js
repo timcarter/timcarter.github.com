@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Drag Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -43,14 +43,19 @@ Uize.module ({
 				_isIe = _Uize_Node.isIe
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_dragShield,
-				_useFixedPositioningForShield =
-					typeof navigator != 'undefined' &&
-					(!_isIe || navigator.appVersion.indexOf ('MSIE 6') == -1) &&
-					navigator.userAgent.indexOf ('Firefox/2') < 0
+				_hasStickyDragIssue = _false,
+				_useFixedPositioningForShield = _false
 			;
+			if (typeof navigator != 'undefined') {
+				var _ieMajorVersion = _Uize_Node.ieMajorVersion;
+				_hasStickyDragIssue = _isIe && _ieMajorVersion < 9;
+				_useFixedPositioningForShield =
+					(!_isIe || _ieMajorVersion > 6) && navigator.userAgent.indexOf ('Firefox/2') < 0
+				;
+			}
 
 		/*** Class Constructor ***/
 			var
@@ -186,7 +191,7 @@ Uize.module ({
 
 				function _dragMove (_eventX,_eventY) {
 					_this._eventPreviousTime = _this._eventTime;
-					_this._eventTime = +new Date;
+					_this._eventTime = Uize.now ();
 					_eventPreviousPos [0] = _eventPos [0];
 					_eventPreviousPos [1] = _eventPos [1];
 					var
@@ -252,7 +257,7 @@ Uize.module ({
 					var _dragEventPos = _Uize_Node_getEventAbsPos (_event);
 					_eventStartPos [0] = _eventPos [0] = _eventPreviousPos [0] = _dragEventPos.left;
 					_eventStartPos [1] = _eventPos [1] = _eventPreviousPos [1] = _dragEventPos.top;
-					_this._eventTime = _this._eventPreviousTime = +new Date;
+					_this._eventTime = _this._eventPreviousTime = Uize.now ();
 
 					var
 						_dragIsDone = _false,
@@ -291,7 +296,7 @@ Uize.module ({
 						}
 						document.onmousemove = function (_event) {
 							_event || (_event = window.event);
-							_isIe && _event.button == 0
+							_hasStickyDragIssue && _event.button == 0
 								? _this._inDrag && _cleanupAfterMouseDrag (_event)
 									/* NOTE:
 										when the user mouses up outside of the document area, the onmouseup event is not fired, so this is a way to catch the next mouse move inside the document where no mouse button is depressed -- can't do this in Firefox, because Firefox doesn't update the value of the button property for each onmousemove event
@@ -322,7 +327,7 @@ Uize.module ({
 				if (!_this.isWired) {
 					var _rootNode = _this.getNode ();
 					if (_rootNode) {
-						_rootNode.onmousedown = _Uize_Node.returnFalse;
+						_rootNode.onmousedown = Uize.returnFalse;
 						function _initiate (_event) {return _this.initiate (_event,_true)}
 						_this.wireNode (_rootNode,{mousedown:_initiate,touchstart:_initiate});
 					}

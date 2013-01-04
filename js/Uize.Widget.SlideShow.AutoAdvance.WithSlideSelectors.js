@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.SlideShow.AutoAdvance.WithSlideSelectors Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -28,10 +28,7 @@
 
 Uize.module ({
 	name:'Uize.Widget.SlideShow.AutoAdvance.WithSlideSelectors',
-	required:[
-		'Uize.Widget.Options',
-		'Uize.Data'
-	],
+	required:'Uize.Widget.Options',
 	builder:function (_superclass) {
 		/*** Variables for Scruncher Optimization ***/
 
@@ -53,9 +50,9 @@ Uize.module ({
 
 							/*** keep slideshow synchronized to options widget ***/
 								_options.wire (
-									'Changed.tentativeValue',
+									'Changed.value',
 									function () {
-										var _tentativeValue = _options.get ('tentativeValue');
+										var _tentativeValue = _options.get('value');
 										if (_tentativeValue != _this.get ('slideNo')) {
 											_this.stopThenResume ();
 											_this.set ({slideNo:_tentativeValue});
@@ -78,7 +75,7 @@ Uize.module ({
 			_classPrototype._updateOptionsValueAndValues = function () {
 				this.children.options.set ({
 					value:this.get ('slideNo'),
-					values:Uize.Data.map ('key',this.get ('totalSlides'))
+					values:Uize.map (this.get ('totalSlides'),'key')
 				});
 			};
 

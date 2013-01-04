@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Log Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -64,11 +64,11 @@
 					In the following example, `Log Message Timestamping` has been disabled by explicitly setting the =showTimestamp= set-get property to =false=.
 
 					EXAMPLE
-					....................................................
-					myLog = new Uize.Widget.Log ({showTimestamp:false});
+					................................................
+					myLog = Uize.Widget.Log ({showTimestamp:false});
 					myLog.wireUi ();
 					myLog.log ('This is my log message');
-					....................................................
+					................................................
 
 					LOG OUTPUT
 					......................
@@ -80,7 +80,7 @@
 
 					EXAMPLE
 					.....................................
-					myLog = new Uize.Widget.Log;
+					myLog = Uize.Widget.Log ();
 					myLog.wireUi ();
 					myLog.log ('This is my log message');
 					.....................................
@@ -94,11 +94,11 @@
 					In the following example, `Log Message Timestamping` is enabled and a custom timestamp format is being specified using the =timestampFormat= set-get property.
 
 					EXAMPLE
-					........................................................................................
-					myLog = new Uize.Widget.Log ({timestampFormat:'{YYYY}-{MM}-{DD} {hh}:{mm}:{ss}.{zzz}'});
+					....................................................................................
+					myLog = Uize.Widget.Log ({timestampFormat:'{YYYY}-{MM}-{DD} {hh}:{mm}:{ss}.{zzz}'});
 					myLog.wireUi ();
 					myLog.log ('This is my log message');
-					........................................................................................
+					.....................................................................................
 
 					LOG OUTPUT
 					................................................
@@ -120,7 +120,7 @@
 
 			EXAMPLE
 			.....................................
-			myLog = new Uize.Widget.Log;
+			myLog = Uize.Widget.Log ();
 			myLog.log ('This is my log message');
 			myLog.wireUi ();
 			.....................................

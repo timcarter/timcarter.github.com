@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Wsh.BuildUtils Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -33,7 +33,6 @@ Uize.module ({
 	required:[
 		'Uize.Url',
 		'Uize.Template',
-		'Uize.Data',
 		'Uize.Data.Simple',
 		'Uize.String',
 		'Uize.String.Lines',
@@ -45,12 +44,10 @@ Uize.module ({
 		/*** Variables for Scruncher Optimization ***/
 			var _package = function () {};
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _compiledJstFilesByPath = {};
 
 		/*** Utility Functions ***/
-			function _returnAsIs (_value) {return _value}
-
 			function _getFilenameFromPath (_filePath) {
 				return Uize.Url.from (_filePath).fileName;
 			}
@@ -68,7 +65,7 @@ Uize.module ({
 		/*** Public Static Methods ***/
 			_package.getHtmlFilesInfo = function (_folderToIndex,_titleExtractor) {
 				var _files = [];
-				if (!_titleExtractor) _titleExtractor = _returnAsIs;
+				if (!_titleExtractor) _titleExtractor = Uize.returnX;
 
 				for (
 					var
@@ -160,7 +157,7 @@ Uize.module ({
 						},
 						_getFilenameFromPath
 					).sort (),
-					_modulesLookup = Uize.Data.getLookup (_modules)
+					_modulesLookup = Uize.lookup (_modules)
 				;
 
 				/*** build list of modules in dependency order ***/
@@ -217,12 +214,7 @@ Uize.module ({
 											if (_requiredMatch [4]) {
 												var _required = [];
 												try {_required = eval ('(' + _requiredMatch [4] + ')')} catch (_error) {}
-												for (
-													var _requireNo = -1, _requiredLength = _required.length;
-													++_requireNo < _requiredLength;
-												)
-													_addModuleAndDependencies (_required [_requireNo])
-												;
+												Uize.forEach (_required,_addModuleAndDependencies);
 											} else {
 												_addModuleAndDependencies (_requiredMatch [3]);
 											}
@@ -233,34 +225,35 @@ Uize.module ({
 							}
 						}
 					}
-					for (var _moduleNo = -1, _modulesLength = _modules.length, _moduleName; ++_moduleNo < _modulesLength;)
-						_testModuleRegExp.test (_moduleName = _modules [_moduleNo]) || // ignore, if module is a test module
-							_addModuleAndDependencies (_moduleName)
+					Uize.forEach (
+						_modules,
+						function (_moduleName) { // ignore test modules
+							_testModuleRegExp.test (_moduleName) || _addModuleAndDependencies (_moduleName);
+						}
+					);
+
+				/*** build unit test suite ***/
+					var
+						_correspondingTestModuleName,
+						_unitTestSuite = Uize.Test.declare ({
+							title:'Unit Tests Suite',
+							test:Uize.map (
+								_modulesInDependencyOrder,
+								function (_moduleName) {
+									return (
+										_modulesLookup [
+											_correspondingTestModuleName =
+												_moduleName.match (/([^\.]*)(\.|$)/) [1] + '.Test.' + _moduleName
+										]
+											? Uize.Test.testModuleTest (_correspondingTestModuleName)
+											: Uize.Test.requiredModulesTest (_moduleName)
+									);
+								}
+							)
+						})
 					;
 
-				/*** build test suite ***/
-					var _test = [];
-					for (
-						var
-							_moduleNo = -1,
-							_modulesLength = (_modules = _modulesInDependencyOrder).length,
-							_moduleName,
-							_correspondingTestModuleName
-						;
-						++_moduleNo < _modulesLength;
-					) {
-						_moduleName = _modules [_moduleNo];
-						_test.push (
-							_modulesLookup [
-								_correspondingTestModuleName =
-									_moduleName.match (/([^\.]*)(\.|$)/) [1] + '.Test.' + _moduleName
-							]
-								? Uize.Test.testModuleTest (_correspondingTestModuleName)
-								: Uize.Test.requiredModulesTest (_moduleName)
-						);
-					}
-
-				_package.runUnitTests (Uize.Test.declare ({title:'Unit Tests Suite',test:_test}));
+				_package.runUnitTests (_unitTestSuite);
 			};
 
 			_package.runUnitTests = function (_unitTestsClass) {

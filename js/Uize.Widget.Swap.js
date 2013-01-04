@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Swap Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -173,7 +173,7 @@ Uize.module ({
 				_Uize_Node = Uize.Node
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_cropCoords = [],
 				_viewCoords = [],
@@ -203,7 +203,7 @@ Uize.module ({
 							_this._cycleNo = 0;
 
 						/*** Public Instance Properties ***/
-							_this.fade = new Uize.Fade ({
+							_this.fade = Uize.Fade ({
 								duration:850,
 								curve:Uize.Fade.celeration (.5,0),
 								startValue:0,

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Data.Simple Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -29,7 +29,6 @@
 Uize.module ({
 	name:'Uize.Data.Simple',
 	required:[
-		'Uize.Data',
 		'Uize.String',
 		'Uize.String.Lines'
 	],
@@ -41,7 +40,7 @@ Uize.module ({
 				_package = function () {}
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_arrayDelimiter = '\\s*\\|\\s*',
 				_arrayDelimiterRegExp = new RegExp (_arrayDelimiter),
@@ -373,7 +372,7 @@ Uize.module ({
 				delete _data.value;
 				if (_dataChildren) {
 					var
-						_properties = Uize.Data.getLookup (_undefined,0,true), // safe empty lookup object
+						_properties = Uize.lookup (_undefined,0,true), // safe empty lookup object
 						_totalProperties = 0
 					;
 					for (var _childNo = -1, _dataChildrenLength = _dataChildren.length; ++_childNo < _dataChildrenLength;) {

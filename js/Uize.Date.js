@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Date Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -35,7 +35,7 @@
 
 				The =Uize.Date= module supports parsing from and serializing to the most typical and simple of the =ISO 8601= standard's many formatting options, namely the big-endian all-numeric date notation =YYYY-MM-DD=. JavaScript's built-in =Date= object does not support parsing dates in =ISO 8601= format. When having date strings in this format, the =Uize.Date.resolve= static method can be used to produce =Date= instances set to the correct date. Consider the following example...
 
-				WRONG! WRONG! WRONG!
+				INCORRECT
 				.........................................................................
 				var myDate = new Date ('2009-09-27');  // produces an invalid date object
 				.........................................................................
@@ -133,7 +133,7 @@ Uize.module ({
 							............................................................
 
 							NOTES
-							- any parameter of this method can be an object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property)
+							- any parameter of this method can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property)
 				*/
 			};
 

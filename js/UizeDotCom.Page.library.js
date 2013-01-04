@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : UizeDotCom.Page.library Library Module
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -18,6 +18,7 @@
 
 /* Library Contents
 	UizeDotCom
+	Uize.Class
 	Uize.Node
 	Uize.Node.Event
 	Uize.Node.VirtualEvent

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Node.VirtualEvent Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -622,10 +622,10 @@ Uize.module ({
 				_false = false
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _virtualDomEventsByName = {};
 
-		/*** Global Functions ***/
+		/*** Utility Functions ***/
 			function _getCondensedEventName (_eventName) {
 				return _eventName.toLowerCase ().replace (/\s+/g,'');
 			}
@@ -706,9 +706,7 @@ Uize.module ({
 				return _package.register (
 					_eventName,
 					function (_duration) {
-						if (isNaN (_duration -= 0))
-							_duration = _durationDefault
-						;
+						_duration = Uize.toNumber (_duration,_durationDefault);
 						return _package.getCached (
 							_eventName + '(' + _duration + ')',
 							function (_node,_handler,_subWiringsOwnerId) {

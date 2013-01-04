@@ -1,0 +1,29 @@
+<head>
+	<title>Uize.Node.injectHtml doesn't evaluate scripts in Safari</title>
+</head>
+<body>
+	<p>
+		This page demonstrates a bug in the implementation of Uize.Node.injectHtml. In Safari &lt;= 5.1.4, only those script tags that are at the top-level of the markup to inject are evaluated. Any code contained by the nested script tags does not run.
+	</p>
+	<p>
+		The code within this page injects some markup below this explainer.
+	</p>
+	<div id="insert"></div>
+	<script type="text/javascript" src="http://www.uize.com/js/~source/Uize.js"></script>
+	<script type="text/javascript">
+		Uize.module ({
+			required:[
+				'Uize.Node'
+			],
+			builder:function () {
+				Uize.Node.injectHtml (
+					'insert',
+					'<script type="text/javascript">alert("if you see this, then injecting top-level tags works")<' + '/script>' +
+					'<p>There should be two alerts fired on this page. If there aren\'t, then there is a bug.' +
+					'<script type="text/javascript">alert ("if you see this, then injecting nested tags works")<' + '/script>' +
+					'</p>'
+				);
+			}
+		});
+	</script>
+</body>

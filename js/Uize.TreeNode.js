@@ -22,6 +22,59 @@ Uize.module ({
 				_classPrototype = _class.prototype
 			;
 
+		/*** Serialization/Deserialization ***/
+			_class.serialize = function (_root) {
+				var _serialized = null;
+
+				if (_root) { // TODO: make sure _root is actually an instance of Uize.TreeNode
+					_serialized = {
+						data:_root._data,
+						nodes:[]
+					};
+
+					for (
+						var
+							_serializedNodes = _serialized.nodes,
+							_index = -1,
+							_childNodes = _root._nodes || [],
+							_childNodesLength = _childNodes.length
+						;
+						++_index < _childNodesLength;
+					)
+						_serializedNodes.push (_class.serialize (_childNodes [_index]));
+				}
+
+				return _serialized;
+			};
+
+			_class.deserialize = function (_root) {
+				/*
+					Current expected data structure:
+						{
+							data:'some data object',
+							nodes:'an array of more data'
+						}
+				*/
+				var _newNode = null;
+				if (_root) {
+					_newNode = new _superclass.TreeNode ({_data:_root.data});
+
+					for (
+						var
+							_index = -1,
+							_newChildNode,
+							_childNodes = _root.nodes || [],
+							_childNodesLength = _childNodes.length
+						;
+						++_index < _childNodesLength;
+					)
+						(_newChildNode = _class.deserialize (_childNodes [_index])) &&
+							_newNode.graft (_newChildNode)
+						;
+				}
+				return _newNode;
+			};
+
 		/*** Querying ***/
 			_classPrototype.getChildNodes = function () {
 				return this._nodes;

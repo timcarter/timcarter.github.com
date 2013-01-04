@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Wsh.AuditStrings Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -88,14 +88,13 @@ Uize.module ({
 	name:'Uize.Wsh.AuditStrings',
 	required:[
 		'Uize.Scruncher',
-		'Uize.Data',
 		'Uize.String'
 	],
 	builder:function () {
 		/*** Variables for Scruncher Optimization ***/
 			var _package = function () {};
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_eventNames = [
 					'abort', 'activate', 'afterupdate', 'beforedeactivate', 'beforeeditfocus', 'beforeupdate', 'blur', 'cellchange', 'change', 'click', 'dblclick', 'deactivate', 'drag', 'dragend', 'dragenter', 'dragleave', 'dragover', 'drop', 'error', 'finish', 'focus', 'help', 'keydown', 'keypress', 'keyup', 'load', 'losecapture', 'mousedown', 'mousemove', 'mouseup', 'mouseout', 'mouseover', 'propertychange', 'readystatechange', 'rowenter', 'rowexit', 'rowsdelete', 'rowsinserted', 'scroll', 'submit', 'start', 'unload'
@@ -117,7 +116,7 @@ Uize.module ({
 						'.asp', '.ASP', '.gif', '.html', '.jpg', '.js', '.jst', '.png', '.PNG', '.txt', '.xhtml', '.xml' // this could be in a regular expression, with leading period optional, and case insensitive, perhaps it would be good to add a filename match, to catch things like, filename.gif, .gif, and gif (ie. patterns like [[filename].]gif|jpg|html)
 				].concat (
 					_eventNames,
-					Uize.Data.map ('\'on\' + value',_eventNames)
+					Uize.map (_eventNames,'\'on\' + value')
 				),
 				_nonI18nStringsDictionaryLookup
 			;
@@ -129,7 +128,7 @@ Uize.module ({
 					_sourceFolderName = _params.sourceFolderName
 				;
 				if (!_nonI18nStringsDictionaryLookup)
-					_nonI18nStringsDictionaryLookup = Uize.Data.getLookup (_nonI18nStringsDictionary)
+					_nonI18nStringsDictionaryLookup = Uize.lookup (_nonI18nStringsDictionary)
 				;
 				Uize.Wsh.buildFiles (
 					Uize.copyInto (
@@ -144,7 +143,7 @@ Uize.module ({
 								var
 									_scruncherResult = Uize.Scruncher.scrunch (_sourceFileText,{AUDITSTRINGS:true}),
 									_stringsMap = _scruncherResult.stringsMap,
-									_strings = Uize.Data.getKeys (_stringsMap),
+									_strings = Uize.keys (_stringsMap),
 									_nonI18nStrings = [],
 									_likelyNonI18nStrings = [],
 									_possibleI18nStrings = [],

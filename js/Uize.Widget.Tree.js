@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Tree Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2003-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2003-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -139,10 +139,10 @@ Uize.module ({
 					_this = this,
 					_itemSpecifier = _params.itemSpecifier,
 					_itemDelimiter = _this._itemDelimiter,
-					_doNothing = function () {},
-					_itemHandler = _params.itemHandler || _doNothing,
-					_beforeSubItemsHandler = _params.beforeSubItemsHandler || _doNothing,
-					_afterSubItemsHandler = _params.afterSubItemsHandler || _doNothing
+					_nop = Uize.nop,
+					_itemHandler = _params.itemHandler || _nop,
+					_beforeSubItemsHandler = _params.beforeSubItemsHandler || _nop,
+					_afterSubItemsHandler = _params.afterSubItemsHandler || _nop
 				;
 				function _traverseItem (_item,_itemSpecifier,_depth) {
 					_itemHandler (_item,_itemSpecifier,_depth);

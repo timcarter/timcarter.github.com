@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Fade Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -34,15 +34,17 @@
 
 Uize.module ({
 	name:'Uize.Fade',
+	superclass:'Uize.Class',
 	builder:function (_superclass) {
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,
 				_typeObject = 'object',
-				_constrain = Uize.constrain
+				_constrain = Uize.constrain,
+				_now = Uize.now
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_valueUnchanged = {},
 				_activeFades = [],
@@ -50,7 +52,7 @@ Uize.module ({
 				_interval
 			;
 
-		/*** Global Functions ***/
+		/*** Utility Functions ***/
 			function _updateAnyActiveFades () {
 				if ((_anyActiveFades = !!_activeFades.length) != !!_interval)
 					_interval = _anyActiveFades ? setInterval (_advance,10) : clearInterval (_interval)
@@ -66,12 +68,11 @@ Uize.module ({
 				_updateAnyActiveFades ();
 			}
 
-			function _linear (_value) {return _value}
-
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (),
-				_classPrototype = _class.prototype
+				_classPrototype = _class.prototype,
+				_nonInheritableStatics = _class.nonInheritableStatics
 			;
 
 		/*** Private Instance Methods ***/
@@ -93,7 +94,7 @@ Uize.module ({
 			};
 
 			_classPrototype._advance = function () {
-				var _completion = Math.min (((Date.now ? Date.now () : +new Date) - this._startTime) / this._duration,1);
+				var _completion = Math.min ((_now () - this._startTime) / this._duration,1);
 				this.set ({_progress:this._reverse ? 1 - _completion : _completion});
 				if (_completion == 1) {
 					this.stop ();
@@ -251,6 +252,7 @@ Uize.module ({
 							To illustrate the ability to blend complex values, the above statement of code would return the object ={red:127.5,green:127.5,blue:127.5}=, corresponding to mid gray.
 				*/
 			};
+			_nonInheritableStatics.blendValues = 1;
 
 			_class.celeration = function (_acceleration,_deceleration) {
 				/* NOTES
@@ -290,7 +292,7 @@ Uize.module ({
 				;
 				return (
 					_sustain >= 1
-						? _linear
+						? Uize.returnX
 						:
 							function (_value) {
 								return (
@@ -365,6 +367,7 @@ Uize.module ({
 							- see also the =curve= set-get property
 				*/
 			};
+			_nonInheritableStatics.celeration = 1;
 
 		/*** Register Properties ***/
 			function _setCurveFromAccelerationDeceleration () {
@@ -440,7 +443,7 @@ Uize.module ({
 					onChange:function () {
 						var _this = this;
 						if (_this._inProgress) {
-							_this._startTime = Date.now ? Date.now () : +new Date;
+							_this._startTime = _now ();
 							_this.fire ('Start');
 								/*?
 									Instance Events
@@ -531,7 +534,7 @@ Uize.module ({
 
 								EXAMPLE
 								...................................................
-								var colorFade = new Uize.Fade ({
+								var colorFade = Uize.Fade ({
 									startValue:{red:255,green:128,blue:0}, // orange
 									endValue:{red:179,green:136,blue:255}, // violet
 									quantization:1,
@@ -552,7 +555,7 @@ Uize.module ({
 
 								EXAMPLE
 								...................................................
-								var colorFade = new Uize.Fade ({
+								var colorFade = Uize.Fade ({
 									startValue:{red:255,green:128,blue:0}, // orange
 									endValue:{red:179,green:136,blue:255}, // violet
 									quantization:{
@@ -571,7 +574,7 @@ Uize.module ({
 
 								EXAMPLE
 								...................................................
-								var colorFade = new Uize.Fade ({
+								var colorFade = Uize.Fade ({
 									startValue:{
 										color:{red:255,green:128,blue:0}, // orange
 										opacity:0
@@ -596,7 +599,7 @@ Uize.module ({
 
 								EXAMPLE
 								.......................................................
-								var colorFade = new Uize.Fade ({
+								var colorFade = Uize.Fade ({
 									startValue:{
 										colorA:{red:255,green:128,blue:0},   // orange
 										colorB:{red:255,green:0,blue:0}      // pure red
@@ -625,14 +628,14 @@ Uize.module ({
 								You can just as well specify a floating point value for quantization. For example, a fade starting with =0= and with a quantization of =.5= would produce the interpolated values =0=, =.5=, =1=, =1.5=, =2=, =2.5=, etc. This could be useful in cases where a floating point interpolated value is acceptable, but where one wishes to limit the number of value changes that occur for performance reasons. In such cases, setting a quantization to anything other than =0= would provide a throttling effect that would reduce the number of value updates that would occur.
 
 								EXAMPLE
-								..................................
-								var opacityFade = new Uize.Fade ({
+								..............................
+								var opacityFade = Uize.Fade ({
 									startValue:0,
 									endValue:1,
 									quantization:.02,
 									duration:2000
 								});
-								..................................
+								..............................
 
 								In the above example, a fade instance is created for fading an opacity value between =0= and =1=. Opacity is a floating point value, where =0= represents completely transparent and =1= represents completely opaque. Setting a quantization of =.02= for the fade ensures that there will be a maximum of 50 value updates (1 / .02) over the duration of the fade (there may be fewer, depending on CPU load).
 

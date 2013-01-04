@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>Home</title>
+		<style type="text/css">
+			body {
+				background:#000;
+				overflow:hidden;
+				margin:0;
+				color:#fff;
+				font-family:monospace;
+			}
+
+			#bar {
+				position:fixed;
+				bottom:0;
+				height:25px;
+				width:100%;
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7d7e7d), color-stop(100%,#0e0e0e));
+				background: linear-gradient(top, #7d7e7d 0%,#0e0e0e 100%);
+			}
+
+			#clock {
+				position:absolute;
+				right:5px;
+				height:18px$;
+				margin:2px 0;
+				padding:2px;
+				background: #000;
+				cursor:default;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="bar">
+			<span id="clock"></span>
+		</div>
+	</body>
+	<script src="js/jquery-1.7.1.js"></script>
+	<script>
+		$(document).ready (
+			function () {
+
+				(function setTime () {
+					$("#clock").html ((new Date).toTimeString ().split (' ')[0])
+
+					setTimeout (
+						setTime,
+						1000
+					);
+				}) ();
+
+			}
+		)
+	</script>
+</html>

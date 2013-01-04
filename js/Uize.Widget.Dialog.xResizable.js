@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Dialog.xResizable Class Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -35,7 +35,7 @@
 				'Uize.Widget.Dialog.xResizable'
 			],
 			builder:function () {
-				var page = window.page = new Uize.Widget.Page;
+				var page = window.page = Uize.Widget.Page ();
 
 				page.addChild ('resizableDialog',Uize.Widget.Dialog,{resizable:true});
 			}
@@ -121,7 +121,7 @@ Uize.module ({
 											'Uize.Widget.Dialog.xResizable'
 										],
 										builder:function () {
-											var page = window.page = new Uize.Widget.Page;
+											var page = window.page = Uize.Widget.Page ();
 
 											page.addChild (
 												'verticallyResizableDialog',Uize.Widget.Dialog,{resizable:true}

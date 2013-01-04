@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Options.Tabbed.Fading Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -43,7 +43,7 @@ Uize.module ({
 					function () {
 						var
 							_this = this,
-							_fade = _this._fade = _this.fade = new Uize.Fade ({duration:1000})
+							_fade = _this._fade = _this.fade = Uize.Fade ({duration:1000})
 						;
 						_fade.wire ({
 							'Changed.value':

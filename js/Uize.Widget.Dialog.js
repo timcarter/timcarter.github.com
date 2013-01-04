@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Dialog Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -45,12 +45,12 @@ Uize.module ({
 				_Uize_Widget_Drag = _Uize_Widget.Drag
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_sacredEmptyObject = {},
 				_zIndexSlots = {},
 				_totalShown = 0,
-				_browserHasSelectShowThroughIssue = Uize.Node.isIe && navigator.appVersion.indexOf ('MSIE 6') > -1
+				_browserHasSelectShowThroughIssue = _Uize_Node.ieMajorVersion == 6
 			;
 
 		/*** Class Constructor ***/
@@ -61,7 +61,7 @@ Uize.module ({
 
 						/*** Private Instance Properties ***/
 							(
-								_this._shieldFade = _this.shieldFade = new Uize.Fade ({
+								_this._shieldFade = _this.shieldFade = Uize.Fade ({
 									curve:Uize.Fade.celeration (0,1),
 									duration:750
 								})
@@ -170,9 +170,7 @@ Uize.module ({
 							;
 
 						/*** create buttons ***/
-							function _dismiss (_dismissalEvent) {
-								_this.fire (_dismissalEvent).abort || _this.set ({_shown:_false});
-							}
+							function _dismiss (_dismissalEvent) { _this._dismiss(_dismissalEvent) }
 							_this._addChildButton ('close',function () {_dismiss ('Close')});
 								/*?
 									Child Widgets
@@ -244,8 +242,12 @@ Uize.module ({
 
 		/*** Private Instance Methods ***/
 			_classPrototype._addChildButton = _Uize_Widget.Button.addChildButton;
+			
+			_classPrototype._dismiss = function (_dismissalEvent) {
+				this.fire (_dismissalEvent).abort || this.set ({_shown:_false})
+			};
 
-			var _updateUiPositionIfShown = _classPrototype._updateUiPositionIfShown = function () {
+			var _updateUiPositionIfShown = _classPrototype._updateUiPositionIfShown = _classPrototype.updateUiPositionIfShown = function () {
 				var _this = this;
 				if (_this.isWired && _this._shown && !_this._inDrag) {
 					_Uize_Widget_Drag.resizeShield (_this.getNode ('shield'));
@@ -276,15 +278,20 @@ Uize.module ({
 							_Uize_Node.centerInWindow (_rootNode)
 						;
 						if (_mooringNode) {
-							var _mooringCoords = _Uize_Node.getCoords (_mooringNode);
-							_Uize_Node.setStyle (
-								_rootNode,
-								Uize.copyInto (
-									{},
-									_offsetX != _undefined ? {left:_mooringCoords.left + _offsetX} : _undefined,
-									_offsetY != _undefined ? {top:_mooringCoords.top + _offsetY} : _undefined
-								)
-							);
+							if (_offsetX == 'adjacent' || _offsetY == 'adjacent') {
+								_Uize_Node.setAbsPosAdjacentTo (_rootNode, _mooringNode);
+							}
+							else {
+								var _mooringCoords = _Uize_Node.getCoords (_mooringNode);
+								_Uize_Node.setStyle (
+									_rootNode,
+									Uize.copyInto (
+										{},
+										_offsetX != _undefined ? {left:_mooringCoords.left + _offsetX} : _undefined,
+										_offsetY != _undefined ? {top:_mooringCoords.top + _offsetY} : _undefined
+									)
+								);
+							}
 						}
 					}
 				}
@@ -335,10 +342,16 @@ Uize.module ({
 
 		/*** Public Instance Methods ***/
 			/*** Hook Methods for Uize.Widget.Dialog.xResizable ***/
-				_classPrototype.atEndOfOmegaStructor = _classPrototype.afterWireUi = function () {};
+				_classPrototype.atEndOfOmegaStructor = _classPrototype.afterWireUi = Uize.nop;
 
 			_classPrototype.updateUi = function () {
-				this._updateUiTitle ();
+				var _this = this;
+
+				if (_this.isWired) {
+					_this._updateUiTitle ();
+
+					_superclass.prototype.updateUi.call(_this);
+				}
 			};
 
 			_classPrototype.wireUi = function () {
@@ -346,6 +359,12 @@ Uize.module ({
 				if (!_this.isWired) {
 					_this.wireNode (window,'resize',function () {_this._updateUiPositionIfShown ()});
 					_this._drag.set ({node:_this.getNode ('title')});
+					
+					_this.wireNode(
+						'shield',
+						'click',
+						function() { _this._dismissOnShieldClick && _this._dismiss ('Close') }
+					);
 
 					/*** fetch values for defaultTitle, defaultOkText, and defaultCancelText from markup ***/
 						function _initializeDefaultProperty (_defaultPropertyName,_widget,_impliedNodeName) {
@@ -460,9 +479,26 @@ Uize.module ({
 								- the initial value is =undefined=
 					*/
 				},
+				_dismissOnShieldClick:{
+					name:'dismissOnShieldClick',
+					value:_false
+					/*?
+						Set-get Properties
+							dismissOnShieldClick
+								An boolean, specifying whether or not clicking =shield= implied node should close the dialog.
+
+								A "chromeless" dialog may be desired in some case in order to display a palette without the visual clutter of title and button bars. In this case, there may not be a =close= button, so clicking outside of the dialog (on the =shield= implied node) would be one way to close the dialog.
+
+								NOTES
+								- the initial value is =false=
+					*/
+				},
 				_height:{
 					name:'height',
-					onChange:_updateUiDimsIfShown
+					onChange:[
+						_updateUiDimsIfShown,
+						_updateUiPositionIfShown
+					]
 					/*?
 						Set-get Properties
 							height
@@ -585,7 +621,7 @@ Uize.module ({
 				_shieldOpacity:{
 					name:'shieldOpacity',
 					onChange:function () {
-						this._shieldShown && this.set ({_currentShieldOpacity:this._shieldOpacity});
+						this._shieldShown && this.set ({_currentShieldOpacity:this._shieldOpacity})
 					},
 					value:.3
 					/*?
@@ -606,7 +642,7 @@ Uize.module ({
 							if (_this._shieldShown) {
 								if (_browserHasSelectShowThroughIssue && _this.getNode ('shield')) {
 									var _ie6SelectHackShield = _this.getNode ('ie6SelectHackShield');
-									if (!_this.getNode ('ie6SelectHackShield')) {
+									if (!_this._dismissOnShieldClick && !_this.getNode ('ie6SelectHackShield')) {
 										_this.flushNodeCache ('ie6SelectHackShield');
 										_this.injectNodeHtml (
 											'shield',
@@ -742,7 +778,10 @@ Uize.module ({
 				},
 				_width:{
 					name:'width',
-					onChange:_updateUiDimsIfShown
+					onChange:[
+						_updateUiDimsIfShown,
+						_updateUiPositionIfShown
+					]
 					/*?
 						Set-get Properties
 							width

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Date.Formatter Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -292,7 +292,7 @@ Uize.module ({
 				_Uize_Date = Uize.Date
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_tokenMatcherRegExp,
 				_tokenNameToValueRegExpString = {
@@ -314,7 +314,7 @@ Uize.module ({
 					milliseconds:'\\d{1,3}',
 					ampm:'am|pm'
 				},
-				_dynamicTokenValueRegExpStrings = {monthName:1,shortMonthName:1,dayName:1,shortDayName:1},
+				_dynamicTokenValueRegExpStrings = ['monthName','shortMonthName','dayName','shortDayName'],
 				_ctrlG = String.fromCharCode (7)
 			;
 
@@ -449,17 +449,13 @@ Uize.module ({
 					if (!_format) return _Uize_Date.resolve (_date);
 
 				/*** re-initialize dynamic token value RegExp strings ***/
-					for (_tokenName in _dynamicTokenValueRegExpStrings)
-						_tokenNameToValueRegExpString [_tokenName] = null
-					;
+					Uize.lookup (_dynamicTokenValueRegExpStrings,null,_tokenNameToValueRegExpString);
 
-				if (!_tokenMatcherRegExp) {
-					var _tokenNames = [];
-					for (_tokenName in _tokenNameToValueRegExpString)
-						_tokenNames.push (_tokenName)
-					;
-					_tokenMatcherRegExp = new RegExp ('\\{(' + _tokenNames.join ('|') + ')\\}','g');
-				}
+				if (!_tokenMatcherRegExp)
+					_tokenMatcherRegExp = new RegExp (
+						'\\{(' + Uize.keys (_tokenNameToValueRegExpString).join ('|') + ')\\}','g'
+					)
+				;
 
 				var
 					_tokens = [],

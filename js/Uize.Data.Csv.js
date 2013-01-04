@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Data.Csv Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -115,7 +115,7 @@ Uize.module ({
 				_undefined
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _optionDefaults = {
 				columns:'all',              // 'all' | an array of column names
 				hasHeader:false,            // true | false
@@ -614,8 +614,8 @@ Uize.module ({
 					_columns = !_firstRow
 						? []
 						: _rowTypeIsObject
-							? Uize.Data.getKeys (_firstRow)
-							: Uize.Data.map ('key',_firstRow.length)
+							? Uize.keys (_firstRow)
+							: Uize.map (_firstRow.length,'key')
 				;
 				var _totalColumns = _columns.length;
 				for (var _rowNo = -1 - _hasHeader, _totalRows = _toEncode.length; ++_rowNo < _totalRows;) {

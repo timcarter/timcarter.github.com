@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Url Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -28,6 +28,10 @@
 
 Uize.module ({
 	name:'Uize.Test.Uize.Url',
+	required:[
+		'Uize.Class',
+		'Uize.Class.Value'
+	],
 	builder:function () {
 		return Uize.Test.declare ({
 			title:'Test for Uize.Url Module',
@@ -232,7 +236,7 @@ Uize.module ({
 								p6:Infinity,
 								p7:'hello',
 								p8:new String ('hello'),
-								p9:new Uize ({value:'hello'}),
+								p9:Uize.Class.Value ({value:'hello'}),
 								p10:[1,2,3,4]
 							},
 							'p1=true&p2=false&p3=42&p4=42&p5=NaN&p6=Infinity&p7=hello&p8=hello&p9=hello&p10=1%2C2%2C3%2C4'
@@ -320,7 +324,7 @@ Uize.module ({
 									p6:Infinity,
 									p7:'hello',
 									p8:new String ('hello'),
-									p9:new Uize ({value:'hello'}),
+									p9:Uize.Class.Value ({value:'hello'}),
 									p10:[1,2,3,4]
 								}
 							],

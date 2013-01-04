@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Stretchy Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
 |           |__ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -23,7 +23,7 @@
 	Introduction
 		The =Uize.Widget.Stretchy= class implements a widget with long and short views, and controls for toggling between them with an accompanying animation.
 
-		*DEVELOPERS:* `Jan Borgersen`
+		*DEVELOPERS:* `Jan Borgersen`, `Michael Cheng`
 */
 
 Uize.module ({
@@ -48,7 +48,7 @@ Uize.module ({
 						var _this = this;
 
 						/*** Private Instance Properties ***/
-							_this.fade = new Uize.Fade ({
+							_this.fade = Uize.Fade ({
 								curve:Uize.Fade.celeration (0,1),
 								duration:500,
 								quantization:1
@@ -119,7 +119,11 @@ Uize.module ({
 								endValue:_shortHeight
 							});
 						}
-						_this.wireNode ('expand','click',_showLong);
+						_this.wireNode ('expand', 'click',
+							function() {
+								_this.fire ({name:'Expand', handler:_showLong}).handled || _showLong();
+							}
+						);
 						_this.wireNode ('contract','click',_showShort);
 
 					_superclass.prototype.wireUi.call (_this);

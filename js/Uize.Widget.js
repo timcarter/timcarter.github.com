@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -23,7 +23,7 @@
 	Introduction
 		The =Uize.Widget= class serves as the base class for widgets in the UIZE JavaScript Framework, providing services to ease the implementation of widgets.
 
-		*DEVELOPERS:* `Chris van Rensburg`, `Ben Ilegbodu`
+		*DEVELOPERS:* `Chris van Rensburg`, `Ben Ilegbodu`, `Vinson Chuong`
 
 		An Abstract Class
 			The =Uize.Widget= class is primarily an abstract class, intended for the creation of widget subclasses.
@@ -33,6 +33,7 @@
 
 Uize.module ({
 	name:'Uize.Widget',
+	superclass:'Uize.Class',
 	required:'Uize.Node',
 	builder:function (_superclass) {
 		/*** Variables for Optimization ***/
@@ -42,10 +43,11 @@ Uize.module ({
 					_true = true,
 					_false = false,
 					_typeString = 'string',
-					_isFunction = Uize.isFunction,
+					_Uize = Uize,
+					_isFunction = _Uize.isFunction,
 					_concatenated = 'concatenated',
 					_undefined,
-					_Uize_Node = Uize.Node,
+					_Uize_Node = _Uize.Node,
 					_Uize_Node_doForAll = _Uize_Node.doForAll,
 
 				/*** References for Performance Optimization ***/
@@ -56,13 +58,30 @@ Uize.module ({
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
-					function () {
+					function (_properties) {
+						var _this = this;
+
+						if (_properties) {
+							/*** try to harvest declarative widget properties ***/
+								var _declarativeWidgetProperties =
+									_this._harvestDeclarativeWidgetProperties (_properties.idPrefix,_properties.parent)
+								;
+								_declarativeWidgetProperties && _Uize.copyInto (_properties,_declarativeWidgetProperties);
+
+							delete _properties.widgetClass;
+						}
+
+						/*** Private Instance Properties ***/
+							_this._unappliedChildrenProperties = {};
+
 						/*** Public Instance Properties ***/
-							this.children = this._children = {
+							_this.children = _this._children = {};
 								/*?
 									Instance Properties
-										children
-											An object, each of whose properties is a reference to one of a widget's child widgets. For example, an instance of the =Uize.Widget.SlideShow= class may have child widgets that can be referenced as follows...
+										children ~~ children Instance Property
+											An object, each of whose properties is a reference to one of a widget's child widgets.
+
+											For example, an instance of the =Uize.Widget.SlideShow= class assigned to the variable =mySlideShow= may have child widgets that can be referenced as follows...
 
 											.............................
 											mySlideShow.children.first
@@ -71,39 +90,61 @@ Uize.module ({
 											mySlideShow.children.next
 											.............................
 
+											Don't Directly Modify the children Object
+												The contents of the =children= object is managed by the various instance methods of the =Uize.Widget= class, such as the =addChild= and =removeChild= methods.
+
+												One should not directly modify the contents of the =children= object, but should only do this through the child widget management methods.
+
+											The Special children set-get Property
+												The =children= instance property has a companion set-get property of the same name, but which has a special behavior.
+
+												The `children set-get property` provides a convenient way to distribute widget properties to any or all of a widget's child widgets.
+
 											NOTES
+											- the =children= object is read-only - its contents should not be directly modified
+											- see also the special `children set-get property`
 											- see also the related =parent= instance property
 								*/
-							};
 					}
 				),
 				_classPrototype = _class.prototype
 			;
 
 		/*** Private Instance Methods ***/
-			_classPrototype._applyGlobalQualifierPropertiesIfPresent = function () {
-				/* NOTE:
-					normally, I would create a local variable like _idPrefix first thing, to avoid repeated dereferencing of this._idPrefix, but in this instance the code is optimized for the common case where there are no global qualifiers present, so that we're not always creating a local variable when most of the time there might only be one use of its value
-				*/
-				if (
-					window ['$' + this._idPrefix] &&
-					(!this.parent || this._idPrefix != this.parent._idPrefix)
+			_classPrototype._harvestDeclarativeWidgetProperties = function (_idPrefix,_parent) {
+				var
+					_properties,
+					_globalVariableName
+				;
+				(
+					_idPrefix &&
+					(_properties = window [_globalVariableName = '$' + _idPrefix]) &&
+					typeof _properties == 'object' &&
+					(!_parent || _idPrefix != _parent._idPrefix)
 						/* NOTE:
 							There are still some widgets that are implemented using child widgets where the idPrefix of the child widgets is set to that of the parent widget, and we don't want the global qualifier properties being applied to those child widgets, so we check for this condition.
 						*/
-				) {
-					var _globalQualifierName = '$' + this._idPrefix;
-					this.set (window [_globalQualifierName]);
-					window [_globalQualifierName] = _undefined;
+				)
+					? (window [_globalVariableName] = _undefined)
 						/* NOTE:
-							once we've applied the global qualifier properties, we clean them up so that they don't continue taking up space in memory
+							We've harvested the global variable for the declarative widget properties, so we set it to undefined so there aren't lingering references to the data lying around (which could impact memory usage).
 						*/
-				}
+					: (_properties = _undefined)
+				;
+				return _properties;
+			};
+
+			_classPrototype._applyDeclarativeWidgetProperties = function () {
+				var
+					_this = this,
+					_declarativeWidgetProperties = _this._harvestDeclarativeWidgetProperties (_this._idPrefix,_this.parent)
+				;
+				_declarativeWidgetProperties && _this.set (_declarativeWidgetProperties);
 			};
 
 			_classPrototype._constructIdPrefix = function (_parentIdPrefix,_childIdPrefix,_childName,_idPrefixConstruction) {
 				return (
-					(_idPrefixConstruction == _concatenated || !_idPrefixConstruction) && _parentIdPrefix != _undefined
+					(!_idPrefixConstruction || _idPrefixConstruction == _concatenated) && _parentIdPrefix != _undefined
 						? (_parentIdPrefix + (_childName !== '' ? '_' : '') + _childName)
 						: (_idPrefixConstruction == 'same as parent' ? _parentIdPrefix : _childIdPrefix)
 				);
@@ -111,29 +152,29 @@ Uize.module ({
 
 			var _phantomRoot = {_busyInherited:_false,_enabledInherited:_true};
 
-			_classPrototype._checkBusyInherited = function () {
+			function _checkBusyInherited () {
 				(this._busy == 'inherit' ? (this.parent || _phantomRoot)._busyInherited : this._busy)
 				!= this._busyInherited &&
 					this.set ({_busyInherited:!this._busyInherited})
 				;
-			};
+			}
 
-			_classPrototype._checkEnabledInherited = function () {
+			function _checkEnabledInherited () {
 				(this._enabled == 'inherit' ? (this.parent || _phantomRoot)._enabledInherited : this._enabled)
 				!= this._enabledInherited &&
 					this.set ({_enabledInherited:!this._enabledInherited})
 				;
-			};
+			}
 
 			_classPrototype._tryUseConfirmInheritedFromTree = function (_mode,_params,_builtInConfirmFallback) {
-				var _promptMethodName = 'show' + Uize.capFirstChar (_mode);
+				var _promptMethodName = 'show' + _Uize.capFirstChar (_mode);
 				this.getProvider (_promptMethodName)
 					? this.callInherited (_promptMethodName) (_params)
 					:
 						setTimeout (
 							function () {
 								var _confirmed = _builtInConfirmFallback ();
-								(_params.callback || (_confirmed ? _params.yesHandler : _params.noHandler) || function () {})
+								(_params.callback || (_confirmed ? _params.yesHandler : _params.noHandler) || _Uize.nop)
 								(_confirmed)
 							},
 							0
@@ -278,7 +319,7 @@ Uize.module ({
 			_classPrototype.ajax = function (_serviceParams,_requestParams) {
 				this.callInherited ('performAjax') (
 					_serviceParams,
-					Uize.isFunction (_requestParams) ? {callback:_requestParams} : _requestParams || {}
+					_Uize.isFunction (_requestParams) ? {callback:_requestParams} : _requestParams || {}
 				)
 				/*?
 					Instance Methods
@@ -405,7 +446,7 @@ Uize.module ({
 				return (
 					_isFunction (_localizedResource)
 						? _localizedResource.call (this,_substitutions)
-						: Uize.substituteInto (_localizedResource,_substitutions,_tokenNaming || '{KEY}')
+						: _Uize.substituteInto (_localizedResource,_substitutions,_tokenNaming || '{KEY}')
 				);
 				/*?
 					Instance Methods
@@ -546,9 +587,9 @@ Uize.module ({
 								The optional =shell= implied node for a widget instance provides a "slot" in the document into which markup for that instance can be inserted.
 					*/
 					if (_html === _true) {
-						_html = _this._html = Uize.Template && _nodeToInjectInto
+						_html = _this._html = _Uize.Template && _nodeToInjectInto
 							? {
-								process:Uize.Template.compile (
+								process:_Uize.Template.compile (
 									(
 										_Uize_Node.find ({root:_nodeToInjectInto,tagName:'SCRIPT',type:'text/jst'}) [0] ||
 										_nodeToInjectInto
@@ -561,21 +602,26 @@ Uize.module ({
 						if (!_html) return;
 					}
 					_this._idPrefix || _this.set ({_idPrefix:_this.instanceId});
-					var _templateInput = Uize.copyInto (
+					var
+						_templateInput = _Uize.copyInto (
 						{
-							pathToResources:Uize.pathToResources,
+							pathToResources:_Uize.pathToResources,
 							blankGif:_class.getBlankImageUrl ()
 						},
 						_alternateTemplateInput || _this.get ()
-					);
+						),
+						_htmlFuncOutput
+					;
 					_Uize_Node.injectHtml (
 						_nodeToInjectInto || document.body,
 						typeof _html != _typeString && _isFunction (_html.process)
 							? _html.process.call (_this,_templateInput)
-							: Uize.substituteInto (
-								_isFunction (_html) ? _this._html (_templateInput) : _html,
-								_templateInput
-							),
+							: _isFunction (_html)
+								? typeof (_htmlFuncOutput = _html (_templateInput)) === 'string'
+									? _Uize.substituteInto (_htmlFuncOutput, _templateInput)
+									: _htmlFuncOutput
+								: _Uize.substituteInto (_html, _templateInput)
+						,
 						_this._insertionMode || (_nodeToInjectInto ? 'inner replace' : 'inner bottom')
 					);
 					_this._nodeCache = _null;
@@ -592,6 +638,8 @@ Uize.module ({
 							......................
 
 							HTML for a widget instance is generated by using the instance's =html= set-get property. If the value of the =html= property is a function, or is an object with a =process= property whose value is a function, then the HTML generator function will be supplied with the current state of the instance's set-get properties as input - in the form of a single input object.
+
+							The generator function can either return a string containing HTML markup, a DOM node, or an array of DOM nodes.
 
 							The generated HTML for the widget is inserted into a node in the document, according to a series of fallbacks. Priority is given to the =container= set-get property. If =container= is set to =null= or =undefined=, then the =shell= implied node is considered. If the =shell= implied node is not present, then the `Root Node` is considered. If no `Root Node` is present, then the HTML is inserted at the bottom of the document's body.
 
@@ -885,7 +933,7 @@ Uize.module ({
 								myWidget.setNodeOpacity (impliedNodeSTRorBLOB,opacityFLOATorOBJ);
 								.................................................................
 
-								The value of the =opacityFLOATorOBJ= parameter should be a number in the range of =0= to =1=, where =0= represents completely invisible, =1= represents completely opaque, and any fractional values inbetween represent varying degrees of transparency / opacity. Alternatively, if a =Uize= subclass instance is specified, then a value will be obtained by invoking the instance's =valueOf Intrinsic Method=.
+								The value of the =opacityFLOATorOBJ= parameter should be a number in the range of =0= to =1=, where =0= represents completely invisible, =1= represents completely opaque, and any fractional values inbetween represent varying degrees of transparency / opacity. Alternatively, if an instance of a =Uize.Class= subclass is specified, then a value will be obtained by invoking the instance's =valueOf Intrinsic Method=.
 
 								NOTES
 								- compare to the =Uize.Node.setOpacity= static method
@@ -915,7 +963,7 @@ Uize.module ({
 								);
 								..................................................
 
-								When number type values are specified for CSS style properties, those values will be converted to strings by appending the "px" unit. When string type values are specified, the unit should already be present in the value. =Uize= subclass instances can also be specified, and they will be converted to values by invoking their =valueOf Intrinsic Method=. For a more detailed discussion, consult the reference for the =Uize.Node.setStyle= static method.
+								When number type values are specified for CSS style properties, those values will be converted to strings by appending the "px" unit. When string type values are specified, the unit should already be present in the value. Instances of =Uize.Class= subclasses can also be specified, and they will be converted to values by invoking their =valueOf Intrinsic Method=. For a more detailed discussion, consult the reference for the =Uize.Node.setStyle= static method.
 
 								NOTES
 								- see also the companion =getNodeStyle= instance method
@@ -978,7 +1026,7 @@ Uize.module ({
 								NOTES
 								- you can use the =setNodeValue= instance method to set values on readonly form elements
 								- see the corresponding =getNodeValue= instance method
-								- the =value= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize= subclass that implements the =value= set-get property)
+								- the =value= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property)
 								- compare to the =Uize.Node.setValue= static method
 					*/
 
@@ -1268,7 +1316,7 @@ Uize.module ({
 					var
 						_this = this,
 						_idPrefix = _this._idPrefix,
-						_child = Uize.isInstance (_childInstanceOrClass) ? _childInstanceOrClass : _null,
+						_child = _Uize.isInstance (_childInstanceOrClass) ? _childInstanceOrClass : _null,
 						_childIdPrefix = 'idPrefix' in _properties ? _properties.idPrefix : _properties.node,
 						_childIdPrefixConstruction = _properties.idPrefixConstruction
 					;
@@ -1281,14 +1329,24 @@ Uize.module ({
 							_childIdPrefixConstruction = _child._idPrefixConstruction
 						;
 					}
-					if (!_childIdPrefixConstruction)
-						_childIdPrefixConstruction = _childIdPrefix == _undefined ? _concatenated : 'explicit'
-					;
-					_properties.idPrefixConstruction = _childIdPrefixConstruction;
 					_properties.idPrefix = _this._constructIdPrefix (
-						_idPrefix,_childIdPrefix,_childName,_childIdPrefixConstruction
+						_idPrefix,
+						_childIdPrefix,
+						_properties.name = _childName,
+						_properties.idPrefixConstruction =
+							_childIdPrefixConstruction || (_childIdPrefix == _undefined ? _concatenated : 'explicit')
 					);
-					_properties.name = _childName;
+
+					/*** apply unapplied data for child (set through children set-get property) ***/
+						var
+							_unappliedChildrenProperties = _this._unappliedChildrenProperties,
+							_unappliedChildrenPropertiesForChild = _unappliedChildrenProperties [_childName]
+						;
+						if (_unappliedChildrenPropertiesForChild) {
+							_Uize.copyInto (_properties,_unappliedChildrenPropertiesForChild);
+							delete _unappliedChildrenProperties [_childName];
+						}
+
 					_child && _child.set (_properties);
 					return _this._children [_childName] = _child || new _childInstanceOrClass (_properties);
 					/*?
@@ -1313,7 +1371,7 @@ Uize.module ({
 								NOTES
 								- returns a reference to the child widget instance that was added
 								- the value of the =childWidgetNameSTR= can be =null= or =undefined= if a value is specified for the =name= property in the =childWidgetPropertiesOBJ= parameter
-								- see also the =removeChild= instance method, and the =children= instance property
+								- see also the =removeChild= instance method, and the `children instance property`
 
 						Instance Properties
 							parent
@@ -1324,7 +1382,7 @@ Uize.module ({
 								NOTES
 								- this property is read-only
 								- the initial value is =undefined=
-								- see also the related =children= instance property
+								- see also the related `children instance property`
 					*/
 				};
 
@@ -1332,7 +1390,7 @@ Uize.module ({
 					var
 						_children = this._children,
 						_childName =
-							typeof _childNameOrInstance == _typeString || Uize.isNumber (_childNameOrInstance)
+							typeof _childNameOrInstance == _typeString || _Uize.isNumber (_childNameOrInstance)
 								? _childNameOrInstance
 								: _childNameOrInstance._name,
 						_child = _children [_childName]
@@ -1355,7 +1413,7 @@ Uize.module ({
 								When using this method, the child widget to remove can be specified by its name, or by an object reference to it.
 
 								NOTES
-								- see also the =addChild= instance method, and the =children= instance property
+								- see also the =addChild= instance method, and the `children instance property`
 					*/
 				};
 
@@ -1480,12 +1538,12 @@ Uize.module ({
 
 			/*** Overridable Wiring and Updating Methods ***/
 				_classPrototype.kill = function () {
-					Uize.callOn (this._children,'kill');
+					_Uize.callOn (this._children,'kill');
 					_superclass.prototype.kill.call (this);
 					/*?
 						Instance Methods
 							kill
-								Overrides the =kill= method of the =Uize= base class to call the =kill= method on all of an instance's child widgets.
+								Overrides the =kill= method of the =Uize.Class= base class to call the =kill= method on all of an instance's child widgets.
 
 								SYNTAX
 								.................
@@ -1538,7 +1596,7 @@ Uize.module ({
 					this.removeNode ();
 					_Uize_Node.remove (this._globalizedNodes);
 					this._globalizedNodes = _undefined;
-					Uize.callOn (this._children,'removeUi');
+					_Uize.callOn (this._children,'removeUi');
 					this.set ({_built:_false});
 					/*?
 						Instance Methods
@@ -1575,14 +1633,11 @@ Uize.module ({
 
 				_classPrototype.wireUi = function () {
 					if (!this.isWired) {
-						this._applyGlobalQualifierPropertiesIfPresent ();
+						this._applyDeclarativeWidgetProperties ();
 						this.set ({wired:_true});
 
 						/*** wire or insert UI of children ***/
-							var _children = this._children;
-							for (var _childName in _children)
-								_children [_childName].insertOrWireUi ()
-							;
+							_Uize.callOn (this._children,'insertOrWireUi');
 
 						this.updateUi ();
 					}
@@ -1622,7 +1677,7 @@ Uize.module ({
 					if (this.isWired) {
 						this._nodeCache = _null;
 						this.unwireNode ();
-						Uize.callOn (this._children,'unwireUi');
+						_Uize.callOn (this._children,'unwireUi');
 						this.set ({wired:_false});
 					}
 					/*?
@@ -1642,7 +1697,7 @@ Uize.module ({
 
 		/*** Public Static Methods ***/
 			_class.getBlankImageUrl = function () {
-				return Uize.pathToResources + 'Uize/blank.gif';
+				return _Uize.pathToResources + 'Uize/blank.gif';
 				/*?
 					Static Methods
 						Uize.Widget.getBlankImageUrl
@@ -1664,7 +1719,7 @@ Uize.module ({
 					_parentIdPrefixPlusLength = _parentIdPrefixPlus.length
 				;
 				_Uize_Node_doForAll (
-					Uize.Node.find (_properties.idPrefix),
+					_Uize.Node.find (_properties.idPrefix),
 					function (_node) {
 						_properties.idPrefix = _node;
 						_parent
@@ -1672,7 +1727,7 @@ Uize.module ({
 								_instance = _parent.addChild (
 									_node.id.slice (0,_parentIdPrefixPlusLength) == _parentIdPrefixPlus
 										? _node.id.slice (_parentIdPrefixPlusLength)
-										: 'generatedChildName' + Uize.getGuid (),
+										: 'generatedChildName' + _Uize.getGuid (),
 									_this,
 									_properties
 								)
@@ -1760,7 +1815,7 @@ Uize.module ({
 				},
 				_busy:{
 					name:'busy',
-					onChange:_classPrototype._checkBusyInherited,
+					onChange:_checkBusyInherited,
 					value:'inherit'
 					/*?
 						Set-get Properties
@@ -1776,7 +1831,7 @@ Uize.module ({
 				},
 				_busyInherited:{
 					name:'busyInherited',
-					onChange:function () {Uize.callOn (this._children,_classPrototype._checkBusyInherited)},
+					onChange:function () {_Uize.callOn (this._children,_checkBusyInherited)},
 					value:_false
 					/*?
 						Set-get Properties
@@ -1791,6 +1846,36 @@ Uize.module ({
 								- see also the =getInherited= instance method
 					*/
 				},
+				_children:{
+					name:'children',
+					conformer:function (_value) {
+						if (_value) {
+							var
+								_children = this._children,
+								_unappliedChildrenProperties = this._unappliedChildrenProperties
+							;
+							for (var _childName in _value) {
+								var _childProperties = _value [_childName];
+								_children [_childName]
+									? _children [_childName].set (_childProperties)
+									: _unappliedChildrenProperties [_childName] = _childProperties
+								;
+							}
+						}
+						return this._children;
+					}
+					/*?
+						Set-get Properties
+							children ~~ children Set-get Property
+								A special set-get property that provides a way to distribute widget properties to any or all of the widget's child widgets, or even child widgets of the widget's child widgets - all the way down to the deepest child widgets in the widget's widget tree.
+
+								For a detailed discussion of the =children= set-get property, consult the [[../explainers/javascript-widgets.html][JavaScript Widgets]] explainer and read through specifically the section entitled "The children Set-get Property".
+
+								NOTES
+								- see also the companion `children instance property`
+								- see also the related =parent= instance property
+					*/
+				},
 				_container:'container',
 					/*?
 						Set-get Properties
@@ -1802,7 +1887,7 @@ Uize.module ({
 					*/
 				_enabled:{
 					name:'enabled',
-					onChange:_classPrototype._checkEnabledInherited,
+					onChange:_checkEnabledInherited,
 					value:'inherit'
 					/*?
 						Set-get Properties
@@ -1818,7 +1903,7 @@ Uize.module ({
 				},
 				_enabledInherited:{
 					name:'enabledInherited',
-					onChange:function () {Uize.callOn (this._children,_classPrototype._checkEnabledInherited)},
+					onChange:function () {_Uize.callOn (this._children,_checkEnabledInherited)},
 					value:_true
 					/*?
 						Set-get Properties
@@ -1850,7 +1935,7 @@ Uize.module ({
 									Function
 										Lets you specify a generator function for a widget's markup.
 
-										A function that you register as an HTML generator for your widget using the =html= set-get property should expect to receive one parameter, being an object containing the `HTML Generator Input`. The function should return a string, being the generated HTML markup for the widget. While the generator function can use the values in the `HTML Generator Input` object when constructing the HTML for the widget, the string returned by the function may also contain tokens of the form =[#setGetPropertyName]=, which will be substituted by the values of the corresponding set-get properties of the widget.
+										A function that you register as an HTML generator for your widget using the =html= set-get property should expect to receive one parameter, being an object containing the `HTML Generator Input`. The function should return either a string, being the generated HTML markup for the widget, or a DOM node or array of DOM nodes. While the generator function can use the values in the `HTML Generator Input` object when constructing the HTML for the widget, the string returned by the function may also contain tokens of the form =[#setGetPropertyName]=, which will be substituted by the values of the corresponding set-get properties of the widget.
 
 									Object
 										Lets you supply a JavaScript Template Module as the HTML generator for a widget.
@@ -1894,7 +1979,11 @@ Uize.module ({
 						/* NOTE:
 							if the idPrefix is a node reference, convert it to a string whose value is the id of the node
 						*/
-						return _Uize_Node_isNode (_idPrefix) ? (_idPrefix.id || (_idPrefix.id = Uize.getGuid ())) : _idPrefix;
+						return (
+							_Uize_Node_isNode (_idPrefix)
+							? (_idPrefix.id || (_idPrefix.id = _Uize.getGuid ()))
+							: _idPrefix
+						);
 					},
 					onChange:function () {
 						var
@@ -1903,7 +1992,7 @@ Uize.module ({
 						;
 						_this._nodeCache = _null;
 						if (_idPrefix != _undefined) {
-							_this._applyGlobalQualifierPropertiesIfPresent ();
+							_this._applyDeclarativeWidgetProperties ();
 
 							/*** set the idPrefix for every child widget that doesn't have a value set for this property ***/
 								var

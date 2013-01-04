@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Fade.xFactory Class Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -39,10 +39,12 @@ Uize.module ({
 			var
 				_true = true,
 				_false = false,
-				_undefined
+				_undefined,
+				_Uize_totalKeys = Uize.totalKeys,
+				_Uize_isObject = Uize.isObject
 			;
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var _fadePool = [];
 
 		/*** Public Static Methods ***/
@@ -135,32 +137,22 @@ Uize.module ({
 									}
 								}
 							} else {
-								function _getTotalKeys (_object) {
-									/* NOTE:
-										yes, there's a Uize.Data.getTotalKeys method, but I don't want this module to have to require the Uize.Data module merely for that trivial method
-									*/
-									var _result = 0;
-									for (var _key in _object) _result++;
-									return _result;
-								}
 								function _doSignaturesMatch (_startValue,_endValue,_newFadeStartValue,_newFadeEndValue) {
 									/* NOTE: this code is loosely based on Uize.Data.identical */
 									var _signaturesMatch;
 									if (_startValue == _endValue) {
 										_signaturesMatch = _newFadeStartValue == _startValue && _newFadeEndValue == _startValue;
 									} else if (
-										_signaturesMatch =
-											typeof _startValue == 'object' && typeof _newFadeStartValue == 'object' &&
-											_startValue && _newFadeStartValue
-												? (
-													(
-														typeof _startValue.length == 'number'
-															? _startValue.length === _newFadeStartValue.length
-															: _true
-													) &&
-													_getTotalKeys (_startValue) == _getTotalKeys (_newFadeStartValue)
-												)
-												: _true
+										_signaturesMatch = _Uize_isObject (_startValue) && _Uize_isObject (_newFadeStartValue)
+											? (
+												(
+													typeof _startValue.length == 'number'
+														? _startValue.length === _newFadeStartValue.length
+														: _true
+												) &&
+												_Uize_totalKeys (_startValue) == _Uize_totalKeys (_newFadeStartValue)
+											)
+											: _true
 									) {
 										for (var _propertyName in _startValue) {
 											if (

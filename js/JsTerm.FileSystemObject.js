@@ -2,7 +2,7 @@ Uize.module ({
 	name:'JsTerm.FileSystemObject',
 	builder:function (_superclass) {
 		var
-			_class = _superclass.subclass ()
+			_class = _superclass.subclass (),
 			_classPrototype = _class.prototype
 		;
 

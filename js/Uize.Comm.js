@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Comm Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -30,6 +30,7 @@
 
 Uize.module ({
 	name:'Uize.Comm',
+	superclass:'Uize.Class',
 	required:'Uize.Url',
 	builder:function (_superclass) {
 		/*** Variables for Scruncher Optimization ***/

@@ -34,10 +34,10 @@ Uize.module ({
 	],
 	builder:function () {
 		(
-			window.page = new UizeDotCom.WidgetToGoPage ({
+			window.page = UizeDotCom.WidgetToGoPage ({
 				title:<%= _widget.title -> json %>,
-				widgetClass:<%= _widget.widgetClassModule -> json %>,
-				widgetHtml:<%= _widget.widgetTemplateModule -> json %>
+				widgetToGoClass:<%= _widget.widgetClassModule -> json %>,
+				widgetToGoHtml:<%= _widget.widgetTemplateModule -> json %>
 			})
 		).wireUi ();
 	}

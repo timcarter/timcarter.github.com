@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.TextInput Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -160,7 +160,7 @@ Uize.module ({
 										if (_inputNodeForm) {
 											_this._storedFormOnsubmit = _inputNodeForm.onsubmit;
 											_this._blockedFormSubmit = _true;
-											_inputNodeForm.onsubmit = Uize.Node.returnFalse;
+											_inputNodeForm.onsubmit = Uize.returnFalse;
 										}
 									}
 								},

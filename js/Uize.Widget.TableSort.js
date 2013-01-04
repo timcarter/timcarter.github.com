@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.TableSort Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -301,30 +301,26 @@ Uize.module ({
 							_this._headings.length || _tryFindHeadings (_tableBodyRows);
 
 						/*** wire up headings ***/
-							function _wireHeading (_columnNo) {
-								var _heading = _this._headings [_columnNo];
-								_this._headingsOldClasses [_columnNo] = _heading.className;
-								_this.wireNode (
-									_heading,
-									{
-										mouseover:function () {_this._headingMouseover (_columnNo)},
-										mouseout:function () {_this._headingMouseout ()},
-										click:function () {_this.sort (_columnNo)}
-									}
-								);
-							}
-							for (var _cellNo = -1, _headingsLength = _this._headings.length; ++_cellNo < _headingsLength;)
-								_wireHeading (_cellNo)
-							;
+							Uize.forEach (
+								_this._headings,
+								function (_heading,_headingNo) {
+									_this._headingsOldClasses [_headingNo] = _heading.className;
+									_this.wireNode (
+										_heading,
+										{
+											mouseover:function () {_this._headingMouseover (_headingNo)},
+											mouseout:function () {_this._headingMouseout ()},
+											click:function () {_this.sort (_headingNo)}
+										}
+									);
+								}
+							);
 
 						/*** wire up rows with highlight behavior and title attributes for columns ***/
-							var
-								_headingsText = [],
-								_headingsLength = _this._headings.length
-							;
-							for (var _columnNo = -1; ++_columnNo < _headingsLength;)
-								_headingsText [_columnNo] = _Uize_Node.getText (_this._headings [_columnNo])
-							;
+							var _headingsText = Uize.map (
+								_this._headings,
+								function (_heading) {return _Uize_Node.getText (_heading)}
+							);
 							function _wireRow (_row) {
 								_row.Uize_TableSort_oldClassName = _row.className;
 								_this.wireNode (

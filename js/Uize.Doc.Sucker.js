@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Doc.Sucker Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -32,7 +32,6 @@ Uize.module({
 		'Uize.Scruncher',
 		'Uize.String',
 		'Uize.String.Lines',
-		'Uize.Data',
 		'Uize.Data.Simple',
 		'Uize.Doc.Simple',
 		'Uize.Util.Oop'
@@ -41,7 +40,7 @@ Uize.module({
 		/*** Variables for Scruncher Optimization ***/
 			var _package = function () {};
 
-		/*** Global Variables ***/
+		/*** General Variables ***/
 			var
 				_docCommentRegExp = /^\/\*\?/,
 				_featureTypeToSectionTitleSuffix = {Method:'Methods',Property:'Properties'}
@@ -180,9 +179,9 @@ Uize.module({
 											?
 												(
 													'\t\tThe following example pages are good showcases for the =' + _moduleName + '= module...\n' +
-													Uize.Data.map (
-														'"\\t\\t- [[" + value.url + "][" + value.title + "]] - " + value.description + "\\n"',
-														_examples
+													Uize.map (
+														_examples,
+														'"\\t\\t- [[" + value.url + "][" + value.title + "]] - " + value.description + "\\n"'
 													).join ('')
 												)
 											: '\t\tThere are no dedicated showcase example pages for the =' + _moduleName + '= module.\n'
@@ -232,7 +231,7 @@ Uize.module({
 											? (
 												'\t\tINHERITANCE CHAIN\n' +
 												'\t\t' +
-													Uize.Data.map ('"=" + value.moduleName + "="',_inheritanceChain).join (' -> ') +
+													Uize.map (_inheritanceChain,'"=" + value.moduleName + "="').join (' -> ') +
 													'\n' +
 												'\n'
 											)
@@ -274,7 +273,7 @@ Uize.module({
 										_hasFilteredFeatures = true;
 										_filteredFeaturesChunks.push (
 											'\t\t\t' + _featuresSectionTitle.toUpperCase () + '\n' +
-											'\t\t\t' + Uize.Data.map ('"=" + value.name + "="',_filteredFeatures).join (' | ') + '\n' +
+											'\t\t\t' + Uize.map (_filteredFeatures,'"=" + value.name + "="').join (' | ') + '\n' +
 											'\n'
 										);
 									}
@@ -327,7 +326,7 @@ Uize.module({
 								)
 									_moduleNode = _moduleNode [_moduleNameParts [_moduleNamePartNo]]
 								;
-								var _modulesUnderNamespace = Uize.Data.getKeys (_moduleNode);
+								var _modulesUnderNamespace = Uize.keys (_moduleNode);
 								_simpleDocChunks.push (
 									'\t\tModules Directly Under This Namespace\n' +
 									'\t\t\t' +

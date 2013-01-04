@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : UizeDotCom.WidgetToGoPage
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -60,14 +60,14 @@ Uize.module ({
 
 					/*** add the main child widget ***/
 						Uize.module ({
-							required:[_this._widgetClass,_this._widgetHtml],
+							required:[_this._widgetToGoClass,_this._widgetToGoHtml],
 							builder:function () {
 								_this.addChild (
 									'widget',
-									eval (_this._widgetClass),
+									eval (_this._widgetToGoClass),
 									{
 										built:false,
-										html:eval (_this._widgetHtml)
+										html:eval (_this._widgetToGoHtml)
 									}
 								).insertOrWireUi ();
 							}
@@ -117,8 +117,8 @@ Uize.module ({
 		/*** Register Properties ***/
 			_class.registerProperties ({
 				_title:'title',
-				_widgetClass:'widgetClass',
-				_widgetHtml:'widgetHtml'
+				_widgetToGoClass:'widgetToGoClass',
+				_widgetToGoHtml:'widgetToGoHtml'
 			});
 
 		return _class;

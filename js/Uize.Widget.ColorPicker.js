@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.ColorPicker Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -47,13 +47,13 @@ Uize.module ({
 					function (_properties) {
 						var _this = this;
 
-						_this._color = new Uize.Color;
+						_this._color = Uize.Color ();
 
 						/*** Initialization ***/
 							function _addSlider (_sliderName,_sliderColor) {
 								var _slider = _this.addChild (
 									_sliderName,
-									new Uize.Widget.Bar.Slider ({
+									Uize.Widget.Bar.Slider ({
 										minValue:0,
 										maxValue:255,
 										borderThickness:3,

@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.String Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -28,6 +28,10 @@
 
 Uize.module ({
 	name:'Uize.Test.Uize.String',
+	required:[
+		'Uize.Class',
+		'Uize.Class.Value'
+	],
 	builder:function () {
 		return Uize.Test.declare ({
 			title:'Test for Uize.String Module',
@@ -84,9 +88,9 @@ Uize.module ({
 						['Test that specifying object type prefix, suffix, and separator works',
 							[
 								['A','B','C','D','E'],
-								new Uize ({value:'<'}),
-								new Uize ({value:'>'}),
-								new Uize ({value:'-'})
+								Uize.Class.Value ({value:'<'}),
+								Uize.Class.Value ({value:'>'}),
+								Uize.Class.Value ({value:'-'})
 							],
 							'<A>-<B>-<C>-<D>-<E>'
 						],

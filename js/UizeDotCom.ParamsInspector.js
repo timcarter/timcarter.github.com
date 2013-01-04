@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : UizeDotCom.ParamsInspector
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2011 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -64,9 +64,9 @@ Uize.module ({
 					_params = _this._params
 				;
 				Uize.Node.Form.setValues (
-					Uize.Data.map (
-						function (_value,_key) {return _params [_key] == 'json' ? Uize.Json.to (_value,'mini') : _value},
-						_this._presets [_presetName]
+					Uize.map (
+						_this._presets [_presetName],
+						function (_value,_key) {return _params [_key] == 'json' ? Uize.Json.to (_value,'mini') : _value}
 					),
 					_this.get ('idPrefix') + '_'
 				);
@@ -80,7 +80,8 @@ Uize.module ({
 			_classPrototype.getValues = function () {
 				var _params = this._params;
 				return (
-					Uize.Data.map (
+					Uize.map (
+						Uize.Node.Form.getValues (this.getNode (),true,this.get ('idPrefix') + '_'),
 						function (_value,_key) {
 							var _paramType = _params [_key];
 							return (
@@ -93,7 +94,6 @@ Uize.module ({
 											: _value
 							);
 						},
-						Uize.Node.Form.getValues (this.getNode (),true,this.get ('idPrefix') + '_'),
 						false
 					)
 				);
