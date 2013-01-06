@@ -6,8 +6,88 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 
 		<link rel="apple-touch-icon" href="icon.png" />
+		<style type="text/css">
+		</style>
 	</head>
 	<body>
+		<div class="container">
+
+			<form>
+				<input type="text" class="input-block-level" placeholder="service"/>
+				<div class="input-append">
+					<input type="password" class="input-block-level" placeholder="passphrase"/>
+					<button class="btn" type="button"><i class="icon-eye-open"></i></button>
+				</div>
+				<input type="number" min="1" class="input-block-level" placeholder="length"/>
+				<input type="number" min="1" class="input-block-level" placeholder="max repetition"/>
+				<div class="charset">
+					<span class="controls">
+						<span class="btn-group" data-toggle="buttons-radio">
+							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
+						</span>
+					</span>
+					<span class="help-inline">a-z</span>
+				</div>
+				<div class="charset">
+					<span class="controls">
+						<span class="btn-group" data-toggle="buttons-radio">
+							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
+						</span>
+					</span>
+					<span class="help-inline">A-Z</span>
+				</div>
+				<div class="charset">
+					<span class="controls">
+						<span class="btn-group" data-toggle="buttons-radio">
+							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
+						</span>
+					</span>
+					<span class="help-inline">0-9</span>
+				</div>
+				<div class="charset">
+					<span class="controls">
+						<span class="btn-group" data-toggle="buttons-radio">
+							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
+						</span>
+					</span>
+					<span class="help-inline">-/_</span>
+				</div>
+				<div class="charset">
+					<span class="controls">
+						<span class="btn-group" data-toggle="buttons-radio">
+							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
+						</span>
+					</span>
+					<span class="help-inline">SPACE</span>
+				</div>
+				<div class="charset">
+					<span class="controls">
+						<span class="btn-group" data-toggle="buttons-radio">
+							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
+							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
+						</span>
+					</span>
+					<span class="help-inline">!@#$%</span>
+				</div>
+
+				<hr>
+				<div class="input-append">
+					<input type="text" class="input-block-level" placeholder="generation station" />
+					<button class="btn" type="button"><i class="icon-share"></i></button>
+				</div>
+			</form>
+		</div>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../../vault/crypto-js-3.0.2.js"></script>
