@@ -10,83 +10,35 @@
 		<link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="../../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<style type="text/css">
+			form>input[type="number"], form>button[type="button"] {
+				display:block;
+				float:none;
+				margin-left:0;
+				margin-bottom:10px;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
 
 			<form>
-				<input type="text" class="input-block-level" placeholder="service"/>
+				<input type="text" class="span5" placeholder="service"/>
 				<div class="input-append">
-					<input type="password" class="input-block-level" placeholder="passphrase"/>
+					<input class="span5" type="password" placeholder="passphrase"/>
 					<button class="btn" type="button"><i class="icon-eye-open"></i></button>
 				</div>
-				<input type="number" min="1" class="input-block-level" placeholder="length"/>
-				<input type="number" min="1" class="input-block-level" placeholder="max repetition"/>
-				<div class="charset">
-					<span class="controls">
-						<span class="btn-group" data-toggle="buttons-radio">
-							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
-						</span>
-					</span>
-					<span class="help-inline">a-z</span>
-				</div>
-				<div class="charset">
-					<span class="controls">
-						<span class="btn-group" data-toggle="buttons-radio">
-							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
-						</span>
-					</span>
-					<span class="help-inline">A-Z</span>
-				</div>
-				<div class="charset">
-					<span class="controls">
-						<span class="btn-group" data-toggle="buttons-radio">
-							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
-						</span>
-					</span>
-					<span class="help-inline">0-9</span>
-				</div>
-				<div class="charset">
-					<span class="controls">
-						<span class="btn-group" data-toggle="buttons-radio">
-							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
-						</span>
-					</span>
-					<span class="help-inline">-/_</span>
-				</div>
-				<div class="charset">
-					<span class="controls">
-						<span class="btn-group" data-toggle="buttons-radio">
-							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
-						</span>
-					</span>
-					<span class="help-inline">SPACE</span>
-				</div>
-				<div class="charset">
-					<span class="controls">
-						<span class="btn-group" data-toggle="buttons-radio">
-							<button type="button" class="btn btn-large btn-info"><i class="icon-asterisk icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-warning"><i class="icon-ok-circle icon-white"></i></button>
-							<button type="button" class="btn btn-large btn-danger"><i class="icon-ban-circle icon-white"></i></button>
-						</span>
-					</span>
-					<span class="help-inline">!@#$%</span>
-				</div>
-
+				<input type="number" min="1" class="span5" placeholder="length"/>
+				<input type="number" min="1" class="span5" placeholder="max repetition"/>
+				<button type="button" class="btn span5 btn-info">Allow a-z</button>
+				<button type="button" class="btn span5 btn-info">Allow A-Z</button>
+				<button type="button" class="btn span5 btn-info">Allow 0-9</button>
+				<button type="button" class="btn span5 btn-info">Allow -/_</button>
+				<button type="button" class="btn span5 btn-info">Allow SPACE</button>
+				<button type="button" class="btn span5 btn-info">Allow !@#$%</button>
 				<hr>
 				<div class="input-append">
-					<input type="text" class="input-block-level" placeholder="generation station" />
+					<input type="password" class="span5" placeholder="generated passphrase" />
+					<button class="btn" type="button"><i class="icon-eye-open"></i></button>
 					<button class="btn" type="button"><i class="icon-share"></i></button>
 				</div>
 			</form>
@@ -111,7 +63,6 @@
 				cache &&
 					cache.addEventListener ('updateready', updateFn);
 
-				alert ('this is a test');
 			});
 		</script>
 	</body>
