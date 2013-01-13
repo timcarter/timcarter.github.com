@@ -1,0 +1,16 @@
+<html>
+	<head>
+	</head>
+	<body>
+		Testing something
+		<script>
+			for (var property in {webkitVibrate:1, vibrate:1}) {
+				if (property in navigator)
+					alert (property + ' exists!');
+				else if (property in clientInformation)
+					alert (property + ' is in clientInformation');
+			}
+			alert ('if you saw nothing, then it\'s not here');
+		</script>
+	</body>
+</html>
