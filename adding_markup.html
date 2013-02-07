@@ -9,6 +9,7 @@
 	<body>
 		<div class="container">
 			<p>Compare the speed of appending markup to a document via document methods versus setting the innerHTML.</p>
+			<p><strong>numIterations:</strong> <span id="numIterations"></span></p>
 			<pre>
 				<code>
 					for (var i = numIterations; --i >= 0;) {
@@ -75,6 +76,7 @@
 						log ('info', 'ending test; duration was ' + ((end - start) / 1000) + ' seconds');
 					}*/
 				;
+				document.getElementById("numIterations").innerHTML = numIterations;
 			</script>
 		</div>
 	</body>
