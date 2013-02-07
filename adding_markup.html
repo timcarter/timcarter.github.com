@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>comparisons are hard</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<p>Compare the speed of appending markup to a document via document methods versus setting the innerHTML.</p>
+			<pre>
+				<code>
+					for (var i = numIterations; --i >= 0;) {
+						randomDiv.appendChild(document.createElement('div'));
+					}
+				</code>
+			</pre>
+			<button onclick="testDocument();" class="btn">test document methods</button>
+			<hr />
+			<pre>
+				<code>
+					var stringBuilder = '';
+					for (var i = numIterations; --i >= 0;) {
+						stringBuilder += '&lt;div&gt;&lt;/div&gt;';
+					}
+					randomDiv.innerHTML += stringBuilder;
+				</code>
+			</pre>
+			<button onclick="testInnerHTMLOnce();" class="btn btn-inverse">test setting the innerHTML once</button>
+			<p>
+			<div class="well well-large">
+				<h3>running commentary and results:</h3>
+				<div id="results">
+				</div>
+			</div>
+			</p>
+			<div id="test_div" style="display:none;">
+			</div>
+			<script type="text/javascript">
+				var
+					test_div = document.getElementById('test_div'),
+					numIterations = 100000,
+					log = function(type, msg) {
+						document.getElementById('results').innerHTML += '<p><strong>' + type.toUpperCase() + '</strong> ' + new Date + ': ' + msg + '</p>';
+					},
+					testDocument = function() {
+						log('info', 'starting test of document methods; running ' + numIterations + 'x.');
+						var start = new Date;
+						for (var i = numIterations; --i >= 0;) {
+							test_div.appendChild(document.createElement('div'));
+						}
+						var end = new Date;
+						log ('info', 'ending test; duration was ' + ((end - start) / 1000) + ' seconds');
+					},
+					testInnerHTMLOnce = function() {
+						log('info', 'starting test of innerHTML one-time concatenation; running ' + numIterations + 'x.');
+						var start = new Date;
+						var stringBuilder = '';
+						for (var i = numIterations; --i >= 0;) {
+							stringBuilder += '<div></div>';
+						}
+						test_div.innerHTML += stringBuilder;
+						var end = new Date;
+						log ('info', 'ending test; duration was ' + ((end - start) / 1000) + ' seconds');
+					}/*,
+					testInnerHTMLRepeat = function() {
+						log('info', 'starting test of innerHTML repeated concatenation');
+						var start = new Date;
+						log('error', 'I\'ve disabled this test because it kept crashing chrome, so just assume that it\'s worse than the other two.')
+						for (var i = numIterations; --i >= 0;) {
+							test_div.innerHTML += '<div></div>';
+						}
+						var end = new Date;
+						log ('info', 'ending test; duration was ' + ((end - start) / 1000) + ' seconds');
+					}*/
+				;
+			</script>
+		</div>
+	</body>
+</html>
