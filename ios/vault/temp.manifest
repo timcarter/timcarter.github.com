@@ -1,8 +1,11 @@
 CACHE MANIFEST
 
-# Version: there is no cow level
+# Version: something for nothing
 
 CACHE:
 index2.html
 icon.png
-
+../../vault/style.css
+../../vault/vault.js
+../../vault/crypto-js-3.0.2.js
+../../vault/app.js
