@@ -22,19 +22,19 @@
 		<div class="container">
 
 			<form>
-				<input type="text" class="span5" placeholder="service"/>
+				<input id="service" type="text" class="span5" placeholder="service" required/>
 				<div class="input-append">
-					<input class="span5" type="password" placeholder="passphrase"/>
+					<input id="passphrase" class="span5" type="password" placeholder="passphrase" required/>
 					<button class="btn" type="button"><i class="icon-eye-open"></i></button>
 				</div>
-				<input type="number" min="1" class="span5" placeholder="length"/>
-				<input type="number" min="1" class="span5" placeholder="max repetition"/>
-				<button type="button" class="btn span5 btn-info">Allow a-z</button>
-				<button type="button" class="btn span5 btn-info">Allow A-Z</button>
-				<button type="button" class="btn span5 btn-info">Allow 0-9</button>
-				<button type="button" class="btn span5 btn-info">Allow -/_</button>
-				<button type="button" class="btn span5 btn-info">Allow SPACE</button>
-				<button type="button" class="btn span5 btn-info">Allow !@#$%</button>
+				<input type="number" class="span5" placeholder="length"/>
+				<input type="number" class="span5" placeholder="max repetition"/>
+				<button type="button" class="btn span5 btn-info">a-z is: allowed</button>
+				<button type="button" class="btn span5 btn-info">A-Z is: allowed</button>
+				<button type="button" class="btn span5 btn-info">0-9 is: allowed</button>
+				<button type="button" class="btn span5 btn-info">-/_ is: allowed</button>
+				<button type="button" class="btn span5 btn-info">SPACE is: allowed</button>
+				<button type="button" class="btn span5 btn-info">!@#$% is: allowed</button>
 				<hr>
 				<div class="input-append">
 					<input type="password" class="span5" placeholder="generated passphrase" />
@@ -49,7 +49,7 @@
 		<script type="text/javascript" src="../../vault/vault.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function () {
-				/* application cache handling */
+				/* application cache handling *
 				var
 					cache = window.applicationCache,
 					updateFn = function () {
@@ -57,11 +57,58 @@
 							cache.swapCache ();
 							window.location.reload ();
 						}
-					}
+					},
+					hasDatabase = 'openDatabase' in window,
+					hasLocalStorage = 'localStorage' in window,
+					savedConfigs = []
 				;
 
 				cache &&
 					cache.addEventListener ('updateready', updateFn);
+
+				// open the db, if it exists
+				if (hasDatabase) {
+					try {
+						var db = openDatabase ('vaultdb', '1.0', 'VaultDB', 65536);
+
+						db.transaction (
+							function (transaction) {
+								transaction.executeSql (
+									'select * from configs',
+									[],
+									function (transaction, results) {
+										for (var i = 0; i < results && results.rows ? results.rows.length : 0; ++i)
+											savedConfigs.push (results.rows.item (i))
+									},
+									function (transaction, error) {
+										alert (error.message)
+									}
+								)
+							}
+						);
+					} catch (e) {
+						alert ('ERROR: ' + e);
+					}
+				}*/
+
+				var
+					model = {
+					// just a simple struct to store our data
+					// yes, it can represent a row in our future database too
+					},
+					tryToGenerate = function () {
+						// service is required
+						// passphrase is required
+						// if length is undefined then any length will do
+						// if repetitions is undefined then any repetition is allowed
+					}
+				;
+
+				$('input[type="text"], input[type="password"]').change (function () {
+					var _this = $(this);
+					model[_this.attr ('id')] = _this.val();
+					tryToGenerate ();
+				});
 
 			});
 		</script>
