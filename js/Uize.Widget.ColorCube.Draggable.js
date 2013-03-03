@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.ColorCube.Draggable Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -34,6 +31,8 @@ Uize.module ({
 		'Uize.Color'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -162,8 +161,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_inDrag:{
 					name:'inDrag',
 					value:_false

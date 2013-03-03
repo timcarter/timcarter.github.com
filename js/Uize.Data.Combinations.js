@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Data.Combinations Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2012-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -467,21 +464,14 @@
 Uize.module ({
 	name:'Uize.Data.Combinations',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function () {},
 				_undefined,
 				_isList = Uize.isList
 			;
-
-		/*** Utility Functions ***/
-			function _resolveValueTransformer (_valueTransformer) {
-				return (
-					typeof _valueTransformer == 'string'
-						? new Function ('value','key','return ' + _valueTransformer)
-						: _valueTransformer
-				);
-			}
 
 		/*** Public Static Methods ***/
 			_package.generate = function (_combinationsSpecifier,_combinationTransformer,_combinationMatcher) {
@@ -569,8 +559,12 @@ Uize.module ({
 			) {
 				if (Uize.isObject (_combinationsSpecifier)) {
 					/*** normalize parameters ***/
-						_combinationTransformer = _resolveValueTransformer (_combinationTransformer);
-						_combinationMatcher = _resolveValueTransformer (_combinationMatcher);
+						if (_combinationTransformer != _undefined)
+							_combinationTransformer = Uize.resolveTransformer (_combinationTransformer)
+						;
+						if (_combinationMatcher != _undefined)
+							_combinationMatcher = Uize.resolveMatcher (_combinationMatcher)
+						;
 
 					/*** preparation to optimize performance of iterating through combinations ***/
 						var
@@ -601,8 +595,7 @@ Uize.module ({
 						var
 							_combinationNo = -1,
 							_keysLength = _keyNo + 1,
-							_combinationTransformerResult,
-							_mustCallIterationHandler = true
+							_combinationTransformerResult
 						;
 						while (_keyNo >= 0) {
 							_combinationNo++;
@@ -623,13 +616,10 @@ Uize.module ({
 									_combination = _combinationTransformerResult
 								;
 
-							/*** use combination matcher, if specified ***/
-								if (_combinationMatcher)
-									_mustCallIterationHandler = _combinationMatcher (_combination,_combinationNo)
+							/*** call iteration handler, if combination matcher permits ***/
+								(!_combinationMatcher || _combinationMatcher (_combination,_combinationNo)) &&
+									_iterationHandler (_combination)
 								;
-
-							/*** call iteration handler ***/
-								_mustCallIterationHandler && _iterationHandler (_combination);
 
 							/*** advance to next combination ***/
 								_keyNo = _keysLength;

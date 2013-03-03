@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Dialog.Picker
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 10
 */
 
@@ -29,7 +26,7 @@
 			- intended to be subclassed to create value picker dialogs for specific types of values, such as dates, colors, etc.
 
 			Piped Properties
-				- don't need to be registered as set-get properties, although they will be ad hoc registered when they are set of the picker dialog instance
+				- don't need to be declared as state properties, although they will be created in an ad hoc fashion when they are set on the picker dialog instance
 
 				A One Way Conduit
 					- these properties only act as a conduit for values
@@ -42,6 +39,8 @@ Uize.module ({
 	name:'Uize.Widget.Dialog.Picker',
 	required:'Uize.Widget.Button.Checkbox',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_false = false,
@@ -64,7 +63,7 @@ Uize.module ({
 								;
 
 								_this._submittedValue = _true;
-								
+
 								_this.fireSubmissionComplete(
 									_keepOpen,
 									Uize.copyInto(
@@ -94,7 +93,7 @@ Uize.module ({
 								/*?
 									Child Widget
 										value
-											document...
+											.
 								*/
 							);
 
@@ -105,7 +104,7 @@ Uize.module ({
 								/*?
 									Child Widget
 										keepOpen Child Widget
-											document...
+											.
 								*/
 							);
 
@@ -124,11 +123,11 @@ Uize.module ({
 								Close:_handleDismiss,
 								'Before Show':function () {
 									/* WORKAROUND:
-										Ideally, the dialog class would have a state set-get property to indicate whether or not the dialog is actually shown, versus it just being desired to be shown because the shown set-get property is set to true.
+										Ideally, the dialog class would have a state state property to indicate whether or not the dialog is actually shown, versus it just being desired to be shown because the shown state property is set to true.
 
-										Another high level concept is the idea of whether or not the value of a set-get property is completely reflected, which could also apply to widgets that display images, where a url set-get property may change in order to change the image, but where the new value may not be completely reflected until the image has completed loading.
+										Another high level concept is the idea of whether or not the value of a state property is completely reflected, which could also apply to widgets that display images, where a url state property may change in order to change the image, but where the new value may not be completely reflected until the image has completed loading.
 
-										Absent the above facilities, we do a workaround and track that we're in the beforeShow state so that the value change event handler on the value widget's value set-get property doesn't commit the value and dismiss the dialog.
+										Absent the above facilities, we do a workaround and track that we're in the beforeShow state so that the value change event handler on the value widget's value state property doesn't commit the value and dismiss the dialog.
 									*/
 									_this._beforeShow = _true;
 									_this.children.value.set (_this.get ((_this._pipedProperties || []).concat ('value')));
@@ -148,7 +147,7 @@ Uize.module ({
 			_classPrototype._updateUiKeepOpenState = function () {
 				this._widgetsAdded && this.children.keepOpen.set ({selected:this._keepOpen})
 			};
-			
+
 		/*** Public Instance Methods ***/
 			_classPrototype.fireSubmissionComplete = function(_keepOpen, _result) {
 				var _this = this;
@@ -161,22 +160,22 @@ Uize.module ({
 						/*?
 							Instance Events
 								Submission Complete
-									document...
+									.
 						*/
 					})
 				;
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_keepOpen:{
 					name:'keepOpen',
 					onChange:_classPrototype._updateUiKeepOpenState,
 					value:_false
 					/*?
-						Set-get Properties
+						State Properties
 							keepOpen
-								document...
+								.
 
 								NOTES
 								- the initial value is =false=
@@ -186,25 +185,25 @@ Uize.module ({
 				_picker:'picker',
 				_pipedProperties:'pipedProperties',
 					/*?
-						Set-get Properties
+						State Properties
 							pipedProperties
-								document...
+								.
 
 								NOTES
 								- the initial value is =undefined=
 					*/
 				_value:'value'
 					/*?
-						Set-get Properties
+						State Properties
 							value
-								document...
+								.
 
 								NOTES
 								- the initial value is =undefined=
 					*/
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				shieldOpacity:0
 			});

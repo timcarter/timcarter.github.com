@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Array.Dupes Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Test
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Test.Uize.Array.Dupes',
 	builder:function () {
+		'use strict';
+
 		var
 			_objectA = {},
 			_objectB = {},
@@ -153,7 +152,39 @@ Uize.module ({
 						],
 						null,
 						{cloneArguments:true}
-					]
+					],
+					['Uize.Array.Dupes.removeValues',[
+						{
+							title:'',
+							test:function () {
+								var
+									_source = [
+										2,1,2,
+										true,false,true,
+										'bye','hi','bye',
+										_objectB,_objectA,_objectB,
+										_arrayB,_arrayA,_arrayB,
+										_functionB,_functionA,_functionB,
+										null,null,null,
+										undefined,undefined,undefined
+									],
+									_result = Uize.Array.Dupes.removeValues (
+										_source,
+										[2,true,'bye',_objectB,_arrayB,_functionB,null,undefined]
+									)
+								;
+								return (
+									this.expect (6,_result.length) &&
+									this.expect (1,_result [0]) &&
+									this.expect (false,_result [1]) &&
+									this.expect ('hi',_result [2]) &&
+									this.expectSameAs (_objectA,_result [3]) &&
+									this.expectSameAs (_arrayA,_result [4]) &&
+									this.expectSameAs (_functionA,_result [5])
+								);
+							}
+						}
+					]]
 				])
 			]
 		});

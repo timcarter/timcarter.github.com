@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.SlideShow.AutoAdvance Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -30,7 +27,7 @@ Uize.module ({
 	name:'Uize.Widget.SlideShow.AutoAdvance',
 	required:'Uize.Widget.Button',
 	builder:function (_superclass) {
-		/*** Variables for Scruncher Optimization ***/
+		'use strict';
 
 		/*** Class Constructor ***/
 			var
@@ -99,8 +96,8 @@ Uize.module ({
 				_this._resumeTimeout = setTimeout (function () {_this.set ({_playing:true})},_this._idleResumeTime);
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_idleResumeTime:{
 					name:'idleResumeTime',
 					value:1000
@@ -114,7 +111,7 @@ Uize.module ({
 					onChange:function () {
 						var _this = this;
 						if (_this._playing) {
-						if (_this._interSlideTime && _this._interSlideTime < 0) {							
+						if (_this._interSlideTime && _this._interSlideTime < 0) {
 							_this.set({ playing: false });
 						} else {
 							_this._clearResumeTimeout ();

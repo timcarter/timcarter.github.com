@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Log Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 2
 	codeCompleteness: 25
-	testCompleteness: 0
 	docCompleteness: 50
 */
 
@@ -34,7 +31,7 @@
 			myLog.log ('This is my log message');
 			.....................................
 
-			Messages that are logged by calling the =log= instance method will be displayed in the =messages= implied node of the instance. If the =showTimestamp= set-get property is set to the value =true=, then `Log Message Timestamping` will be enabled for logged messages. If a message is logged before the instance is wired, then the message will be added to the `Queued Log Messages`.
+			Messages that are logged by calling the =log= instance method will be displayed in the =messages= implied node of the instance. If the =showTimestamp= state property is set to the value =true=, then `log message timestamping` will be enabled for logged messages. If a message is logged before the instance is wired, then the message will be added to the `queued log messages`.
 
 			Log Messages Displayed Literally
 				The text of a log message is displayed literally / exactly.
@@ -56,12 +53,12 @@
 			Log Message Timestamping
 				The =Uize.Widget.Log= module implements a message timestamping feature, which allows messages to be automatically timestamped at the time that they are logged.
 
-				Log message timestamping is activated by setting the =showTimestamp= set-get property to =true=. When timestamping is enabled, each logged message will be prefixed with a timestamp that indicates when it was logged. The timestamp format is determined by the =timestampFormat= set-get property, which can specify any date format string supported by the =Uize.Date.Formatter= module.
+				Log message timestamping is activated by setting the =showTimestamp= state property to =true=. When timestamping is enabled, each logged message will be prefixed with a timestamp that indicates when it was logged. The timestamp format is determined by the =timestampFormat= state property, which can specify any date format string supported by the =Uize.Date.Formatter= module.
 
 				To illustrate the timestamping feature, consider the following examples...
 
 				EXAMPLE 1: No Timestamping
-					In the following example, `Log Message Timestamping` has been disabled by explicitly setting the =showTimestamp= set-get property to =false=.
+					In the following example, `log message timestamping` has been disabled by explicitly setting the =showTimestamp= state property to =false=.
 
 					EXAMPLE
 					................................................
@@ -76,7 +73,7 @@
 					......................
 
 				EXAMPLE 2: Timestamping With Default Format
-					In the following example, `Log Message Timestamping` is enabled by simply not overriding the initial value of =true= for the =showTimestamp= set-get property.
+					In the following example, `log message timestamping` is enabled by simply not overriding the initial value of =true= for the =showTimestamp= state property.
 
 					EXAMPLE
 					.....................................
@@ -91,7 +88,7 @@
 					.....................................
 
 				EXAMPLE 3: Timestamping With Custom Format
-					In the following example, `Log Message Timestamping` is enabled and a custom timestamp format is being specified using the =timestampFormat= set-get property.
+					In the following example, `log message timestamping` is enabled and a custom timestamp format is being specified using the =timestampFormat= state property.
 
 					EXAMPLE
 					....................................................................................
@@ -144,6 +141,8 @@ Uize.module ({
 		'Uize.Date.Formatter'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
@@ -190,7 +189,7 @@ Uize.module ({
 							myInstance.clear ();
 							....................
 
-							If the instance is not wired at the time that this method is called, then the `Queued Log Messages` will be cleared. The =clear= instance method is called when the user clicks the =clear Child Widget=.
+							If the instance is not wired at the time that this method is called, then the `queued log messages` will be cleared. The =clear= instance method is called when the user clicks the =clear Child Widget=.
 
 							NOTES
 							- see the related =clear Child Widget=
@@ -229,7 +228,7 @@ Uize.module ({
 							myInstance.log (messageTextSTR);
 							................................
 
-							If the instance is not wired at the time that this method is called, then the specified log message will be added to the `Queued Log Messages`. For a more detailed discussion on logging, see the section `Logging a Message`.
+							If the instance is not wired at the time that this method is called, then the specified log message will be added to the `queued log messages`. For a more detailed discussion on logging, see the section `Logging a Message`.
 				*/
 			};
 
@@ -244,14 +243,14 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_isEmpty:{
 					name:'isEmpty',
 					onChange:_classPrototype._updateClearButtonState,
 					value:true
 					/*?
-						Set-get Properties
+						State Properties
 							isEmpty
 								A read-only boolean, indicating whether or not the =messages= implied node contains any logged messages.
 
@@ -266,14 +265,14 @@ Uize.module ({
 					name:'showTimestamp',
 					value:true
 					/*?
-						Set-get Properties
+						State Properties
 							showTimestamp
-								A boolean, specifying whether or not `Log Message Timestamping` should be enabled for logged messages.
+								A boolean, specifying whether or not `log message timestamping` should be enabled for logged messages.
 
-								When the value of this property is =true=, then the value of the related =timestampFormat= set-get property can be used to control how the prepended timestamps are formatted.
+								When the value of this property is =true=, then the value of the related =timestampFormat= state property can be used to control how the prepended timestamps are formatted.
 
 								NOTES
-								- see the related =timestampFormat= set-get property
+								- see the related =timestampFormat= state property
 								- the initial value is =true=
 					*/
 				},
@@ -281,14 +280,14 @@ Uize.module ({
 					name:'timestampFormat',
 					value:'{hh}:{mm}:{ss}.{zzz}'
 					/*?
-						Set-get Properties
+						State Properties
 							timestampFormat
-								A string, specifying the date format that should be used to format the timestamp that is prepended to logged messages when the =showTimestamp= set-get property is set to =true=.
+								A string, specifying the date format that should be used to format the timestamp that is prepended to logged messages when the =showTimestamp= state property is set to =true=.
 
-								The value of the =timestampFormat= property can be any date format supported by the =Uize.Date.Formatter= module. When the value of the =showTimestamp= set-get property is =false=, then the =timestampFormat= set-get property is not applicable.
+								The value of the =timestampFormat= property can be any date format supported by the =Uize.Date.Formatter= module. When the value of the =showTimestamp= state property is =false=, then the =timestampFormat= state property is not applicable.
 
 								NOTES
-								- see the related =showTimestamp= set-get property
+								- see the related =showTimestamp= state property
 								- the initial value is ='{hh}:{mm}:{ss}.{zzz}'=
 					*/
 				}

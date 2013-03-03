@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Node.Event Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -20,13 +20,14 @@
 	type: Package
 	importance: 6
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
 Uize.module ({
 	name:'Uize.Node.Event',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var _package = function (_event) {return _event || event};
 

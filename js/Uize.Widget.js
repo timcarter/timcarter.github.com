@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=b" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 9
 	codeCompleteness: 90
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -36,6 +33,8 @@ Uize.module ({
 	superclass:'Uize.Class',
 	required:'Uize.Node',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Optimization ***/
 			var
 				/*** Scruncher Optimization ***/
@@ -95,14 +94,14 @@ Uize.module ({
 
 												One should not directly modify the contents of the =children= object, but should only do this through the child widget management methods.
 
-											The Special children set-get Property
-												The =children= instance property has a companion set-get property of the same name, but which has a special behavior.
+											The Special children state Property
+												The =children= instance property has a companion state property of the same name, but which has a special behavior.
 
-												The `children set-get property` provides a convenient way to distribute widget properties to any or all of a widget's child widgets.
+												The `children state property` provides a convenient way to distribute widget properties to any or all of a widget's child widgets.
 
 											NOTES
 											- the =children= object is read-only - its contents should not be directly modified
-											- see also the special `children set-get property`
+											- see also the special `children state property`
 											- see also the related =parent= instance property
 								*/
 					}
@@ -150,20 +149,38 @@ Uize.module ({
 				);
 			};
 
-			var _phantomRoot = {_busyInherited:_false,_enabledInherited:_true};
-
-			function _checkBusyInherited () {
-				(this._busy == 'inherit' ? (this.parent || _phantomRoot)._busyInherited : this._busy)
-				!= this._busyInherited &&
-					this.set ({_busyInherited:!this._busyInherited})
+			function _declareTreeInheritedProperty (_propertyPrivateToPublicNameMapping,_defaultValue) {
+				var
+					_propertyPrivateNames = _Uize.keys (_propertyPrivateToPublicNameMapping),
+					_propertyPublicNames = _Uize.values (_propertyPrivateToPublicNameMapping),
+					_propertyPrivateName = _propertyPrivateNames [0],
+					_propertyInheritedPrivateName = _propertyPrivateNames [1]
 				;
-			}
-
-			function _checkEnabledInherited () {
-				(this._enabled == 'inherit' ? (this.parent || _phantomRoot)._enabledInherited : this._enabled)
-				!= this._enabledInherited &&
-					this.set ({_enabledInherited:!this._enabledInherited})
-				;
+				function _checkInherited () {
+					var _value = this [_propertyPrivateName];
+					if (_value == 'inherit')
+						_value = this.parent ? this.parent [_propertyInheritedPrivateName] : _defaultValue
+					;
+					if (_value != this [_propertyInheritedPrivateName])
+						this.set (_propertyInheritedPrivateName,_value)
+					;
+				}
+				_class.stateProperties (
+					_Uize.pairUp (
+						_propertyPrivateName,
+						{
+							name:_propertyPublicNames [0],
+							onChange:_checkInherited,
+							value:'inherit'
+						},
+						_propertyInheritedPrivateName,
+						{
+							name:_propertyPublicNames [1],
+							onChange:function () {_Uize.callOn (this._children,_checkInherited)},
+							value:_defaultValue
+						}
+					)
+				);
 			}
 
 			_classPrototype._tryUseConfirmInheritedFromTree = function (_mode,_params,_builtInConfirmFallback) {
@@ -241,7 +258,7 @@ Uize.module ({
 
 			_classPrototype.showInform = _classPrototype.showConfirm = _undefined;
 				/*?
-					Set-get Properties
+					State Properties
 						showInform
 							The implementation for a decorated inform (ie. alert) dialog.
 
@@ -531,9 +548,9 @@ Uize.module ({
 							The above example would also produce the result ='Welcome, Chris of California, USA'=.
 
 							Providence
-								An important feature of the =localize= method is its ability to go up the parent chain of a widget to find the nearest parent widget that provides a value for the specified resource in its =localized= set-get property.
+								An important feature of the =localize= method is its ability to go up the parent chain of a widget to find the nearest parent widget that provides a value for the specified resource in its =localized= state property.
 
-								This allows localized resources to be registered with the top-most parent widget in a page - the page widget - if that is what proves most convenient for the application. Additionally, a parent widget might define a value for a localized resource which is overrided by a child widget's =localized= resources map.
+								This allows localized resources to be declared with the top-most parent widget in a page - the page widget - if that is what proves most convenient for the application. Additionally, a parent widget might define a value for a localized resource which is overrided by a child widget's =localized= resources map.
 
 								EXAMPLE
 								.....................................................................................
@@ -542,7 +559,7 @@ Uize.module ({
 								var localWelcome = myWidget.localize ('welcomeMessage',['Chris','California','USA']);
 								.....................................................................................
 
-								The above example would still produce the result ='Welcome, Chris of California, USA'=, even though the localized resource string is not registered with the =myWidget= instance, but its parent instead.
+								The above example would still produce the result ='Welcome, Chris of California, USA'=, even though the localized resource string is not declared with the =myWidget= instance, but its parent instead.
 
 							Function Type Resources
 								A simple yet powerful feature of the =localize= method is its support for function type resources.
@@ -552,7 +569,7 @@ Uize.module ({
 								For a detailed discussion of this feature, complete with examples, consult the section `Function Type Localized Resources` of the explainer [[../explainers/javascript-localization.html][JavaScript Localization]].
 
 							NOTES
-							- see also the =localized= set-get property.
+							- see also the =localized= state property.
 				*/
 			};
 
@@ -566,9 +583,9 @@ Uize.module ({
 					/*?
 						Implied Nodes
 							Root Node
-								The optional `Root Node` of a widget is the implied node with the name =''= (empty string).
+								The optional `root node` of a widget is the implied node with the name =''= (empty string).
 
-								The =id= for the root node of a widget instance is the value of that instance's =idPrefix= set-get property - there is no "-" (hyphen) separating the =idPrefix= and the empty implied node name. So, for an instance of the slider class with its =idPrefix= set to the value ='mySlider'=, the id of that instance's root node would be just =mySlider=.
+								The =id= for the root node of a widget instance is the value of that instance's =idPrefix= state property - there is no "-" (hyphen) separating the =idPrefix= and the empty implied node name. So, for an instance of the slider class with its =idPrefix= set to the value ='mySlider'=, the id of that instance's root node would be just =mySlider=.
 
 								A reference to the root node can be obtained by either specifying the value =''= (empty string) or no =impliedNodeSTRorBLOB= parameter when calling the =getNode= instance method, as in...
 
@@ -577,7 +594,7 @@ Uize.module ({
 								var alsoTheRootNode = myWidget.getNode ('');
 								............................................
 
-								Similarly, when using the `Node Related Instance Methods`, one can specify the value =''= (empty string), as in...
+								Similarly, when using the `node related instance methods`, one can specify the value =''= (empty string), as in...
 
 								....................................................................................
 								myWidget.displayNode ('',false); // hide myWidget, if it has a root node in its HTML
@@ -637,37 +654,35 @@ Uize.module ({
 							myWidget.buildHtml ();
 							......................
 
-							HTML for a widget instance is generated by using the instance's =html= set-get property. If the value of the =html= property is a function, or is an object with a =process= property whose value is a function, then the HTML generator function will be supplied with the current state of the instance's set-get properties as input - in the form of a single input object.
+							HTML for a widget instance is generated by using the instance's =html= state property. If the value of the =html= property is a function, or is an object with a =process= property whose value is a function, then the HTML generator function will be supplied with the current state of the instance's state properties as input - in the form of a single input object.
 
 							The generator function can either return a string containing HTML markup, a DOM node, or an array of DOM nodes.
 
-							The generated HTML for the widget is inserted into a node in the document, according to a series of fallbacks. Priority is given to the =container= set-get property. If =container= is set to =null= or =undefined=, then the =shell= implied node is considered. If the =shell= implied node is not present, then the `Root Node` is considered. If no `Root Node` is present, then the HTML is inserted at the bottom of the document's body.
+							The generated HTML for the widget is inserted into a node in the document, according to a series of fallbacks. Priority is given to the =container= state property. If =container= is set to =null= or =undefined=, then the =shell= implied node is considered. If the =shell= implied node is not present, then the `root node` is considered. If no `root node` is present, then the HTML is inserted at the bottom of the document's body.
 
-							This method always builds the HTML for a widget instance and does not consider the value of the instance's =built= set-get property. Moreover, after this method has been called, the =built= set-get property will be set to =true=.
+							This method always builds the HTML for a widget instance and does not consider the value of the instance's =built= state property. Moreover, after this method has been called, the =built= state property will be set to =true=.
 
 							VARIATION
 							...............................................
 							myWidget.buildHtml (alternateTemplateInputOBJ);
 							...............................................
 
-							When the optional =alternateTemplateInputOBJ= parameter is specified, then the object specified by this parameter will be used as the input for the HTML generator, rather than the current state of the instance's set-get properties.
+							When the optional =alternateTemplateInputOBJ= parameter is specified, then the object specified by this parameter will be used as the input for the HTML generator, rather than the current state of the instance's state properties.
 
 							NOTES
-							- see also the =shell= and `Root Node` implied nodes
+							- see also the =shell= and `root node` implied nodes
 							- compare to the =insertUi= and =insertOrWireUi= instance methods
 				*/
 			};
 
 			/*** UI Node Methods ***/
 				function _makeNodeMethod (_methodPrefix,_methodSuffix) {
-					_classPrototype [_methodPrefix + 'Node' + _methodSuffix] =
-						new Function (
-							'arguments.length' +
-								'?(arguments[0]=this.getNode(arguments[0]))' +
-								':(arguments[arguments.length++]=this.getNode());' +
-							'return Uize.Node.' + _methodPrefix + _methodSuffix + '.apply(0,arguments)'
-						)
-					;
+					_classPrototype [_methodPrefix + 'Node' + _methodSuffix] = Function (
+						'arguments.length' +
+							'?(arguments[0]=this.getNode(arguments[0]))' +
+							':(arguments[arguments.length++]=this.getNode());' +
+						'return Uize.Node.' + _methodPrefix + _methodSuffix + '.apply(0,arguments)'
+					);
 				}
 
 				_classPrototype.getNode = function (_nodeBlob) {
@@ -718,7 +733,7 @@ Uize.module ({
 								var sliderRootNode = mySlider.getNode ();
 								.........................................
 
-								Returns the `Root Node` of the slider widget.
+								Returns the `root node` of the slider widget.
 
 								NOTES
 								- The =impliedNodeSTRorBLOB= parameter can be a string specifying the name of the implied node, or an object reference to the implied node. When a reference is specified, it is simply returned.
@@ -1026,7 +1041,7 @@ Uize.module ({
 								NOTES
 								- you can use the =setNodeValue= instance method to set values on readonly form elements
 								- see the corresponding =getNodeValue= instance method
-								- the =value= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property)
+								- the =value= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= state property)
 								- compare to the =Uize.Node.setValue= static method
 					*/
 
@@ -1081,7 +1096,7 @@ Uize.module ({
 								);
 								.....................
 
-								In the above example, a handler is being wired to the =click= event of the widget's `Root Node`.
+								In the above example, a handler is being wired to the =click= event of the widget's `root node`.
 
 								VARIATION
 								....................................................................
@@ -1121,7 +1136,7 @@ Uize.module ({
 								);
 								...........................
 
-								In the above example, handlers are being wired to the =mouseover=, =mouseout=, and =click= events of the widget's `Root Node`.
+								In the above example, handlers are being wired to the =mouseover=, =mouseout=, and =click= events of the widget's `root node`.
 
 								NOTES
 								- see the companion =unwireNode= instance method
@@ -1161,7 +1176,7 @@ Uize.module ({
 								myWidget.unwireNode ('','click',clickHandler1);
 								...............................................
 
-								The above example would unwire only the =clickHandler1= handler for the =click= event of the =myWidget= instance's `Root Node`. So, after the above code has been executed, clicking on the root node of =myWidget= would produce only one alert dialog displaying the text "bar" (so long, foo).
+								The above example would unwire only the =clickHandler1= handler for the =click= event of the =myWidget= instance's `root node`. So, after the above code has been executed, clicking on the root node of =myWidget= would produce only one alert dialog displaying the text "bar" (so long, foo).
 
 								VARIATION 1
 								........................................................
@@ -1218,7 +1233,7 @@ Uize.module ({
 								);
 								..................................................
 
-								In the above example, handlers are being wired to the =mouseover=, =mouseout=, and =click= events of the widget's `Root Node`. Then the handlers for the =mouseover= and =mouseout= events are being unwired, leaving only the handler that was wired to the =click= event.
+								In the above example, handlers are being wired to the =mouseover=, =mouseout=, and =click= events of the widget's `root node`. Then the handlers for the =mouseover= and =mouseout= events are being unwired, leaving only the handler that was wired to the =click= event.
 
 								VARIATION 3
 								...........................................
@@ -1277,7 +1292,7 @@ Uize.module ({
 								myWidget.unwireNodeEventsByMatch ('',{eventName:'click'});
 								..........................................................
 
-								The above example would unwire all handlers for the =click= event of the =myWidget= instance's `Root Node`.
+								The above example would unwire all handlers for the =click= event of the =myWidget= instance's `root node`.
 
 								VARIATION 1
 								........................................................
@@ -1337,7 +1352,7 @@ Uize.module ({
 							_childIdPrefixConstruction || (_childIdPrefix == _undefined ? _concatenated : 'explicit')
 					);
 
-					/*** apply unapplied data for child (set through children set-get property) ***/
+					/*** apply unapplied data for child (set through children state property) ***/
 						var
 							_unappliedChildrenProperties = _this._unappliedChildrenProperties,
 							_unappliedChildrenPropertiesForChild = _unappliedChildrenProperties [_childName]
@@ -1430,14 +1445,14 @@ Uize.module ({
 					/*?
 						Instance Methods
 							getProvider
-								Returns a reference to the nearest widget instance up the parent widget chain that provides a value for the specified set-get property.
+								Returns a reference to the nearest widget instance up the parent widget chain that provides a value for the specified state property.
 
 								SYNTAX
 								.............................................................
 								providerWidgetOBJ = myWidget.getProvider (setGetPropertySTR);
 								.............................................................
 
-								If a value other than ='inherit'= or =undefined= is set for the specified set-get property of the instance, then a reference to the instance will be returned. Otherwise, this method will walk up the parent widget chain until a widget is found that has a value other than ='inherit'= or =undefined= set for this set-get property. If none is found, then the value =undefined= will be returned.
+								If a value other than ='inherit'= or =undefined= is set for the specified state property of the instance, then a reference to the instance will be returned. Otherwise, this method will walk up the parent widget chain until a widget is found that has a value other than ='inherit'= or =undefined= set for this state property. If none is found, then the value =undefined= will be returned.
 
 								NOTES
 								- see also the =callInherited=, =getInherited=, and =setInherited= instance methods
@@ -1450,14 +1465,14 @@ Uize.module ({
 					/*?
 						Instance Methods
 							getInherited
-								Returns the value for the specified set-get property, as inherited from the widget's parent chain.
+								Returns the value for the specified state property, as inherited from the widget's parent chain.
 
 								SYNTAX
 								.............................................................
 								inheritedANYTYPE = myWidget.getInherited (setGetPropertySTR);
 								.............................................................
 
-								If a value other than ='inherit'= or =undefined= is set for the specified set-get property of the instance, then the property's value will be returned. Otherwise, this method will walk up the parent widget chain until a widget is found that has a value other than ='inherit'= or =undefined= set for this set-get property. If none is found, then the value =undefined= will be returned.
+								If a value other than ='inherit'= or =undefined= is set for the specified state property of the instance, then the property's value will be returned. Otherwise, this method will walk up the parent widget chain until a widget is found that has a value other than ='inherit'= or =undefined= set for this state property. If none is found, then the value =undefined= will be returned.
 
 								NOTES
 								- see also the =callInherited=, =getProvider=, and =setInherited= instance methods
@@ -1474,7 +1489,7 @@ Uize.module ({
 					/*?
 						Instance Methods
 							setInherited
-								Allows you to set values for the specified set-get properties on the instance in the widget's parent chain from which the properties are inherited.
+								Allows you to set values for the specified state properties on the instance in the widget's parent chain from which the properties are inherited.
 
 								SYNTAX
 								............................................
@@ -1557,7 +1572,7 @@ Uize.module ({
 					/*?
 						Instance Methods
 							insertOrWireUi
-								Calls either the =wireUi= or =insertUi= instance method, depending on the value of the =built= set-get property.
+								Calls either the =wireUi= or =insertUi= instance method, depending on the value of the =built= state property.
 
 								SYNTAX
 								...........................
@@ -1584,7 +1599,7 @@ Uize.module ({
 								myWidget.insertUi ();
 								.....................
 
-								The =insertUi= method always first builds the instance's UI, regardless of the value of the =built= set-get property. To conditionally build an instance's UI before wiring it, taking into account the value of the =built= property, use the =insertOrWireUi= instance method.
+								The =insertUi= method always first builds the instance's UI, regardless of the value of the =built= state property. To conditionally build an instance's UI before wiring it, taking into account the value of the =built= property, use the =insertOrWireUi= instance method.
 
 								NOTES
 								- see the related =insertOrWireUi= and =wireUi= instance methods
@@ -1601,7 +1616,7 @@ Uize.module ({
 					/*?
 						Instance Methods
 							removeUi
-								Unwires the UI of the widget, removes the widget's `Root Node` from the DOM, and calls this method on all the widget's child widgets.
+								Unwires the UI of the widget, removes the widget's `root node` from the DOM, and calls this method on all the widget's child widgets.
 
 								SYNTAX
 								.....................
@@ -1668,7 +1683,7 @@ Uize.module ({
 
 								NOTES
 								- if the widget's UI has already been wired, this method has no effect.
-								- see also the =wired= set-get property
+								- see also the =wired= state property
 								- see also the =updateUi= and =unwireUi= instance methods
 					*/
 				};
@@ -1683,7 +1698,7 @@ Uize.module ({
 					/*?
 						Instance Methods
 							unwireUi
-								Unwires all the events associated to the instance and all of its child widgets. After this method has been called, the =wired= set-get property will be set to =false=.
+								Unwires all the events associated to the instance and all of its child widgets. After this method has been called, the =wired= state property will be set to =false=.
 
 								SYNTAX
 								.....................
@@ -1741,7 +1756,7 @@ Uize.module ({
 				/*?
 					Static Methods
 						Uize.Widget.spawn
-							Spawns a number of widgets using the specified set-get property values, attaches them as children to the specified parent widget, and returns the spawned widgets as an array.
+							Spawns a number of widgets using the specified state property values, attaches them as children to the specified parent widget, and returns the spawned widgets as an array.
 
 							SYNTAX
 							.................................................................
@@ -1759,9 +1774,9 @@ Uize.module ({
 								The =Uize.Widget.spawn= static method is inherited by subclasses of =Uize.Widget= and spawns instances of the class on which it is called, so it is not typically called on the =Uize.Widget= class but rather on a specific widget class.
 
 							The propertiesOBJ Parameter
-								The =propertiesOBJ= parameter is an object, containing values for the set-get properties of the widget class of which instances are being spawned.
+								The =propertiesOBJ= parameter is an object, containing values for the state properties of the widget class of which instances are being spawned.
 
-								Besides the required =idPrefix= property (see `Special Meaning of idPrefix`), the =propertiesOBJ= parameter may contain values for any of the other set-get properties of the widget class on which this method is being called.
+								Besides the required =idPrefix= property (see `Special Meaning of idPrefix`), the =propertiesOBJ= parameter may contain values for any of the other state properties of the widget class on which this method is being called.
 
 							Special Meaning of idPrefix
 								The number of widgets spawned is determined by the value of the "idPrefix" property in the =propertiesOBJ= object.
@@ -1771,7 +1786,7 @@ Uize.module ({
 								Once the value of the "idPrefix" property has been resolved to one or more DOM nodes, an instance of the widget class on which the method is called will be created for each of the DOM nodes. For each widget instance that is created, the actual =idPrefix= value for the instance will be derived from the =id= attribute of the DOM node for which the instance is being created. For this reason, the DOM nodes represented by the "idPrefix" property should be the root nodes for the widget instances that will be spawned.
 
 							Child Widget Naming
-								When spawned widgets are added as child widgets of a specified parent widget, the names of the child widget are - if possible - derived using the value of the =idPrefix= set-get property of the parent widget and the value of the =id= attribute for the DOM node for which a widget instance is being spawned.
+								When spawned widgets are added as child widgets of a specified parent widget, the names of the child widget are - if possible - derived using the value of the =idPrefix= state property of the parent widget and the value of the =id= attribute for the DOM node for which a widget instance is being spawned.
 
 								For example, if the =id= attribute of a DOM node for which a widget is to be spawned has the value "page_item0", and if the parent widget of the spawned widget is a page widget instance with the =idPrefix= value of ='page'=, then the spawned widget will be added as the child named "item0".
 
@@ -1792,58 +1807,25 @@ Uize.module ({
 
 								In the above example, instances of the =Uize.Widget.CollectionItem.Zooming= widget class are being spawned - one for each of the nodes obtained by evaluating the find expression object ={root:'thumbnails',tagName:'A',className:'thumbnail'}=.
 
-								Besides the =idPrefix= value here that identifies the DOM nodes for which the =Uize.Widget.CollectionItem.Zooming= instances should be created, the values specified for the =previewZoomUrl= and =zoomPower= set-get properties of this widget class are common for all instances that are spawned. Finally, the =parentWidgetOBJ= parameter is used here to attach the spawned instances as children of a page widget instance.
+								Besides the =idPrefix= value here that identifies the DOM nodes for which the =Uize.Widget.CollectionItem.Zooming= instances should be created, the values specified for the =previewZoomUrl= and =zoomPower= state properties of this widget class are common for all instances that are spawned. Finally, the =parentWidgetOBJ= parameter is used here to attach the spawned instances as children of a page widget instance.
 
 							NOTES
 							- the widget adoption mechanism implemented in the =Uize.Widget.Page= class supports a declaration syntax for spawning widgets
 				*/
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_built:{
 					name:'built',
 					value:_true
 					/*?
-						Set-get Properties
+						State Properties
 							built
 								A boolean, indicating whether or not a specific child widget's UI has already been built and inserted into the DOM by the time that its parent widget wires up the child widgets.
 
 								NOTES
 								- the initial value is =true=
-					*/
-				},
-				_busy:{
-					name:'busy',
-					onChange:_checkBusyInherited,
-					value:'inherit'
-					/*?
-						Set-get Properties
-							busy
-								A boolean, indicating whether or not the widget is busy.
-
-								The busy state can be useful when a complex set of processes needs to be performed and user interaction with certain widgets needs to be blocked during that time. Widgets that are in a busy state should not allow user interaction. It is up to an individual widget class to provide its own implementation for the busy state.
-
-								NOTES
-								- the initial value is =true=
-								- this set-get property has a significantly different effect to the =enabled= set-get property
-					*/
-				},
-				_busyInherited:{
-					name:'busyInherited',
-					onChange:function () {_Uize.callOn (this._children,_checkBusyInherited)},
-					value:_false
-					/*?
-						Set-get Properties
-							busyInherited
-								A boolean, indicating whether or not the instance is busy. A widget subclass can use this set-get property when performing UI updates in order to reflect a busy state.
-
-								This property will be =true= if the =busy= set-get property is set to =true=, or if =busy= is set to ='inherit'= and the value inherited from up the parent chain resolves to =true=. If an inherited value resolves to =inherit=, then this property will be set to =false=.
-
-								NOTES
-								- the initial value is =false=
-								- see also the =busy= set-get property
-								- see also the =getInherited= instance method
 					*/
 				},
 				_children:{
@@ -1865,11 +1847,11 @@ Uize.module ({
 						return this._children;
 					}
 					/*?
-						Set-get Properties
-							children ~~ children Set-get Property
-								A special set-get property that provides a way to distribute widget properties to any or all of the widget's child widgets, or even child widgets of the widget's child widgets - all the way down to the deepest child widgets in the widget's widget tree.
+						State Properties
+							children ~~ children State Property
+								A special state property that provides a way to distribute widget properties to any or all of the widget's child widgets, or even child widgets of the widget's child widgets - all the way down to the deepest child widgets in the widget's widget tree.
 
-								For a detailed discussion of the =children= set-get property, consult the [[../explainers/javascript-widgets.html][JavaScript Widgets]] explainer and read through specifically the section entitled "The children Set-get Property".
+								For a detailed discussion of the =children= state property, consult the [[../explainers/javascript-widgets.html][JavaScript Widgets]] explainer and read through specifically the section entitled "The children State Property".
 
 								NOTES
 								- see also the companion `children instance property`
@@ -1878,71 +1860,38 @@ Uize.module ({
 				},
 				_container:'container',
 					/*?
-						Set-get Properties
+						State Properties
 							container
 								A string, representing the ID of a container node, or an object reference to a container node, into which the HTML for a widget should be inserted when the =insertUi= instance method is called.
 
 								NOTES
 								- the initial value is =undefined=
 					*/
-				_enabled:{
-					name:'enabled',
-					onChange:_checkEnabledInherited,
-					value:'inherit'
-					/*?
-						Set-get Properties
-							enabled
-								A boolean, specifying whether or not the widget is enabled.
-
-								The enabled state can be useful when a complex set of processes needs to be performed and user interaction with certain widgets needs to be blocked during that time. Widgets that are not in an enabled state (ie. disabled) should not allow user interaction. It is up to an individual widget class to provide its own implementation for the enabled state.
-
-								NOTES
-								- the initial value is =true=
-								- this set-get property has a significantly different effect to the =busy= set-get property
-					*/
-				},
-				_enabledInherited:{
-					name:'enabledInherited',
-					onChange:function () {_Uize.callOn (this._children,_checkEnabledInherited)},
-					value:_true
-					/*?
-						Set-get Properties
-							enabledInherited
-								A boolean, indicating whether or not the instance is enabled. A widget subclass can use this set-get property when performing UI updates in order to reflect a disabled state.
-
-								This property will be set to =true= if the =enabled= set-get property is set to =true=, or if =enabled= is set to ='inherit'= and the inherited value resolves to either ='inherit'= or =true=.
-
-								NOTES
-								- the initial value is =true=
-								- see also the =enabled= set-get property
-								- see also the =getInherited= instance method
-					*/
-				},
 				_html:'html',
 					/*?
-						Set-get Properties
+						State Properties
 							html
 								A string, function, object, or boolean value, specifying the HTML that should be inserted into the document by the =insertUi= instance method.
 
 								Values Types
-									The following value types are supported for the =html= set-get property...
+									The following value types are supported for the =html= state property...
 
 									String
 										Lets you specify a template string for the HTML of a widget.
 
-										A string value specified for this property may contain tokens of the form =[#setGetPropertyName]=, which will be substituted by the values of the corresponding set-get properties of the widget.
+										A string value specified for this property may contain tokens of the form =[#setGetPropertyName]=, which will be substituted by the values of the corresponding state properties of the widget.
 
 									Function
 										Lets you specify a generator function for a widget's markup.
 
-										A function that you register as an HTML generator for your widget using the =html= set-get property should expect to receive one parameter, being an object containing the `HTML Generator Input`. The function should return either a string, being the generated HTML markup for the widget, or a DOM node or array of DOM nodes. While the generator function can use the values in the `HTML Generator Input` object when constructing the HTML for the widget, the string returned by the function may also contain tokens of the form =[#setGetPropertyName]=, which will be substituted by the values of the corresponding set-get properties of the widget.
+										A function that you register as an HTML generator for your widget using the =html= state property should expect to receive one parameter, being an object containing the `HTML generator input`. The function should return either a string, being the generated HTML markup for the widget, or a DOM node or array of DOM nodes. While the generator function can use the values in the `HTML generator input` object when constructing the HTML for the widget, the string returned by the function may also contain tokens of the form =[#setGetPropertyName]=, which will be substituted by the values of the corresponding state properties of the widget.
 
 									Object
 										Lets you supply a JavaScript Template Module as the HTML generator for a widget.
 
-										When specifying an object for this property, the object should contain a =process= property that is a generator function. That generator function should expect to receive one parameter, being an object containing the `HTML Generator Input`. The function should return a string, being the generated HTML markup for the widget. The string returned will *not* be processed any further and will be inserted into the document as is, so it is the reponsibility of the generator function in this case to stitch in any values it cares to from the `HTML Generator Input`.
+										When specifying an object for this property, the object should contain a =process= property that is a generator function. That generator function should expect to receive one parameter, being an object containing the `HTML generator input`. The function should return a string, being the generated HTML markup for the widget. The string returned will *not* be processed any further and will be inserted into the document as is, so it is the reponsibility of the generator function in this case to stitch in any values it cares to from the `HTML generator input`.
 
-										Now, typically an object specified for the =html= set-get property will be a JavaScript Template Module, but you can supply any object - the only requirement is that it have a =process= property that is a generator function. Since the function type value for the =html= set-get property results in the string returned by the function being processed further with token substitution, using the object type is one way to dodge that extra processing if it's not desired - without actually having to create a full-blown JavaScript Template Module.
+										Now, typically an object specified for the =html= state property will be a JavaScript Template Module, but you can supply any object - the only requirement is that it have a =process= property that is a generator function. Since the function type value for the =html= state property results in the string returned by the function being processed further with token substitution, using the object type is one way to dodge that extra processing if it's not desired - without actually having to create a full-blown JavaScript Template Module.
 
 										INSTEAD OF...
 										....................................................
@@ -1957,16 +1906,16 @@ Uize.module ({
 									Boolean
 										Lets you embed a JavaScript Template inside a widget's markup, which will then be used for generating the widget's UI.
 
-										When the boolean value =true= is set for this property, and if the =Uize.Template= module is loaded, then the =Uize.Widget= class will attempt to find a =script= tag inside the container, shell, or `Root Node` of the widget with the type "text/jst" (JavaScript Template). If such a =script= tag is found, then its contents will be compiled by the =Uize.Template= module and the resulting JST module will be set on the =html= set-get property.
+										When the boolean value =true= is set for this property, and if the =Uize.Template= module is loaded, then the =Uize.Widget= class will attempt to find a =script= tag inside the container, shell, or `root node` of the widget with the type "text/jst" (JavaScript Template). If such a =script= tag is found, then its contents will be compiled by the =Uize.Template= module and the resulting JST module will be set on the =html= state property.
 
 								HTML Generator Input
-									When a generator function is called, it is supplied with an object that contains the current state of the set-get properties for the widget instance.
+									When a generator function is called, it is supplied with an object that contains the current state of the state properties for the widget instance.
 
-									This allows the generator function to use any - or all - of the set-get properties when constructing the HTML for a specific instance of the widget.
+									This allows the generator function to use any - or all - of the state properties when constructing the HTML for a specific instance of the widget.
 
 									SPECIAL PATH PROPERTIES
 
-									In addition to the set-get property values, the HTML Generator Input object also contains the two special properties =pathToResources= and =blankGif=, where =pathToResources= is set to the value of the =Uize.pathToResources= static property, and =blankGif= is set to the result from calling the =Uize.Widget.getBlankImageUrl= static method.
+									In addition to the state property values, the HTML Generator Input object also contains the two special properties =pathToResources= and =blankGif=, where =pathToResources= is set to the value of the =Uize.pathToResources= static property, and =blankGif= is set to the result from calling the =Uize.Widget.getBlankImageUrl= static method.
 
 									These special path properties allow widgets to generate HTML that references assets that are located in directories relative to the JavaScript modules that implement the widgets.
 
@@ -2017,20 +1966,20 @@ Uize.module ({
 						}
 					}
 					/*?
-						Set-get Properties
+						State Properties
 							idPrefix
 								A string, specifying the ID prefix to be used when resolving implied nodes and child widgets to DOM node references.
 
 								NOTES
-								- see the related =idPrefixConstruction= set-get property
+								- see the related =idPrefixConstruction= state property
 								- the initial value is =undefined=
 					*/
 				},
 				_idPrefixConstruction:'idPrefixConstruction',
 					/*?
-						Set-get Properties
+						State Properties
 							idPrefixConstruction
-								A string, specifying the mode of construction of the value for the =idPrefix= set-get property.
+								A string, specifying the mode of construction of the value for the =idPrefix= state property.
 
 								The value of the =idPrefixConstruction= property is used when the value of the =idPrefix= property is constructed. This happens either at the time that a widget is added as a child widget of a parent widget using the =addChild= instance method, or when the =idPrefix= value of a child widget's parent widget is modified *after* it has already been added as a child.
 
@@ -2045,16 +1994,16 @@ Uize.module ({
 								- =undefined= (the default value) - When =idPrefixConstruction= is set to =undefined=, the behavior for the value ='concatenated'= will be used (ie. the value =undefined= is equivalent to the value ='concatenated'=).
 
 								NOTES
-								- see the related =idPrefix= set-get property
+								- see the related =idPrefix= state property
 								- the initial value is =undefined= (equivalent to the value ='concatenated'=)
 					*/
 				_insertionMode:'insertionMode',
 					/*?
-						Set-get Properties
+						State Properties
 							insertionMode
 								A string, specifying the injection mode that should be used when inserting the HTML for a widget into the page.
 
-								This property works in conjunction with the =built=, =container=, and =html= set-get properties. If the value for the =built= property is =true= for a widget instance, then =insertionMode= is not applicable. But if the value for =built= is =false=, then the HTML generated using the =html= set-get property will be injected into a container node specified by the =container= set-get property (or the =shell= implied node, or the `Root Node` of the widget instance, or the document's body, whichever is non-null) using the mode specified by =insertionMode=.
+								This property works in conjunction with the =built=, =container=, and =html= state properties. If the value for the =built= property is =true= for a widget instance, then =insertionMode= is not applicable. But if the value for =built= is =false=, then the HTML generated using the =html= state property will be injected into a container node specified by the =container= state property (or the =shell= implied node, or the `root node` of the widget instance, or the document's body, whichever is non-null) using the mode specified by =insertionMode=.
 
 								EXAMPLE
 								......................................................
@@ -2073,17 +2022,17 @@ Uize.module ({
 								In the above example, an instance of the =Uize.Widget.Bar.Slider= class will have its HTML generated by the template module =MySiteNamespace.Templates.Slider= and then inserted into the container node =quantityUiShell=, using the ='inner bottom'= insertion mode. This means that if the =quantityUiShell= node already contained contents, that contents will not be replaced by insertion of the widget's HTML, but the widget's HTML will be inserted at the bottom - under the existing contents.
 
 								Values
-									The possible values for the =insertionMode= set-get property are the same as the valid values for the =injectModeSTR= parameter of the =Uize.Node.injectHtml= static method: ='inner bottom'=, ='inner top'=, ='outer bottom'=, ='outer top'=, ='inner replace'=, and ='outer replace'=. For a more in-depth discussion of insertion modes and how they behave, consult the reference for the =Uize.Node.injectHtml= static method.
+									The possible values for the =insertionMode= state property are the same as the valid values for the =injectModeSTR= parameter of the =Uize.Node.injectHtml= static method: ='inner bottom'=, ='inner top'=, ='outer bottom'=, ='outer top'=, ='inner replace'=, and ='outer replace'=. For a more in-depth discussion of insertion modes and how they behave, consult the reference for the =Uize.Node.injectHtml= static method.
 
-									If the value of the =insertionMode= set-get property is =null=, =undefined=, or an empty string, then an insertion mode is chosen automatically based upon the node that the HTML is being inserted into: ='inner replace'= if a container node is specified, and ='inner bottom'= into the document body if no container node is specified or if the document body is specified for the container.
+									If the value of the =insertionMode= state property is =null=, =undefined=, or an empty string, then an insertion mode is chosen automatically based upon the node that the HTML is being inserted into: ='inner replace'= if a container node is specified, and ='inner bottom'= into the document body if no container node is specified or if the document body is specified for the container.
 
 								NOTES
 								- the initial value is =undefined= (which results in default auto behavior)
-								- see also the =built=, =container=, and =html= set-get properties
+								- see also the =built=, =container=, and =html= state properties
 					*/
 				_localized:'localized',
 					/*?
-						Set-get Properties
+						State Properties
 							localized
 								An object which, if defined, lets you specify localized strings that can be accessed using the =localized= instance method.
 
@@ -2106,7 +2055,7 @@ Uize.module ({
 					*/
 				_name:'name',
 					/*?
-						Set-get Properties
+						State Properties
 							name
 								A read-only string, specifying the name of the widget if it is added as a child widget of another widget by calling the =addChild= instance method on that other widget.
 
@@ -2118,7 +2067,7 @@ Uize.module ({
 					*/
 				_nodeMap:'nodeMap',
 					/*?
-						Set-get Properties
+						State Properties
 							nodeMap
 								An object which, if defined, lets you provide override mappings for implied nodes. Each property's name-value pair is a single implied node mapping, where the property name is the natural name (as implemented in the widget subclass) for the implied node, and where the property value is the override (which can be either an alternate node name, or an actual node reference).
 
@@ -2129,7 +2078,7 @@ Uize.module ({
 					name:'wired',
 					value:_false
 					/*?
-						Set-get Properties
+						State Properties
 							wired
 								A boolean, indicating whether or not the widget's UI has been wired up. This property is set to =true= after the =wireUi= instance method has been called on a widget and all its child widgets.
 
@@ -2139,9 +2088,9 @@ Uize.module ({
 
 						Instance Properties
 							isWired
-								An alternate way of accessing the value of the =wired= set-get property, that doesn't require using the =get= instance method.
+								An alternate way of accessing the value of the =wired= state property, that doesn't require using the =get= instance method.
 
-								Using this property is functionally equivalent to =myWidget.get ('wired')=. This property is provided primarily as a convenience and to improve performance, since the =wired= set-get property is accessed many times in many widget class files, and often in heavily hit areas of code. Using this property to access the value of the =wired= set-get property offers slightly better performance than using the =get= instance method, which may help a little with performance optimization.
+								Using this property is functionally equivalent to =myWidget.get ('wired')=. This property is provided primarily as a convenience and to improve performance, since the =wired= state property is accessed many times in many widget class files, and often in heavily hit areas of code. Using this property to access the value of the =wired= state property offers slightly better performance than using the =get= instance method, which may help a little with performance optimization.
 
 								INSTEAD OF...
 								............................
@@ -2158,10 +2107,56 @@ Uize.module ({
 								............................
 
 								NOTES
-								- see also the =wired= set-get property
+								- see also the =wired= state property
 					*/
 				}
 			});
+
+			_declareTreeInheritedProperty ({_busy:'busy',_busyInherited:'busyInherited'},_false);
+				/*?
+					State Properties
+						busy
+							A boolean, indicating whether or not the widget is busy.
+
+							The busy state can be useful when a complex set of processes needs to be performed and user interaction with certain widgets needs to be blocked during that time. Widgets that are in a busy state should not allow user interaction. It is up to an individual widget class to provide its own implementation for the busy state.
+
+							NOTES
+							- the initial value is =true=
+							- this state property has a significantly different effect to the =enabled= state property
+
+						busyInherited
+							A boolean, indicating whether or not the instance is busy. A widget subclass can use this state property when performing UI updates in order to reflect a busy state.
+
+							This property will be =true= if the =busy= state property is set to =true=, or if =busy= is set to ='inherit'= and the value inherited from up the parent chain resolves to =true=. If an inherited value resolves to =inherit=, then this property will be set to =false=.
+
+							NOTES
+							- the initial value is =false=
+							- see also the =busy= state property
+							- see also the =getInherited= instance method
+				*/
+
+			_declareTreeInheritedProperty ({_enabled:'enabled',_enabledInherited:'enabledInherited'},_true);
+				/*?
+					State Properties
+						enabled
+							A boolean, specifying whether or not the widget is enabled.
+
+							The enabled state can be useful when a complex set of processes needs to be performed and user interaction with certain widgets needs to be blocked during that time. Widgets that are not in an enabled state (ie. disabled) should not allow user interaction. It is up to an individual widget class to provide its own implementation for the enabled state.
+
+							NOTES
+							- the initial value is =true=
+							- this state property has a significantly different effect to the =busy= state property
+
+						enabledInherited
+							A boolean, indicating whether or not the instance is enabled. A widget subclass can use this state property when performing UI updates in order to reflect a disabled state.
+
+							This property will be set to =true= if the =enabled= state property is set to =true=, or if =enabled= is set to ='inherit'= and the inherited value resolves to either ='inherit'= or =true=.
+
+							NOTES
+							- the initial value is =true=
+							- see also the =enabled= state property
+							- see also the =getInherited= instance method
+				*/
 
 		return _class;
 	}

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Options.FilterGroup Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 7
 	codeCompleteness: 50
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -33,13 +30,15 @@ Uize.module ({
 		'Uize.Node.Classes'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
 				_false = false,
 				_Uize_Node_Classes = Uize.Node.Classes
 			;
-			
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (),
@@ -58,13 +57,13 @@ Uize.module ({
 					)
 				;
 			};
-			
+
 			_classPrototype._updateUiFilterVisibility = function() {
 				var
 					_this = this,
 					_allZero = _true
 				;
-				
+
 				_this.isWired
 					&& _this.forAll(
 						function(_filterWidget) {
@@ -73,19 +72,19 @@ Uize.module ({
 								_displayFilter = !_this._hideWhenZero
 									|| _filterCount
 							;
-							
+
 							_filterWidget.displayNode('', _displayFilter);
 							_filterWidget.set({enabled:!_filterCount ? _false : 'inherit'});
-							
+
 							if (_displayFilter)
 								_allZero = _false;
 						}
 					)
 				;
-				
+
 				_this.displayNode('', !_allZero && _this.get('values').length > 1);
 			};
-			
+
 			_classPrototype._updateUiTitle = function() {
 				this.isWired && this.setNodeInnerHtml('title', this._title)
 			};
@@ -96,11 +95,11 @@ Uize.module ({
 					_this = this,
 					_countsLength = _counts.length
 				;
-				
+
 				if (_this.isWired) {
 					// NOTE: the count parameter for each filter in the values set
 					// will be out of sync...
-					
+
 					_counts
 						&& _countsLength
 						&& _this.forAll(
@@ -110,11 +109,11 @@ Uize.module ({
 							}
 						)
 					;
-					
+
 					_this._updateUiFilterVisibility();
 				}
 			};
-		
+
 			_classPrototype.updateUi = function () {
 				var _this = this;
 				if (_this.isWired) {
@@ -125,8 +124,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_expanded:{
 					name:'expanded',
 					onChange:_classPrototype._updateUiExpanded,
@@ -149,7 +148,7 @@ Uize.module ({
 				}
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				optionWidgetClass:Uize.Widget.Button.Filter,
 				ensureValueInValues:_true

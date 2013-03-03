@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Performance.ArrayBuildingStyles Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Test
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -29,13 +26,15 @@
 Uize.module ({
 	name:'Uize.Test.Performance.ArrayBuildingStyles',
 	builder:function () {
+		'use strict';
+
 		var _totalIterations = 2000000;
 
 		return Uize.Test.declare ({
 			title:'Test the performance of different approaches to building arrays',
 			test:[
 				{
-					title:'Test the performance of building an array by adding elements with the push method',
+					title:'Build an array by adding elements with the push method',
 					test:function () {
 						for (var _iterationNo = -1, _elements = []; ++_iterationNo < _totalIterations;)
 							_elements.push (_iterationNo)
@@ -44,7 +43,7 @@ Uize.module ({
 					}
 				},
 				{
-					title:'Test the performance of building an array by assigning to an element beyond the last element of the array',
+					title:'Build an array by assigning to an element beyond the last element of the array',
 					test:function () {
 						for (var _iterationNo = -1, _elements = []; ++_iterationNo < _totalIterations;)
 							_elements [_iterationNo] = _iterationNo

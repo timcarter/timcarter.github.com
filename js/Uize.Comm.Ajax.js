@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Comm.Ajax Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 9
 	codeCompleteness: 95
-	testCompleteness: 0
 	docCompleteness: 80
 */
 
@@ -32,6 +29,8 @@ Uize.module ({
 	name:'Uize.Comm.Ajax',
 	required:'Uize.Url',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (),
@@ -80,7 +79,7 @@ Uize.module ({
 							;
 							if (_returnTypeIsObject || _returnType == 'json')
 								_request.responseJson = _responseText
-									? (new Function ('var a=[' + _responseText + '];return a.pop()')) ()
+									? Function ('var a=[' + _responseText + '];return a.pop()') ()
 									: null
 							;
 							_this._xmlHttpRequest.abort ();

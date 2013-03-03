@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Bar.Slider.Plus Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=e" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 10
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.Bar.Slider.Plus',
 	required:'Uize.Widget.Button',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -86,8 +85,8 @@ Uize.module ({
 				_children.stepToMax.set ({enabled:_toMaxEnabled});
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_stepsCoarse:{
 					name:'stepsCoarse',
 					value:2

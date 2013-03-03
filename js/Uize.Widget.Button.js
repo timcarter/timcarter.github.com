@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Button Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 8
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 80
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.Button',
 	required:'Uize.Node',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,
@@ -113,9 +112,9 @@ Uize.module ({
 				/*?
 					Implied Nodes
 						text Implied Node
-							An optional node whose contents will be replaced with the value of the =text= set-get property, if this property's value is not =null= or =undefined=.
+							An optional node whose contents will be replaced with the value of the =text= state property, if this property's value is not =null= or =undefined=.
 
-							The =innerHTML= value of the =text Implied Node= will be updated to reflect the value of the =text= set-get property whenever the value of this property is changed, is not =null= or =undefined=, and the instance is wired up.
+							The =innerHTML= value of the =text Implied Node= will be updated to reflect the value of the =text= state property whenever the value of this property is changed, is not =null= or =undefined=, and the instance is wired up.
 
 							NOTES
 							- this implied node is optional
@@ -143,7 +142,7 @@ Uize.module ({
 							Root Node
 								The root node is the implied node with the name =''= (empty string), and is required for this widget class.
 
-								If the =mode= set-get property is set to the value ='classes'=, then the =className= property of this node is updated to reflect the state of the instance's =playing=, =selected=, and =state= set-get properties. In such cases, the value used to set the =className= property is constructed by using the values of the =state=, =selected=, =playing=, =busyInherited=, =enabledInherited=, =classNamingForStates=, and =statePrecedenceMap= set-get properties.
+								If the =mode= state property is set to the value ='classes'=, then the =className= property of this node is updated to reflect the state of the instance's =playing=, =selected=, and =state= state properties. In such cases, the value used to set the =className= property is constructed by using the values of the =state=, =selected=, =playing=, =busyInherited=, =enabledInherited=, =classNamingForStates=, and =statePrecedenceMap= state properties.
 
 								NOTES
 								- this implied node is required
@@ -238,7 +237,7 @@ Uize.module ({
 					/*** deferred wiring of other events (for performance) ***/
 						if (!_this._allEventsWired) {
 							_this._allEventsWired = _true;
-							function _setStateAndFireEvent (_domEvent) {_this._setStateAndFireEvent (_domEvent)}
+							var _setStateAndFireEvent = function (_domEvent) {_this._setStateAndFireEvent (_domEvent)};
 							_this.wireNode (
 								_this._rootNode,
 								{
@@ -260,7 +259,7 @@ Uize.module ({
 								Click
 									An instance event that is fired when the user clicks the instance's =Root Node=.
 
-									This event is fired after the related =Up= instance event. When this event is fired, the value of the =state= set-get property will be ='over'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
+									This event is fired after the related =Up= instance event. When this event is fired, the value of the =state= state property will be ='over'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
 
 									NOTES
 									- see the companion =Double Click=, =Down=, =Out=, =Over=, and =Up= instance events
@@ -268,7 +267,7 @@ Uize.module ({
 								Double Click
 									An instance event that is fired when the user double clicks the instance's =Root Node=.
 
-									This event is fired after the related =Up= and =Click= instance events. When this event is fired, the value of the =state= set-get property will be ='over'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
+									This event is fired after the related =Up= and =Click= instance events. When this event is fired, the value of the =state= state property will be ='over'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
 
 									NOTES
 									- see the companion =Click=, =Down=, =Out=, =Over=, and =Up= instance events
@@ -276,7 +275,7 @@ Uize.module ({
 								Down
 									An instance event that is fired when the user mouses down on the instance's =Root Node=.
 
-									When this event is fired, the value of the =state= set-get property will be ='down'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
+									When this event is fired, the value of the =state= state property will be ='down'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
 
 									NOTES
 									- see the companion =Click=, =Double Click=, =Out=, =Over=, and =Up= instance events
@@ -284,7 +283,7 @@ Uize.module ({
 								Out
 									An instance event that is fired when the user mouses out of the instance's =Root Node=.
 
-									When this event is fired, the value of the =state= set-get property will be =''= (empty string). The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
+									When this event is fired, the value of the =state= state property will be =''= (empty string). The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
 
 									NOTES
 									- see the companion =Click=, =Double Click=, =Down=, =Over=, and =Up= instance events
@@ -292,7 +291,7 @@ Uize.module ({
 								Over
 									An instance event that is fired when the user mouses over the instance's =Root Node=.
 
-									When this event is fired, the value of the =state= set-get property will be ='over'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
+									When this event is fired, the value of the =state= state property will be ='over'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
 
 									NOTES
 									- see the companion =Click=, =Double Click=, =Down=, =Out=, and =Up= instance events
@@ -300,7 +299,7 @@ Uize.module ({
 								Up
 									An instance event that is fired when the user mouses up after first having moused down on the instance's =Root Node=.
 
-									This event is fired before the related =Click= instance event. When this event is fired, the value of the =state= set-get property will be ='over'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
+									This event is fired before the related =Click= instance event. When this event is fired, the value of the =state= state property will be ='over'=. The event object for this event will have a =domEvent= property that is a reference to the browser event object associated to the event on the DOM node. This =domEvent= object can be used to determine what modifier keys were being used, along with other properties of the event.
 
 									NOTES
 									- see the companion =Click=, =Double Click=, =Down=, =Out=, and =Over= instance events
@@ -345,7 +344,7 @@ Uize.module ({
 							if (_this._followLink && _rootNode.tagName == 'A' && !_rootNode.onclick)
 								_rootNode.onclick = Uize.returnTrue
 							;
-							function _setStateAndFireEvent (_domEvent) {_this._setStateAndFireEvent (_domEvent)}
+							var _setStateAndFireEvent = function (_domEvent) {_this._setStateAndFireEvent (_domEvent)};
 							_this.wireNode (
 								_rootNode,
 								{
@@ -463,13 +462,13 @@ Uize.module ({
 				*/
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_allowClickWhenSelected:{
 					name:'allowClickWhenSelected',
 					onChange:_updateUiState
 					/*?
-						Set-get Properties
+						State Properties
 							allowClickWhenSelected
 
 								NOTES
@@ -478,7 +477,7 @@ Uize.module ({
 				},
 				_clickToSelect:'clickToSelect',
 					/*?
-						Set-get Properties
+						State Properties
 							clickToSelect
 
 								NOTES
@@ -488,7 +487,7 @@ Uize.module ({
 					name:'clickToDeselect',
 					onChange:_updateUiState
 					/*?
-						Set-get Properties
+						State Properties
 							clickToDeselect
 
 								NOTES
@@ -499,7 +498,7 @@ Uize.module ({
 					name:'classNamingForStates',
 					value:'disambiguated' /* simple | disambiguated */
 					/*?
-						Set-get Properties
+						State Properties
 							classNamingForStates
 
 								NOTES
@@ -514,7 +513,7 @@ Uize.module ({
 					},
 					value:['grayed','','over','active','playing']
 					/*?
-						Set-get Properties
+						State Properties
 							frameOrder
 
 								NOTES
@@ -525,7 +524,7 @@ Uize.module ({
 					name:'followLink',
 					value:_false
 					/*?
-						Set-get Properties
+						State Properties
 							followLink
 
 								NOTES
@@ -536,7 +535,7 @@ Uize.module ({
 					name:'mode',
 					value:'classes'
 					/*?
-						Set-get Properties
+						State Properties
 							mode
 
 								NOTES
@@ -548,7 +547,7 @@ Uize.module ({
 					onChange:_updateUiState,
 					value:_false
 					/*?
-						Set-get Properties
+						State Properties
 							playing
 
 								NOTES
@@ -560,7 +559,7 @@ Uize.module ({
 					onChange:_updateUiState,
 					value:_false
 					/*?
-						Set-get Properties
+						State Properties
 							selected
 
 								NOTES
@@ -583,7 +582,7 @@ Uize.module ({
 					},
 					value:''
 					/*?
-						Set-get Properties
+						State Properties
 							state
 								A string, indicating the mouseover or mousedown state of the instance.
 
@@ -595,7 +594,7 @@ Uize.module ({
 
 								NOTES
 								- the initial value is =''= (an empty string)
-								- this set-get property should not be confused with the related =playing= and =selected= set-get properties
+								- this state property should not be confused with the related =playing= and =selected= state properties
 								- while the instance is not wired, the value of this property will remain =''= (empty string)
 					*/
 				},
@@ -616,7 +615,7 @@ Uize.module ({
 					},
 					value:['playing','active','grayed','over','']
 					/*?
-						Set-get Properties
+						State Properties
 							statePrecedence
 
 								NOTES
@@ -627,11 +626,11 @@ Uize.module ({
 					name:'text',
 					onChange:_classPrototype._updateUiText
 					/*?
-						Set-get Properties
+						State Properties
 							text
 								A string, whose value will be used to set the value of the =innerHTML= property of the =text Implied Node=.
 
-								The =innerHTML= value of the =text Implied Node= will be updated to reflect the value of the =text= set-get property whenever the value of this property is changed, is not =null= or =undefined=, and the instance is wired up.
+								The =innerHTML= value of the =text Implied Node= will be updated to reflect the value of the =text= state property whenever the value of this property is changed, is not =null= or =undefined=, and the instance is wired up.
 
 								NOTES
 								- the initial value is =undefined=
@@ -639,11 +638,11 @@ Uize.module ({
 				},
 				_tooltip:'tooltip'
 					/*?
-						Set-get Properties
+						State Properties
 							tooltip
 								An object reference to a DOM node, or a string whose value is the =id= for a DOM node, that should be displayed as a tooltip for the instance whenever the user mouses over the =Root Node= and the instance is in a state where clicking on this node would have an action.
 
-								Clicking on the =Root Node= would have an action when the following conditions are met: the =over= set-get property is set to =true=, the =enabledInherited= set-get property is set to =true=, the =selected= set-get property is set to =false=, and the instance is wired.
+								Clicking on the =Root Node= would have an action when the following conditions are met: the =over= state property is set to =true=, the =enabledInherited= state property is set to =true=, the =selected= state property is set to =false=, and the instance is wired.
 
 								NOTES
 								- the initial value is =undefined=

@@ -4,31 +4,28 @@
 |    /    O /   |    MODULE : Uize.Util.Coupler Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=b" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 90
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
 /*?
 	Introduction
-		The =Uize.Util.Coupler= class implements a mechanism for coupling two or more instances of any =Uize.Class= subclass by synchronizing values of set-get properties.
+		The =Uize.Util.Coupler= class implements a mechanism for coupling two or more instances of any =Uize.Class= subclass by synchronizing values of state properties.
 
 		*DEVELOPERS:* `Chris van Rensburg`
 
 		In a Nutshell
 			The =Uize.Util.Coupler= class makes it easy to keep desired state synchronized between two or more instances.
 
-			Coupled instances can be widget instances (ie. instances of =Uize.Widget= subclasses), but they do not have to be widgets. Coupled instances do not have to be of the same class - they only need to provide the same set-get properties that are to be synchronized between them.
+			Coupled instances can be widget instances (ie. instances of =Uize.Widget= subclasses), but they do not have to be widgets. Coupled instances do not have to be of the same class - they only need to provide the same state properties that are to be synchronized between them.
 
 		An Example
 			Using the =Uize.Util.Coupler= class is easy: all you have to do is create an instance of it, specifying which properties of which instances you would like to be coupled together. Consider the following example...
@@ -63,15 +60,17 @@
 				});
 			......................................................................................
 
-			In the above example, a custom subclass of the =Uize.Widget.CollectionItem.Zooming= widget class is being created. This is done purely as a convenience, in order to capture some common set-get property values, and so that all instances of this subclass that are created will have those same initial values. Then, three instances of this custom subclass are added as child widgets to the page widget (which we assume in this example to already be defined).
+			In the above example, a custom subclass of the =Uize.Widget.CollectionItem.Zooming= widget class is being created. This is done purely as a convenience, in order to capture some common state property values, and so that all instances of this subclass that are created will have those same initial values. Then, three instances of this custom subclass are added as child widgets to the page widget (which we assume in this example to already be defined).
 
-			Finally, an instance of the =Uize.Util.Coupler= class is created in order to couple the three instances together by keeping the values of their =alignX=, =alignY=, and =inUse= set-get properties synchronized across the three of them. This has the effect of making the instance that the user is currently interacting with drive the other two instances - any instance can drive the other two. When the user rests the mouse over one of the instances, the zoom in effect will be activated for all three. And when the user moves the mouse over one in order to pan horizontally and vertically around the zoomed image, the two other instances will follow the lead of the one the user is mousing over.
+			Finally, an instance of the =Uize.Util.Coupler= class is created in order to couple the three instances together by keeping the values of their =alignX=, =alignY=, and =inUse= state properties synchronized across the three of them. This has the effect of making the instance that the user is currently interacting with drive the other two instances - any instance can drive the other two. When the user rests the mouse over one of the instances, the zoom in effect will be activated for all three. And when the user moves the mouse over one in order to pan horizontally and vertically around the zoomed image, the two other instances will follow the lead of the one the user is mousing over.
 */
 
 Uize.module ({
 	name:'Uize.Util.Coupler',
 	superclass:'Uize.Class',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** General Variables ***/
 			var _syncFunctions = {};
 
@@ -81,7 +80,7 @@ Uize.module ({
 				_classPrototype = _class.prototype
 			;
 
-		/*** Register Properties ***/
+		/*** State Properties ***/
 			function _updateCoupling () {
 				var
 					_this = this,
@@ -135,18 +134,20 @@ Uize.module ({
 									'delete source.UIZE_UTIL_COUPLER_driver;'
 								);
 								_syncFunction = _syncFunctions [_propertiesSignature] =
-									new Function ('eventObj','target',_functionChunks.join (''))
+									Function ('eventObj,target',_functionChunks.join (''))
 								;
 							}
 
 						/*** wire events for coupling instances together ***/
 							_wirings = _this._wirings = [];
-							var _eventName = 'Changed.' + (_propertiesLength > 1 ? '*' : _properties [0]);
-							function _wireCouplingHandler (_controllingInstance,_controlledInstance) {
-								var _handler = function (_event) {_syncFunction (_event,_controlledInstance)};
-								_wirings.push ({_instance:_controllingInstance,_eventName:_eventName,_handler:_handler});
-								_controllingInstance.wire (_eventName,_handler);
-							}
+							var
+								_eventName = 'Changed.' + (_propertiesLength > 1 ? '*' : _properties [0]),
+								_wireCouplingHandler = function (_controllingInstance,_controlledInstance) {
+									var _handler = function (_event) {_syncFunction (_event,_controlledInstance)};
+									_wirings.push ({_instance:_controllingInstance,_eventName:_eventName,_handler:_handler});
+									_controllingInstance.wire (_eventName,_handler);
+								}
+							;
 							for (
 								var _instanceNo = -1, _instancesLength = _instances.length;
 								++_instanceNo < _instances.length;
@@ -159,15 +160,15 @@ Uize.module ({
 					}
 				}
 			}
-			_class.registerProperties ({
+			_class.stateProperties ({
 				_coupled:{
 					name:'coupled',
 					onChange:_updateCoupling,
 					value:true
 					/*?
-						Set-get Properties
+						State Properties
 							coupled
-								A boolean, indicating whether or not the coupling is active and the instances specified by the =instances= set-get property are coupled together.
+								A boolean, indicating whether or not the coupling is active and the instances specified by the =instances= state property are coupled together.
 
 								If this property is set to =false= after instances have already been coupled, then they will be uncoupled. They can be recoupled again later by setting the value of this property back to =true=.
 
@@ -179,14 +180,14 @@ Uize.module ({
 					name:'instances',
 					onChange:_updateCoupling
 					/*?
-						Set-get Properties
+						State Properties
 							instances
-								An array, specifying the instances that should be coupled together and whose properties, as specified by the =properties= set-get property, should be kept synchronized.
+								An array, specifying the instances that should be coupled together and whose properties, as specified by the =properties= state property, should be kept synchronized.
 
 								If the value of this property is changed after instances have already been coupled, then the previously coupled instances will be uncoupled and the newly specified instances will be coupled.
 
 								NOTES
-								- see the companion =properties= set-get property
+								- see the companion =properties= state property
 								- the initial value is =undefined=
 					*/
 				},
@@ -194,14 +195,14 @@ Uize.module ({
 					name:'properties',
 					onChange:_updateCoupling
 					/*?
-						Set-get Properties
+						State Properties
 							properties
-								An array, specifying the properties that should be kept synchronized across all instances, as specified in the =instances= set-get property.
+								An array, specifying the properties that should be kept synchronized across all instances, as specified in the =instances= state property.
 
 								If the value of this property is changed after instances have already been coupled, then the previously coupled instances will be uncoupled and the current =instances= will be recoupled using the newly specified properties.
 
 								NOTES
-								- see the companion =instances= set-get property
+								- see the companion =instances= state property
 								- the initial value is =undefined=
 					*/
 				}

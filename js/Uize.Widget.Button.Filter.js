@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Button.Filter Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 7
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.Button.Filter',
 	required:'Uize.Node.Classes',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (),
@@ -39,7 +38,7 @@ Uize.module ({
 		/*** Private Instance Methods ***/
 			_classPrototype._updateUiLabel = function() {
 				var _this = this;
-				
+
 				if (_this.isWired) {
 					var
 						_label = _this._label,
@@ -51,7 +50,7 @@ Uize.module ({
 							}
 						)
 					;
-					
+
 					_this.set({
 						text:_this._showCount && _labelWithCount
 							? _labelWithCount
@@ -59,10 +58,10 @@ Uize.module ({
 					});
 				}
 			};
-			
+
 			_classPrototype._updateUiFeaturedState = function() {
 				var _this = this;
-				
+
 				_this.isWired
 					&& Uize.Node.Classes.setState(
 						_this.getNode(),
@@ -82,8 +81,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_count:{
 					name:'count',
 					onChange:_classPrototype._updateUiLabel

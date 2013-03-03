@@ -4,18 +4,15 @@
 |	/	O /   |	MODULE : Uize.Widget.AutoSuggest Class
 |   /	/ /	|
 |  /	/ /  /| |	ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |		  /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|			 http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=e" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -27,9 +24,9 @@
 
 		When =querySeparators= are specified, text between separators are treated as independent queries.
 
-		The simplest way to specify how suggestions are shown are to set the =highlightMode= and the =cssClass*= set-get properties.
+		The simplest way to specify how suggestions are shown are to set the =highlightMode= and the =cssClass*= state properties.
 
-		For more advanced customization, the =optionDataAdapter=, =optionsWidgetClass=, and =optionsWidgetProperties= set-get properties allow for fine-grained control over the widgets managing the suggestions.
+		For more advanced customization, the =optionDataAdapter=, =optionsWidgetClass=, and =optionsWidgetProperties= state properties allow for fine-grained control over the widgets managing the suggestions.
 
 		*DEVELOPERS:* `Vinson Chuong`
 
@@ -51,6 +48,8 @@ Uize.module({
 		'Uize.Widget.Options.Selector'
 	],
 	builder: function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -619,13 +618,13 @@ Uize.module({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties({
+		/*** State Properties ***/
+			_class.stateProperties({
 				_allowKeypress: {
 					name: 'allowKeypress',
 					value: _true
 					/*?
-						Set-get Properties
+						State Properties
 							allowKeypress
 								A boolean, specifying whether suggestions can be selected via keyboard control.
 
@@ -637,7 +636,7 @@ Uize.module({
 					name: 'cssClassHighlight',
 					value: 'suggestionHighlight'
 					/*?
-						Set-get Properties
+						State Properties
 							cssClassHighlight
 								A string, indicating the CSS class used for highlighting (see the =highlightMode= property) specified portions of the suggestions.
 
@@ -650,7 +649,7 @@ Uize.module({
 					conformer: function (_value) { return _highlightModes[_value] ? _value : 'query' },
 					value: 'query'
 					/*?
-						Set-get Properties
+						State Properties
 							highlightMode
 								A string, specifying the portion of each suggestion that is highlighted (wrapped in a span with class =cssClassHighlight=).
 
@@ -664,7 +663,7 @@ Uize.module({
 					conformer: _constrainAtLeast(1),
 					value: 1
 					/*?
-						Set-get Properties
+						State Properties
 							numCharsBeforeSuggest
 								An integer, specifying the minimum number of characters input before suggestions are requested.
 
@@ -680,7 +679,7 @@ Uize.module({
 					conformer: _constrainAtLeast(0),
 					value: 10
 					/*?
-						Set-get Properties
+						State Properties
 							numSuggestions
 								An integer, specifying the maxinum number of suggestions requested and displayed.
 
@@ -702,7 +701,7 @@ Uize.module({
 						}
 					}
 					/*?
-						Set-get Properties
+						State Properties
 							optionDataAdapter
 								A function which maps a suggestion and its formatted form to a form accepted by the ==values== property of the ==optionsWidgetClass==.
 
@@ -712,7 +711,7 @@ Uize.module({
 				},
 				_optionsWidgetClass: 'optionsWidgetClass',
 				/*?
-					Set-get Properties
+					State Properties
 						optionsWidgetClass
 							An object reference to a widget class which is used for the suggestions.
 
@@ -723,17 +722,17 @@ Uize.module({
 				*/
 				_optionsWidgetProperties: 'optionsWidgetProperties',
 				/*?
-					Set-get Properties
+					State Properties
 						optionsWidgetProperties
-							An object, specifying values for set-get properties that is used when creating the options widget.
+							An object, specifying values for state properties that is used when creating the options widget.
 
 							NOTES
-							- see the companion =optionsWidgetClass= set-get property
+							- see the companion =optionsWidgetClass= state property
 							- the initial value is =undefined=
 				*/
 				_queryQuotes: 'queryQuotes',
 				/*?
-					Set-get Properties
+					State Properties
 						queryQuotes
 							A string, object, array of strings, or array of objects, used to enclose substrings in which separators are ignored.
 
@@ -747,7 +746,7 @@ Uize.module({
 				*/
 				_querySeparators: 'querySeparators',
 				/*?
-					Set-get Properties
+					State Properties
 						querySeparators
 							A character (string) or array of characters, used to split and distinguish independent subqueries.
 
@@ -776,7 +775,7 @@ Uize.module({
 						)
 					}
 					/*?
-						Set-get Properties
+						State Properties
 							responseAdapter
 								A function which maps the normalized query and the response from the service used to request suggestions to an array of of objects containing a =prefix= and a =suffix=.
 
@@ -786,7 +785,7 @@ Uize.module({
 				},
 				_serviceUrl: 'serviceUrl',
 				/*?
-				Set-get Properties
+				State Properties
 					serviceUrl
 						A string specifying the URL of the service from which suggestions are requested.
 
@@ -799,7 +798,7 @@ Uize.module({
 					name: 'serviceQueryParamName',
 					value: 'q'
 					/*?
-						Set-get Properties
+						State Properties
 							serviceQueryParamName
 								A string specifying the parameter name used by the service (provided at =serviceUrl=) to denote the query.
 
@@ -811,7 +810,7 @@ Uize.module({
 					name: 'serviceNumSuggestionsParamName',
 					value: 'num'
 					/*?
-						Set-get Properties
+						State Properties
 							serviceNumSuggestionsParamName
 								A string specifying the parameter name used by the service (provided at =serviceUrl=) to denote the number of suggestions to return.
 
@@ -824,7 +823,7 @@ Uize.module({
 					name: 'showOnMouseover',
 					value: _false
 					/*?
-						Set-get Properties
+						State Properties
 							showOnMouseover
 								A boolean specifying whether on mouseover of a suggestion, the suggestion is shown in the input.
 
@@ -838,7 +837,7 @@ Uize.module({
 					conformer: _constrainAtLeast(0),
 					value: 10
 					/*?
-						Set-get Properties
+						State Properties
 							typeSuggestDelay
 								An integer, specifying the amount of time after the user stops typing before suggestions are requested.
 

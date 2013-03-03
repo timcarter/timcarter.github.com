@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.FormElements Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -30,7 +27,7 @@ Uize.module ({
 	name:'Uize.Widget.FormElements',
 	required:'Uize.Widget.FormElement',
 	builder:function (_superclass) {
-		/*** Variables for Scruncher Optimization ***/
+		'use strict';
 
 		/*** Class Constructor ***/
 			var _class = _superclass.subclass ();

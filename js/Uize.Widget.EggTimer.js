@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.EggTimer Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.EggTimer',
 	required:'Uize.Widget.Count',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_superclass = Uize.Widget,
@@ -82,32 +81,34 @@ Uize.module ({
 			_classPrototype.wireUi = function () {
 				var _this = this;
 				if (!_this.isWired) {
-					var _idPrefix = _this.get ('idPrefix');
-					function _newCount (_name, _count, _limit) {
-						var _countWidget = _this.addChild (
-							_name,
-							Uize.Widget.Count,
-							{
-								digits: 2,
-								limit: _limit,
-								numbersImagesPath:_this._numbersImagesPath,
-								numbersFiletype:_this._numbersFiletype
+					var
+						_idPrefix = _this.get ('idPrefix'),
+						_newCount = function (_name, _count, _limit) {
+							var _countWidget = _this.addChild (
+								_name,
+								Uize.Widget.Count,
+								{
+									digits: 2,
+									limit: _limit,
+									numbersImagesPath:_this._numbersImagesPath,
+									numbersFiletype:_this._numbersFiletype
+								}
+							);
+							_countWidget.wireUi();
+							_countWidget.setCount( _count );
+							return _countWidget;
+						},
+						_zero = function () {
+							if( (!_this._showMinutes || (_this._showMinutes && !_this.children.minutes.getCount()))
+								&& (!_this._showHours || (_this._showHours && !_this.children.hours.getCount()))
+								&& (!_this._showDays || (_this._showDays && !_this.children.days.getCount())) ) {
+								_this._running = false;
+								_this.fire('zero');
+								if(_this._redirectUrl != '')
+									document.location.href=_this._redirectUrl;
 							}
-						);
-						_countWidget.wireUi();
-						_countWidget.setCount( _count );
-						return _countWidget;
-					}
-					function _zero () {
-						if( (!_this._showMinutes || (_this._showMinutes && !_this.children.minutes.getCount()))
-							&& (!_this._showHours || (_this._showHours && !_this.children.hours.getCount()))
-							&& (!_this._showDays || (_this._showDays && !_this.children.days.getCount())) ) {
-							_this._running = false;
-							_this.fire('zero');
-							if(_this._redirectUrl != '')
-								document.location.href=_this._redirectUrl;
 						}
-					}
+					;
 					_this._showSeconds &&
 						_newCount ('seconds',_this._startTime.seconds,59)
 							.wire ({
@@ -133,8 +134,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_autoStart:{
 					name:'autoStart',
 					value:false

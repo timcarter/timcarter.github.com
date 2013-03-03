@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Util.PropertyAdapter Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Test
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Test.Uize.Util.PropertyAdapter',
 	required:'Uize.Class',
 	builder:function () {
+		'use strict';
+
 		var _DummyClass = Uize.Class.subclass ();
 
 		function _getRig (_extraAdapterProperties) {
@@ -264,7 +263,7 @@ Uize.module ({
 					]
 				},
 				{
-					title:'Test that the connected set-get property is observed correctly',
+					title:'Test that the connected state property is observed correctly',
 					test:[
 						{
 							title:'Test that connecting a property adapter between two properties of different objects with the adapter not initially connected results in property B *not* being immediately synchronized to property A',
@@ -274,7 +273,7 @@ Uize.module ({
 							}
 						},
 						{
-							title:'Test that disconnecting a property adapter by setting its connected set-get property to false results in properties no longer being synchronized',
+							title:'Test that disconnecting a property adapter by setting its connected state property to false results in properties no longer being synchronized',
 							test:function () {
 								var _rig = _getRig ();
 
@@ -315,7 +314,7 @@ Uize.module ({
 					]
 				},
 				{
-					title:'Test that the conformer for the propertyA and propertyB set-get properties works correctly',
+					title:'Test that the conformer for the propertyA and propertyB state properties works correctly',
 					test:[
 						_propertyAorBConformerTest ('A'),
 						_propertyAorBConformerTest ('B')
@@ -552,7 +551,7 @@ Uize.module ({
 							title:'Test that an infinite loop is prevented when two properties combined in a property adapter are guaranteed to never be able to ever settle their values, because of a divergent value adapter',
 							test:function () {
 								var _DummyClass = Uize.Class.subclass ();
-								_DummyClass.registerProperties ({
+								_DummyClass.stateProperties ({
 									_property1:'property1',
 									_property2:'property2'
 								});
@@ -577,7 +576,7 @@ Uize.module ({
 							title:'Test that an infinite loop is prevented when two properties combined in a property adapter are guaranteed to never be able to ever settle their values, based upon the definition of those properties',
 							test:function () {
 								var _CrazyClass = Uize.Class.subclass ();
-								_CrazyClass.registerProperties ({
+								_CrazyClass.stateProperties ({
 									_property1:{
 										name:'property1',
 										conformer:function (_value) {return _value + 1},

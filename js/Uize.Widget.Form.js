@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.FormWarnings Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -38,6 +35,8 @@ Uize.module ({
 		'Uize.Node.Event'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -355,9 +354,9 @@ Uize.module ({
 
 					/*** Initialize get-set properties to be form attributes if not specified ***/
 						if (_formNode) {
-							function _hasNoValue(_propertyValue) {
+							var _hasNoValue = function (_propertyValue) {
 								return _propertyValue == _null;
-							}
+							};
 
 							if (_hasNoValue(_this._action)) _this._action = _formNode.action;
 							if (_hasNoValue(_this._enctype)) _this._enctype = _formNode.enctype;
@@ -383,8 +382,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_action:{
 					name:'action',
 					onChange:_classPrototype._updateFormAttributes

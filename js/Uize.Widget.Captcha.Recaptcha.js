@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Recaptcha Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 70
 */
 
@@ -36,6 +33,8 @@ Uize.module ({
 	name:'Uize.Widget.Captcha.Recaptcha',
 	required:'Uize.Comm.Script',
 	builder:function (_superclass) {
+		'use strict';
+
 		var
 			_class = _superclass.subclass (
 				null,
@@ -163,17 +162,17 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_loadingUrl:'loadingUrl',
 				/*?
-					Set-get properties
+					State properties
 						loadingUrl
 							A string representing the URL that will load the Recaptcha object and all other necessary JS from reCAPTCHA.
 				*/
 				_validationUrl:'validationUrl',
 				/*?
-					Set-get properties
+					State properties
 						validationUrl
 							A string representing the URL that will contact the reCAPTCHA validation API to determine whether or not the user response was valid.
 
@@ -183,7 +182,7 @@ Uize.module ({
 				*/
 				_key:'key'
 				/*?
-					Set-get properties
+					State properties
 						key
 							A string representing the public API key provided by reCAPTCHA.
 				*/

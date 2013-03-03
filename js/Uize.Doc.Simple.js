@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Doc.Simple Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 6
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -36,6 +33,8 @@ Uize.module({
 		'Uize.Xml'
 	],
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,
@@ -252,17 +251,19 @@ Uize.module({
 				/*** support for sorting of peer sections ***/
 					var _sectionsToSort = _params.sectionsToSort;
 					if (_sectionsToSort) {
-						var _sectionsToSortLookup = Uize.lookup (_sectionsToSort);
-						function _sortPeerSections (_data) {
-							var _children = _data.children;
-							if (_children.length) {
-								/*** sort all the peer sections (if this section should be sorted) ***/
-									_sectionsToSortLookup [_data.value] && Uize.Array.Sort.sortBy (_children,'value.value');
+						var
+							_sectionsToSortLookup = Uize.lookup (_sectionsToSort),
+							_sortPeerSections = function (_data) {
+								var _children = _data.children;
+								if (_children.length) {
+									/*** sort all the peer sections (if this section should be sorted) ***/
+										_sectionsToSortLookup [_data.value] && Uize.Array.Sort.sortBy (_children,'value.value');
 
-								/*** handle sorting within each of the peer sections ***/
-									Uize.forEach (_children,_sortPeerSections,true);
+									/*** handle sorting within each of the peer sections ***/
+										Uize.forEach (_children,_sortPeerSections,true);
+								}
 							}
-						}
+						;
 						_sortPeerSections (_data);
 					}
 
@@ -638,16 +639,16 @@ Uize.module({
 										_orderingStr = _orderingStr.toUpperCase ()
 									;
 								}
-								_listItemPrefix = _listItemPrefix.replace (_orderingStyleRegExp,_orderingStr)
+								_listItemPrefix = _listItemPrefix.replace (_orderingStyleRegExp,_orderingStr) + '&nbsp;';
 							} else {
 								_listItemPrefix = _onlyBulletCharRegExp.test (_listItemPrefix)
 									? _listItemPrefix.replace (_bulletCharRegExp,'<span class="bullet"></span>')
-									: _toSampleCode (_listItemPrefix)
+									: _toSampleCode (_listItemPrefix) + '&nbsp;'
 								;
 							}
 							_addDocLine (
 								'<tr valign="top">' +
-									'<td><span style="white-space:nowrap;">' + _listItemPrefix + '</span></td>' +
+									'<td style="white-space:nowrap;">' + _listItemPrefix + '</td>' +
 									'<td>' +
 										_translateInlineFormatting (_value.replace (_listItemPrefixRegExp,''),_sectionPath) +
 									'</td>' +

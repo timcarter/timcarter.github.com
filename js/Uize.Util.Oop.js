@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Util.Oop Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 7
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 10
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Util.Oop',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function () {},
@@ -50,9 +49,9 @@ Uize.module ({
 					_features = []
 				;
 				if (_class) {
-					function _getFeaturesForContext (_contextName) {
+					var _getFeaturesForContext = function (_contextName) {
 						var
-							_contextIsSetGet = _contextName == 'set-get',
+							_contextIsSetGet = _contextName == 'state',
 							_context = _contextIsSetGet
 								? _class.get ()
 								: _contextName == 'instance' ? _class.prototype : _class,
@@ -80,15 +79,15 @@ Uize.module ({
 									)
 								)
 						;
-					}
+					};
 					_getFeaturesForContext ('instance');
 					_getFeaturesForContext ('static');
-					_package.isUizeClass (_class) && _getFeaturesForContext ('set-get');
+					_package.isUizeClass (_class) && _getFeaturesForContext ('state');
 
 					/*** sort the features by the keys: access, context, type, name ***/
-						function _compareTwo (_valueA,_valueB) {
+						var _compareTwo = function (_valueA,_valueB) {
 							return _valueA < _valueB ? -1 : _valueA > _valueB ? 1 : 0;
-						}
+						};
 						_features.sort (
 							function (_featureA,_featureB) {
 								return (
@@ -218,7 +217,7 @@ Uize.module ({
 				function _returnSetGetProperties () {return _class.get ()}
 				var
 					_isInstanceFeature = _contextName == 'instance',
-					_isSetGetFeature = !_isInstanceFeature && _contextName == 'set-get',
+					_isSetGetFeature = !_isInstanceFeature && _contextName == 'state',
 					_getFeatureContext = _isInstanceFeature
 						? _returnPrototype
 						: _isSetGetFeature ? _returnSetGetProperties : _returnClass,

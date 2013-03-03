@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Uize Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
 
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
-
 /* Module Meta Data
 	type: Test
 	importance: 8
-	codeCompleteness: 70
-	testCompleteness: 100
+	codeCompleteness: 80
 	docCompleteness: 100
 */
 
@@ -34,7 +31,18 @@ Uize.module ({
 		'Uize.Class.Value'
 	],
 	builder:function () {
+		'use strict';
+
 		var
+			_strictModeSupported =
+				(function () {
+					try {
+						eval ('\'use strict\'; with ({}) {}');
+					} catch (_error) {
+						return true;
+					}
+					return false;
+				}) (),
 			_oneLevelDeepTestObjectForCloning = {
 				undefinedValue:undefined,
 				nullValue:null,
@@ -148,7 +156,232 @@ Uize.module ({
 			};
 		}
 
-		return Uize.Test.declare ({
+		function _returnXTest (_functionGenerator) {
+			return {
+				title:'Test that the function always returns the value of its first argument, unmodified',
+				test:[
+					{
+						title:'Test that calling with no parameters returns undefined',
+						test:function () {
+							return this.expect (undefined,_functionGenerator () ());
+						}
+					},
+					{
+						title:'Test that calling with the value undefined returns the value undefined',
+						test:function () {
+							return this.expect (undefined,_functionGenerator () (undefined));
+						}
+					},
+					{
+						title:'Test that calling with the value null returns the value null',
+						test:function () {
+							return this.expect (null,_functionGenerator () (null));
+						}
+					},
+					{
+						title:'Test that calling with a number value returns that same number value',
+						test:function () {
+							return this.expect (42,_functionGenerator () (42));
+						}
+					},
+					{
+						title:'Test that calling with a boolean value returns that same boolean value',
+						test:function () {
+							return this.expect (false,_functionGenerator () (false));
+						}
+					},
+					{
+						title:'Test that calling with a string value returns that same string value',
+						test:function () {
+							return this.expect ('foo',_functionGenerator () ('foo'));
+						}
+					},
+					{
+						title:'Test that calling with a function value returns that same function value',
+						test:function () {
+							function _function () {};
+							return this.expectSameAs (_function,_functionGenerator () (_function));
+						}
+					},
+					{
+						title:'Test that calling with an array value returns that same array, unmodified',
+						test:function () {
+							var _array = ['foo','bar'];
+							return (
+								this.expectSameAs (_array,_functionGenerator () (_array)) &&
+								this.expect (['foo','bar'],_array)
+							);
+						}
+					},
+					{
+						title:'Test that calling with an object value returns that same object, unmodified',
+						test:function () {
+							var _object = {foo:'bar'};
+							return (
+								this.expectSameAs (_object,_functionGenerator () (_object)) &&
+								this.expect ({foo:'bar'},_object)
+							);
+						}
+					},
+					{
+						title:'Test that calling with a regular expression value returns that same regular expression value',
+						test:function () {
+							var _regExp = /^\d+$/;
+							return (
+								this.expectSameAs (_regExp,_functionGenerator () (_regExp)) &&
+								this.expect (/^\d+$/,_regExp)
+							);
+						}
+					}
+				]
+			};
+		}
+
+		function _returnsSpecificValueTest (_methodNameOrFunctionGenerator,_expectedReturnValue) {
+			var _function = typeof _methodNameOrFunctionGenerator == 'function'
+				? _methodNameOrFunctionGenerator ()
+				: Uize [_methodNameOrFunctionGenerator]
+			;
+			function _inputValueTest (_inputValue,_inputValueName) {
+				return {
+					title:'Test that calling with ' + _inputValueName + ' returns the result ' + _expectedReturnValue,
+					test:function () {
+						return this.expect (_expectedReturnValue,_function (_inputValueName));
+					}
+				};
+			}
+			return {
+				title:'Test that the method always returns the value ' + _expectedReturnValue + ', regardless of its input',
+				test:[
+					{
+						title:'Test that calling with no parameters returns ' + _expectedReturnValue,
+						test:function () {return this.expect (_expectedReturnValue,_function ())}
+					},
+					_inputValueTest (undefined,'undefined'),
+					_inputValueTest (null,'null'),
+					_inputValueTest ('foo','a string value'),
+					_inputValueTest (42,'a number value'),
+					_inputValueTest (true,'a boolean value'),
+					_inputValueTest (['foo','bar'],'an array value'),
+					_inputValueTest ({foo:'bar'},'an object value'),
+					_inputValueTest (/\d+/,'a regular expression')
+				]
+			};
+		}
+
+		function _arrayMethodTargetTest (
+			_hostName,
+			_methodName,
+			_sourceArrayContents,
+			_expectedTargetArrayContents,
+			_argumentsTemplate,
+			_sourceArgumentNo,
+			_targetArgumentNo
+		) {
+			if (!_argumentsTemplate) _argumentsTemplate = [];
+			if (_sourceArgumentNo == null) _sourceArgumentNo = 0;
+			if (_targetArgumentNo == null) _targetArgumentNo = 1;
+			var _sourceArray, _target;
+
+			function _callMethodWithTargetArgumentValue (_targetArgumentValue) {
+				var
+					_host = Uize.getModuleByName (_hostName),
+					_arguments = _argumentsTemplate.concat ()
+				;
+				_arguments [_sourceArgumentNo] = _sourceArray = _sourceArrayContents.concat ();
+				_arguments [_targetArgumentNo] = _targetArgumentValue !== undefined ? _targetArgumentValue : _sourceArray;
+				_target = _host [_methodName].apply (_host,_arguments);
+			}
+			return Uize.Test.declare ({
+				title:'Test that the targetARRAYorBOOL parameter is handled correctly for various types of values',
+				test:[
+					{
+						title:'Test that specifying the value false for the optional targetARRAYorBOOL parameter is handled correctly',
+						test:function () {
+							_callMethodWithTargetArgumentValue (false);
+							return (
+								this.expect (true,_sourceArray == _target) &&
+								this.expect (_expectedTargetArrayContents,_target)
+							);
+						}
+					},
+					{
+						title:'Test that specifying the value true for the optional targetARRAYorBOOL parameter is handled correctly',
+						test:function () {
+							_callMethodWithTargetArgumentValue (true);
+							return (
+								this.expect (false,_sourceArray == _target) &&
+								this.expect (_expectedTargetArrayContents,_target)
+							);
+						}
+					},
+					{
+						title:'Test that specifying an empty array for the optional targetARRAYorBOOL parameter is handled correctly',
+						test:function () {
+							_callMethodWithTargetArgumentValue ([]);
+							return (
+								this.expect (false,_sourceArray == _target) &&
+								this.expect (_expectedTargetArrayContents,_target)
+							);
+						}
+					},
+					{
+						title:'Test that specifying an array that is already populated with more elements for the optional targetARRAYorBOOL parameter is handled correctly',
+						test:function () {
+							var _someExtraCrud = ['some','extra','crud'];
+							_callMethodWithTargetArgumentValue (_sourceArrayContents.concat (_someExtraCrud));
+							return (
+								this.expect (false,_sourceArray == _target) &&
+								this.expect (_expectedTargetArrayContents.concat (_someExtraCrud),_target)
+							);
+						}
+					},
+					{
+						title:'Test that specifying an array that is already populated, but with the same number of elements, for the optional targetARRAYorBOOL parameter is handled correctly',
+						test:function () {
+							_callMethodWithTargetArgumentValue (_sourceArrayContents.concat ());
+							return (
+								this.expect (false,_sourceArray == _target) &&
+								this.expect (_expectedTargetArrayContents,_target)
+							);
+						}
+					},
+					{
+						title:'Test that specifying the source array for the optional targetARRAYorBOOL parameter is handled correctly',
+						test:function () {
+							_callMethodWithTargetArgumentValue ();
+							return (
+								this.expect (true,_sourceArray == _target) &&
+								this.expect (_expectedTargetArrayContents,_target)
+							);
+						}
+					},
+					{
+						title:'Test that specifying an empty object for the optional targetARRAYorBOOL parameter is handled correctly',
+						test:function () {
+							_callMethodWithTargetArgumentValue ({});
+							return (
+								this.expect (false,_sourceArray == _target) &&
+								this.expect (Uize.copyInto ({},_expectedTargetArrayContents),_target)
+							);
+						}
+					},
+					{
+						title:'Test that specifying an object that already has some properties for the optional targetARRAYorBOOL parameter is handled correctly',
+						test:function () {
+							var _someExtraCrud = {some:1,extra:1,crud:1};
+							_callMethodWithTargetArgumentValue (Uize.copyInto ({},_someExtraCrud));
+							return (
+								this.expect (false,_sourceArray == _target) &&
+								this.expect (Uize.copyInto ({},_someExtraCrud,_expectedTargetArrayContents),_target)
+							);
+						}
+					}
+				]
+			});
+		}
+
+		var _class = Uize.Test.declare ({
 			title:'Test for Uize Base Module',
 			test:[
 				Uize.Test.staticMethodsTest ([
@@ -710,12 +943,20 @@ Uize.module ({
 						['Test that a String object instance is not regarded as being a plain object',new String (''),false],
 						['Test that a Boolean object instance is not regarded as being a plain object',new Boolean (false),false],
 						['Test that a Number object instance is not regarded as being a plain object',new Number (0),false],
-						['Test that a Uize class instance is not regarded as being a plain object',Uize.Class (),false]
+						['Test that a Uize class instance is not regarded as being a plain object',Uize.Class (),false],
+						{
+							title:'Test that an object that doesn\'t have a hasOwnProperty method is not regarded as being a plain object',
+							test:function () {
+								function _TestObject () {}
+								_TestObject.prototype.hasOwnProperty = null;
+								return this.expect (false,Uize.isPlainObject (new _TestObject));
+							}
+						}
 					]],
 					['Uize.isPrimitive',[
 						['Test that calling with no parameters returns false',[],false],
-						['Test that the value undefined is not regarded as being an object',undefined,false],
-						['Test that the value null is not regarded as being an object',null,false],
+						['Test that the value undefined is not regarded as being a primitive',undefined,false],
+						['Test that the value null is not regarded as being a primitive',null,false],
 						['Test that a string value is regarded as being a primitive','',true],
 						['Test that a boolean value is regarded as being a primitive',false,true],
 						['Test that a number value is regarded as being a primitive',0,true],
@@ -727,6 +968,26 @@ Uize.module ({
 						['Test that a String object instance is not regarded as being a primitive',new String ('foo'),false],
 						['Test that a Boolean object instance is not regarded as being a primitive',new Boolean (true),false],
 						['Test that a Number object instance is not regarded as being a primitive',new Number (42),false]
+					]],
+					['Uize.isRegExp',[
+						['Test that calling with no parameters returns false',[],false],
+						['Test that the value undefined is not regarded as being a regular expression',undefined,false],
+						['Test that the value null is not regarded as being a regular expression',null,false],
+						['Test that a string value is not regarded as being a regular expression','foo',false],
+						['Test that a boolean value is not regarded as being a regular expression',true,false],
+						['Test that a number value is not regarded as being a regular expression',42,false],
+						['Test that a function is not regarded as being a regular expression',Uize.nop,false],
+						['Test that an object is not regarded as being a regular expression',{foo:'bar'},false],
+						['Test that an array is not regarded as being a regular expression',[['foo','bar']],false],
+						['Test that a regular expression instance is regarded as being a regular expression',/\d+/,true],
+						['Test that a regular expression instance created using the RegExp constructor is regarded as being a regular expression',
+							new RegExp ('\\d+'),
+							true
+						],
+						['Test that an empty regular expression instance is regarded as being a regular expression',
+							new RegExp (''),
+							true
+						]
 					]],
 					['Uize.isNaN',[
 						['Test that the value NaN is considered to be NaN',NaN,true],
@@ -771,6 +1032,161 @@ Uize.module ({
 									}
 								}
 								return this.expect (true,_result);
+							}
+						}
+					]],
+					['Uize.returnFalse',[
+						_returnsSpecificValueTest ('returnFalse',false)
+					]],
+					['Uize.returnTrue',[
+						_returnsSpecificValueTest ('returnTrue',true)
+					]],
+					['Uize.returnX',[
+						_returnXTest (function () {return Uize.returnX})
+					]],
+					['Uize.nop',[
+						_returnsSpecificValueTest ('nop',undefined)
+					]],
+					['Uize.resolveTransformer',[
+						{
+							title:'Test that calling with no parameters produces a transformer function that always returns the value of its first argument',
+							test:[
+								_returnXTest (function () {return Uize.resolveTransformer ()})
+							]
+						},
+						{
+							title:'Test that specifying the value undefined produces a transformer function that always returns the value of its first argument',
+							test:[
+								_returnXTest (function () {return Uize.resolveTransformer (undefined)})
+							]
+						},
+						{
+							title:'Test that specifying the value null produces a transformer function that always returns the value of its first argument',
+							test:[
+								_returnXTest (function () {return Uize.resolveTransformer (null)})
+							]
+						},
+						{
+							title:'Test that specifying a function type transformer results in that exact function being returned',
+							test:function () {
+								function _function () {}
+								return this.expectSameAs (_function,Uize.resolveTransformer (_function));
+							}
+						},
+						{
+							title:'Test that specifying a string type transformer results in a function being created using that transformer expression string as the function body and accepting value and key arguments',
+							test:function () {
+								var _resolvedTransformer = Uize.resolveTransformer ('value + "|" + key');
+								return (
+									this.expectType ('function',_resolvedTransformer) &&
+									this.expect ('foo|bar',_resolvedTransformer ('foo','bar'))
+								);
+							}
+						},
+						{
+							title:'Test that specifying a regular expression transformer results in a function being created that uses the regular expression to test the value parameter after it\'s been coerced to a string',
+							test:function () {
+								var _resolvedTransformer = Uize.resolveTransformer (/^42$/);
+								return (
+									this.expectType ('function',_resolvedTransformer) &&
+									this.expect (true,_resolvedTransformer ('42')) &&
+									this.expect (true,_resolvedTransformer (42)) &&
+									this.expect (false,_resolvedTransformer (' 42 '))
+								);
+							}
+						},
+						{
+							title:'Test that specifying an object type transformer results in a function that uses the object transformer as a lookup for remapping the input value, leaving the input value unchanged if it is not found in the lookup',
+							test:function () {
+								var _resolvedTransformer = Uize.resolveTransformer ({
+									foo:'bar',
+									hello:'world'
+								});
+								return (
+									this.expectType ('function',_resolvedTransformer) &&
+									this.expect ('bar',_resolvedTransformer ('foo')) &&
+									this.expect ('world',_resolvedTransformer ('hello')) &&
+									this.expect (42,_resolvedTransformer (42))
+								);
+							}
+						},
+						{
+							title:'Test that specifying a number type transformer results in a function being created that returns that exact number value as its result',
+							test:function () {
+								var _resolvedTransformer = Uize.resolveTransformer (42);
+								return (
+									this.expectType ('function',_resolvedTransformer) &&
+									this.expect (42,_resolvedTransformer ('foo'))
+								);
+							}
+						},
+						{
+							title:'Test that specifying a boolean type transformer results in a function being created that returns that exact boolean value as its result',
+							test:function () {
+								var _resolvedTransformer = Uize.resolveTransformer (false);
+								return (
+									this.expectType ('function',_resolvedTransformer) &&
+									this.expect (false,_resolvedTransformer ('foo'))
+								);
+							}
+						}
+					]],
+					['Uize.resolveMatcher',[
+						{
+							title:'Test that calling with no parameters produces a matcher function that always returns true',
+							test:[
+								_returnsSpecificValueTest (function () {return Uize.resolveMatcher ()},true)
+							]
+						},
+						{
+							title:'Test that specifying the value undefined produces a matcher function that always returns true',
+							test:[
+								_returnsSpecificValueTest (function () {return Uize.resolveMatcher (undefined)},true)
+							]
+						},
+						{
+							title:'Test that specifying the value null produces a matcher function that always returns true',
+							test:[
+								_returnsSpecificValueTest (function () {return Uize.resolveMatcher (null)},true)
+							]
+						},
+						{
+							title:'Test that specifying a function type matcher results in that exact function being returned',
+							test:function () {
+								function _function () {}
+								return this.expectSameAs (_function,Uize.resolveMatcher (_function));
+							}
+						},
+						{
+							title:'Test that specifying a string type matcher results in a function being created using that matcher expression string as the function body and accepting value and key arguments',
+							test:function () {
+								var _resolvedMatcher = Uize.resolveMatcher ('value + "|" + key');
+								return (
+									this.expectType ('function',_resolvedMatcher) &&
+									this.expect ('foo|bar',_resolvedMatcher ('foo','bar'))
+								);
+							}
+						},
+						{
+							title:'Test that specifying a regular expression matcher results in a function being created that uses the regular expression to test the value parameter after it\'s been coerced to a string',
+							test:function () {
+								var _resolvedMatcher = Uize.resolveMatcher (/^42$/);
+								return (
+									this.expectType ('function',_resolvedMatcher) &&
+									this.expect (true,_resolvedMatcher ('42')) &&
+									this.expect (true,_resolvedMatcher (42)) &&
+									this.expect (false,_resolvedMatcher (' 42 '))
+								);
+							}
+						},
+						{
+							title:'Test that specifying a boolean type matcher results in a function being created that returns that exact boolean value as its result',
+							test:function () {
+								var _resolvedMatcher = Uize.resolveMatcher (false);
+								return (
+									this.expectType ('function',_resolvedMatcher) &&
+									this.expect (false,_resolvedMatcher ('foo'))
+								);
 							}
 						}
 					]],
@@ -1606,7 +2022,7 @@ Uize.module ({
 						['Test that null is considered empty',[null],true],
 						['Test that undefined is considered empty',[undefined],true],
 						['Test that NaN is considered empty',[NaN],true],
-						['Test that class instance with empty value set-get property is considered empty',
+						['Test that class instance with empty value state property is considered empty',
 							[Uize.Class.Value ({value:0})],
 							true
 						],
@@ -1626,7 +2042,7 @@ Uize.module ({
 						['Test that Boolean object initialized to true is not considered empty',[new Boolean (true)],false],
 						//['Test that a regular expression is not considered empty',[/^.+$/],false],
 						['Test that a function (even an empty one) is not considered empty',function () {},false],
-						['Test that class instance with non-empty value set-get property is not considered empty',
+						['Test that class instance with non-empty value state property is not considered empty',
 							[Uize.Class.Value ({value:1})],
 							false
 						]
@@ -1824,11 +2240,135 @@ Uize.module ({
 							}
 						}
 					]],
-					['Uize.getPathToLibrary',[
-						/* TODO: implement tests */
+					{
+						title:'Test that the deprecated Uize.globalEval method is still supported and is simply a reference to the Uize.laxEval method',
+						test:function () {
+							return this.expectSameAs (Uize.globalEval,Uize.laxEval);
+						}
+					},
+					['Uize.global',[
+						{
+							title:'Test that the method returns a reference to the global object',
+							test:function () {
+								return this.expectSameAs (
+									Function ('return (function () {return this}) ()') (),
+									Uize.global ()
+								);
+							}
+						}
 					]],
-					['Uize.globalEval',[
-						/* TODO: implement tests */
+					['Uize.eval',[
+						['Test that the specified code is evaluated and that the result of the evaluated code is returned',
+							'2 + 3',
+							5
+						],
+						{
+							title:'Test that the specified code is evaluated in a quarantined fashion, having access only to the global scope',
+							test:function () {
+								var
+									_Uize_eval = Uize.eval,
+									_evalResult
+								;
+								(function () {
+									/* NOTE:
+										Because of variable hoisting, we need to do our trick with a local Uize variable inside a nested immediately invoked anonymous function.
+									*/
+									var Uize = {};
+									_evalResult = _Uize_eval ('Uize.eval');
+								}) ();
+								return this.expectSameAs (_Uize_eval,_evalResult);
+							}
+						},
+						{
+							title:'Test that the specified code is evaluated using JavaScript strict mode',
+							test:function () {
+								var _errorThrown = false;
+								try {
+									Uize.eval ('with ({}) {}');
+								} catch (_error) {
+									_errorThrown = true;
+								}
+								return this.expect (_strictModeSupported,_errorThrown);
+							}
+						}
+					]],
+					['Uize.laxEval',[
+						['Test that the specified code is evaluated and that the result of the evaluated code is returned',
+							'2 + 3',
+							5
+						],
+						{
+							title:'Test that the specified code is evaluated in a quarantined fashion, having access only to the global scope',
+							test:function () {
+								var
+									_Uize_laxEval = Uize.laxEval,
+									_laxEvalResult
+								;
+								(function () {
+									/* NOTE:
+										Because of variable hoisting, we need to do our trick with a local Uize variable inside a nested immediately invoked anonymous function.
+									*/
+									var Uize = {};
+									_laxEvalResult = _Uize_laxEval ('Uize.laxEval');
+								}) ();
+								return this.expectSameAs (_Uize_laxEval,_laxEvalResult);
+							}
+						},
+						{
+							title:'Test that the specified code is evaluated using non-strict mode',
+							test:function () {
+								var _errorThrown = false;
+								try {
+									Uize.laxEval ('with ({}) {}');
+								} catch (_error) {
+									_errorThrown = true;
+								}
+								return this.expect (false,_errorThrown);
+							}
+						}
+					]],
+					['Uize.quarantine',[
+						{
+							title:'Test that the method returns a function that is not just a reference to the source function',
+							test:function () {
+								var
+									_functionToQuarantine = function () {},
+									_quarantinedFunction = Uize.quarantine (_functionToQuarantine)
+								;
+								return (
+									this.expectFunction (_quarantinedFunction) &&
+									this.expect (false,_quarantinedFunction === _functionToQuarantine)
+								);
+							}
+						},
+						{
+							title:'Test that the quarantined function is equivalent to the source function in its behavior',
+							test:function () {
+								var
+									_functionToQuarantine = function (a,b) {return Math.pow (a,b)},
+									_quarantinedFunction = Uize.quarantine (_functionToQuarantine)
+								;
+								return this.expect (8,_quarantinedFunction (2,3));
+							}
+						},
+						{
+							title:'Test that the quarantined function is truly quarantined from the scope of the source function',
+							test:function () {
+								var
+									_quarantinedFunction = Uize.quarantine (function () {return Uize.quarantine}),
+									_Uize_quarantine = Uize.quarantine,
+									_quarantinedFunctionResult
+								;
+								(function () {
+									/* NOTE:
+										Because of variable hoisting, we need to do our trick with a local Uize variable inside a nested immediately invoked anonymous function.
+									*/
+									var Uize = {};
+									_quarantinedFunctionResult = _quarantinedFunction ();
+								}) ();
+								return this.expectSameAs (_Uize_quarantine,_quarantinedFunctionResult);
+							}
+						}
 					]],
 					['Uize.getClass',[
 						/*** test when value can't be resolved to a class ***/
@@ -2064,16 +2604,16 @@ Uize.module ({
 							['Test that an empty object maps to an empty array, when an empty array target is specified',
 								[{},'value',[]],
 								[]
-							]/*,
+							],
 							_arrayMethodTargetTest (
 								'Uize',
 								'map',
 								[1,2,3,4,5],
 								[2,4,6,8,10],
-								['value * 2',null,null],
-								1,
+								[null,'value * 2',null],
+								0,
 								2
-							)*/
+							)
 					]],
 					['Uize.forEach',[
 						/*** test support for the source being an array ***/
@@ -2955,6 +3495,18 @@ Uize.module ({
 					]],
 					['Uize.module',[
 						/* TODO: implement tests */
+					]],
+					['Uize.getModuleByName',[
+						/* TODO: implement tests */
+					]],
+					['Uize.moduleLoader',[
+						/* TODO: implement tests */
+					]],
+					['Uize.moduleUrlResolver',[
+						/* TODO: implement tests */
+					]],
+					['Uize.getPathToLibrary',[
+						/* TODO: implement tests */
 					]]
 				]),
 				{
@@ -3046,6 +3598,11 @@ Uize.module ({
 				}
 			]
 		});
+
+		/*** Public Static Methods ***/
+			_class.arrayMethodTargetTest = _arrayMethodTargetTest;
+
+		return _class;
 	}
 });
 

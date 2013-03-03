@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Doc.Sucker Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 5
 	codeCompleteness: 85
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -29,7 +26,7 @@
 Uize.module({
 	name:'Uize.Doc.Sucker',
 	required:[
-		'Uize.Scruncher',
+		'Uize.Build.Scruncher',
 		'Uize.String',
 		'Uize.String.Lines',
 		'Uize.Data.Simple',
@@ -37,6 +34,8 @@ Uize.module({
 		'Uize.Util.Oop'
 	],
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var _package = function () {};
 
@@ -53,7 +52,7 @@ Uize.module({
 					var
 						_commentNo = -1,
 						_comment,
-						_comments = Uize.Scruncher.scrunch (_javascriptSource).comments,
+						_comments = Uize.Build.Scruncher.scrunch (_javascriptSource).comments,
 						_commentsLength = _comments.length
 					;
 					++_commentNo < _commentsLength;
@@ -75,10 +74,11 @@ Uize.module({
 							_featuresPerSection = {
 								'Instance Methods':[],
 								'Instance Properties':[],
-								'Set-get Properties':[],
+								'State Properties':[],
 								'Static Methods':[],
 								'Static Properties':[]
 							},
+							_featuresSectionTitle,
 							_nonInheritableStatics = _module.nonInheritableStatics
 						;
 						for (
@@ -188,7 +188,7 @@ Uize.module({
 									) +
 									'\n' +
 									'\t\tSEARCH FOR EXAMPLES\n' +
-									'\t\tUse the link below to search for example pages on the *uize.com* Web site that reference the =' + _moduleName + '= module...\n' +
+									'\t\tUse the link below to search for example pages on the UIZE Web site that reference the =' + _moduleName + '= module...\n' +
 									'\t\t[[http://www.google.com/search?hl=en&safe=off&domains=uize.com%2Fexamples&sitesearch=uize.com%2Fexamples&q=%22' + _moduleName + '%22][SEARCH]]\n' +
 							'\n'
 						);
@@ -240,7 +240,7 @@ Uize.module({
 						);
 
 						/*** list out features according to where they are introduced and overridden ***/
-							function _addFilteredFeatures (
+							var _addFilteredFeatures = function (
 								_relationshipToModule,_sectionTitle,_introduction,_introductionIfNoFeatures
 							) {
 								var
@@ -284,7 +284,8 @@ Uize.module({
 									'\n',
 									_filteredFeaturesChunks.join ('')
 								);
-							}
+							};
+
 							/*** list out features introduced in this module ***/
 								_addFilteredFeatures (
 									'introduced',
@@ -366,6 +367,24 @@ Uize.module({
 				/* PARAMETERS:
 					module
 						A reference to a module, for which the JavaScript source is providing documentation.
+
+					modulesTree
+						An object, defining the hierarchical modules tree.
+
+					examples
+						An array, listing examples that showcase the module.
+
+						Each element of the =examples= array is an object of the form...
+
+						..............................
+						{
+							path:filePathSTR,
+							title:titleSTR,
+							keywords:keywordsSTR,
+							description:descriptionSTR,
+							imageSrc:imageSrcSTR
+						}
+						..............................
 				*/
 				function _extractParam (_paramName) {
 					var _paramValue;
@@ -393,7 +412,7 @@ Uize.module({
 									/*** properties ***/
 										'Instance Properties',
 										'Static Properties',
-										'Set-get Properties',
+										'State Properties',
 									/*** events ***/
 										'Instance Events',
 										'Static Events',

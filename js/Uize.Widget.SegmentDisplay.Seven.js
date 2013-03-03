@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.SegmentDisplay.Seven Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 1
 */
 
@@ -50,6 +47,8 @@
 Uize.module ({
 	name:'Uize.Widget.SegmentDisplay.Seven',
 	builder:function (_superclass) {
+		'use strict';
+
 		var _class = _superclass.subclass ();
 
 		/*** Set Values for Public Static Properties ***/

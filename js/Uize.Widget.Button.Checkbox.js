@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Button.Checkbox Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 70
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Widget.Button.Checkbox',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
@@ -41,7 +40,7 @@ Uize.module ({
 				)
 			;
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({clickToDeselect:true});
 
 		return _class;

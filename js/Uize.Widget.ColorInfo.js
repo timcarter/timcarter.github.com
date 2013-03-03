@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.ColorInfo Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 30
 */
 
@@ -38,6 +35,8 @@ Uize.module ({
 		'Uize.Templates.ColorInfo'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (),
@@ -55,16 +54,16 @@ Uize.module ({
 					/*?
 						Implied Nodes
 							value Implied Node
-								document...
+								.
 
 							swatch
-								document...
+								.
 
 							asBackground
-								document...
+								.
 
 							asForeground
-								document...
+								.
 					*/
 				}
 			};
@@ -74,14 +73,14 @@ Uize.module ({
 				this._updateUiValue ();
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_value:{
 					name:'value',
 					onChange:_classPrototype._updateUiValue,
 					value:'#000000'
 					/*?
-						Set-get Properties
+						State Properties
 							value
 								A value of any type and format supported by the =Uize.Color= module, specifying the current color for which the widget should display information.
 
@@ -93,20 +92,20 @@ Uize.module ({
 				}
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				built:false,
 				/*?
-					Set-get Properties
+					State Properties
 						built
-							This set-get property is inherited from the =Uize.Widget= base class, but its initial value is overrided to =false= in this class.
+							This state property is inherited from the =Uize.Widget= base class, but its initial value is overrided to =false= in this class.
 
 				*/
 				html:Uize.Templates.ColorInfo
 				/*?
-					Set-get Properties
+					State Properties
 						built
-							This set-get property is inherited from the =Uize.Widget= base class, but its initial value is overrided to =Uize.Templates.ColorInfo= in this class.
+							This state property is inherited from the =Uize.Widget= base class, but its initial value is overrided to =Uize.Templates.ColorInfo= in this class.
 
 				*/
 			});

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Captcha Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 2
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 50
 */
 
@@ -35,6 +32,8 @@
 Uize.module ({
 	name:'Uize.Widget.Captcha',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Constructor ***/
 			var
 				_class = _superclass.subclass (),
@@ -90,24 +89,24 @@ Uize.module ({
 				}
 			};
 
-		/*** Properties ***/
-		_class.registerProperties ({
-			_isValid:{
-				name:'isValid',
-				value:false
+		/*** State Properties ***/
+			_class.stateProperties ({
+				_isValid:{
+					name:'isValid',
+					value:false
+					/*?
+						State properties
+							isValid
+								A boolean indicating whether or not the user has correctly solved the captcha challenge. Initially set to false as solving a captcha requires input from the user.
+					*/
+				},
+				_value:'value'
 				/*?
-					Set-get properties
-						isValid
-							A boolean indicating whether or not the user has correctly solved the captcha challenge. Initially set to false as solving a captcha requires input from the user.
+					State properties
+						value
+							An object representing the user response to the captcha's challenge. While generally a string (see reCaptcha's implementation), it can also represent other values, such as an option in a dropdown (ESP-PIX, http://server251.theory.cs.cmu.edu/cgi-bin/esp-pix/esp-pix).
 				*/
-			},
-			_value:'value'
-			/*?
-				Set-get properties
-					value
-						An object representing the user response to the captcha's challenge. While generally a string (see reCaptcha's implementation), it can also represent other values, such as an option in a dropdown (ESP-PIX, http://server251.theory.cs.cmu.edu/cgi-bin/esp-pix/esp-pix).
-			*/
-		});
+			});
 
 		return _class;
 	}

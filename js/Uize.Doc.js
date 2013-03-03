@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Doc Namespace
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-Uize.module ({name:'Uize.Doc'});
 
 /* Module Meta Data
 	type: Namespace
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -25,4 +22,6 @@ Uize.module ({name:'Uize.Doc'});
 
 		*DEVELOPERS:* `Chris van Rensburg`
 */
+
+Uize.module ({name:'Uize.Doc'});
 

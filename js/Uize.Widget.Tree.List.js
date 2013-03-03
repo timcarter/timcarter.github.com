@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Tree.List Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2003-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2003-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 6
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -34,6 +31,8 @@ Uize.module ({
 		'Uize.Xml'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,
@@ -156,8 +155,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_alwaysLinkHeadings:{
 					name:'alwaysLinkHeadings',
 					value:_false
@@ -186,7 +185,7 @@ Uize.module ({
 				_tooltipTemplate:'tooltipTemplate'
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				html:{
 					process:function (input) {

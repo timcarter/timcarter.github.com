@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Dialog.Picker.Palette
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=e" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 4
 	codeCompleteness: 50
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -30,18 +27,20 @@ Uize.module ({
 	name:'Uize.Widget.Dialog.Picker.Palette',
 	required:'Uize.Util.Coupler',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var _class = _superclass.subclass (
 				null,
 				function() {
 					var _this = this;
-					
+
 					// Sync tentativeValue & tentativeValueDetails back and forth with value widget
 					Uize.Util.Coupler({
 						instances:[_this, _this.children.value],
 						properties:['tentativeValue', 'tentativeValueDetails']
 					});
-					
+
 					_this.wire(
 						'After Show',
 						function() {
@@ -62,14 +61,14 @@ Uize.module ({
 				}
 			);
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_minWidth:'minWidth',
 				_tentativeValue:{
 					name:'tentativeValue',
 					onChange:function() {
 						var _this = this;
-						
+
 						// Changed.tentativeValue could be fired prior to Changed.tentativeValueDetails, so break flow so that the tentativeValueDetails can be synced before the 'Submission Complete' event is fired
 						setTimeout(
 							function() {
@@ -89,7 +88,7 @@ Uize.module ({
 				_tentativeValueDetails:'tentativeValueDetails'
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				dismissOnShieldClick:true
 			});

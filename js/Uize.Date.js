@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Date Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 5
 	codeCompleteness: 90
-	testCompleteness: 100
 	docCompleteness: 95
 */
 
@@ -58,6 +55,8 @@
 Uize.module ({
 	name:'Uize.Date',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function (_year,_month,_dayNo,_hours,_minutes,_seconds,_milliseconds) {
@@ -133,7 +132,7 @@ Uize.module ({
 							............................................................
 
 							NOTES
-							- any parameter of this method can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property)
+							- any parameter of this method can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= state property)
 				*/
 			};
 
@@ -583,7 +582,7 @@ Uize.module ({
 
 							Using Date Ranges
 								Using Date Ranges With Classes Supporting the Value Range Interface
-									Because the value returned by the =Uize.Date.getRangeAround= method is an object containing =minValue= and =maxValue= properties, this object can be used to set the set-get properties for an instance of any class that implements the `Value Range Interface`.
+									Because the value returned by the =Uize.Date.getRangeAround= method is an object containing =minValue= and =maxValue= properties, this object can be used to set the state properties for an instance of any class that implements the `value range interface`.
 
 									An example of this is the =Uize.Widget.Picker.Date= class, which lets the user select a date inside a popup date dialog.
 
@@ -599,7 +598,7 @@ Uize.module ({
 									);
 									................................................
 
-									In the above example, the date picker widget that is being added as a child of the page widget would let the user select a date in the current week. The result from the call to the =Uize.Date.getRangeAround= method is being supplied as the set-get property values for the =Uize.Widget.Picker.Date= instance. This works because the =Uize.Widget.Picker.Date= class implements =minValue= and =maxValue= set-get properties for constraining the range in which the user can select a date.
+									In the above example, the date picker widget that is being added as a child of the page widget would let the user select a date in the current week. The result from the call to the =Uize.Date.getRangeAround= method is being supplied as the state property values for the =Uize.Widget.Picker.Date= instance. This works because the =Uize.Widget.Picker.Date= class implements =minValue= and =maxValue= state properties for constraining the range in which the user can select a date.
 
 								Using Date Ranges With Other Uize.Date Methods
 									Other methods of the =Uize.Date= module can accept date range objects as values for certain parameters.
@@ -686,7 +685,7 @@ Uize.module ({
 
 							NOTES
 							- see the related =Uize.Date.getRangeAround= static method
-							- this method supports `Boundless Date Ranges`
+							- this method supports `boundless date ranges`
 							- when the value =''= (empty string), =null=, or =undefined= is specified for the =dateSTRorNUMorOBJ= parameter, then this parameter will be defaulted to the date at the time that the method is called (today's date, essentially)
 				*/
 			};
@@ -802,7 +801,7 @@ Uize.module ({
 				/*?
 					Static Properties
 						Uize.Date.dayNoSuffixes
-							document...
+							.
 				*/
 
 			_package.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Date.Formatter Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Test
 	importance: 2
 	codeCompleteness: 90
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -33,6 +30,8 @@ Uize.module ({
 		'Uize.Class.Value'
 	],
 	builder:function () {
+		'use strict';
+
 		function _newDate (_year,_month,_dayNo,_hours,_minutes,_seconds,_milliseconds) {
 			var _date = new Date (
 				+_year + (_year < 100 && 400),

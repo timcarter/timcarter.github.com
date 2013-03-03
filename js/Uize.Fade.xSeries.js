@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Fade.xSeries Class Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=b_b" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Extension
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -59,6 +56,8 @@
 Uize.module ({
 	name:'Uize.Fade.xSeries',
 	builder:function (_class) {
+		'use strict';
+
 		/*** Public Instance Methods ***/
 			_class.prototype.getSeries = function (_valuesLength) {
 				var
@@ -67,7 +66,7 @@ Uize.module ({
 					_valuesLengthMinus1 = Math.max (_valuesLength - 1,1)
 				;
 				for (var _valueNo = -1; ++_valueNo < _valuesLength;) {
-					_this.set ({_progress:_valueNo / _valuesLengthMinus1});
+					_this.set ({progress:_valueNo / _valuesLengthMinus1});
 					_values.push (Uize.clone (_this.valueOf ()));
 				}
 				return _values;
@@ -81,12 +80,12 @@ Uize.module ({
 							valueSeriesARRAY = myInstance.getSeries (seriesLengthINT);
 							..........................................................
 
-							The value series is generated using the current values for the fade instance's set-get properties. This method could be useful when using fades in non-time based applications, such as displaying values in a bar chart, fading colors over a series of elements, plotting positions for a series of elements, populating data sets, etc.
+							The value series is generated using the current values for the fade instance's state properties. This method could be useful when using fades in non-time based applications, such as displaying values in a bar chart, fading colors over a series of elements, plotting positions for a series of elements, populating data sets, etc.
 
 							NOTES
 							- if the value =0= is specified for the =seriesLengthINT= parameter, then this method will return an empty array
-							- if the value =1= is specified for the =seriesLengthINT= parameter, then this method will return an array containing one element whose value is the value of the fade's =startValue= set-get property
-							- if the value =2= is specified for the =seriesLengthINT= parameter, then this method will return an array containing two elements, where the value of the first element is the value of the fade's =startValue= set-get property, and the value of the second element is the value of the fade's =endValue= set-get property
+							- if the value =1= is specified for the =seriesLengthINT= parameter, then this method will return an array containing one element whose value is the value of the fade's =startValue= state property
+							- if the value =2= is specified for the =seriesLengthINT= parameter, then this method will return an array containing two elements, where the value of the first element is the value of the fade's =startValue= state property, and the value of the second element is the value of the fade's =endValue= state property
 							- compare to the =Uize.Fade.getSeries= static method
 				*/
 			};

@@ -4,24 +4,21 @@
 |    /    O /   |    MODULE : Uize.Widget.Bar.Slider.xSkin Class Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Extension
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 15
 */
 
 /*?
 	Introduction
-		The =Uize.Widget.Bar.Slider.xSkin= extension sets an initial value for the =html= set-get property so as to provide slider instances with a default skin.
+		The =Uize.Widget.Bar.Slider.xSkin= extension sets an initial value for the =html= state property so as to provide slider instances with a default skin.
 
 		*DEVELOPERS:* `Chris van Rensburg`
 
@@ -35,6 +32,8 @@ Uize.module ({
 		'Uize.Node.Util'
 	],
 	builder:function (_class) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var _undefined;
 

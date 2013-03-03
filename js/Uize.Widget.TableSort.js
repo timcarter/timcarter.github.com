@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.TableSort Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c,Uize_TableSort" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.TableSort',
 	required:'Uize.Node',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,
@@ -108,7 +107,7 @@ Uize.module ({
 			_classPrototype._updateRowUi = function (_row) {
 				var _this = this;
 				if (_this.isWired && _row)
-					_row.className = (_row == _this._rowOver ? _this._rowOverClass : _row.Uize_TableSort_oldClassName) || ''
+					_row.className = (_row == _this._rowOver ? _this._rowOverClass : _row.Uize_Widget_TableSort_oldClassName) || ''
 				;
 			};
 
@@ -180,18 +179,18 @@ Uize.module ({
 						}
 
 					/*** sort the sort map ***/
-						function _compareGeneral (_valueA,_valueB) {
-							return _valueA == _valueB ? 0 : (_valueA < _valueB ? -1 : 1);
-						}
 						var
+							_compareGeneral = function (_valueA,_valueB) {
+								return _valueA == _valueB ? 0 : (_valueA < _valueB ? -1 : 1);
+							},
 							_compareNumbers = _compareGeneral, // for now, at least
 							_columnIsDateOrNumber = _columnIsDate || _columnIsNumber,
 							_comparisonFunction = _columnIsDateOrNumber ? _compareNumbers : _compareGeneral,
-							_incorrectComparisonFunctionResult = _this._ascendingOrder ? 1 : -1
+							_incorrectComparisonFunctionResult = _this._ascendingOrder ? 1 : -1,
+							_skipRow = function (_sortMapIndex) {
+								return _columnValues [_columnSortMap [_sortMapIndex]] === _undefined;
+							}
 						;
-						function _skipRow (_sortMapIndex) {
-							return _columnValues [_columnSortMap [_sortMapIndex]] === _undefined;
-						}
 						/*** for number and date columns, convert text values to numbers for more efficient sort ***/
 							if (_columnIsDateOrNumber) {
 								for (var _rowNo = -1; ++_rowNo < _rowsLength;) {
@@ -281,17 +280,19 @@ Uize.module ({
 							for (var _rowNo = -1; ++_rowNo < _tableBodyRowsLength;)
 								_maxColumns = Math.max (_maxColumns,_getRowCells (_tableBodyRows [_rowNo]).length)
 							;
-							function _tryFindHeadings (_rows) {
-								for (var _rowNo = -1, _rowsLength = _rows.length; ++_rowNo < _rowsLength;) {
-									var _rowCells = _getRowCells (_rows [_rowNo]);
-									if (_rowCells.length == _maxColumns) {
-										_this._headings = _rowCells;
-										_this._headingsRowNo = _rowNo;
-										break;
+							var
+								_tryFindHeadings = function (_rows) {
+									for (var _rowNo = -1, _rowsLength = _rows.length; ++_rowNo < _rowsLength;) {
+										var _rowCells = _getRowCells (_rows [_rowNo]);
+										if (_rowCells.length == _maxColumns) {
+											_this._headings = _rowCells;
+											_this._headingsRowNo = _rowNo;
+											break;
+										}
 									}
-								}
-							}
-							var _tableHeads = _table.getElementsByTagName ('thead');
+								},
+								_tableHeads = _table.getElementsByTagName ('thead')
+							;
 							if (_tableHeads.length > 0) {
 								var _tableHeadRows = _getChildNodesByTagName (_tableHeads [0],'TR');
 								if (!_tableHeadRows.length) _tableHeadRows = [_tableHeads [0]];
@@ -317,22 +318,25 @@ Uize.module ({
 							);
 
 						/*** wire up rows with highlight behavior and title attributes for columns ***/
-							var _headingsText = Uize.map (
-								_this._headings,
-								function (_heading) {return _Uize_Node.getText (_heading)}
-							);
-							function _wireRow (_row) {
-								_row.Uize_TableSort_oldClassName = _row.className;
-								_this.wireNode (
-									_row,
-									{
-										mouseover:function () {_this._rowMouseover (_row)},
-										mouseout:function () {_this._rowMouseout ()}
-									}
-								);
-							}
 							for (
-								var _rowNo = -1, _tableBodyRowsLength = _tableBodyRows.length;
+								var
+									_rowNo = -1,
+									_tableBodyRowsLength = _tableBodyRows.length,
+									_headingsText = Uize.map (
+										_this._headings,
+										function (_heading) {return _Uize_Node.getText (_heading)}
+									),
+									_wireRow = function (_row) {
+										_row.Uize_Widget_TableSort_oldClassName = _row.className;
+										_this.wireNode (
+											_row,
+											{
+												mouseover:function () {_this._rowMouseover (_row)},
+												mouseout:function () {_this._rowMouseout ()}
+											}
+										);
+									}
+								;
 								++_rowNo < _tableBodyRowsLength;
 							) {
 								/* NOTE: conditionalized to skip over the headings row (if in table body) and any rows with too few cells */
@@ -359,9 +363,9 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
+		/*** State Properties ***/
 			var _updateUi = 'updateUi';
-			_class.registerProperties ({
+			_class.stateProperties ({
 				_cellTooltips:{
 					name:'cellTooltips',
 					value:_true

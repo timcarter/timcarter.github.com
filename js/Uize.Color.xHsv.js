@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Color.xHsv Object Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Extension
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -34,6 +31,8 @@
 Uize.module ({
 	name:'Uize.Color.xHsv',
 	builder:function (_Uize_Color) {
+		'use strict';
+
 		/*** Color Profile ***/
 			_Uize_Color.colorSpaces.HSV = {
 				fromHsl:function (_tuple) {
@@ -97,7 +96,7 @@ Uize.module ({
 										...............................
 
 									Decoding
-										When a color is decoded from =HSV array=, the values of the array's three elements may be numbers, strings, or any object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property).
+										When a color is decoded from =HSV array=, the values of the array's three elements may be numbers, strings, or any object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= state property).
 
 										The values will be coerced to number type by invoking the =valueOf Intrinsic Method=.
 
@@ -144,7 +143,7 @@ Uize.module ({
 										....................................................
 
 									Decoding
-										When a color is decoded from =HSV object=, the values of the object's =hue=, =saturation=, and =value= properties may be numbers, strings, or any object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property).
+										When a color is decoded from =HSV object=, the values of the object's =hue=, =saturation=, and =value= properties may be numbers, strings, or any object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= state property).
 
 										The values will be coerced to number type by invoking the =valueOf Intrinsic Method=.
 

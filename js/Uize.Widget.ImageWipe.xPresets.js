@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.ImageWipe.xPresets Class Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -28,7 +25,7 @@
 		Using the Presets
 			The =Uize.Widget.ImageWipe.xPresets= module exposes its wipe effect presets through the =Uize.Widget.ImageWipe.presets= static property.
 
-			Each property of the =Uize.Widget.ImageWipe.presets= object is a wipe effect preset, where the name of the property is the effect preset name, and where the value is an object containing values for various set-get properties of the =Uize.Widget.ImageWipe= class.
+			Each property of the =Uize.Widget.ImageWipe.presets= object is a wipe effect preset, where the name of the property is the effect preset name, and where the value is an object containing values for various state properties of the =Uize.Widget.ImageWipe= class.
 
 			Consider the value of the =Uize.Widget.ImageWipe.presets.facetedFade= preset...
 
@@ -51,7 +48,7 @@
 			}
 			.......................................................................
 
-			To use this preset, simply use it to set the set-get properties of the =Uize.Widget.ImageWipe= instance using the =set= instance method, as follows...
+			To use this preset, simply use it to set the state properties of the =Uize.Widget.ImageWipe= instance using the =set= instance method, as follows...
 
 			............................................................
 			myImageWipe.set (Uize.Widget.ImageWipe.presets.facetedFade);
@@ -61,6 +58,8 @@
 Uize.module ({
 	name:'Uize.Widget.ImageWipe.xPresets',
 	builder:function (_class) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,

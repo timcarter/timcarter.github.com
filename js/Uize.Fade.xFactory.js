@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Fade.xFactory Class Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=b_a" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Extension
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -35,13 +32,16 @@
 Uize.module ({
 	name:'Uize.Fade.xFactory',
 	builder:function (_class) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
 				_false = false,
 				_undefined,
 				_Uize_totalKeys = Uize.totalKeys,
-				_Uize_isObject = Uize.isObject
+				_Uize_isObject = Uize.isObject,
+				_pTarget = 'Uize.Fade.xFactory.target'
 			;
 
 		/*** General Variables ***/
@@ -79,7 +79,7 @@ Uize.module ({
 
 				/*** for properties fades, default startValue and endValue, if null ***/
 					if (_fadeIsPropertiesFade) {
-						function _defaultFadePropertiesValue (_propertiesValue,_defaultIfNull) {
+						var _defaultFadePropertiesValue = function (_propertiesValue,_defaultIfNull) {
 							if (_propertiesValue) {
 								for (var _propertyName in _propertiesValue) {
 									if (_propertiesValue [_propertyName] == _undefined)
@@ -90,7 +90,7 @@ Uize.module ({
 								_propertiesValue = _targetContext.get (_startValue || _endValue);
 							}
 							return _propertiesValue;
-						}
+						};
 						_startValue = _defaultFadePropertiesValue (_startValue);
 						_endValue = _defaultFadePropertiesValue (_endValue);
 					}
@@ -102,7 +102,7 @@ Uize.module ({
 						++_fadeNo < _fadePoolLength;
 					) {
 						var
-							_matchingFadeTarget = (_matchingFade = _fadePool [_fadeNo])._target,
+							_matchingFadeTarget = (_matchingFade = _fadePool [_fadeNo]) [_pTarget],
 							_matchingFadeTargetContext = _matchingFadeTarget.context,
 							_matchingFadeTargetHandler = _matchingFadeTarget.handler,
 							_isMatch =
@@ -137,7 +137,7 @@ Uize.module ({
 									}
 								}
 							} else {
-								function _doSignaturesMatch (_startValue,_endValue,_newFadeStartValue,_newFadeEndValue) {
+								var _doSignaturesMatch = function (_startValue,_endValue,_newFadeStartValue,_newFadeEndValue) {
 									/* NOTE: this code is loosely based on Uize.Data.identical */
 									var _signaturesMatch;
 									if (_startValue == _endValue) {
@@ -168,7 +168,7 @@ Uize.module ({
 										}
 									}
 									return _signaturesMatch;
-								}
+								};
 								_isMatch =
 									_doSignaturesMatch (_matchingFadeStartValue,_matchingFadeEndValue,_startValue,_endValue)
 								;
@@ -183,7 +183,8 @@ Uize.module ({
 					(
 						_newFadeHolder [0] = new _class (
 							Uize.copyInto (
-								{duration:_duration,startValue:_startValue,endValue:_endValue,_target:_target},
+								{duration:_duration,startValue:_startValue,endValue:_endValue},
+								Uize.pairUp (_pTarget,_target),
 								_fadeProperties
 							)
 						)
@@ -200,7 +201,7 @@ Uize.module ({
 							function (_event) {
 								var
 									_this = _event.source,
-									_target = _this._target,
+									_target = _this [_pTarget],
 									_context = _target.context,
 									_handler = _target.handler,
 									_value = _this.valueOf ()
@@ -234,7 +235,7 @@ Uize.module ({
 							Uize.Fade.fade (slider,0,100,2000);
 							...................................
 
-							In the above example, the =value= set-get property for the =Uize.Widget.Bar.Slider= instance =slider= would be faded from =0= to =100= over =2000= milliseconds (2 seconds).
+							In the above example, the =value= state property for the =Uize.Widget.Bar.Slider= instance =slider= would be faded from =0= to =100= over =2000= milliseconds (2 seconds).
 
 							EXAMPLE 2
 							............................................
@@ -282,7 +283,7 @@ Uize.module ({
 							);
 							..........................
 
-							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the set-get properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
+							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the state properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
 
 							VARIATION 2
 							..........................
@@ -334,7 +335,7 @@ Uize.module ({
 							);
 							................................
 
-							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the set-get properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
+							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the state properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
 
 							VARIATION 2
 							................................
@@ -358,7 +359,7 @@ Uize.module ({
 				/*?
 					Static Methods
 						Uize.Fade.fadeProperties
-							Lets you conveniently initiate a fade process for set-get properties of an instance.
+							Lets you conveniently initiate a fade process for state properties of an instance.
 
 							SYNTAX
 							....................................
@@ -381,7 +382,7 @@ Uize.module ({
 							);
 							....................................
 
-							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the set-get properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
+							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the state properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
 
 							VARIATION 2
 							....................................
@@ -415,7 +416,7 @@ Uize.module ({
 				/*?
 					Static Methods
 						Uize.Fade.fadeProperty
-							Lets you conveniently initiate a fade process for a single set-get property of an instance.
+							Lets you conveniently initiate a fade process for a single state property of an instance.
 
 							SYNTAX
 							..................................
@@ -440,7 +441,7 @@ Uize.module ({
 							);
 							..................................
 
-							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the set-get properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
+							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the state properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
 
 							VARIATION 2
 							..................................

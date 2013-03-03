@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Beam Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 1
 	codeCompleteness: 50
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.Beam',
 	required:'Uize.Node',
 	builder:function  (_superclass) {
+		'use strict';
+
 		var
 			_null = null,
 			_Uize_Node = Uize.Node
@@ -62,8 +61,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_direction:{
 					name:'direction',
 					onChange:_updateUi,

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.DirectionalPad Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 15
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.DirectionalPad',
 	required:'Uize.Widget.Button',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Constructor ***/
 			var
 				_buttonDictionary = {
@@ -138,14 +137,14 @@ Uize.module ({
 				}
 			};
 
-		/*** Properties Registration ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_mode:{
 					name:'mode',
 					onChange:_classPrototype._updateUiMode,
 					value:'full'
 					/*?
-						Set-get properties
+						State properties
 							mode
 								A string with (currently) two valid values: 'mini' or 'full'. 'mini' mode will only show the buttons controlling the four cardinal directions. 'full' mode will show all the buttons. =mode= is set to 'full' by default.
 
