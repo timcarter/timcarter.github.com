@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Options.Tabbed Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Widget.Options.Tabbed',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
@@ -124,8 +123,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_bodyClassActive:'bodyClassActive',
 				_bodyClassInactive:'bodyClassInactive'
 			});

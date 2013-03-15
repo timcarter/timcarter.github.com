@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Node.VirtualEvent Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -53,13 +50,13 @@
 			For an in-depth discussion on virtual DOM events, see the reference for the =Uize.Node.VirtualEvent= module.
 
 		Built-in Virtual DOM Events
-			The =Uize.Node.VirtualEvent.Edge= module provides two main categories of built-in virtual DOM events: `Mouse-enter-at-edge Virtual DOM Events` and `Mouse-exit-at-edge Virtual DOM Events`.
+			The =Uize.Node.VirtualEvent.Edge= module provides two main categories of built-in virtual DOM events: `mouse-enter-at-edge virtual DOM events` and `mouse-exit-at-edge virtual DOM events`.
 
 			Mouse-enter-at-edge Virtual DOM Events
 				Mouse-enter-at-edge virtual DOM events are events that are fired when the mouse enters a node at a specific edge (left, right, top, or bottom).
 
 				Mouse-enter-at-edge Virtual DOM Event Static Methods
-					The =Uize.Node.VirtualEvent.Edge= module provides the following static methods for making `Mouse-enter-at-edge Virtual DOM Events`...
+					The =Uize.Node.VirtualEvent.Edge= module provides the following static methods for making `mouse-enter-at-edge virtual DOM events`...
 
 					- =Uize.Node.VirtualEvent.Edge.mouseEnterLeft=
 					- =Uize.Node.VirtualEvent.Edge.mouseEnterRight=
@@ -67,7 +64,7 @@
 					- =Uize.Node.VirtualEvent.Edge.mouseEnterBottom=
 
 				Mouse-enter-at-edge Registered Virtual DOM Event
-					The =Uize.Node.VirtualEvent.Edge= module registers the following event names for `Mouse-enter-at-edge Virtual DOM Events`...
+					The =Uize.Node.VirtualEvent.Edge= module registers the following event names for `mouse-enter-at-edge virtual DOM events`...
 
 					- =mouseEnterLeft=
 					- =mouseEnterRight=
@@ -78,7 +75,7 @@
 				Mouse-exit-at-edge virtual DOM events are events that are fired when the mouse exits a node at a specific edge (left, right, top, or bottom).
 
 				Mouse-exit-at-edge Virtual DOM Event Static Methods
-					The =Uize.Node.VirtualEvent.Edge= module provides the following static methods for making `Mouse-exit-at-edge Virtual DOM Events`...
+					The =Uize.Node.VirtualEvent.Edge= module provides the following static methods for making `mouse-exit-at-edge virtual DOM events`...
 
 					- =Uize.Node.VirtualEvent.Edge.mouseExitLeft=
 					- =Uize.Node.VirtualEvent.Edge.mouseExitRight=
@@ -86,7 +83,7 @@
 					- =Uize.Node.VirtualEvent.Edge.mouseExitBottom=
 
 				Mouse-exit-at-edge Registered Virtual DOM Event
-					The =Uize.Node.VirtualEvent.Edge= module registers the following event names for `Mouse-exit-at-edge Virtual DOM Events`...
+					The =Uize.Node.VirtualEvent.Edge= module registers the following event names for `mouse-exit-at-edge virtual DOM events`...
 
 					- =mouseExitLeft=
 					- =mouseExitRight=
@@ -97,6 +94,8 @@
 Uize.module ({
 	name:'Uize.Node.VirtualEvent.Edge',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function () {},
@@ -165,7 +164,7 @@ Uize.module ({
 					/*?
 						Static Methods
 							Uize.Node.VirtualEvent.Edge.mouseEnterLeft
-								Returns a `Virtual DOM Event` object, for an event that is fired whenever the user mouses over a node at the left edge.
+								Returns a `virtual DOM event` object, for an event that is fired whenever the user mouses over a node at the left edge.
 
 								SYNTAX
 								...................................................................
@@ -173,12 +172,12 @@ Uize.module ({
 								...................................................................
 
 								NOTES
-								- this `Virtual DOM Event Maker` is registered with the name =mouseEnterLeft=
-								- see related `Mouse-enter-at-edge Virtual DOM Event Static Methods`
+								- this `virtual DOM event maker` is registered with the name =mouseEnterLeft=
+								- see related `mouse-enter-at-edge virtual DOM event static methods`
 
 						Registered Virtual DOM Events
 							mouseEnterLeft
-								The registered name for the `Virtual DOM Event Maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseEnterLeft= static method.
+								The registered name for the `virtual DOM event maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseEnterLeft= static method.
 
 								SYNTAX
 								................
@@ -191,14 +190,14 @@ Uize.module ({
 								................................................................................
 
 								NOTES
-								- see related `Mouse-enter-at-edge Registered Virtual DOM Event`
+								- see related `mouse-enter-at-edge registered virtual DOM event`
 					*/
 
 				_makeEdgeEventMaker (0,1);
 					/*?
 						Static Methods
 							Uize.Node.VirtualEvent.Edge.mouseEnterRight
-								Returns a `Virtual DOM Event` object, for an event that is fired whenever the user mouses over a node at the right edge.
+								Returns a `virtual DOM event` object, for an event that is fired whenever the user mouses over a node at the right edge.
 
 								SYNTAX
 								....................................................................
@@ -206,12 +205,12 @@ Uize.module ({
 								....................................................................
 
 								NOTES
-								- this `Virtual DOM Event Maker` is registered with the name =mouseEnterRight=
-								- see related `Mouse-enter-at-edge Virtual DOM Event Static Methods`
+								- this `virtual DOM event maker` is registered with the name =mouseEnterRight=
+								- see related `mouse-enter-at-edge virtual DOM event static methods`
 
 						Registered Virtual DOM Events
 							mouseEnterRight
-								The registered name for the `Virtual DOM Event Maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseEnterRight= static method.
+								The registered name for the `virtual DOM event maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseEnterRight= static method.
 
 								SYNTAX
 								.................
@@ -224,14 +223,14 @@ Uize.module ({
 								..................................................................................
 
 								NOTES
-								- see related `Mouse-enter-at-edge Registered Virtual DOM Event`
+								- see related `mouse-enter-at-edge registered virtual DOM event`
 					*/
 
 				_makeEdgeEventMaker (0,2);
 					/*?
 						Static Methods
 							Uize.Node.VirtualEvent.Edge.mouseEnterTop
-								Returns a `Virtual DOM Event` object, for an event that is fired whenever the user mouses over a node at the top edge.
+								Returns a `virtual DOM event` object, for an event that is fired whenever the user mouses over a node at the top edge.
 
 								SYNTAX
 								..................................................................
@@ -239,12 +238,12 @@ Uize.module ({
 								..................................................................
 
 								NOTES
-								- this `Virtual DOM Event Maker` is registered with the name =mouseEnterTop=
-								- see related `Mouse-enter-at-edge Virtual DOM Event Static Methods`
+								- this `virtual DOM event maker` is registered with the name =mouseEnterTop=
+								- see related `mouse-enter-at-edge virtual DOM event static methods`
 
 						Registered Virtual DOM Events
 							mouseEnterTop
-								The registered name for the `Virtual DOM Event Maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseEnterTop= static method.
+								The registered name for the `virtual DOM event maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseEnterTop= static method.
 
 								SYNTAX
 								...............
@@ -257,14 +256,14 @@ Uize.module ({
 								..............................................................................
 
 								NOTES
-								- see related `Mouse-enter-at-edge Registered Virtual DOM Event`
+								- see related `mouse-enter-at-edge registered virtual DOM event`
 					*/
 
 				_makeEdgeEventMaker (0,3);
 					/*?
 						Static Methods
 							Uize.Node.VirtualEvent.Edge.mouseEnterBottom
-								Returns a `Virtual DOM Event` object, for an event that is fired whenever the user mouses over a node at the bottom edge.
+								Returns a `virtual DOM event` object, for an event that is fired whenever the user mouses over a node at the bottom edge.
 
 								SYNTAX
 								.....................................................................
@@ -272,12 +271,12 @@ Uize.module ({
 								.....................................................................
 
 								NOTES
-								- this `Virtual DOM Event Maker` is registered with the name =mouseEnterBottom=
-								- see related `Mouse-enter-at-edge Virtual DOM Event Static Methods`
+								- this `virtual DOM event maker` is registered with the name =mouseEnterBottom=
+								- see related `mouse-enter-at-edge virtual DOM event static methods`
 
 						Registered Virtual DOM Events
 							mouseEnterBottom
-								The registered name for the `Virtual DOM Event Maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseEnterBottom= static method.
+								The registered name for the `virtual DOM event maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseEnterBottom= static method.
 
 								SYNTAX
 								..................
@@ -290,7 +289,7 @@ Uize.module ({
 								....................................................................................
 
 								NOTES
-								- see related `Mouse-enter-at-edge Registered Virtual DOM Event`
+								- see related `mouse-enter-at-edge registered virtual DOM event`
 					*/
 
 			/*** mouseExit[edge] Virtual DOM Events ***/
@@ -298,7 +297,7 @@ Uize.module ({
 					/*?
 						Static Methods
 							Uize.Node.VirtualEvent.Edge.mouseExitLeft
-								Returns a `Virtual DOM Event` object, for an event that is fired whenever the user mouses out of a node at the left edge.
+								Returns a `virtual DOM event` object, for an event that is fired whenever the user mouses out of a node at the left edge.
 
 								SYNTAX
 								..................................................................
@@ -306,12 +305,12 @@ Uize.module ({
 								..................................................................
 
 								NOTES
-								- this `Virtual DOM Event Maker` is registered with the name =mouseExitLeft=
-								- see related `Mouse-exit-at-edge Virtual DOM Event Static Methods`
+								- this `virtual DOM event maker` is registered with the name =mouseExitLeft=
+								- see related `mouse-exit-at-edge virtual DOM event static methods`
 
 						Registered Virtual DOM Events
 							mouseExitLeft
-								The registered name for the `Virtual DOM Event Maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseExitLeft= static method.
+								The registered name for the `virtual DOM event maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseExitLeft= static method.
 
 								SYNTAX
 								...............
@@ -324,14 +323,14 @@ Uize.module ({
 								..............................................................................
 
 								NOTES
-								- see related `Mouse-exit-at-edge Registered Virtual DOM Event`
+								- see related `mouse-exit-at-edge registered virtual DOM event`
 					*/
 
 				_makeEdgeEventMaker (1,1);
 					/*?
 						Static Methods
 							Uize.Node.VirtualEvent.Edge.mouseExitRight
-								Returns a `Virtual DOM Event` object, for an event that is fired whenever the user mouses out of a node at the right edge.
+								Returns a `virtual DOM event` object, for an event that is fired whenever the user mouses out of a node at the right edge.
 
 								SYNTAX
 								...................................................................
@@ -339,12 +338,12 @@ Uize.module ({
 								...................................................................
 
 								NOTES
-								- this `Virtual DOM Event Maker` is registered with the name =mouseExitRight=
-								- see related `Mouse-exit-at-edge Virtual DOM Event Static Methods`
+								- this `virtual DOM event maker` is registered with the name =mouseExitRight=
+								- see related `mouse-exit-at-edge virtual DOM event static methods`
 
 						Registered Virtual DOM Events
 							mouseExitRight
-								The registered name for the `Virtual DOM Event Maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseExitRight= static method.
+								The registered name for the `virtual DOM event maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseExitRight= static method.
 
 								SYNTAX
 								................
@@ -357,14 +356,14 @@ Uize.module ({
 								................................................................................
 
 								NOTES
-								- see related `Mouse-exit-at-edge Registered Virtual DOM Event`
+								- see related `mouse-exit-at-edge registered virtual DOM event`
 					*/
 
 				_makeEdgeEventMaker (1,2);
 					/*?
 						Static Methods
 							Uize.Node.VirtualEvent.Edge.mouseExitTop
-								Returns a `Virtual DOM Event` object, for an event that is fired whenever the user mouses out of a node at the top edge.
+								Returns a `virtual DOM event` object, for an event that is fired whenever the user mouses out of a node at the top edge.
 
 								SYNTAX
 								.................................................................
@@ -372,12 +371,12 @@ Uize.module ({
 								.................................................................
 
 								NOTES
-								- this `Virtual DOM Event Maker` is registered with the name =mouseExitTop=
-								- see related `Mouse-exit-at-edge Virtual DOM Event Static Methods`
+								- this `virtual DOM event maker` is registered with the name =mouseExitTop=
+								- see related `mouse-exit-at-edge virtual DOM event static methods`
 
 						Registered Virtual DOM Events
 							mouseExitTop
-								The registered name for the `Virtual DOM Event Maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseExitTop= static method.
+								The registered name for the `virtual DOM event maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseExitTop= static method.
 
 								SYNTAX
 								..............
@@ -390,14 +389,14 @@ Uize.module ({
 								............................................................................
 
 								NOTES
-								- see related `Mouse-exit-at-edge Registered Virtual DOM Event`
+								- see related `mouse-exit-at-edge registered virtual DOM event`
 					*/
 
 				_makeEdgeEventMaker (1,3);
 					/*?
 						Static Methods
 							Uize.Node.VirtualEvent.Edge.mouseExitBottom
-								Returns a `Virtual DOM Event` object, for an event that is fired whenever the user mouses out of a node at the bottom edge.
+								Returns a `virtual DOM event` object, for an event that is fired whenever the user mouses out of a node at the bottom edge.
 
 								SYNTAX
 								....................................................................
@@ -405,12 +404,12 @@ Uize.module ({
 								....................................................................
 
 								NOTES
-								- this `Virtual DOM Event Maker` is registered with the name =mouseExitBottom=
-								- see related `Mouse-exit-at-edge Virtual DOM Event Static Methods`
+								- this `virtual DOM event maker` is registered with the name =mouseExitBottom=
+								- see related `mouse-exit-at-edge virtual DOM event static methods`
 
 						Registered Virtual DOM Events
 							mouseExitBottom
-								The registered name for the `Virtual DOM Event Maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseExitBottom= static method.
+								The registered name for the `virtual DOM event maker` that is implemented in the =Uize.Node.VirtualEvent.Edge.mouseExitBottom= static method.
 
 								SYNTAX
 								.................
@@ -423,7 +422,7 @@ Uize.module ({
 								..................................................................................
 
 								NOTES
-								- see related `Mouse-exit-at-edge Registered Virtual DOM Event`
+								- see related `mouse-exit-at-edge registered virtual DOM event`
 					*/
 
 		return _package;

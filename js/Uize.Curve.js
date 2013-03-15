@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Curve Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 6
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -40,6 +37,8 @@
 Uize.module ({
 	name:'Uize.Curve',
 	builder:function () {
+		'use strict';
+
 		var _package = function () {};
 
 		/*** Variables for Scruncher Optimization ***/

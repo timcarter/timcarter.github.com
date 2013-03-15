@@ -1,36 +1,37 @@
 <!doctype html>
-<html>
+<html manifest="temp.manifest" >
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
     <title>Vault</title>
-    <script type="text/javascript" src="../../vault/crypto-js-3.0.2.js"></script>
-    <script type="text/javascript" src="../../vault/vault.js"></script>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,maximum-scale=1.0">
+	<link rel="apple-touch-icon" href="icon.png" />
+	<link rel="apple-touch-startup-image" href="icon.png" />
     <link rel="stylesheet" type="text/css" href="../../vault/style.css">
   </head>
   <body>
     <div class="form">
       <div class="sub">
-        <label for="service">Service name <span>e.g. &ldquo;twitter&rdquo;</span></label>
-        <input type="text" autocapitalize="off" class="text" name="service" id="service" autocomplete="off">
+        <label for="service">Service name</label>
+        <input type="text" placeholder="twitter" autocapitalize="off" class="text" name="service" id="service" autocomplete="off">
         
         <div class="password">
-          <label for="passphrase">Passphrase <span>e.g. &ldquo;I&rsquo;m the best 17-year old ever.&rdquo;</span></label>
+          <label for="passphrase">Passphrase</label>
           <input type="password" class="password" name="passphrase" id="passphrase" autocomplete="off">
           <input type="text" class="text" autocapitalize="off" name="passphrase-text" id="passphrase-text" autocomplete="off">
-          <span class="show">
-            <label for="show-passphrase">Show</label>
+          <span class="show" style="float:none;">
             <input type="checkbox" name="show-passphrase" id="show-passphrase">
           </span>
         </div>
         
         <div class="length">
-          <label for="vlength">Password length <span>e.g. 12</span></label>
+          <label for="vlength">Password length</label>
           <input type="text" class="text" name="vlength" id="vlength" value="20" autocomplete="off">
         </div>
         
         <div class="repeat">
-          <label for="repeat">Max repetition <span>e.g. 2</span></label>
+          <label for="repeat">Max repetition</label>
           <input type="text" class="text" name="repeat" id="repeat" value="" autocomplete="off">
         </div>
         
@@ -90,7 +91,9 @@
         <input type="text" class="text" id="word" autocomplete="off">
       </div>
     </div>
-    
+
+    <script type="text/javascript" src="../../vault/crypto-js-3.0.2.js"></script>
+    <script type="text/javascript" src="../../vault/vault.js"></script>
     <script type="text/javascript" src="../../vault/app.js"></script>
     
   </body>

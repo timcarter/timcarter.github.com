@@ -4,24 +4,21 @@
 |    /    O /   |    MODULE : Uize.Class.Value Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2012-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=b" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
 /*?
 	Introduction
-		The =Uize.Class.Value= class is a simple class that merely implements the `value interface` (ie. it registers a =value= set-get property).
+		The =Uize.Class.Value= class is a simple class that merely implements the `value interface` (ie. it declares a =value= state property).
 
 		*DEVELOPERS:* `Chris van Rensburg`
 
@@ -32,15 +29,9 @@ Uize.module ({
 	name:'Uize.Class.Value',
 	superclass:'Uize.Class',
 	builder:function (_superclass) {
-		/*** Class Constructor ***/
-			var _class = _superclass.subclass ();
+		'use strict';
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
-				_value:'value'
-			});
-
-		return _class;
+		return _superclass.subclass ({stateProperties:{_value:'value'}});
 	}
 });
 

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.AutoTooltip Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 92
 */
 
@@ -27,7 +24,7 @@
 
 		Using this module, one can achieve easy, wizard style augmentation of a large number of nodes, with an "Unobtrusive JavaScript" approach that provides graceful degradation in the event that JavaScript is disabled, the JavaScript fails, or the wiring up of the behavior takes a long time.
 
-		This module supports displaying of an HTML tooltip when mousing over each node in a specified array of nodes, where the HTML for the tooltip is automatically generated from data harvested from the title, alt, or other attribute of the nodes. The HTML template for the decorated tooltip is specified in the =html= set-get property of the instance, where the value can be a function that accepts the tooltip data as its input parameter and returns a string value that is the generated HTML.
+		This module supports displaying of an HTML tooltip when mousing over each node in a specified array of nodes, where the HTML for the tooltip is automatically generated from data harvested from the title, alt, or other attribute of the nodes. The HTML template for the decorated tooltip is specified in the =html= state property of the instance, where the value can be a function that accepts the tooltip data as its input parameter and returns a string value that is the generated HTML.
 */
 
 Uize.module ({
@@ -37,6 +34,8 @@ Uize.module ({
 		'Uize.String'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,
@@ -124,36 +123,36 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_data:{
 					name:'data',
 					onChange:_classPrototype._updateUiTooltipHtml
 					/*?
-						Set-get Properties
+						State Properties
 							data
 								An object, representing the tooltip data for the current node being moused over.
 
 								NOTES
 								- the initial value is =undefined=
-								- the value of this set-get property is set automatically
-								- when the mouse is not over one of the nodes specified in the =nodes= set-get property, then this property will have the value =null= or =undefined=
-								- see also the =dataAttribute= and =dataDecoder= set-get properties
+								- the value of this state property is set automatically
+								- when the mouse is not over one of the nodes specified in the =nodes= state property, then this property will have the value =null= or =undefined=
+								- see also the =dataAttribute= and =dataDecoder= state properties
 					*/
 				},
 				_dataAttribute:{
 					name:'dataAttribute',
 					value:'auto'
 					/*?
-						Set-get Properties
+						State Properties
 							dataAttribute
 								A string, specifying the name of the node attribute that should be used for obtaining the tooltip data.
 
-								When this set-get property is set to the special value ='auto'=, then the instance will try to use the =title= attribute. If no value is set for the =title= attribute, then the instance will fall back on using the =alt= attribute. If you wish to explicitly force use of either the =title= or =alt= attribute, then specify the desired one as the value for the =dataAttribute= set-get property. If the data is stored in a custom attribute (eg. =tooltipData=), then simply specify that custom attribute's name.
+								When this state property is set to the special value ='auto'=, then the instance will try to use the =title= attribute. If no value is set for the =title= attribute, then the instance will fall back on using the =alt= attribute. If you wish to explicitly force use of either the =title= or =alt= attribute, then specify the desired one as the value for the =dataAttribute= state property. If the data is stored in a custom attribute (eg. =tooltipData=), then simply specify that custom attribute's name.
 
 								NOTES
 								- the initial value is ='auto'=
-								- see also the =dataDecoder= set-get property
+								- see also the =dataDecoder= state property
 					*/
 				},
 				_dataDecoder:{
@@ -181,9 +180,9 @@ Uize.module ({
 						return _result;
 					}
 					/*?
-						Set-get Properties
+						State Properties
 							dataDecoder
-								A function, being the code that will be used to decode the value of the data attribute (specified by the =dataAttribute= set-get property) for all the tooltip nodes, to produce an object hash containing key/value pairs.
+								A function, being the code that will be used to decode the value of the data attribute (specified by the =dataAttribute= state property) for all the tooltip nodes, to produce an object hash containing key/value pairs.
 
 								The function specified by this property should expect a single string parameter and should return an object hash containing key/value pairs.
 
@@ -214,7 +213,7 @@ Uize.module ({
 								..............................................
 
 								NOTES
-								- see also the =dataAttribute= set-get property
+								- see also the =dataAttribute= state property
 					*/
 				},
 				_dataKeyTransformer:{
@@ -225,7 +224,7 @@ Uize.module ({
 					name:'nodes',
 					onChange:_classPrototype._updateWiringTooltipNodes
 					/*?
-						Set-get Properties
+						State Properties
 							nodes
 								An array, representing the nodes that should be wired up to display an automatically generated tooltip when mousing over them.
 

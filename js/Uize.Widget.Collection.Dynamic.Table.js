@@ -4,19 +4,16 @@
 |    /    O /   |    MODULE : Uize.Widget.Collection.Dynamic.Table Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
 
-/*ScruncherSettings Mappings="=f" LineCompacting="TRUE"*/
-
 /* Module Meta Data
 	type: Class
 	importance: 4
-	codeCompleteness: 100 
-	testCompleteness: 0
-	docCompleteness: 100 
+	codeCompleteness: 100
+	docCompleteness: 100
 */
 
 /*?
@@ -31,6 +28,8 @@
 Uize.module ({
 	name:'Uize.Widget.Collection.Dynamic.Table',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (),

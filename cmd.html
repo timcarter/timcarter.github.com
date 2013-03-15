@@ -1,16 +1,29 @@
 <html>
 	<head>
 		<title>Command Prompt</title>
+		<link href='http://fonts.googleapis.com/css?family=Trocchi' rel='stylesheet' type='text/css'>
 		<style type='text/css'>
 			body {
-				background:#000;
-				color:#0f0;
-				font-family:monospace sans-serif;
+				background:#021321;
+				color:#ddd;
+				font-family:'Trocchi', monospace, serif;
 			}
 
 			.input {
 				outline:none;
 				white-space:nowrap;
+			}
+
+			.username {
+				color:#f95165;
+			}
+
+			.host, .path {
+				color:#5e8cba;
+			}
+
+			.input {
+				color:#42c574;
 			}
 		</style>
 	</head>
@@ -19,7 +32,7 @@
 		</div>
 
 		<script id="page-template" type='text/jst'>
-			<span>[% .username %]@[% .host %]:[% .path %]$ </span><span class="input" id="[% .id %]" contenteditable="true"></span><br/>
+			<span class="username">[% .username %]</span>@<span class="host">[% .host %]</span>:<span class="path">[% .path %]</span>$ </span><span class="input" id="[% .id %]" contenteditable="true"></span><br/>
 		</script>
 		<script type='text/javascript' src="js/Uize.js"></script>
 		<script type='text/javascript'>
@@ -28,7 +41,8 @@
 					'JsTerm.Program.Bash',
 					'JsTerm.Data.Folder.Root',
 					'Uize.Widget.Page',
-					'Uize.Node'
+					'Uize.Node',
+					'Uize.Url'
 				],
 				builder:function () {
 					window.page = new Uize.Widget.Page;
@@ -37,7 +51,7 @@
 						'bash',
 						JsTerm.Program.Bash,
 						{
-							host:'timcarter.github.com',
+							host:Uize.Url.from(window.location.toString()).host || 'localhost',
 							commandLineTemplate:document.getElementById ('page-template').innerHTML
 						}
 					);

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Class Base Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2003-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2003-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 10
 	codeCompleteness: 100
-	testCompleteness: 40
 	docCompleteness: 100
 */
 
@@ -26,6 +23,325 @@
 		*DEVELOPERS:* `Chris van Rensburg`
 
 		Key Features
+			Features for Subclassing
+				The =Uize.Class= module provides a number of features to facilitate creation and definition of subclasses.
+
+				Subclass Creation
+					The =Uize.Class.subclass= static method lets you create a subclass of the class on which the method is called.
+
+					EXAMPLE
+					.....................................
+					var MySubclass = MyClass.subclass ();
+					.....................................
+
+				Feature Declaration Methods
+					The =Uize.Class= module provides a number of methods that let you declare instance and/or static features of a class.
+
+					- =Uize.Class.declare= - lets you declare one or more features of one or more different `feature types` for the class
+					- =Uize.Class.alphastructor= - lets you declare the `alphastructor` for the class
+					- =Uize.Class.omegastructor= - lets you declare the `omegastructor` for the class
+					- =Uize.Class.instanceMethods= - lets you declare one or more instance methods for the class
+					- =Uize.Class.instanceProperties= - lets you declare one or more instance properties for the class
+					- =Uize.Class.staticMethods= - lets you declare one or more static methods for the class
+					- =Uize.Class.staticProperties= - lets you declare one or more static properties for the class
+					- =Uize.Class.dualContextMethods= - lets you declare one or more `dual context` methods for the class
+					- =Uize.Class.dualContextProperties= - lets you declare one or more `dual context` properties for the class
+					- =Uize.Class.stateProperties= - lets you declare one or more state properties for instances of the class
+
+					Declare Private or Public Features
+						The `feature declaration methods` can be used either to declare public features or private features.
+
+						In UIZE, there is no fundamental difference between private methods or properties and public methods or properties - it's all in the naming. By convention, private features are named with an "_" (underscore) prefix. This has its pros and cons, but one side effect of this is that either private or public features (or a mixture of both) can be declared using the `feature declaration methods`.
+
+						EXAMPLE
+						........................................
+						_class.instanceMethods ({
+							_privateInstanceMethod1:function () {
+								// implementation here
+							},
+							_privateInstanceMethod2:function () {
+								// implementation here
+							},
+							publicInstanceMethod1:function () {
+								// implementation here
+							},
+							publicInstanceMethod2:function () {
+								// implementation here
+							}
+						});
+						........................................
+
+						In the above example, one call to the =Uize.Class.instanceMethods= method is being used to declare the =_privateInstanceMethod1= and =_privateInstanceMethod2= private instance methods, along with the =publicInstanceMethod1= and =publicInstanceMethod2= public instance methods.
+
+					Feature Declarations are Cumulative
+						All the `feature declaration methods` can be called as many times as desired, and calling them repeatedly is cumulative in nature.
+
+						This is useful, because it lets you break out declarations into different sections in your code if that makes your code more readable and/or manageable.
+
+						EXAMPLE
+						........................................
+						// Private Instance Methods
+						_class.instanceMethods ({
+							_privateInstanceMethod1:function () {
+								// implementation here
+							},
+							_privateInstanceMethod2:function () {
+								// implementation here
+							}
+						});
+
+						// ... ... ... ... ... ... ... ... ...
+
+						// Public Instance Methods
+						_class.instanceMethods ({
+							publicInstanceMethod1:function () {
+								// implementation here
+							},
+							publicInstanceMethod2:function () {
+								// implementation here
+							}
+						});
+						........................................
+
+						In the above example, the =Uize.Class.instanceMethods= method is being called twice - in one section to declare private instance methods, and in the other section to declare public instance methods.
+
+					Add or Override Features
+						The `feature declaration methods` can be used either to add features that aren't inherited from the class' base class, or to override features that are inherited from the base class.
+
+					Dual Context
+						Dual context class features are features that exist both on the class as well as instances of the class.
+
+						Examples dual context features are the various `event system methods`. For example, the =fire= instance method lets you fire an instance event, while the =Uize.Class.fire= static method lets you fire an event on a class. Both the instance and class methods for firing events share the same underlying implementation, where the implementation may contain minor conditionalizing when executing in the instance context versus executing in the class context.
+
+						In cases where it is possible (and possibly even desirable) to share the same function between an instance method and a class method, the =Uize.Class.dualContextMethods= static method can be used to declare such methods in a single statement, rather than separately calling both the =Uize.Class.instanceMethods= and =Uize.Class.staticMethods= methods.
+
+						Although a less likely scenario, it is also possible to declare dual context properties using the =Uize.Class.dualContextProperties= static method. This method is present mainly for symmetry and consistency.
+
+						For dual context features, it is assumed that the feature is named the same on both the instance and the class. In situations where this is not the case, one should just use the separate methods for defining instance features and class features.
+
+					Declaring Multiple Features, Categorized by Type
+						Multiple features, categorized by type, can be declared for a class by either `declaring features by type when creating a class` or by `declaring features by type for an already created class`.
+
+						Declaring Features by Type When Creating a Class
+							The =Uize.Class.subclass= method supports a variation that lets you `create a subclass, declaring multiple features by type` at the time of creating a class, by supplying just a single =featuresByTypeOBJ= parameter.
+
+							EXAMPLE
+							....................................
+							var MySubclass = MyClass.subclass ({
+								alphastructor:function () {
+									// implementation here
+								},
+								omegastructor:function () {
+									// implementation here
+								},
+								staticMethods:{
+									staticMethod1:function () {
+										// implementation here
+									},
+									staticMethod2:function () {
+										// implementation here
+									}
+								},
+								instanceMethods:{
+									instanceMethod1:function () {
+										// implementation here
+									},
+									instanceMethod2:function () {
+										// implementation here
+									}
+								},
+								stateProperties:{
+									stateProperty1:{
+										// property profile
+									},
+									stateProperty2:{
+										// property profile
+									}
+								}
+							});
+							....................................
+
+						Declaring Features by Type for an Already Created Class
+							One or more features of one or more different `feature types` can be declared for a class after the class has already been created, by calling the =Uize.Class.declare= method on the class and supplying a =featuresByTypeOBJ= parameter.
+
+							EXAMPLE
+							.....................................
+							var MyClass = Uize.Class.subclass ();
+
+							MyClass.declare ({
+								alphastructor:function () {
+									// implementation here
+								},
+								omegastructor:function () {
+									// implementation here
+								},
+								staticMethods:{
+									staticMethod1:function () {
+										// implementation here
+									},
+									staticMethod2:function () {
+										// implementation here
+									}
+								},
+								instanceMethods:{
+									instanceMethod1:function () {
+										// implementation here
+									},
+									instanceMethod2:function () {
+										// implementation here
+									}
+								},
+								stateProperties:{
+									stateProperty1:{
+										// property profile
+									},
+									stateProperty2:{
+										// property profile
+									}
+								}
+							});
+							.....................................
+
+						Feature Types
+							When a =featuresByTypeOBJ= parameter is passed to either the =Uize.Class.declare= or the =Uize.Class.declare= methods, the object may contain any of the following properties...
+
+							- =alphastructor= - lets you declare the `alphastructor` for the class
+							- =omegastructor= - lets you declare the `omegastructor` for the class
+							- =instanceMethods= - lets you declare one or more instance methods for the class
+							- =instanceProperties= - lets you declare one or more instance properties for the class
+							- =staticMethods= - lets you declare one or more static methods for the class
+							- =staticProperties= - lets you declare one or more static properties for the class
+							- =dualContextMethods= - lets you declare one or more `dual context` methods for the class
+							- =dualContextProperties= - lets you declare one or more `dual context` properties for the class
+							- =stateProperties= - lets you declare one or more state properties for instances of the class
+
+						How It's Implemented
+							The properties of the =featuresByTypeOBJ= object should correspond to the names of the various `feature declaration methods` supported by the class being subclassed.
+
+							When features are specified, categorized by type, in the =featuresByTypeOBJ= parameter, the =Uize.Class.declare= and =Uize.Class.subclass= methods will iterate over the properties of the object, attempting to call a static method of the name of each property encountered, on the class being subclassed, and passing the value of the property as the first parameter of the feature declaration method.
+
+							So, for example, if the =Uize.Service.subclass= method is called to create a service class, and if a =featuresByTypeOBJ= parameter is specified, and if a =serviceMethods= property exists within the =featuresByTypeOBJ= object, then the =Uize.Service.serviceMethods= static method will be called and the value of the =serviceMethods= property from the =featuresByTypeOBJ= object will be passed as the single parameter to the =Uize.Service.serviceMethods= method.
+
+							To illustrate this by example...
+
+							THIS...
+							.........................................
+							var FileSystem = Uize.Service.subclass ({
+								serviceMethods:{
+									readFile:{
+										async:false
+									},
+									writeFile:{
+										async:false
+									},
+									getFiles:{
+										async:false
+									},
+									getFolder:{
+										async:false
+									},
+									// etc.
+									// etc.
+								}
+							});
+							.........................................
+
+							...IS EQUIVALENT TO...
+							..........................................
+							var FileSystem = Uize.Service.subclass ();
+
+							FileSystem.declare ({
+								serviceMethods:{
+									readFile:{
+										async:false
+									},
+									writeFile:{
+										async:false
+									},
+									getFiles:{
+										async:false
+									},
+									getFolder:{
+										async:false
+									},
+									// etc.
+									// etc.
+								}
+							});
+							..........................................
+
+							More Feature Types for Specific Base Classes
+								Because of `how it's implemented`, `declaring multiple features, categorized by type`, inherently supports new feature types introduced in subclasses.
+
+								For instance, the =Uize.Service= base class introduces the feature type of a service method and provides the =Uize.Service.serviceMethods= static method for declaring service methods. So, inherently, service methods can be declared in the =featuresByTypeOBJ= parameter along with other feature types that were introduced in the =Uize.Class= base class (instance methods, instance properties, static methods, static properties, state properties, etc.), simply by specifying a =serviceMethods= property in the =featuresByTypeOBJ= object.
+
+								Therefore, if you implement a new base class of which multiple different subclasses will be created, and you define a static method that allows developers to declare features of a new feature type that is introduced in your base class, then features of that type can be declared in the =Uize.Class.subclass= and =Uize.Class.declare= methods.
+
+							Less Conventional Usages
+								Because of `how it's implemented`, one can also do less conventional things along with declaring features in the =Uize.Class.subclass= and =Uize.Class.declare= methods.
+
+								For example, one can effectively call the =Uize.Class.set= static method to override the initial values of state properties that are inherited from the base class, as shown in the following example...
+
+								THIS...
+								...............................................................
+								var MySliderWidgetSubclass = Uize.Widget.Bar.Slider.subclass ({
+									instanceMethods:{
+										// instance methods declared here
+									},
+									stateProperties:{
+										// state properties declared here
+									}
+								});
+
+								MySliderWidgetSubclass.set ({
+									minValue:-50,
+									maxValue:50
+								});
+								...............................................................
+
+								...COULD BE SHORTENED TO...
+								...............................................................
+								var MySliderWidgetSubclass = Uize.Widget.Bar.Slider.subclass ({
+									instanceMethods:{
+										// instance methods declared here
+									},
+									stateProperties:{
+										// state properties declared here
+									},
+									set:{
+										minValue:-50,
+										maxValue:50
+									}
+								});
+								...............................................................
+
+			Event System
+				The =Uize.Class= module implements a powerful and versatile event system, which can be used for application events outside the context of browser DOM events.
+
+				Event System Methods
+					The `event system` of the =Uize.Class= module is exposed through the following methods...
+
+					- =fire= - fires an event on an instance
+					- =unwire= - unwires handlers for one or more events on an instance
+					- =wire= - wires handlers for one or more events on an instance
+					- =Uize.Class.fire= - fires an event on a class
+					- =Uize.Class.unwire= - unwires handlers for one or more events on a class
+					- =Uize.Class.wire= - wires handlers for one or more events on a class
+
+				For an in-depth discussion of events, consult the [[../explainers/javascript-event-system.html][JavaScript Event System]] explainer.
+
+			Condition System
+				The =Uize.Class= module implements a condition system in the form of state properties combined with convenience methods that allow state properties to be treated semantically as conditions.
+
+				Condition System Methods
+					The `condition system` of the =Uize.Class= module is exposed through the following methods...
+
+					- =is= - returns whether or not a state property is truthy (useful when a state property represents a condition)
+					- =once= - registers code that is to be executed once a condition has been met
+					- =met= - sets a condition as having been met
+					- =unmet= - sets a condition as having not been met / no longer being met
+					- =isMet= - returns whether or not a condition has been met
+
 			The "no new" Mechanism
 				The JavaScript =new= operator is optional when creating instances of =Uize.Class= subclasses, and you can make the =new= operator optional for your own object constructors using the newly added =Uize.noNew= static method.
 
@@ -124,20 +440,25 @@
 Uize.module ({
 	name:'Uize.Class',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,
 				_typeString = 'string',
 				_typeObject = 'object',
+				_Function = Function,
 
 				/*** references to utility methods of Uize ***/
 					_Uize = Uize,
 					_clone = _Uize.clone,
 					_copyInto = _Uize.copyInto,
 					_forEach = _Uize.forEach,
+					_map = _Uize.map,
+					_lookup = _Uize.lookup,
 					_getClass = _Uize.getClass,
 					_getGuid = _Uize.getGuid,
-					_globalEval = _Uize.globalEval,
+					_eval = _Uize.eval,
 					_isArray = _Uize.isArray,
 					_isFunction = _Uize.isFunction,
 					_isInstance = _Uize.isInstance,
@@ -261,7 +582,7 @@ Uize.module ({
 						_this._abstractEventName (
 							_eventNameOrEventsMap,
 							function (_eventName) {
-								var _eventHandlers = _this._eventHandlers || (_this._eventHandlers = _this.eventHandlers = {});
+								var _eventHandlers = _this._eventHandlers || (_this._eventHandlers = {});
 								(_eventHandlers [_eventName] || (_eventHandlers [_eventName] = [])).push (
 									{
 										_eventName:_eventName,
@@ -269,7 +590,7 @@ Uize.module ({
 											_isFunction (_handler)
 												? _handler
 												: typeof _handler == _typeString
-													? new Function (_handler)
+													? _Function (_handler)
 													: function (_event) {_handler.fire (_event)},
 										_originalHandler:_handler
 									}
@@ -364,7 +685,7 @@ Uize.module ({
 								String Type Handlers
 									When a string value is specified for the =eventHandlerSTRorFNorOBJ= parameter, a function object will be constructed from that string for the purpose of handling the event.
 
-									One limitation of this handler type is that, unlike `Function Type Handlers`, a code string specified by the =eventHandlerSTRorFNorOBJ= parameter cannot reference the event object.
+									One limitation of this handler type is that, unlike `function type handlers`, a code string specified by the =eventHandlerSTRorFNorOBJ= parameter cannot reference the event object.
 
 								Object Type Handlers
 									When a reference to a =Uize.Class= subclass or an instance of a =Uize.Class= subclass is specified for the =eventHandlerSTRorFNorOBJ= parameter, then the event for which the handler is registered will be fired on that instance or class.
@@ -592,7 +913,577 @@ Uize.module ({
 					*/
 				};
 
-			/*** Set-get Property System Methods ***/
+
+				var _derivationCache = {};
+				function _resolveDerivation (_derivation) {
+					/* NOTE: this code will eventually be used also for derived properties */
+					var
+						_derivationCacheKey = _derivation + '',
+						_resolvedDerivation = _derivationCache [_derivationCacheKey]
+					;
+					function _getDeterminantsFromListStr (_determinantsStr) {
+						return _determinantsStr.replace (/\s+/g,'').split (',');
+					}
+					if (!_resolvedDerivation) {
+						var
+							_determinants,
+							_determiner
+						;
+						if (_isFunction (_derivation)) {
+							_determinants = _getDeterminantsFromListStr ((_derivation + '').match (/\(([^\)]*)\)/) [1]);
+							_determiner = _derivation;
+						} else {
+							if (typeof _derivation == 'string') {
+								var _separatorPos = _derivation.indexOf (':');
+								if (_separatorPos > -1) {
+									_determiner = _Function (
+										_determinants = _getDeterminantsFromListStr (_derivation.slice (0,_separatorPos)),
+										'return ' + _derivation.slice (_separatorPos + 1)
+									);
+								} else {
+									_derivation = _getDeterminantsFromListStr (_derivation);
+								}
+							}
+							if (_isArray (_derivation)) {
+								_determinants = [];
+								if (_derivation.length) {
+									var
+										_determinerArgs = [],
+										_determinerOperands = []
+									;
+									_forEach (
+										_derivation,
+										function (_determinant,_determinantNo) {
+											var
+												_inverted = _determinant.charCodeAt (0) == 33,
+												_argName = 'a' + _determinantNo
+											;
+											_determinants.push (_inverted ? _determinant.slice (1) : _determinant);
+											_determinerArgs.push (_argName);
+											_determinerOperands.push ((_inverted ? '!' : '') + _argName);
+										}
+									);
+									_determiner = _Function (_determinerArgs,'return ' + _determinerOperands.join (' && '));
+								} else {
+									_determiner = _Uize.returnTrue;
+								}
+							}
+						}
+						_resolvedDerivation = _derivationCache [_derivationCacheKey] = {
+							_determinants:_determinants,
+							_determinantsValuesHarvester:_Function (
+								'return [' + _map (_determinants,'"this.get(\'" + value + "\')"').join (',') + ']'
+							),
+							_determiner:_determiner,
+							_changedEventNames:_map (_determinants,'"Changed." + value')
+						};
+					}
+					return _resolvedDerivation;
+				}
+
+				_classPrototype.once = function (_condition,_handler) {
+					var
+						_this = this,
+						_derivation = _resolveDerivation (_condition),
+						_determinants = _derivation._determinants,
+						_determinantsValuesHarvester = _derivation._determinantsValuesHarvester,
+						_determiner = _derivation._determiner,
+						_wirings
+					;
+					function _isConditionMet () {
+						var
+							_determinantsValues = _determinantsValuesHarvester.call (_this),
+							_conditionMet = _determiner.apply (0,_determinantsValues)
+						;
+						if (_conditionMet) {
+							_wirings && _this.unwire (_wirings);
+							_handler.apply (0,_determinantsValues);
+						}
+						return _conditionMet;
+					}
+					if (_isConditionMet ()) {
+						_wirings = {};
+					} else {
+						_this.wire (_wirings = _lookup (_derivation._changedEventNames,_isConditionMet));
+					}
+					return _wirings;
+					/*?
+						Instance Methods
+							once
+								Lets you register a handler that should be executed only once the specified condition is met.
+
+								The =once= method is useful when using one or more state properties to form a condition, and where you wish to register code that should be executed once the condition has been met, and immediately if the condition is already met at the time that the =once= method is called.
+
+								DIFFERENT USAGES
+
+								`Execute Code Once a State Property is Truthy or Falsy`
+								................................................................
+								wiringsOBJ = myInstance.once (propertyConditionSTR,handlerFUNC);
+								................................................................
+
+								`Execute Code Once Multiple State Properties Are Truthy or Falsy`
+								.........................................................................
+								wiringsOBJ = myInstance.once (propertiesConditionARRAYorSTR,handlerFUNC);
+								.........................................................................
+
+								`Execute Code Once a Compound Condition is Met`
+								......................................................................
+								wiringsOBJ = myInstance.once (compoundConditionSTRorFUNC,handlerFUNC);
+								......................................................................
+
+								Execute Code Once a State Property is Truthy or Falsy
+									In its most basic usage, code can be registered to be executed once a single state property becomes truthy or falsy.
+
+									SYNTAX
+									................................................................
+									wiringsOBJ = myInstance.once (propertyConditionSTR,handlerFUNC);
+									................................................................
+
+									The =propertyConditionSTR= parameter specifies the name of a state property, with an optional "!" (exclamation mark) prefix for indicating `condition inversion`. If simply the name of a state property is specified, then the handler code specified by the =handlerFUNC= parameter will be executed once the property is truthy. If the optional "!" prefix is specified, then the handler code will be executed once the property is falsy.
+
+									EXAMPLE 1
+									........................................................
+									myWidget.once (
+										'wired',
+										function () {
+											// do something now that the widget has been wired
+										}
+									);
+									........................................................
+
+									In the above example, a handler is being registered to be executed once the widget =myWidget= has been wired (ie. the value of its =wired= state property becomes =true=).
+
+									EXAMPLE 2
+									................................................................
+									myCollectionWidget.once (
+										'!isEmpty',
+										function () {
+											// do something now that the collection is no longer empty
+										}
+									);
+									................................................................
+
+									In the above example, code is being registered to execute once the =isEmpty= state property is =false=.
+
+								Execute Code Once Multiple State Properties Are Truthy or Falsy
+									Code can be registered to be executed once all properties in a set of state properties become truthy or falsy, by specifying the state properties as an array of property names or as a comma-separated list string.
+
+									SYNTAX
+									.........................................................................
+									wiringsOBJ = myInstance.once (propertiesConditionARRAYorSTR,handlerFUNC);
+									.........................................................................
+
+									propertiesConditionARRAYorSTR
+										The value specified for the =propertiesConditionARRAYorSTR= parameter may be an array of property names or a comma-separated list string.
+
+										Whichever form is used, any property name can be prefixed with a "!" (exclamation mark) to achieve `condition inversion` for the property.
+
+										Summary of different forms...
+
+										- array of property names: =['phase1Done','phase2Done','phase3Done']=
+										- array of property names with `condition inversion`: =['wired','!isEmpty']=
+										- comma-separated list string: ='phase1Done, phase2Done, phase3Done'=
+										- comma-separated list with `condition inversion`: ='wired, !isEmpty'=
+
+										Whitespace Ignored for Comma-separated List String
+											If a comma-separated list string is specified, all whitespace in the string is ignored.
+
+											This means that whitespace around the property names is ignored, so the value ='phase1Done,phase2Done,phase3Done'= is equivalent to the value ='phase1Done, phase2Done , phase3Done'=. This also means that whitespace around the optional "!" (exclamation mark) prefix is ignored, so the value ='wired, !isEmpty'= is equivalent to the value ='wired, ! isEmpty'=.
+
+									Examples
+										The following examples illustrate the different ways in which multiple properties can be specified.
+
+										EXAMPLE: Array of Property Names
+											Multiple state properties can be specified using an array of state property names.
+
+											EXAMPLE
+											........................................................
+											myInstance.once (
+												['phase1Done','phase2Done','phase3Done'],
+												function () {
+													// execute code now that all three phases are done
+												}
+											);
+											........................................................
+
+										EXAMPLE: Comma-separated List String
+											Multiple state properties can be specified using a comma-separated list string.
+
+											EXAMPLE
+											........................................................
+											myInstance.once (
+												'phase1Done, phase2Done, phase3Done',
+												function () {
+													// execute code now that all three phases are done
+												}
+											);
+											........................................................
+
+										EXAMPLE: Array of Property Names, with Condition Inversion
+											Multiple state properties can be specified using an array of state property names, where some of the property names in the array are prefixed with the optional "!" to indicate `condition inversion`.
+
+											EXAMPLE
+											.................................................................................
+											myCollection.once (
+												['wired','!isEmpty'],
+												function () {
+													// execute code now that the collection widget is wired and no longer empty
+												}
+											);
+											.................................................................................
+
+										EXAMPLE: Comma-separated List String, with Condition Inversion
+											Multiple state properties can be specified using a comma-separated list string, where some of the property names in the list are prefixed with the optional "!" to indicate `condition inversion`.
+
+											EXAMPLE
+											.................................................................................
+											myCollection.once (
+												'wired, !isEmpty',
+												function () {
+													// execute code now that the collection widget is wired and no longer empty
+												}
+											);
+											.................................................................................
+
+								Execute Code Once a Compound Condition is Met
+									Code can be registered to be executed once a compound condition is met, by specifying the compound condition in the form of a condition function or condition expression string.
+
+									SYNTAX
+									......................................................................
+									wiringsOBJ = myInstance.once (compoundConditionSTRorFUNC,handlerFUNC);
+									......................................................................
+
+									Condition Function
+										A compound condition can be specified as a function, where the names of the function's arguments indicate the state properties that affect the condition and where the function's body evaluates the condition.
+
+										EXAMPLE
+										..............................................................................
+										myFishTankWater.once (
+											function (width,height,depth) {return width * height * depth > 1000},
+											function () {
+												// execute code, now that the water volume of the fish tank exceeds 1000
+											}
+										}
+										..............................................................................
+
+										In the above example, a compound condition is specified using a function. The arguments of the function - =width=, =height=, and =depth= - indicate that the condition is affected by the =width=, =height=, and =depth= state properties of the =myFishTankWater= instance. The function's body, =return width &#42; height &#42; depth > 1000=, evaluates the condition to be =true= when the volume of the fish tank's water is greater than =1000=.
+
+										When code is registered to be executed once the product of the =width=, =height=, and =depth= properties is greater than =1000=, if this condition is not yet met when the =once= method is called, the method will wire handlers for the =Changed.width=, =Changed.height=, and =Changed.depth= events and will re-evaluate the condition function every time any of the properties that affect the condition change value. Once the condition function returns a truthy result, the handler for the compound condition will be executed and the handlers that were wired for the =Changed.*= events will be unwired.
+
+									Condition Expression String
+										A compound condition can be specified as an expression string, where the names of the state properties affecting the condition are specified along with an expression string for evaluating the condition.
+
+										A condition expression string is formatted with two parts separated by a ":" (colon) delimiter, where the part before the colon is a comma-separated list of the state properties affecting the condition, and the part after the colon is an expression to be used for evaluating the condition.
+
+										EXAMPLE
+										..............................................................................
+										myFishTankWater.once (
+											'width, height, depth : width * height * depth > 1000',
+											function () {
+												// execute code, now that the water volume of the fish tank exceeds 1000
+											}
+										}
+										..............................................................................
+
+										In the above example, a compound condition is specified using a `condition expression string`. In this string, the part before the colon - "width, height, depth" - indicates that the condition is affected by the =width=, =height=, and =depth= state properties of the =myFishTankWater= instance. The part after the colon - "width &#42; height &#42; depth > 1000" - evaluates the condition to be =true= when the volume of the fish tank's water (ie. the product of the =width=, =height=, and =depth= properties) is greater than =1000=.
+
+								Immediate Execution if Condition Already Met
+									If the condition specified in the call to the =once= method is already met at the time that the method is called, then the handler specified by the =handlerFUNC= parameter will be executed immediately.
+
+									Otherwise, handlers will be wired for the =Changed.*= (value change) events for all the state properties that affect the condition. The condition evaluator will be executed each time any of the watched properties change value. As soon as the condition becomes met (ie. the condition evaluator produces a truthy result), the handlers wired to watch the value change events of the properties will be unwired and the handler function registered for the condition will be executed. By design, the handler is only executed for the first time that the condition becomes met.
+
+								Condition Inversion
+									As a convenience, the =once= method supports condition inversion through an optional "!" (logical not) prefix that can be placed before the condition name.
+
+									EXAMPLE
+									................................................................
+									myCollectionWidget.once (
+										'!isEmpty',
+										function () {
+											// do something now that the collection is no longer empty
+										}
+									);
+									................................................................
+
+									In the above example, code is being registered to execute once the =isEmpty= state property is =false=. This is done by prefixing the "isEmpty" condition name with a "!" (bang / exclamation) character to indicate that the code should execute only once the collection is not empty (ie. the value of the =isEmpty= state property becomes =false=). The `condition inversion` facility is convenient in situations like this where you wish to execute code only once a property's value becomes falsy, rather than once the property's value becomes truthy (which is the standard behavior for the =once= method).
+
+									Condition Inversion with Multiple Property Conditions
+										Condition inversion can be used both with single state property conditions as well as multiple property conditions.
+
+										EXAMPLE
+										................................................................
+										myCollectionWidget.once (
+											['wired','!isEmpty'],
+											function () {
+												// do something now that the collection is wired and no longer empty
+											}
+										);
+										...........................................................................
+
+										In the above example, code is being registered to be executed once the =wired= state property is truthy and the =isEmpty= state property is falsy. Condition inversion can also be used when the state properties are specified as a comma-separated list string, so specifying the condition as =['wired','!isEmpty']= is equivalent to specifying it as ='wired, !isEmpty'=.
+
+								Wirings Object
+									The =once= method returns a wirings object that can be supplied to the =unwire= method in order to unwire the handler, in the unlikely event that one may wish to remove the handler before the condition becomes met.
+
+									This case is unlikely to arise except in exceptional situations, but the means is provided. In most cases, you will simply discard / ignore the return value of the =once= method. In the event that the condition is met when the =once= method is called, then the returned wirings object will be an empty object.
+
+								Handler Arguments
+									The handler code that is registered to be executed once a condition is met will be passed the values of all the state properties that affect the condition as arguments.
+
+									EXAMPLE
+									...................................................................
+									myFishTankWater.once (
+										'width, height, depth : width * height * depth > 1000',
+										function (width,height,depth) {
+											alert (width + '(W) x ' + height + '(H) x ' + depth + '(D)');
+										}
+									}
+
+									myFishTankWater.set ({
+										width:10,
+										height:11,
+										depth:12
+									});
+									...................................................................
+
+									In the above example, code is being registered to be executed once the product of the =width=, =height=, and =depth= properties of the =myFishTankWater= instance exceeds =1000=. Once the call to the =set= method has been executed, the volume of the fish tank's water will be =1320= and the handler will be executed.
+
+									Now, because the properties affecting the condition have been specified as "width, height, depth", the value of these state properties will be passed as arguments to the handler in the order =width=, =height=, and =depth=. In this case, the handler function is choosing to declare these function arguments, using the same names for the sake of clarity - you could ignore the arguments if you didn't care about the specific values at the time the condition is met, or you could use the arguments but name them differently. In this example, the =alert= statement will alert the text "10(W) x 11(H) x 12(D)".
+
+								NOTES
+								- see the other `condition system methods`
+					*/
+				};
+
+				_classPrototype.is = function (_property) {
+					return !!this [_getPropertyPrivateName (this,_property)];
+					/*?
+						Instance Methods
+							is
+								Returns a boolean, indicating whether or not the specified state property's value is truthy.
+
+								SYNTAX
+								................................
+								myInstance.is (propertyNameSTR);
+								................................
+
+								The =is= method is offered as a convenience to improve the semantics of code that is using state properties to represent conditions, and is a very thin wrapper around the =get= instance method. The statement =myInstance.is ('myCondition')= is equivalent to the statement =!!myInstance.get ('myCondition')=.
+
+								EXAMPLE
+								...........................................
+								if (myWidget.is ('enabled')) {
+									// do something if the widget is enabled
+								}
+								...........................................
+
+								In the above example, some code is being executed conditionally, based upon whether or not a widget is enabled. The =Uize.Widget= base class provides an =enabled= state property, whose value is a boolean. One could use the =get= method in this code example to achieve the same effect, but using the =is= method make the code more readable.
+
+								NOTES
+								- see the other `condition system methods`
+					*/
+				};
+
+				_classPrototype.met = function (_propertyOrProperties) {
+					this.set (_propertyOrProperties,true);
+					/*?
+						Instance Methods
+							met
+								Sets the specified condition (or conditions) as having been met.
+
+								DIFFERENT USAGES
+
+								`Set a Single Condition as Having Been Met`
+								.................................
+								myInstance.met (propertyNameSTR);
+								.................................
+
+								`Set Multiple Conditions as Having Been Met`
+								....................................
+								myInstance.met (propertyNamesARRAY);
+								....................................
+
+								For Improved Semantics
+									The =met= method is offered as a convenience to improve the semantics of code that is using state properties to represent conditions, and is a very thin wrapper around the =set= instance method.
+
+									The statement =myInstance.met ('myCondition')= is equivalent to the statement =myInstance.set ('myCondition',true)=. When using a state property to represent a condition, the =met= method is a semantically elegant way to set the value of the property to =true= to indicate that the condition represented by the property has been met.
+
+									EXAMPLE
+									.............................................
+									MyClass.prototype.initialize = function () {
+										// some code here to do the initialization
+										this.met ('initialized');
+									};
+									.............................................
+
+									In the above example, an =initialize= instance method is defined for the class =MyClass=. In the method's implementation, after all the initialization has been performed, the =met= method is being called to indicate that the =initialized= condition has been met, where =initialized= is the name of a state property provided in =MyClass=. Now, other code can be registered to be executed only once an instance has been initialized by using the =once= instance method, as follows...
+
+									.............................................................
+									myInstance.once (
+										'initialized',
+										function () {
+											// do some stuff once the instance has been initialized
+										}
+									);
+									.............................................................
+
+								Set a Single Condition as Having Been Met
+									In its most typical usage, a single condition can be set as having been met by specifying the name of the condition for the =propertyNameSTR= parameter.
+
+									SYNTAX
+									.................................
+									myInstance.met (propertyNameSTR);
+									.................................
+
+									EXAMPLE
+									..........................
+									this.met ('someSelected');
+									..........................
+
+								Set Multiple Conditions as Having Been Met
+									In cases where you wish to set multiple conditions as having been met, the names of those conditions can be supplied by specifying an array for the =propertyNamesARRAY= parameter.
+
+									SYNTAX
+									....................................
+									myInstance.met (propertyNamesARRAY);
+									....................................
+
+									EXAMPLE
+									....................................
+									this.met (['initialized', 'ready']);
+									....................................
+
+								NOTES
+								- see the companion =unmet= instance method
+								- see the other `condition system methods`
+					*/
+				};
+
+				_classPrototype.unmet = function (_propertyOrProperties) {
+					this.set (_propertyOrProperties,false);
+					/*?
+						Instance Methods
+							unmet
+								Sets the specified condition (or conditions) as being unmet.
+
+								DIFFERENT USAGES
+
+								`Set a Single Condition as Being Unmet`
+								...................................
+								myInstance.unmet (propertyNameSTR);
+								...................................
+
+								`Set Multiple Conditions as Being Unmet`
+								......................................
+								myInstance.unmet (propertyNamesARRAY);
+								......................................
+
+								For Improved Semantics
+									The =unmet= method is offered as a convenience to improve the semantics of code that is using state properties to represent conditions, and is a very thin wrapper around the =set= instance method.
+
+									The statement =myInstance.unmet ('myCondition')= is equivalent to the statement =myInstance.set ('myCondition',false)=. When using a state property to represent a condition, the =unmet= method is a semantically elegant way to set the value of the property to =false= to indicate that the condition represented by the property is not met / no longer met.
+
+									EXAMPLE
+									..............................................
+									MyClass.prototype.die = function () {
+										// some code here to tear down the instance
+										this.unmet ('initialized');
+									};
+									..............................................
+
+									In the above example, a =die= instance method is defined for the class =MyClass=. In the method's implementation, after all the tear down steps have been performed, the =unmet= method is being called to indicate that the =initialized= condition is no longer met, where =initialized= is the name of a state property provided in =MyClass=. It is assumed that some other method, such as an =initialize= instance method for the class, is responsible for setting the condition as having been met with a statement like =this.met ('initialized')=.
+
+								Set a Single Condition as Being Unmet
+									In its most typical usage, a single condition can be set as being unmet by specifying the name of the condition for the =propertyNameSTR= parameter.
+
+									SYNTAX
+									...................................
+									myInstance.unmet (propertyNameSTR);
+									...................................
+
+									EXAMPLE
+									............................
+									this.unmet ('someSelected');
+									............................
+
+								Set Multiple Conditions as Being Unmet
+									In cases where you wish to set multiple conditions as being unmet, the names of those conditions can be supplied by specifying an array for the =propertyNamesARRAY= parameter.
+
+									SYNTAX
+									......................................
+									myInstance.unmet (propertyNamesARRAY);
+									......................................
+
+									EXAMPLE
+									......................................
+									this.unmet (['initialized', 'ready']);
+									......................................
+
+								NOTES
+								- see the companion =met= instance method
+								- see the other `condition system methods`
+					*/
+				};
+
+				_classPrototype.isMet = function (_condition) {
+					var _derivation = _resolveDerivation (_condition);
+					return _derivation._determiner.apply (0,_derivation._determinantsValuesHarvester.call (this));
+					/*?
+						Instance Methods
+							isMet
+								Returns a boolean, indicating whether or not the specified condition is met.
+
+								DIFFERENT USAGES
+
+								`Test if a State Property is Truthy or Falsy`
+								....................................................
+								isMetBOOL = myInstance.isMet (propertyConditionSTR);
+								....................................................
+
+								`Test if Multiple State Properties Are Truthy or Falsy`
+								.............................................................
+								isMetBOOL = myInstance.isMet (propertiesConditionARRAYorSTR);
+								.............................................................
+
+								`Test if a Compound Condition is Met`
+								..........................................................
+								isMetBOOL = myInstance.isMet (compoundConditionSTRorFUNC);
+								..........................................................
+
+								Test if a State Property is Truthy or Falsy
+									In its most basic usage, the =isMet= method can be used to test if a single state property becomes truthy or falsy.
+
+									SYNTAX
+									....................................................
+									isMetBOOL = myInstance.isMet (propertyConditionSTR);
+									....................................................
+
+								Test if Multiple State Properties Are Truthy or Falsy
+									One can test if all properties in a set of state properties are truthy or falsy, by specifying the state properties as an array of property names or as a comma-separated list string.
+
+									SYNTAX
+									.............................................................
+									isMetBOOL = myInstance.isMet (propertiesConditionARRAYorSTR);
+									.............................................................
+
+								Test if a Compound Condition is Met
+									One can test if a compound condition has been met, by specifying the compound condition in the form of a condition function or condition expression string.
+
+									SYNTAX
+									..........................................................
+									isMetBOOL = myInstance.isMet (compoundConditionSTRorFUNC);
+									..........................................................
+
+								Specifying Conditions
+									When using the =isMet= method, conditions are specified in exactly the same as with the =once= method.
+
+									Rather than redundantly providing comprehensive examples for the different usages of the =isMet= method and the different ways in which conditions can be specified, instead please consult the reference for the =once= method. While the =once= method lets you register a handler function that should be executed once a condition is met, the =isMet= method simply tests if a condition is met and returns a boolean result.
+
+								NOTES
+								- see the other `condition system methods`
+					*/
+				};
+
+			/*** State Property System Methods ***/
 				_class.get = _classPrototype.get = function (_property) {
 					if (typeof _property == _typeString) {
 						/* NOTE:
@@ -606,7 +1497,7 @@ Uize.module ({
 						;
 						if (!_property) {
 							/* NOTE:
-								Driven off of private names to ensure that there is only one property in the object for each actual set-get property, otherwise you can end up in bad situations.
+								Driven off of private names to ensure that there is only one property in the object for each actual state property, otherwise you can end up in bad situations.
 							*/
 							var
 								_class = _getClass (_this),
@@ -616,6 +1507,12 @@ Uize.module ({
 								_result [_propertyProfilesByPrivateNames [_propertyPrivateName]._publicName] =
 									_this [_propertyPrivateName]
 							;
+							if (_isInstance (_this)) {
+								var _adHocProperties = _this._adHocProperties;
+								if (_adHocProperties)
+									for (_property in _adHocProperties) _result [_property] = _this [_property]
+								;
+							}
 						} else if (_isArray (_property)) {
 							for (
 								var _subPropertyNo = -1, _totalSubProperties = _property.length;
@@ -634,7 +1531,7 @@ Uize.module ({
 					/*?
 						Instance Methods
 							get
-								Lets you query the value of one of an instance's set-get properties.
+								Lets you query the value of one of an instance's state properties.
 
 								DIFFERENT USAGES
 
@@ -659,7 +1556,7 @@ Uize.module ({
 								.........................................
 
 								Get the Value of a Single Property
-									In the most typical usage of the =get= instance method, a =propertyNameSTR= parameter can be specified in order to get the value of a single set-get property.
+									In the most typical usage of the =get= instance method, a =propertyNameSTR= parameter can be specified in order to get the value of a single state property.
 
 									SYNTAX
 									........................................................
@@ -678,7 +1575,7 @@ Uize.module ({
 									......................................................
 
 								Get Values for Multiples Properties, by Specifying a Property Names Array
-									When a =propertyNamesARRAY= parameter is specified in place of the =propertyNameSTR= parameter, the values for the instance set-get properties specified in the array will be populated into an object and returned.
+									When a =propertyNamesARRAY= parameter is specified in place of the =propertyNameSTR= parameter, the values for the instance state properties specified in the array will be populated into an object and returned.
 
 									SYNTAX
 									........................................................
@@ -697,7 +1594,7 @@ Uize.module ({
 									After the above code has been executed, the =sliderValueAndRange= variable would have the value ={minValue:0,maxValue:100,value:57}=.
 
 								Get Values for Multiples Properties, by Specifying a Properties Object
-									When a =propertyNamesARRAY= parameter is specified in place of the =propertyNameSTR= parameter, the values for the instance set-get properties specified in the array will be populated into an object and returned.
+									When a =propertyNamesARRAY= parameter is specified in place of the =propertyNameSTR= parameter, the values for the instance state properties specified in the array will be populated into an object and returned.
 
 									SYNTAX
 									...................................................
@@ -713,10 +1610,10 @@ Uize.module ({
 									sliderValueAndRange = mySlider.get ({minValue:0,maxValue:0,value:0});
 									.....................................................................
 
-									After the above code has been executed, the =sliderValueAndRange= variable would have the value ={minValue:0,maxValue:100,value:57}=. The values of the properties in the properties object, as specified by the =propertiesOBJ= parameter, are immaterial - for whatever properties exist in the object, the values for the corresponding set-get properties of the instance will be returned.
+									After the above code has been executed, the =sliderValueAndRange= variable would have the value ={minValue:0,maxValue:100,value:57}=. The values of the properties in the properties object, as specified by the =propertiesOBJ= parameter, are immaterial - for whatever properties exist in the object, the values for the corresponding state properties of the instance will be returned.
 
 								Get Values for All Properties
-									When no parameter is specified, the =get= instance method will return an object containing values for all the set-get properties of the instance.
+									When no parameter is specified, the =get= instance method will return an object containing values for all the state properties of the instance.
 
 									SYNTAX
 									.........................................
@@ -730,7 +1627,7 @@ Uize.module ({
 									copyOfMyFade = Uize.Fade (myFade.get ());
 									.........................................
 
-									In this example, an instance of the class =Uize.Fade= is being created by passing the constructor all the set-get property values obtained from the =myFade= instance using the =get= method. The new instance created will then have the same state as the =myFade= instance.
+									In this example, an instance of the class =Uize.Fade= is being created by passing the constructor all the state property values obtained from the =myFade= instance using the =get= method. The new instance created will then have the same state as the =myFade= instance.
 
 								NOTES
 								- see also the =set= instance method
@@ -738,7 +1635,7 @@ Uize.module ({
 
 						Static Methods
 							Uize.Class.get
-								Lets you query the initial value for one of the class's set-get properties.
+								Lets you query the initial value for one of the class's state properties.
 
 								SYNTAX
 								........................................................
@@ -750,13 +1647,13 @@ Uize.module ({
 								propertyValuesOBJ = Uize.Class.get (propertyNamesARRAY);
 								........................................................
 
-								When a =propertyNamesARRAY= parameter is specified in place of the =propertyNameSTR= parameter, the values for the class set-get properties specified in the array will be populated into an object and returned. So, for example =Uize.Widget.get (['enabled','busy','built'])= would return a result like ={enabled:'inherit',busy:'inherit',built:true}=.
+								When a =propertyNamesARRAY= parameter is specified in place of the =propertyNameSTR= parameter, the values for the class state properties specified in the array will be populated into an object and returned. So, for example =Uize.Widget.get (['enabled','busy','built'])= would return a result like ={enabled:'inherit',busy:'inherit',built:true}=.
 
 								.........................................
 								allPropertyValuesOBJ = Uize.Class.get ();
 								.........................................
 
-								When no parameter is specified, the =Uize.Class.get= static method will return an object containing values for all the registered set-get properties of the class.
+								When no parameter is specified, the =Uize.Class.get= static method will return an object containing values for all the declared state properties of the class.
 
 								NOTES
 								- see also the =Uize.Class.set= static method
@@ -764,88 +1661,113 @@ Uize.module ({
 					*/
 				};
 
-				_class.registerProperties = function (_propertyProfiles) {
-					var
-						_this = this,
-						_propertyProfilesByPrivateNames = _this._propertyProfilesByPrivateNames,
-						_propertyProfilesByPublicNames = _this._propertyProfilesByPublicNames
-					;
-					for (var _propertyPrivateName in _propertyProfiles) {
+
+				_class.stateProperties =
+				_class.registerProperties = /* DEPRECATED 2013-01-02 */
+					function (_propertyProfiles) {
 						var
-							_propertyData = _propertyProfiles [_propertyPrivateName],
-							_propertyDataIsObject = _isObject (_propertyData),
-							_propertyPublicName =
-								(_propertyDataIsObject ? _propertyData.name : _propertyData) || _propertyPrivateName,
-							_propertyPrimaryPublicName = _propertyPublicName,
-							_propertyProfile = _propertyProfilesByPrivateNames [_propertyPrivateName] = {_privateName:_propertyPrivateName}
+							_this = this,
+							_propertyProfilesByPrivateNames = _this._propertyProfilesByPrivateNames,
+							_propertyProfilesByPublicNames = _this._propertyProfilesByPublicNames
 						;
-						if (_propertyPublicName.indexOf ('|') > -1) {
-							var _pseudonyms = _propertyPublicName.split ('|');
-							_propertyPrimaryPublicName = _pseudonyms [0];
-							_Uize.lookup (_pseudonyms,_propertyProfile,_propertyProfilesByPublicNames);
-						} else {
-							_propertyProfilesByPublicNames [_propertyPublicName] = _propertyProfile;
+						for (var _propertyPrivateName in _propertyProfiles) {
+							var
+								_propertyData = _propertyProfiles [_propertyPrivateName],
+								_propertyDataIsObject = _isObject (_propertyData),
+								_propertyPublicName =
+									(_propertyDataIsObject ? _propertyData.name : _propertyData) || _propertyPrivateName,
+								_propertyPrimaryPublicName = _propertyPublicName,
+								_propertyProfile = _propertyProfilesByPrivateNames [_propertyPrivateName] = {_privateName:_propertyPrivateName}
+							;
+							if (_propertyPublicName.indexOf ('|') > -1) {
+								var _pseudonyms = _propertyPublicName.split ('|');
+								_propertyPrimaryPublicName = _pseudonyms [0];
+								_lookup (_pseudonyms,_propertyProfile,_propertyProfilesByPublicNames);
+							} else {
+								_propertyProfilesByPublicNames [_propertyPublicName] = _propertyProfile;
+							}
+							_propertyProfile._publicName = _propertyPrimaryPublicName;
+							if (_propertyDataIsObject) {
+								if (_propertyData.onChange) _propertyProfile._onChange = _propertyData.onChange;
+								if (_propertyData.conformer) _propertyProfile._conformer = _propertyData.conformer;
+								_this [_propertyPrivateName] = _propertyData.value;
+							}
 						}
-						_propertyProfile._publicName = _propertyPrimaryPublicName;
-						if (_propertyDataIsObject) {
-							if (_propertyData.onChange) _propertyProfile._onChange = _propertyData.onChange;
-							if (_propertyData.conformer) _propertyProfile._conformer = _propertyData.conformer;
-							_this [_propertyPrivateName] = _propertyData.value;
-						}
-					}
-					_this._instancePropertyDefaults = this.get ();
-					/*?
-						Static Methods
-							Uize.Class.registerProperties
-								Lets you register properties for the class.
+						_this._instancePropertyDefaults = this.get ();
+						/*?
+							Static Methods
+								Uize.Class.stateProperties
+									Lets you declare one or more state properties for instances of the class.
 
-								SYNTAX
-								.....................................................
-								MyClass.registerProperties (propertiesDefinitionOBJ);
-								.....................................................
+									SYNTAX
+									..................................................
+									MyClass.stateProperties (propertiesDefinitionOBJ);
+									..................................................
 
-								The object specified in =propertiesDefinitionOBJ= parameter must conform to a specific structure. Each property of this object represents a property to be registered for the class, where the property name specifies the internal name to be used for the class property and the property's string value specifies the class property's public name. As an alternative to a string value, the property's value can be an object whose =name= property specifies the class property's public name and where an optional =onChange= property specifies a handler function that should be executed every time the value of the class property changes. This is all best illustrated with an example...
+									The object specified in =propertiesDefinitionOBJ= parameter must conform to a specific structure. Each property of this object represents a property to be declared for the class, where the property name specifies the internal name to be used for the class property and the property's string value specifies the class property's public name. As an alternative to a string value, the property's value can be an object whose =name= property specifies the class property's public name and where an optional =onChange= property specifies a handler function that should be executed every time the value of the class property changes. This is all best illustrated with an example...
 
-								EXAMPLE
-								...........................................................................
-								MyClass.registerProperties (
-									{
-										_propertylName:'property1Name',
-										_property2Name:'property2Name',
-										_property3Name:{
-											name:'property3Name',
-											onChange:function () {
-												// code to be performed when the value of this property changes
+									EXAMPLE
+									...........................................................................
+									MyClass.stateProperties (
+										{
+											_propertylName:'property1Name',
+											_property2Name:'property2Name',
+											_property3Name:{
+												name:'property3Name',
+												onChange:function () {
+													// code to be performed when the value of this property changes
+												}
 											}
 										}
-									}
-								);
-								...........................................................................
+									);
+									...........................................................................
 
-								NOTES
-								- calls to this method are cumulative, so it is possible to register properties in multiple separate batches
-					*/
-				};
+									NOTES
+									- this method may be called multiple times for a class (see `Feature Declarations are Cumulative`)
+									- see the other `feature declaration methods`
+
+							Deprecated Features
+								Uize.Class.registerProperties -- DEPRECATED 2013-01-02
+									The =Uize.Class.registerProperties= static method has been deprecated in favor of the newly added =Uize.Class.stateProperties= static method.
+
+									......................................................................
+									Uize.Class.registerProperties >> BECOMES >> Uize.Class.stateProperties
+									......................................................................
+
+									The =Uize.Class.stateProperties= method is essentially just a renaming of the deprecated =Uize.Class.registerProperties= method and behaves in exactly the same way. The new name was chosen to be consistent with documentation that refers to these properties universally as state properties. The new name is also more concise.
+						*/
+					}
+				;
 
 				_class.set = _classPrototype.set = function (_properties) {
 					/* NOTE:
 						Yes, there are functions _getClass and _getPropertyPrivateName that could be used (and were at one point), but this code needs to be tuned for performance since set is a touch point in so many places.
 					*/
-					if (arguments.length > 1)
+					var
+						_arguments = arguments,
+						_argumentsLength = _arguments.length
+					;
+					if (_argumentsLength > 1)
 						/* NOTE:
 							- support for...
-								set (propertyName,propertyValue)
+								set (propertyNameSTR,propertyValueANYTYPE)
 
 								or...
 
 								set (
-									property1Name,property1Value,
-									property2Name,property2Value,
+									property1NameSTR,property1ValueANYTYPE,
+									property2NameSTR,property2ValueANYTYPE,
 									...
-									propertyNName,propertyNValue
+									propertyNNameSTR,propertyNValueANYTYPE
 								)
+
+								or...
+
+								set (propertyNamesARRAY,propertyValueANYTYPE)
 						*/
-						_properties = _pairUp.apply (0,arguments)
+						_properties = _argumentsLength > 2 || typeof _properties == _typeString
+							? _pairUp.apply (0,_arguments)
+							: _lookup (_properties,_arguments [1])
 					;
 					var
 						_this = this,
@@ -863,7 +1785,7 @@ Uize.module ({
 						_changedEventsToFire,
 						_propertyPrivateName,
 						_propertyPublicName,
-						_propertiesToRegister,
+						_propertiesToDeclare,
 						_propertyValue,
 						_propertiesBeingSet
 					;
@@ -877,10 +1799,16 @@ Uize.module ({
 							_propertyPrivateName = _propertyProfile._privateName;
 							_propertyPublicName = _propertyProfile._publicName;
 						} else {
-							(_propertiesToRegister || (_propertiesToRegister = {})) [
-								_propertyPrivateName = _propertyPublicName = _propertyPublicOrPrivateName
-							] =
-								_propertyProfile = _thisIsInstance ? {} : {value:_propertyValue}
+							_propertyPrivateName = _propertyPublicName = _propertyPublicOrPrivateName;
+							_propertyProfile = _thisIsInstance ? {} : {value:_propertyValue};
+							_thisIsInstance
+								? (
+									(_this._adHocProperties || (_this._adHocProperties = {})) [_propertyPublicOrPrivateName] =
+										true
+								) : (
+									(_propertiesToDeclare || (_propertiesToDeclare = {})) [_propertyPublicOrPrivateName] =
+										_propertyProfile
+								)
 							;
 						}
 						if (_thisIsInstance)
@@ -894,7 +1822,6 @@ Uize.module ({
 									)
 									: _propertyValue
 						;
-
 						if (_propertyValue !== _this [_propertyPrivateName]) {
 							if (_thisIsInstance) {
 								/*** build up list of events to fire for 'Changed.' event handlers ***/
@@ -906,7 +1833,7 @@ Uize.module ({
 										(_changedEventsToFire || (_changedEventsToFire = [])).push (_propertyPublicName)
 									;
 								/*** build up list of onChange handlers to execute ***/
-									function _processOnChangeHandler (_onChangeHandler) {
+									var _processOnChangeHandler = function (_onChangeHandler) {
 										if (_isFunction (_onChangeHandler)) {
 											if (!_onChangeHandlers) {
 												_onChangeHandlers = [];
@@ -921,13 +1848,13 @@ Uize.module ({
 										} else if (_isArray (_onChangeHandler)) {
 											_forEach (_onChangeHandler,_processOnChangeHandler);
 										}
-									}
+									};
 									_propertyProfile._onChange && _processOnChangeHandler (_propertyProfile._onChange);
 							}
 							_this [_propertyPrivateName] = _propertyValue;
 						}
 					}
-					_propertiesToRegister && _class.registerProperties (_propertiesToRegister);
+					_propertiesToDeclare && _class.stateProperties (_propertiesToDeclare);
 					if (_thisIsInstance) {
 						if (_onChangeHandlers) {
 							for (
@@ -949,24 +1876,24 @@ Uize.module ({
 							/*?
 								Instance Events
 									Changed.*
-										The =Changed.*= instance event is a wildcard event that is fired whenever one or more set-get properties change value as a result of a call to the =set= instance method.
+										The =Changed.*= instance event is a wildcard event that is fired whenever one or more state properties change value as a result of a call to the =set= instance method.
 
-										This event will only be fired once for all set-get properties that have changed value during a call to the =set= method. The event object for this event will contain a =properties= property, which is an object indicating which set-get properties have changed value, being a mapping between the public names of set-get properties that have changed and their new values.
+										This event will only be fired once for all state properties that have changed value during a call to the =set= method. The event object for this event will contain a =properties= property, which is an object indicating which state properties have changed value, being a mapping between the public names of state properties that have changed and their new values.
 
 										NOTES
 										- compare to the related =Changed.[propertyName]= instance event
-										- wiring a handler for the =Changed.*= event may have a slight performance impact, since this event will be fired any time that any set-get property changes value
+										- wiring a handler for the =Changed.*= event may have a slight performance impact, since this event will be fired any time that any state property changes value
 
 									Changed.[propertyName]
-										The =Uize.Class= base class implements a generalized mechanism for firing events when the values of set-get properties are changed.
+										The =Uize.Class= base class implements a generalized mechanism for firing events when the values of state properties are changed.
 
-										This means that for any set-get property that is registered through the =Uize.Class.registerProperties= static method, a handler can be registered for a change in the value of that property without having to write any additional code to fire an event.
+										This means that for any state property that is declared through the =Uize.Class.stateProperties= static method, a handler can be registered for a change in the value of that property without having to write any additional code to fire an event.
 
 										Event Naming
-											The name of a changed event that fires is of the form =Changed.[propertyName]=, where =propertyName= is the primary public name of the set-get property. For example, if you registered a set-get property named =value=, then a =Changed.value= event would fire each time this property is changed.
+											The name of a changed event that fires is of the form =Changed.[propertyName]=, where =propertyName= is the primary public name of the state property. For example, if you declared a state property named =value=, then a =Changed.value= event would fire each time this property is changed.
 
 										Property Aliases
-											If a set-get property has aliases, handlers can be registered for the property's changed event using any of the aliases. However, the name of the event when it fires will always be derived from the primary public name (ie. first in the alias list) of the property. So, for example, if a set-get property was registered with the public names =color= and =hexRgb=, both =Changed.color= and =Changed.hexRgb= would be treated as equivalent.
+											If a state property has aliases, handlers can be registered for the property's changed event using any of the aliases. However, the name of the event when it fires will always be derived from the primary public name (ie. first in the alias list) of the property. So, for example, if a state property was declared with the public names =color= and =hexRgb=, both =Changed.color= and =Changed.hexRgb= would be treated as equivalent.
 
 											EXAMPLE
 											..........................................................
@@ -977,13 +1904,13 @@ Uize.module ({
 											myColorWidget.unwire ('Changed.hexRgb',handleColorChange);
 											..........................................................
 
-											In this example, the =handleColorChange= function would not be executed when the value of the =color= set-get property changes, because =Changed.color= and =Changed.hexRgb= are treated as equivalent and therefore the =unwire= statement effectively removes the handler registered in the previous statement.
+											In this example, the =handleColorChange= function would not be executed when the value of the =color= state property changes, because =Changed.color= and =Changed.hexRgb= are treated as equivalent and therefore the =unwire= statement effectively removes the handler registered in the previous statement.
 
 										Must Use the set Method
-											The =Changed.[propertyName]= event will only fire for a particular set-get property if the value for that property is set using the =set= method, since it is within the =set= method that change detection occurs and the event is fired. If you simply assign a value by directly accessing the private name of the property, then the event will not fire.
+											The =Changed.[propertyName]= event will only fire for a particular state property if the value for that property is set using the =set= method, since it is within the =set= method that change detection occurs and the event is fired. If you simply assign a value by directly accessing the private name of the property, then the event will not fire.
 
 										Only On Change, Not Every Set
-											The =Changed.[propertyName]= event only fires for a particular set-get property when the value for that property is *changed* by using the =set= method. So, if the =set= method is called but the value that is specified is already the value of the property, then there will be no change and no event will be fired.
+											The =Changed.[propertyName]= event only fires for a particular state property when the value for that property is *changed* by using the =set= method. So, if the =set= method is called but the value that is specified is already the value of the property, then there will be no change and no event will be fired.
 
 											Additionally, if a =conformer= is registered for the property and the action of the conformer results in the property value not being changed, then no event will be fired - even if the value specified in the =set= call is different to the current value of the property. This can be the case if the value is at an edge of its valid range, an attempt is made to set the value outside of its valid range, and the conformer has the action of constraining the value so that it remains at the same edge of its valid range.
 
@@ -997,109 +1924,277 @@ Uize.module ({
 					/*?
 						Instance Methods
 							set
-								Lets you set one or more of an instance's set-get properties.
+								Lets you set values for one or more of an instance's state properties.
 
-								SYNTAX
-								...............................
-								myInstance.set (propertiesOBJ);
-								...............................
+								DIFFERENT USAGES
 
-								EXAMPLE
-								.....................................
-								myInstance.set (
-									{
-										property1Name:'property1Value',
-										property2Name:'property2Value',
-										property3Name:'property4Value'
-									}
-								);
-								.....................................
+								`Set Values for One or More Properties with a Names/Values Object`
+								........................................
+								myInstance.set (propertyNamesValuesOBJ);
+								........................................
 
-								VARIATION 1
+								`Set the Value for a Property with Name and Value Arguments`
 								......................................................
 								myInstance.set (propertyNameSTR,propertyValueANYTYPE);
 								......................................................
 
-								A variation that accepts the two parameters =propertyNameSTR= and =propertyValueANYTYPE= makes it possible to use an expression or the value of a variable for specifying the name of the property to set. There is no appreciable difference in performance between using the =propertiesOBJ= form and the two parameter form when setting the value for a single set-get property, so the two parameter form is primarily a convenience for setting the value for a dynamically selected property.
-
-								EXAMPLE
-								...............................................................
-								_classPrototype.increment = function (_propertyName,_amount) {
-									this.set (_propertyName,this.get (_propertyName) + _amount);
-								}
-								...............................................................
-
-								In the above example, a generic incrementer instance method is being implemented. It receives a =_propertyName= parameter that specifies the set-get property to increment, and it passes the value of this parameter as the first parameter in the call to the set method.
-
-								VARIATION 2
-								..........................................
+								`Set Values for Multiple Properties with Multiple Name and Value Arguments`
+								.........................................
 								myInstance.set (
 									property1NameSTR,property1ValueANYTYPE,
 									property2NameSTR,property2ValueANYTYPE,
-									...,
+									... ... ...
 									propertyNNameSTR,propertyNValueANYTYPE
 								);
-								..........................................
+								.........................................
 
-								This variation allows values for an arbitrary number of set-get properties to be set in a single call to the =set= method, by specifying the names and values of the properties using an arbitrary number of name-value pair arguments, where even numbered arguments are property names and odd numbered arguments are property values. This variation makes it possible to use expressions or the values of variables for specifying the names of the properties to set.
+								`Set the Same Value for Multiple Properties`
+								.........................................................
+								myInstance.set (propertyNamesARRAY,propertyValueANYTYPE);
+								.........................................................
+
+								Set Values for One or More Properties with a Names/Values Object
+									In the standard usage, a single =propertyNamesValuesOBJ= parameter can be passed to the =set= method in order to set values for one or more properties.
+
+									SYNTAX
+									........................................
+									myInstance.set (propertyNamesValuesOBJ);
+									........................................
+
+									Each key of the =propertyNamesValuesOBJ= object represents the name of a state property whose value should be set, and each corresponding value represents the value that a property should be set to.
+
+									EXAMPLE 1
+									...............................
+									myWidget.set ({enabled:false});
+									...............................
+
+									In the above example, the =set= method is being used to set the value of just one property - the =enabled= property of a widget instance.
+
+									EXAMPLE 2
+									................
+									mySlider.set ({
+										maxValue:100,
+										minValue:0,
+										value:23
+									});
+									................
+
+									In the above example, the =set= method is being used to set values for multiple properties - the =maxValue=, =minValue=, and =value= properties of a slider widget instance.
+
+								Set the Value for a Property with Name and Value Arguments
+									The value of a state property can be set by providing two parameters to the =set= method: a string parameter specifying the name of a property, and a value parameter that can be of any type.
+
+									SYNTAX
+									......................................................
+									myInstance.set (propertyNameSTR,propertyValueANYTYPE);
+									......................................................
+
+									This variation of the =set= method is particularly useful in cases where you wish to use a variable or an expression to determine the state property whose value should be set. Consider the following example...
+
+									EXAMPLE
+									..............................................................
+									MyClass.prototype.increment = function (propertyName,amount) {
+										this.set (propertyName,this.get (propertyName) + amount);
+									}
+									..............................................................
+
+									In the above example, a generic incrementer instance method is being implemented. It receives a =propertyName= parameter that specifies the state property to increment, and it passes the value of this parameter as the first parameter in the call to the =set= method.
+
+									Slightly Less Performant
+										This variation of the =set= method is very slightly less performant than the variation that accepts a single =propertyNamesValuesOBJ= parameter.
+
+										This variation is offered primarily as a convenience for when the names of properties to be set need to be supplied through variables or expressions. While there is not much cost to using this variation when not necessary, it is advised to generally use the form that accepts a =propertyNamesValuesOBJ= parameter whenever possible (see `Set Values for One or More Properties with a Names/Values Object`).
+
+								Set Values for Multiple Properties with Multiple Name and Value Arguments
+									The values for an arbitrary number of state properties can be set by providing the names and values of the properties using an arbitrary number of name-value pair arguments, where even numbered arguments are property names and odd numbered arguments are property values.
+
+									SYNTAX
+									.........................................
+									myInstance.set (
+										property1NameSTR,property1ValueANYTYPE,
+										property2NameSTR,property2ValueANYTYPE,
+										... ... ...
+										propertyNNameSTR,propertyNValueANYTYPE
+									);
+									.........................................
+
+									This variation of the =set= method is an extension of the variation that lets you `set the value for a property with name and value arguments`, and has the same benefits and performance considerations.
+
+								Set the Same Value for Multiple Properties
+									The same value can be set for multiple state properties by specifying the names of the properties that should all be set to the same value in a =propertyNamesARRAY= parameter, and by specifying the value they should all be set to in a =propertyValueANYTYPE= parameter.
+
+									SYNTAX
+									.........................................................
+									myInstance.set (propertyNamesARRAY,propertyValueANYTYPE);
+									.........................................................
+
+									EXAMPLE
+									..............................................................
+									myWidget.set (['initialized','ready','enabled','busy'],false);
+									..............................................................
+
+									In the above example, the properties =initialized=, =ready=, =enabled=, and =busy= of a widget instance are all being set to =false=.
+
+									This variation of the =set= method can be useful in cases where you wish to set a good number of properties to the same value and where it would be more concise to use this form, or in cases where you are receiving an array of properties that should be set to some desired value. This variation can also be convenient when the value that you wish to set multiple properties to is the result of an expression and where you would otherwise need to create a local variable in order to avoid recalculating the expression for each property.
+
+									INSTEAD OF...
+									.......................................................................................
+									var initValue = env.config.hasOwnProperty ('initValue') ? env.config.initValue : false;
+									myInstance.set ({
+										foo:initValue,
+										bar:initValue,
+										baz:initValue
+									});
+									.......................................................................................
+
+									USE...
+									.........................................................................
+									myInstance.set (
+										['foo','bar','baz'],
+										env.config.hasOwnProperty ('initValue') ? env.config.initValue : false
+									);
+									.........................................................................
 
 								NOTES
-								- see also the =get= instance method
-								- see also the =Uize.Class.get= static method
-								- see also the =Uize.Class.set= static method
+								- see the companion =get= instance method
+								- see also the =Uize.Class.get= and =Uize.Class.set= static methods
 
 						Static Methods
 							Uize.Class.set
-								Lets you set the initial value for one of the class's set-get properties.
+								Lets you set initial values for one or more of a class's state properties.
 
-								SYNTAX
-								...............................
-								Uize.Class.set (propertiesOBJ);
-								...............................
+								DIFFERENT USAGES
 
-								EXAMPLE
+								`Set Initial Values for One or More Properties with a Names/Values Object`
 								.....................................
-								Uize.Class.set (
-									{
-										property1Name:'property1Value',
-										property2Name:'property2Value',
-										property3Name:'property4Value'
-									}
-								);
+								MyClass.set (propertyNamesValuesOBJ);
 								.....................................
 
-								VARIATION 1
-								......................................................
-								Uize.Class.set (propertyNameSTR,propertyValueANYTYPE);
-								......................................................
+								`Set the Initial Value for a Property with Name and Value Arguments`
+								...................................................
+								MyClass.set (propertyNameSTR,propertyValueANYTYPE);
+								...................................................
 
-								A variation that accepts the two parameters =propertyNameSTR= and =propertyValueANYTYPE= makes it possible to use an expression or the value of a variable for specifying the name of the property to set. There is no appreciable difference in performance between using the =propertiesOBJ= form and the two parameter form when setting the value for a single set-get property, so the two parameter form is primarily a convenience for setting the value for a dynamically selected property.
-
-								EXAMPLE
-								...............................................................
-								_class.increment = function (_propertyName,_amount) {
-									this.set (_propertyName,this.get (_propertyName) + _amount);
-								}
-								...............................................................
-
-								In the above example, a generic incrementer static method is being implemented. It receives a =_propertyName= parameter that specifies the set-get property to increment, and it passes the value of this parameter as the first parameter in the call to the set method.
-
-								VARIATION 2
-								..........................................
-								Uize.Class.set (
+								`Set Initial Values for Multiple Properties with Multiple Name and Value Arguments`
+								.........................................
+								MyClass.set (
 									property1NameSTR,property1ValueANYTYPE,
 									property2NameSTR,property2ValueANYTYPE,
-									...,
+									... ... ...
 									propertyNNameSTR,propertyNValueANYTYPE
 								);
-								..........................................
+								.........................................
 
-								This variation allows initial values for an arbitrary number of set-get properties to be set in a single call to the =set= method, by specifying the names and values of the properties using an arbitrary number of name-value pair arguments, where even numbered arguments are property names and odd numbered arguments are property values. This variation makes it possible to use expressions or the values of variables for specifying the names of the properties to set.
+								`Set the Same Initial Value for Multiple Properties`
+								......................................................
+								MyClass.set (propertyNamesARRAY,propertyValueANYTYPE);
+								......................................................
+
+								Set Initial Values for One or More Properties with a Names/Values Object
+									In the standard usage, a single =propertyNamesValuesOBJ= parameter can be passed to the =Uize.Class.set= method in order to set initial values for one or more properties.
+
+									SYNTAX
+									.....................................
+									MyClass.set (propertyNamesValuesOBJ);
+									.....................................
+
+									Each key of the =propertyNamesValuesOBJ= object represents the name of a state property whose initial value should be set, and each corresponding value represents the initial value that should be set for a property.
+
+									EXAMPLE 1
+									....................................
+									MyWidgetClass.set ({enabled:false});
+									....................................
+
+									In the above example, the =Uize.Class.set= method is being used to set the initial value for just one property - the =enabled= property of a widget class.
+
+									EXAMPLE 2
+									.............................
+									Uize.Widget.Bar.Slider.set ({
+										maxValue:100,
+										minValue:0,
+										value:0
+									});
+									.............................
+
+									In the above example, the =Uize.Class.set= method is being used to set initial values for multiple properties - the =maxValue=, =minValue=, and =value= properties of the =Uize.Widget.Bar.Slider= widget class.
+
+								Set the Initial Value for a Property with Name and Value Arguments
+									The initial value for a state property can be set by providing two parameters to the =Uize.Class.set= method: a string parameter specifying the name of a property, and a value parameter that can be of any type.
+
+									SYNTAX
+									...................................................
+									MyClass.set (propertyNameSTR,propertyValueANYTYPE);
+									...................................................
+
+									This variation of the =Uize.Class.set= method is particularly useful in cases where you wish to use a variable or an expression to determine the state property whose initial value should be set. Consider the following example...
+
+									EXAMPLE
+									............................................................
+									MyClass.increment = function (propertyName,amount) {
+										this.set (propertyName,this.get (propertyName) + amount);
+									}
+									............................................................
+
+									In the above example, a generic incrementer static method is being implemented. It receives a =propertyName= parameter that specifies the state property whose initial value should be incremented, and it passes the value of this parameter as the first parameter in the call to the =Uize.Class.set= method.
+
+									Slightly Less Performant
+										This variation of the =Uize.Class.set= method is very slightly less performant than the variation that accepts a single =propertyNamesValuesOBJ= parameter.
+
+										This variation is offered primarily as a convenience for when the names of properties whose initial values are to be set need to be supplied through variables or expressions. While there is not much cost to using this variation when not necessary, it is advised to generally use the form that accepts a =propertyNamesValuesOBJ= parameter whenever possible (see `Set Initial Values for One or More Properties with a Names/Values Object`).
+
+								Set Initial Values for Multiple Properties with Multiple Name and Value Arguments
+									The initial values for an arbitrary number of state properties can be set by providing the names and values of the properties using an arbitrary number of name-value pair arguments, where even numbered arguments are property names and odd numbered arguments are property values.
+
+									SYNTAX
+									.........................................
+									MyClass.set (
+										property1NameSTR,property1ValueANYTYPE,
+										property2NameSTR,property2ValueANYTYPE,
+										... ... ...
+										propertyNNameSTR,propertyNValueANYTYPE
+									);
+									.........................................
+
+									This variation of the =Uize.Class.set= method is an extension of the variation that lets you `set the initial value for a property with name and value arguments`, and has the same benefits and performance considerations.
+
+								Set the Same Initial Value for Multiple Properties
+									The same initial value can be set for multiple state properties by specifying the names of the properties whose initial values should all be set to the same value in a =propertyNamesARRAY= parameter, and by specifying the initial value that should be set for them all in a =propertyValueANYTYPE= parameter.
+
+									SYNTAX
+									......................................................
+									MyClass.set (propertyNamesARRAY,propertyValueANYTYPE);
+									......................................................
+
+									EXAMPLE
+									...................................................................
+									MyWidgetClass.set (['initialized','ready','enabled','busy'],false);
+									...................................................................
+
+									In the above example, the initial value for the properties =initialized=, =ready=, =enabled=, and =busy= of a widget class is being set to =false=.
+
+									This variation of the =Uize.Class.set= method can be useful in cases where you wish to set the initial value for a good number of properties to the same value and where it would be more concise to use this form, or in cases where you are receiving an array of properties whose initial values should all be set to some desired value. This variation can also be convenient when the initial value that you wish to set for multiple properties is the result of an expression and where you would otherwise need to create a local variable in order to avoid recalculating the expression for each property.
+
+									INSTEAD OF...
+									.......................................................................................
+									var initValue = env.config.hasOwnProperty ('initValue') ? env.config.initValue : false;
+									MyClass.set ({
+										foo:initValue,
+										bar:initValue,
+										baz:initValue
+									});
+									.......................................................................................
+
+									USE...
+									.........................................................................
+									MyClass.set (
+										['foo','bar','baz'],
+										env.config.hasOwnProperty ('initValue') ? env.config.initValue : false
+									);
+									.........................................................................
 
 								NOTES
-								- see also the =Uize.Class.get= static method
-								- see also the =get= instance method
-								- see also the =set= instance method
+								- see the companion =Uize.Class.get= static method
+								- see also the =get= and =set= instance methods
 
 					*/
 				};
@@ -1111,7 +2206,7 @@ Uize.module ({
 					/*?
 						Instance Methods
 							toggle
-								Toggles the value of the specified boolean instance set-get property.
+								Toggles the value of the specified boolean instance state property.
 
 								SYNTAX
 								.......................................................
@@ -1129,7 +2224,7 @@ Uize.module ({
 
 						Static Methods
 							Uize.Class.toggle
-								Toggles the value of the specified boolean static set-get property.
+								Toggles the value of the specified boolean static state property.
 
 								SYNTAX
 								.......................................................
@@ -1150,7 +2245,7 @@ Uize.module ({
 		/*** Public Instance Methods ***/
 			_classPrototype.kill = function () {
 				var _instanceId = this.instanceId;
-				_globalEval ('if(typeof ' + _instanceId + '!=\'undefined\')' + _instanceId + '=null');
+				_eval ('if(typeof ' + _instanceId + '!=\'undefined\')' + _instanceId + '=null');
 				/*?
 					Instance Methods
 						kill
@@ -1195,7 +2290,7 @@ Uize.module ({
 								instanceSummarySTR = myInstance.toString ();
 								............................................
 
-								The string returned by this method provides a summary that includes the instance's class name and the state of its set-get properties. Among other things, this method provides a convenient and lightweight way to gather information about instances of =Uize.Class= subclasses during debugging and troubleshooting. The =toString Intrinsic Method= is invoked automatically in certain contexts in order to convert an object to a string form, such as when alerting an object using the =alert= global function.
+								The string returned by this method provides a summary that includes the instance's class name and the state of its state properties. Among other things, this method provides a convenient and lightweight way to gather information about instances of =Uize.Class= subclasses during debugging and troubleshooting. The =toString Intrinsic Method= is invoked automatically in certain contexts in order to convert an object to a string form, such as when alerting an object using the =alert= global function.
 
 								EXAMPLE
 								.............................
@@ -1231,7 +2326,7 @@ Uize.module ({
 								name : slider
 								nodeMap : undefined
 								orientation : vertical
-								parent : [class UizeDotCom.Page.Example]
+								parent : [class MyCompanySite.Page]
 								restTime : 250
 								scaleFunc : [object Function]
 								value : 0
@@ -1253,7 +2348,7 @@ Uize.module ({
 								- see also the =Uize.toString= static intrinsic method
 
 							valueOf Intrinsic Method
-								Returns the value of the instance's =value= set-get property.
+								Returns the value of the instance's =value= state property.
 
 								SYNTAX
 								.............................................
@@ -1301,23 +2396,23 @@ Uize.module ({
 								NOTES
 								- compare to the =toString Intrinsic Method=, and the =Uize.toString= static intrinsic method
 								- see also the =Uize.Class.valueOf= static intrinsic method
-								- if the instance's class does not register a =value= set-get property, then this method will return the value of the instance's =value= property, and if the instance has no =value= property, then this method will simply return =undefined=
+								- if the instance's class does not declare a =value= state property, then this method will return the value of the instance's =value= property, and if the instance has no =value= property, then this method will simply return =undefined=
 
 						Static Methods
 							Uize.Class.valueOf
-								Returns the value of the class' =value= set-get property.
+								Returns the value of the class' =value= state property.
 
 								SYNTAX
 								.......................................
 								classValueANYTYPE = MyClass.valueOf ();
 								.......................................
 
-								The =Uize.Class.valueOf= static intrinsic method is invoked automatically in certain contexts in order to convert a class to a value, such as when using a class reference in an expression (eg. =Uize.Widget.Bar.Slider + 0=). This static method is implemented primarily to provide parity with the =valueOf Intrinsic Method=. Its behavior is largely equivalent to that of the instance method, excepting that it applies to the static value of the =value= set-get property.
+								The =Uize.Class.valueOf= static intrinsic method is invoked automatically in certain contexts in order to convert a class to a value, such as when using a class reference in an expression (eg. =Uize.Widget.Bar.Slider + 0=). This static method is implemented primarily to provide parity with the =valueOf Intrinsic Method=. Its behavior is largely equivalent to that of the instance method, excepting that it applies to the static value of the =value= state property.
 
 								NOTES
 								- compare to the =toString Intrinsic Method=, and the =Uize.toString= static intrinsic method
 								- see also the =valueOf Intrinsic Method=
-								- if the class does not register a =value= set-get property, then this method will return the value of the class' =value= property, and if the class has no =value= property, then this method will simply return =undefined=
+								- if the class does not declare a =value= state property, then this method will return the value of the class' =value= property, and if the class has no =value= property, then this method will simply return =undefined=
 					*/
 				}
 
@@ -1326,16 +2421,16 @@ Uize.module ({
 					_subclass = _noNew (
 						function () {
 							for (
-								var _alphastructorNo = -1, _alphastructorsLength = _alphastructors.length, _alphastructor;
+								var _alphastructorNo = -1, _alphastructorsLength = _alphastructors.length;
 								++_alphastructorNo < _alphastructorsLength;
 							)
-								if (_alphastructor = _alphastructors [_alphastructorNo]) _alphastructor.apply (this,arguments)
+								_alphastructors [_alphastructorNo].apply (this,arguments)
 							;
 							for (
-								var _omegastructorNo = -1, _omegastructorsLength = _omegastructors.length, _omegastructor;
+								var _omegastructorNo = -1, _omegastructorsLength = _omegastructors.length;
 								++_omegastructorNo < _omegastructorsLength;
 							)
-								if (_omegastructor = _omegastructors [_omegastructorNo]) _omegastructor.apply (this,arguments)
+								_omegastructors [_omegastructorNo].apply (this,arguments)
 							;
 						}
 					),
@@ -1393,7 +2488,7 @@ Uize.module ({
 							*/
 
 					/*** Non-inherited Public Static Properties ***/
-						_subclass.nonInheritableStatics = {nonInheritableStatics:1,toString:0,valueOf:0};
+						_subclass.nonInheritableStatics = {_singletons:1,nonInheritableStatics:1,toString:0,valueOf:0};
 							/*?
 								Static Properties
 									Uize.Class.nonInheritableStatics
@@ -1403,7 +2498,7 @@ Uize.module ({
 
 										EXAMPLE
 										...........................................................................
-										MyClass = Uize.Class.subclass ();
+										var MyClass = Uize.Class.subclass ();
 										MyClass.someUtilityFunction = function () {
 											// do something of great utility
 										};
@@ -1445,11 +2540,11 @@ Uize.module ({
 
 				/*** Initialize Alphastructors and Omegastructors ***/
 					var
-						_alphastructors = _subclass._alphastructors =
-							(_class._alphastructors || _sacredEmptyArray).concat (_alphastructor),
-						_omegastructors = _subclass._omegastructors =
-							(_class._omegastructors || _sacredEmptyArray).concat (_omegastructor)
+						_alphastructors = _subclass._alphastructors = (_class._alphastructors || _sacredEmptyArray).concat (),
+						_omegastructors = _subclass._omegastructors = (_class._omegastructors || _sacredEmptyArray).concat ()
 					;
+					(_subclass._alphastructor = _alphastructor) && _alphastructors.push (_alphastructor);
+					(_subclass._omegastructor = _omegastructor) && _omegastructors.push (_omegastructor);
 
 				_subclass._propertyProfilesByPrivateNames || (_subclass._propertyProfilesByPrivateNames = {});
 				_subclass._propertyProfilesByPublicNames || (_subclass._propertyProfilesByPublicNames = {});
@@ -1457,36 +2552,417 @@ Uize.module ({
 				return _subclass;
 			};
 
-			_class.subclass = function (_alphastructor,_omegastructor) {
-				return _createSubclass (this,_alphastructor,_omegastructor);
+			_class.subclass = function (_arg0,_arg1) {
+				var _subclass;
+				if (arguments.length == 1 && !_isFunction (_arg0)) {
+					(_subclass = _createSubclass (this)).declare (_arg0);
+				} else {
+					_subclass = _createSubclass (this,_arg0,_arg1);
+				}
+				return _subclass;
 				/*?
 					Static Methods
 						Uize.Class.subclass
 							Lets you subclass the =Uize.Class= base class or any subclass of =Uize.Class=.
 
-							SYNTAX
-							......................................................
-							MyClass = Uize.Class.subclass (subclassConstructorFN);
-							......................................................
+							DIFFERENT USAGES
 
-							Consider the following example...
+							`Create a Subclass, Declaring Multiple Features by Type`
+							..................................................
+							MyClass = Uize.Class.subclass (featuresByTypeOBJ);
+							..................................................
+
+							`Create a Subclass, Specifying Only an Alphastructor`
+							..................................................
+							MyClass = Uize.Class.subclass (alphastructorFUNC);
+							..................................................
+
+							`Create a Subclass, Specifying Both Alphastructor and Omegastructor`
+							....................................................................
+							MyClass = Uize.Class.subclass (alphastructorFUNC,omegastructorFUNC);
+							....................................................................
+
+							`Create a Subclass, Specifying Only an Omegastructor`
+							............................................................
+							MyClass = Uize.Class.subclass (null,omegastructorFUNC);
+							MyClass = Uize.Class.subclass (undefined,omegastructorFUNC);
+							............................................................
+
+							Create a Subclass, Declaring Multiple Features by Type
+								As a convenience, the =Uize.Class.subclass= method supports a variation that takes a single object parameter, as a means of `declaring features by type when creating a class`.
+
+								SYNTAX
+								..................................................
+								MyClass = Uize.Class.subclass (featuresByTypeOBJ);
+								..................................................
+
+								Using this variation, one or more features of various different `feature types` can be conveniently declared during the subclass creation. When using this variation, setting the alphastructor and/or omegastructor for the class being created must be done by specifying values for the =alphastructor= and/or =omegastructor= properties of the =featuresByTypeOBJ= object.
+
+								EXAMPLE
+								....................................
+								var MySubclass = MyClass.subclass ({
+									alphastructor:function () {
+										// implementation here
+									},
+									omegastructor:function () {
+										// implementation here
+									},
+									staticMethods:{
+										staticMethod1:function () {
+											// implementation here
+										},
+										staticMethod2:function () {
+											// implementation here
+										}
+									},
+									instanceMethods:{
+										instanceMethod1:function () {
+											// implementation here
+										},
+										instanceMethod2:function () {
+											// implementation here
+										}
+									},
+									stateProperties:{
+										stateProperty1:{
+											// property profile
+										},
+										stateProperty2:{
+											// property profile
+										}
+									}
+								});
+								....................................
+
+							Create a Subclass, Specifying Only an Alphastructor
+								A subclass can be created with just an `alphastructor` set, by specifying just a single =alphastructorFUNC= function type parameter.
+
+								SYNTAX
+								..................................................
+								MyClass = Uize.Class.subclass (alphastructorFUNC);
+								..................................................
+
+								Consider the following example...
+
+								EXAMPLE
+								.......................................
+								var MyClass = Uize.Class.subclass (
+									function () {
+										this.foo = 'How unoriginal!';
+									}
+								);
+
+								var MySubclass = MyClass.subclass (
+									function () {
+										this.bar = this.foo + ' Indeed!';
+									}
+								);
+								.......................................
+
+								In the above example, =MySubclass= is a subclass of =MyClass=, which is in turn a subclass of the =Uize.Class= base class. Now, when an instance of =MySubSubclass= gets created, the constructor of =MyClass= and then the constructor of =MySubSubclass= will be executed in the initialization of the instance, and the instance will have both =foo= and =bar= properties, where the =bar= property will have a value of "How unoriginal! Indeed!".
+
+							Create a Subclass, Specifying Both Alphastructor and Omegastructor
+								A subclass can be created with both an `alphastructor` and an `omegastructor` set, by specifying the =alphastructorFUNC= and =omegastructorFUNC= function type parameters.
+
+								SYNTAX
+								....................................................................
+								MyClass = Uize.Class.subclass (alphastructorFUNC,omegastructorFUNC);
+								....................................................................
+
+							Create a Subclass, Specifying Only an Omegastructor
+								A subclass can be created with just an `omegastructor` set, by specifying the =alphastructorFUNC= and =omegastructorFUNC= parameters and specifying the value =null= or =undefined= for the =alphastructorFUNC= parameter.
+
+								SYNTAX
+								............................................................
+								MyClass = Uize.Class.subclass (null,omegastructorFUNC);
+								MyClass = Uize.Class.subclass (undefined,omegastructorFUNC);
+								............................................................
+				*/
+			};
+
+			_class.singleton = function (_scope,_properties) {
+				var
+					_singletons = this._singletons || (this._singletons = {}),
+					_singleton = _singletons [_scope || (_scope = '')]
+				;
+				_singleton
+					? _properties && _singleton.set (_properties)
+					: (_singleton = _singletons [_scope] = this (_properties))
+				;
+				return _singleton;
+				/*?
+					Static Methods
+						Uize.Class.singleton
+							Returns a singleton for the class for the optionally specified scope (default is empty scope).
+
+							DIFFERENT USAGES
+
+							`Get a Singleton for a Class`
+							....................................
+							singletonOBJ = MyClass.singleton ();
+							....................................
+
+							`Get a Singleton for a Class for a Specific Scope`
+							............................................
+							singletonOBJ = MyClass.singleton (scopeSTR);
+							............................................
+
+							`Get a Singleton for a Class for a Specific Scope, Specifying Initial State`
+							..........................................................
+							singletonOBJ = MyClass.singleton (scopeSTR,propertiesOBJ);
+							..........................................................
+
+							Get a Singleton for a Class
+								When no parameters are specified, this method will return a singleton for the class in the default scope.
+
+								SYNTAX
+								....................................
+								singletonOBJ = MyClass.singleton ();
+								....................................
+
+								When the =Uize.Class.singleton= static method is called on a class, if a singleton instance has already been created for the default scope, then that instance will be returned. Otherwise, a singleton instance will be created for the default scope and then returned.
+
+							Get a Singleton for a Class for a Specific Scope
+								When the optional =scopeSTR= parameter is specified, this method will return a singleton for the class in the specified scope.
+
+								SYNTAX
+								............................................
+								singletonOBJ = MyClass.singleton (scopeSTR);
+								............................................
+
+								When the =Uize.Class.singleton= static method is called on a class, if a singleton instance has already been created for the specified scope, then that instance will be returned. Otherwise, a singleton instance will be created for the specified scope and then returned.
+
+							Get a Singleton for a Class for a Specific Scope, Specifying Initial State
+								When the optional =propertiesOBJ= parameter is specified, then this method will return a singleton for the class in the specified scope, and with the state of its state properties set using the =propertiesOBJ= object.
+
+								SYNTAX
+								..........................................................
+								singletonOBJ = MyClass.singleton (scopeSTR,propertiesOBJ);
+								..........................................................
+
+								When the =Uize.Class.singleton= static method is called on a class, if a singleton instance has already been created for the specified scope, then that instance will be set to the state specified by the =propertiesOBJ= parameter and then returned. Otherwise, a singleton instance will be created for the specified scope, with its state initialized using the =propertiesOBJ= parameter, and then returned.
+
+							Singleton Scope
+								As a convenience, the =Uize.Class.singleton= static method lets you optionally specify a scope when getting singleton instances, using the =scopeSTR= parameter.
+
+								If no =scopeSTR= parameter is specified when getting a singleton for a class, then the default scope (an empty string) will be used. Therefore, the statement =MyClass.singleton ()= is equivalent to the statement =MyClass.singleton ('')=.
+
+								A scope provides multiple different bits of related but distributed code to get a reference to the same singleton by specifying the same scope, while still allowing other code to share references to a different singleton created using a different scope.
+				*/
+			};
+
+			_class.instanceMethods = _class.instanceProperties = function (_instanceFeatures) {
+				_copyInto (this.prototype,_instanceFeatures);
+				/*?
+					Static Methods
+						Uize.Class.instanceMethods
+							Lets you conveniently declare one or more instance methods, by specifying the methods in an object.
+
+							SYNTAX
+							.............................................
+							MyClass.instanceMethods (instanceMethodsOBJ);
+							.............................................
 
 							EXAMPLE
-							.......................................
-							MyClass = Uize.Class.subclass (
-								function () {
-									this.foo = 'How unoriginal!';
-								}
-							);
+							...................................................
+							var MyWidgetClass = Uize.Widget.subclass ();
 
-							MySubclass = MyClass.subclass (
-								function () {
-									this.bar = this.foo + ' Indeed!';
-								}
-							);
-							.......................................
+							MyWidgetClass.instanceMethods ({
+								wireUi:function () {
+									// implementation of wireUi instance method
+								},
 
-							In the above example, =MySubclass= is a subclass of =MyClass=, which is in turn a subclass of the =Uize.Class= base class. Now, when an instance of =MySubSubclass= gets created, the constructor of =MyClass= and then the constructor of =MySubSubclass= will be executed in the initialization of the instance, and the instance will have both =foo= and =bar= properties, where the =bar= property will have a value of "How unoriginal! Indeed!".
+								updateUi:function () {
+									// implementation of updateUi instance method
+								}
+							});
+							...................................................
+
+							In the above example, a widget class is being created by subclassing the =Uize.Widget= base class. Then, the =wireUi= and =updateUi= instance methods are being declared for the class by calling the =instanceMethods= method on the class.
+
+							NOTES
+							- this method may be called multiple times for a class (see `Feature Declarations are Cumulative`)
+							- see the other `feature declaration methods`
+
+						Uize.Class.instanceProperties
+							Lets you conveniently declare one or more instance properties, by specifying the properties and their initial values in an object.
+
+							SYNTAX
+							...................................................
+							MyClass.instanceProperties (instancePropertiesOBJ);
+							...................................................
+
+							EXAMPLE
+							.............................
+							MyClass.instanceProperties ({
+								timeoutMs:2000,
+								retryAttempts:5
+							});
+							.............................
+
+							In the above example, the =Uize.Class.instanceProperties= method is being used to declare the =timeoutMs= and =retryAttempts= instance properties.
+
+							NOTES
+							- compare to the =Uize.Class.stateProperties= static method
+							- this method may be called multiple times for a class (see `Feature Declarations are Cumulative`)
+							- see the other `feature declaration methods`
+				*/
+			};
+
+			_class.staticMethods = _class.staticProperties = function (_staticFeatures) {
+				_copyInto (this,_staticFeatures);
+				/*?
+					Static Methods
+						Uize.Class.staticMethods
+							Lets you conveniently declare one or more static methods, by specifying the methods in an object.
+
+							SYNTAX
+							.........................................
+							MyClass.staticMethods (staticMethodsOBJ);
+							.........................................
+
+							NOTES
+							- this method may be called multiple times for a class (see `Feature Declarations are Cumulative`)
+							- see the other `feature declaration methods`
+
+						Uize.Class.staticProperties
+							Lets you conveniently declare one or more static properties, by specifying the properties and their initial values in an object.
+
+							SYNTAX
+							............................................
+							MyClass.staticMethods (staticPropertiesOBJ);
+							............................................
+
+							NOTES
+							- compare to the =Uize.Class.stateProperties= static method
+							- this method may be called multiple times for a class (see `Feature Declarations are Cumulative`)
+							- see the other `feature declaration methods`
+				*/
+			};
+
+			_class.dualContextMethods = _class.dualContextProperties = function (_dualContextFeatures) {
+				_copyInto (this,_dualContextFeatures);
+				_copyInto (this.prototype,_dualContextFeatures);
+				/*?
+					Static Methods
+						Uize.Class.dualContextMethods
+							Lets you conveniently declare one or more `dual context` methods, by specifying the methods in an object.
+
+							SYNTAX
+							...................................................
+							MyClass.dualContextMethods (dualContextMethodsOBJ);
+							...................................................
+
+							NOTES
+							- this method may be called multiple times for a class (see `Feature Declarations are Cumulative`)
+							- see the other `feature declaration methods`
+
+						Uize.Class.dualContextProperties
+							Lets you conveniently declare one or more `dual context` properties, by specifying the properties and their initial values in an object.
+
+							SYNTAX
+							......................................................
+							MyClass.dualContextMethods (dualContextPropertiesOBJ);
+							......................................................
+
+							NOTES
+							- compare to the =Uize.Class.stateProperties= static method
+							- this method may be called multiple times for a class (see `Feature Declarations are Cumulative`)
+							- see the other `feature declaration methods`
+				*/
+			};
+
+			_class.alphastructor = function (_alphastructor) {
+				this._alphastructor && this._alphastructors.length--;
+				(this._alphastructor = _alphastructor) && this._alphastructors.push (_alphastructor);
+				/*?
+					Static Methods
+						Uize.Class.alphastructor
+							Lets you declare the `alphastructor` for the class.
+
+							SYNTAX
+							..........................................
+							MyClass.alphastructor (alphastructorFUNC);
+							..........................................
+
+							NOTES
+							- see the other `feature declaration methods`
+				*/
+			};
+
+			_class.omegastructor = function (_omegastructor) {
+				this._omegastructor && this._omegastructors.length--;
+				(this._omegastructor = _omegastructor) && this._omegastructors.push (_omegastructor);
+				/*?
+					Static Methods
+						Uize.Class.omegastructor
+							Lets you declare the `omegastructor` for the class.
+
+							SYNTAX
+							..........................................
+							MyClass.omegastructor (omegastructorFUNC);
+							..........................................
+
+							NOTES
+							- see the other `feature declaration methods`
+				*/
+			};
+
+			_class.declare = function (_featuresByType) {
+				if (_featuresByType)
+					for (var _featureType in _featuresByType)
+						_isFunction (this [_featureType]) && this [_featureType] (_featuresByType [_featureType])
+				;
+				/*?
+					Static Methods
+						Uize.Class.declare
+							Lets you declare one or more features of one or more different `feature types` for the class.
+
+							SYNTAX
+							....................................
+							MyClass.declare (featuresByTypeOBJ);
+							....................................
+
+							For convenience, the =Uize.Class.declare= method lets you declare features of various types, in the same way as they can be declared when using the variation of the =Uize.Class.subclass= method that supports specifying features in a =featuresByTypeOBJ= object. The =Uize.Class.declare= method lets you declare additional features at any time after first creating a class, using the same semantics as supported by the =Uize.Class.subclass= method.
+
+							EXAMPLE
+							...................................
+							MyClass.declare ({
+								alphastructor:function () {
+									// implementation here
+								},
+								omegastructor:function () {
+									// implementation here
+								},
+								staticMethods:{
+									staticMethod1:function () {
+										// implementation here
+									},
+									staticMethod2:function () {
+										// implementation here
+									}
+								},
+								instanceMethods:{
+									instanceMethod1:function () {
+										// implementation here
+									},
+									instanceMethod2:function () {
+										// implementation here
+									}
+								},
+								stateProperties:{
+									stateProperty1:{
+										// property profile
+									},
+									stateProperty2:{
+										// property profile
+									}
+								}
+							});
+							...................................
+
+							NOTES
+							- see the other `feature declaration methods`
 				*/
 			};
 

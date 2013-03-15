@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Template Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 8
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -33,7 +30,7 @@
 			Encoding
 				The =Uize.Template= module supports the concept of an encoding.
 
-				An encoding is defined in an `Encoding Profile`, which defines how to encode to and decode from the encoding. The =Uize.Template= module defines many built-in standard encodings, such as the =json=, =urlParams=, =tagAttributeValue=, and other encodings. Encodings can be conveniently used inside templating assignment statements, as shown in the following example...
+				An encoding is defined in an `encoding profile`, which defines how to encode to and decode from the encoding. The =Uize.Template= module defines many built-in standard encodings, such as the =json=, =urlParams=, =tagAttributeValue=, and other encodings. Encodings can be conveniently used inside templating assignment statements, as shown in the following example...
 
 				EXAMPLE
 				.............................................
@@ -83,7 +80,7 @@
 				.............................................................
 
 			Encoding Profile
-				An `Encoding` is defined using an Encoding Profile, which is an object containing definitions for the encoder and decoder for the encoding.
+				An `encoding` is defined using an encoding profile, which is an object containing definitions for the encoder and decoder for the encoding.
 
 				SYNTAX
 				...................................................
@@ -122,9 +119,9 @@
 				In the above example, the =json= encoding is being defined. Notice that both the encoder (=to=) and decoder (=from=) both require the =Uize.Json= module. The =expansion= function for the encoder is constructing a snippet of code that calls the =Uize.Json.to= static method, plugging in the values of its =_valueStr= and =_optionsStr= parameters. If the value of the =_optionsStr= parameter is an empty string, then the second parameter is omitted from the =Uize.Json.to= method call that is being constructed. Similarly, the =expansion= function for the decoder is constructing a snippet of code that calls the =Uize.Json.from= static method, but this function ignores its second parameter since the =Uize.Json.from= method doesn't support any encoding options.
 
 			Standard Encoding
-				A Standard Encoding is an `Encoding` whose encoder and decoder functions are static methods of the same module, and where those static methods accept as their first parameter a value to encode or decode, and as their optional second parameter encoding options.
+				A standard encoding is an `encoding` whose encoder and decoder functions are static methods of the same module, and where those static methods accept as their first parameter a value to encode or decode, and as their optional second parameter encoding options.
 
-				A Standard Encoding can be conveniently defined using the =Uize.Template.defineStandardEncoding= static method, by only specifying a few parameters and without having to flesh out the entire `Encoding Profile`. The majority of `Encodings` that are built into the =Uize.Template= module are standard encodings. As an example, the =json= encoding can easily be defined with the statement...
+				A standard encoding can be conveniently defined using the =Uize.Template.defineStandardEncoding= static method, by only specifying a few parameters and without having to flesh out the entire `encoding profile`. The majority of `encodings` that are built into the =Uize.Template= module are standard encodings. As an example, the =json= encoding can easily be defined with the statement...
 
 				......................................................................
 				Uize.Template.defineStandardEncoding ('json','Uize.Json','to','from');
@@ -133,8 +130,13 @@
 
 Uize.module ({
 	name:'Uize.Template',
-	required:'Uize.String',
+	required:[
+		'Uize.String',
+		'Uize.String.Replace'
+	],
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function () {},
@@ -142,8 +144,14 @@ Uize.module ({
 				_false = false,
 				_string = 'string',
 				_Uize_String = Uize.String,
-				_Uise_String_splitInTwo = _Uize_String.splitInTwo,
-				_Uise_String_trim = _Uize_String.trim
+				_Uize_String_splitInTwo = _Uize_String.splitInTwo,
+				_Uize_String_trim = _Uize_String.trim,
+				_jsonStringLiteralEscaper = _Uize_String.Replace.replacerByLookup ({
+					'\\':'\\\\',
+					'\n':'\\n',
+					'\r':'\\r',
+					'\'':'\\\''
+				})
 			;
 
 		/*** General Variables ***/
@@ -175,9 +183,9 @@ Uize.module ({
 						++_encodingNo < _encodingsLength;
 					) {
 						if (
-							_encodingName = _Uise_String_trim (
+							_encodingName = _Uize_String_trim (
 								(
-									_encodingNameAndParams = _Uise_String_splitInTwo (
+									_encodingNameAndParams = _Uize_String_splitInTwo (
 										_encodings [_reverse ? _encodingsLength - _encodingNo - 1 : _encodingNo],
 										'{'
 									)
@@ -190,7 +198,7 @@ Uize.module ({
 							if (_encoding = _package.encodings [_encodingName]) {
 								if (_reverse) _encodingReverse = !_encodingReverse;
 								var
-									_encodingParams = _Uise_String_trim (_encodingNameAndParams [1]),
+									_encodingParams = _Uize_String_trim (_encodingNameAndParams [1]),
 									_encoderOrDecoderProfileProperty = _encodingReverse ? 'from' : 'to',
 									_encoderOrDecoderProfile = _encoding [_encoderOrDecoderProfileProperty]
 								;
@@ -463,15 +471,7 @@ Uize.module ({
 							_staticSegment = _staticSegment.replace (_trailingLinebreakAndPossibleWhitespaceRegExp,'')
 						;
 						_staticSegment &&
-							_pushToOutputBuffer.push (
-								'\'' +
-								_staticSegment
-									.replace (/\\/g,'\\\\')
-									.replace (/\n/g,'\\n')
-									.replace (/\r/g,'\\r')
-									.replace (/\'/g,'\\\'') +
-								'\''
-							);
+							_pushToOutputBuffer.push ('\'' + _jsonStringLiteralEscaper (_staticSegment) + '\'')
 						;
 					}
 					if (_notAtEnd) {
@@ -487,7 +487,7 @@ Uize.module ({
 									<%= expression %>
 									<%= expression -> encoding1 -> encoding2 %>
 							*/
-							var _expressionAndEncodings = _Uise_String_splitInTwo (
+							var _expressionAndEncodings = _Uize_String_splitInTwo (
 								_codeChunkIsAssignment
 									? _codeChunk.replace (_codeChunkStartsWithEqualsRegExp,'')
 									: 'input' + _codeChunk,
@@ -495,7 +495,7 @@ Uize.module ({
 							);
 							_pushToOutputBuffer.push (
 								_expandEncodingsChain (
-									_Uise_String_trim (_expressionAndEncodings [0]),
+									_Uize_String_trim (_expressionAndEncodings [0]),
 									_expressionAndEncodings [1],
 									_false,
 									function (_encoderOrDecoderKey,_encoderOrDecoderRequired) {
@@ -516,7 +516,7 @@ Uize.module ({
 				_pushToTemplateFunctionChunks (_blockLastChunk);
 				var
 					_templateFunctionCode = _templateFunctionChunks.join ('\n'),
-					_templateFunction = new Function ('input',_templateFunctionCode)
+					_templateFunction = Function ('input',_templateFunctionCode)
 				;
 				return (
 					_templateOptions.result == 'full'
@@ -582,7 +582,7 @@ Uize.module ({
 						(
 							_encodingsChainCache [_encodingsChainCacheKey] ||
 							(
-								_encodingsChainCache [_encodingsChainCacheKey] = new Function (
+								_encodingsChainCache [_encodingsChainCacheKey] = Function (
 									'e',
 									'return ' + _expandEncodingsChain ('e',_encodings,_reverse)
 								)
@@ -632,7 +632,7 @@ Uize.module ({
 									After the above code has executed, the value of the =attributeValuesStr= variable will be the string ='hello&#61;"world" foo&#61;"bar"'=. This is because the value ='lower'= is being specified for the =nameCase= encoding option of the =tagAttributes= encoding. Encoding options for an encoding are specified in curly braces after the encoding's name.
 
 								Using an Encodings Chain
-									The =Uize.Template.encode= method allows an `Encodings Chain` to be specified in the =encodingsChainSTR= parameter, using the same syntax one would use for templating assignment statements.
+									The =Uize.Template.encode= method allows an `encodings chain` to be specified in the =encodingsChainSTR= parameter, using the same syntax one would use for templating assignment statements.
 
 									EXAMPLE
 									.............................................................
@@ -690,7 +690,7 @@ Uize.module ({
 									After the above code has executed, the value of the =attributesObj= variable will be the attributes object ={HELLO:'world',FOO:'bar'}=. This is because the value ='upper'= is being specified for the =nameCase= encoding option of the =tagAttributes= encoding. Encoding options for an encoding are specified in curly braces after the encoding's name.
 
 								Using an Encodings Chain
-									The =Uize.Template.decode= method allows an `Encodings Chain` to be specified in the =encodingsChainSTR= parameter, using the same syntax one would use for templating assignment statements.
+									The =Uize.Template.decode= method allows an `encodings chain` to be specified in the =encodingsChainSTR= parameter, using the same syntax one would use for templating assignment statements.
 
 									EXAMPLE
 									............................................
@@ -702,7 +702,7 @@ Uize.module ({
 
 									In the above example, the value of the =searchUrlParamsTagAttributeValue= variable is a string that contains URL query paramaters that have been encoded to a string using the =urlParams= encoding, and have been further encoded to a tag attribute value using the =tagAttributeValue= encoding.
 
-									The value ='urlParams -> tagAttributeValue'= for the =encodingsChainSTR= parameter specifies the encodings that were applied to the value that is being decoded - the encodings that will have to be reversed in order to decode from the ='urlParams -> tagAttributeValue'= compound encoding. The =Uize.Template.decode= method here is decoding the string by reversing the direction of the ='urlParams -> tagAttributeValue'= `Encodings Chain`, producing as its result a URL query paramaters object.
+									The value ='urlParams -> tagAttributeValue'= for the =encodingsChainSTR= parameter specifies the encodings that were applied to the value that is being decoded - the encodings that will have to be reversed in order to decode from the ='urlParams -> tagAttributeValue'= compound encoding. The =Uize.Template.decode= method here is decoding the string by reversing the direction of the ='urlParams -> tagAttributeValue'= `encodings chain`, producing as its result a URL query paramaters object.
 
 									It's worth pointing out that you could accomplish the same effect by using the =Uize.Template.encode= method and reversing the order of encodings in the chain, as well as reversing the direction of the individual encodings by toggling the "!" prefix in front of the encodings. So, the following example using the =Uize.Template.encode= method would have the same outcome as the example using the =Uize.Template.decode= method that is shown above...
 
@@ -713,7 +713,7 @@ Uize.module ({
 									);
 									............................................
 
-									The benefit of using the =Uize.Template.decode= method is that it does the reverse mapping for you, which is especially useful if you have a specific `Encodings Chain` stored in some string variable and you want to easily encode to and decode from that compound encoding.
+									The benefit of using the =Uize.Template.decode= method is that it does the reverse mapping for you, which is especially useful if you have a specific `encodings chain` stored in some string variable and you want to easily encode to and decode from that compound encoding.
 					*/
 
 			var _defineStandardEncoding = _package.defineStandardEncoding = function (
@@ -740,7 +740,7 @@ Uize.module ({
 				/*?
 					Static Methods
 						Uize.Template.defineStandardEncoding
-							Lets you conveniently extend the =Uize.Template= module by defining a new `Standard Encoding`.
+							Lets you conveniently extend the =Uize.Template= module by defining a new `standard encoding`.
 
 							SYNTAX
 							......................................................................................
@@ -752,13 +752,13 @@ Uize.module ({
 							);
 							......................................................................................
 
-							The =Uize.Template.defineStandardEncoding= method provides a shortcut way of defining an encoding for the common case where the encoding's encoder and decoder functions are static methods of the same module. Instead of having to specify the whole `Encoding Profile` structure, the =Uize.Template.defineStandardEncoding= method takes care of building it for you, from the details you provide in the =encodingNameSTR=, =moduleNameSTR=, =encoderMethodNameSTR=, and =decoderMethodNameSTR= parameters.
+							The =Uize.Template.defineStandardEncoding= method provides a shortcut way of defining an encoding for the common case where the encoding's encoder and decoder functions are static methods of the same module. Instead of having to specify the whole `encoding profile` structure, the =Uize.Template.defineStandardEncoding= method takes care of building it for you, from the details you provide in the =encodingNameSTR=, =moduleNameSTR=, =encoderMethodNameSTR=, and =decoderMethodNameSTR= parameters.
 
 							Parameters
 								encodingNameSTR
 									A string, specifying the name of the encoding.
 
-									The value of the =encodingNameSTR= parameter will be used as the name of the property assigned on the =Uize.Template.encodings= object to store the `Encoding Profile` for the newly defined encoding.
+									The value of the =encodingNameSTR= parameter will be used as the name of the property assigned on the =Uize.Template.encodings= object to store the `encoding profile` for the newly defined encoding.
 
 								moduleNameSTR
 									A string, specifying the name of the module that contains the encoder and decoder methods for the encoding.
@@ -778,7 +778,7 @@ Uize.module ({
 							Uize.Template.defineStandardEncoding ('json','Uize.Json','to','from');
 							......................................................................
 
-							The above example defines the =json= `Standard Encoding`. The value of the =encodingNameSTR= parameter is ='json'=. The value of the =moduleNameSTR= parameter is ='Uize.Json'=, because the =Uize.Json= module is the module that contains the encoder and decoder methods for this encoding. The value of the =encoderMethodNameSTR= parameter is ='to'=, because the =Uize.Json.to= static method is to be used for encoding. Similarly, the value of the =decoderMethodNameSTR= parameter is ='from'=, because the =Uize.Json.from= static method is to be used for decoding.
+							The above example defines the =json= `standard encoding`. The value of the =encodingNameSTR= parameter is ='json'=. The value of the =moduleNameSTR= parameter is ='Uize.Json'=, because the =Uize.Json= module is the module that contains the encoder and decoder methods for this encoding. The value of the =encoderMethodNameSTR= parameter is ='to'=, because the =Uize.Json.to= static method is to be used for encoding. Similarly, the value of the =decoderMethodNameSTR= parameter is ='from'=, because the =Uize.Json.from= static method is to be used for decoding.
 
 							NOTES
 							- see the related =Uize.Template.encodings= static property
@@ -790,9 +790,9 @@ Uize.module ({
 				/*?
 					Static Properties
 						Uize.Template.encodings
-							An object, containing properties defining all the available `Encodings`, where the value for each property is an `Encoding Profile` object.
+							An object, containing properties defining all the available `encodings`, where the value for each property is an `encoding profile` object.
 
-							To extend the =Uize.Template= module by adding further encodings, an `Encoding Profile` object can be assigned directly to a new property of the =Uize.Template.encodings= object. Or, if the encoding adheres to the constraints of a `Standard Encoding`, then it can be more conveniently registered using the =Uize.Template.defineStandardEncoding= static method.
+							To extend the =Uize.Template= module by adding further encodings, an `encoding profile` object can be assigned directly to a new property of the =Uize.Template.encodings= object. Or, if the encoding adheres to the constraints of a `standard encoding`, then it can be more conveniently registered using the =Uize.Template.defineStandardEncoding= static method.
 				*/
 
 			_defineStandardEncoding ('iso8601','Uize.Date','toIso8601','fromIso8601');
@@ -800,7 +800,7 @@ Uize.module ({
 					Static Properties
 						Uize.Template.encodings
 							Uize.Template.encodings.iso8601
-								An `Encoding Profile` for the =iso8601= encoding.
+								An `encoding profile` for the =iso8601= encoding.
 
 					Encodings
 						iso8601
@@ -855,7 +855,7 @@ Uize.module ({
 					Static Properties
 						Uize.Template.encodings
 							Uize.Template.encodings.json
-								An `Encoding Profile` for the =json= encoding.
+								An `encoding profile` for the =json= encoding.
 
 					Encodings
 						json
@@ -940,7 +940,7 @@ Uize.module ({
 					Static Properties
 						Uize.Template.encodings
 							Uize.Template.encodings.miniJson
-								An `Encoding Profile` for the =miniJson= encoding.
+								An `encoding profile` for the =miniJson= encoding.
 
 					Encodings
 						miniJson
@@ -996,7 +996,7 @@ Uize.module ({
 					Static Properties
 						Uize.Template.encodings
 							Uize.Template.encodings.tagAttributes
-								An `Encoding Profile` for the =tagAttributes= encoding.
+								An `encoding profile` for the =tagAttributes= encoding.
 
 					Encodings
 						tagAttributes
@@ -1052,7 +1052,7 @@ Uize.module ({
 					Static Properties
 						Uize.Template.encodings
 							Uize.Template.encodings.tagAttributeValue
-								An `Encoding Profile` for the =tagAttributeValue= encoding.
+								An `encoding profile` for the =tagAttributeValue= encoding.
 
 					Encodings
 						tagAttributeValue
@@ -1118,7 +1118,7 @@ Uize.module ({
 					Static Properties
 						Uize.Template.encodings
 							Uize.Template.encodings.url
-								An `Encoding Profile` for the =url= encoding.
+								An `encoding profile` for the =url= encoding.
 
 					Encodings
 						url
@@ -1227,7 +1227,7 @@ Uize.module ({
 					Static Properties
 						Uize.Template.encodings
 							Uize.Template.encodings.urlParams
-								An `Encoding Profile` for the =urlParams= encoding.
+								An `encoding profile` for the =urlParams= encoding.
 
 					Encodings
 						urlParams
@@ -1283,7 +1283,7 @@ Uize.module ({
 					Static Properties
 						Uize.Template.encodings
 							Uize.Template.encodings.urlPiece
-								An `Encoding Profile` for the =urlPiece= encoding.
+								An `encoding profile` for the =urlPiece= encoding.
 
 					Encodings
 						urlPiece

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.FormElement Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 7
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 50
 */
 
@@ -34,7 +31,9 @@ Uize.module ({
 		'Uize.Widget.Collapsy',
 		'Uize.Node.Classes'
 	],
-	builder:function(_superclass){
+	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -146,7 +145,7 @@ Uize.module ({
 			_classPrototype.fireOkOnEnter = Uize.returnTrue;
 
 			_classPrototype.checkIsEmpty = function() { return this._value == _null || this._value == '' };
-			
+
 			_classPrototype.checkWarningShown = _classPrototype._checkWarningShown = function() {
 				var
 					_this = this,
@@ -221,44 +220,41 @@ Uize.module ({
 						_validators = _validators ? _validators.concat(_moreValidators) : _moreValidators
 					;
 
-					function _setIsValid(_isValid) { _this.set({_isValid:_isValid}) }
+					var _setIsValid = function (_isValid) { _this.set({_isValid:_isValid}) };
 
 					if (_validators != _null) {
 						var
 							_value = _this._validateWhen == _tentativeValueChanged
 								? _this._tentativeValue : _this._value,
 							_validatorsLength = _validators.length,
-							_validatorNo = -1
-						;
+							_validatorNo = -1,
+							_processNextValidator = function () {
+								if (++_validatorNo < _validatorsLength) {
+									var
+										_handleIsValid = function (_isValid, _newWarningMessage) {
+											if (_isValid == _false) {
+												_this.set({_warningMessage:_newWarningMessage || _this._initialWarningMessage});
+												_setIsValid(_false);
+											}
+											else _processNextValidator();
+										},
+										_validatorToEvaluate = _validators[_validatorNo],
+										_isValid = _validatorToEvaluate instanceof RegExp
+											? _validatorToEvaluate.test (_value)
+											: (
+												_validatorToEvaluate.func || Uize.isFunction (_validatorToEvaluate)
+													? (
+														_validatorToEvaluate.func || _validatorToEvaluate
+													).call(_this, _value, _handleIsValid)
+													: _value == _validatorToEvaluate
+											)
+									;
 
-						function _processNextValidator() {
-							if (++_validatorNo < _validatorsLength) {
-								function _handleIsValid(_isValid, _newWarningMessage) {
-									if (_isValid == _false) {
-										_this.set({_warningMessage:_newWarningMessage || _this._initialWarningMessage});
-										_setIsValid(_false);
-									}
-									else _processNextValidator();
+									_handleIsValid(_isValid, _validatorToEvaluate.msg);
 								}
-
-								var
-									_validatorToEvaluate = _validators[_validatorNo],
-									_isValid = _validatorToEvaluate instanceof RegExp
-										? _validatorToEvaluate.test (_value)
-										: (
-											_validatorToEvaluate.func || Uize.isFunction (_validatorToEvaluate)
-												? (
-													_validatorToEvaluate.func || _validatorToEvaluate
-												).call(_this, _value, _handleIsValid)
-												: _value == _validatorToEvaluate
-										)
-								;
-
-								_handleIsValid(_isValid, _validatorToEvaluate.msg);
+								else _setIsValid(_true);
 							}
-							else _setIsValid(_true);
-						}
-
+						;
 						_processNextValidator();
 					}
 					else _setIsValid(_true)
@@ -272,21 +268,21 @@ Uize.module ({
 					var _inputNode = _this._getInputNode();
 
 					if (_inputNode) {
-						/*** Set up the read-only set-get properties (attributes of the node) ***/
+						/*** Set up the read-only state properties (attributes of the node) ***/
 							_this._type = _inputNode.type;
 							_this._elementName = _inputNode.name;
 
-						/*** Helper functions ***/
-							function _fire (_eventName, _domEvent) { _this.fire ({name:_eventName,domEvent:_domEvent}) }
-							function _fireClick (_event) { _fire ('Click', _event) }
-							function _fireKeyUp (_event) { _fire ('Key Up', _event) }
-							function _setValue (_isInitial) {
-								_this.set ({_value:_this.getNodeValue(_inputNode)});
-								!_isInitial && _this._isDirty != _true &&
-									_this.set({_isDirty:_true});
-							}
-
 						var
+							/*** Helper functions ***/
+								_fire = function (_eventName, _domEvent) { _this.fire ({name:_eventName,domEvent:_domEvent}) },
+								_fireClick = function (_event) { _fire ('Click', _event) },
+								_fireKeyUp = function (_event) { _fire ('Key Up', _event) },
+								_setValue = function (_isInitial) {
+									_this.set ({_value:_this.getNodeValue(_inputNode)});
+									!_isInitial && _this._isDirty != _true &&
+										_this.set({_isDirty:_true});
+								},
+
 							_eventsToWire = {
 								blur:function () {
 									_setValue();
@@ -381,11 +377,11 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties({
+		/*** State Properties ***/
+			_class.stateProperties({
 				_elementName:'elementName', // read-only
 					/*?
-						Set-get Properties
+						State Properties
 							elementName
 								The name associated with the input nodes belonging to the form element.
 
@@ -394,7 +390,7 @@ Uize.module ({
 								<input id="myWidget-input" type='button' name='foobar'/>
 								........................................................
 
-								For a =Uize.Widget.FormElement= instance with the =idPrefix= of ='myWidget'= and the above HTML for its =input= implied node, the value of the =elementName= set-get property will be ='foobar'=.
+								For a =Uize.Widget.FormElement= instance with the =idPrefix= of ='myWidget'= and the above HTML for its =input= implied node, the value of the =elementName= state property will be ='foobar'=.
 					*/
 				_errorClassName:{
 					name:'errorClassName',
@@ -483,7 +479,7 @@ Uize.module ({
 				},
 				_type:'type', // read-only
 					/*?
-						Set-get Properties
+						State Properties
 							type
 								The type associated with the input node belonging to the form element.
 
@@ -492,7 +488,7 @@ Uize.module ({
 								<input id="myWidget-input" type='button' name='foobar'/>
 								........................................................
 
-								For a =Uize.Widget.FormElement= instance with the =idPrefix= of ='myWidget'= and the above HTML for its =input= implied node, the value of the =type= set-get property will be ='button'=.
+								For a =Uize.Widget.FormElement= instance with the =idPrefix= of ='myWidget'= and the above HTML for its =input= implied node, the value of the =type= state property will be ='button'=.
 					*/
 				_validateWhen:{
 					name:'validateWhen',

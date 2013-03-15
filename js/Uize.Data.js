@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Data Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 7
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 90
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Data',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function () {},
@@ -538,145 +537,6 @@ Uize.module ({
 							In the above example, the variable =employeeInCommon= would have the value ={firstName:'John',startYear:'2008'}=.
 				*/
 			};
-
-			/*** Deprecated Static Methods ***/
-				_package.emptyOut = Uize.emptyOut;
-					/*?
-						Deprecated Features
-							Uize.Data.emptyOut -- DEPRECATED 2011-11-13
-								The =Uize.Data.emptyOut= static method has been deprecated in favor of the newly added =Uize.emptyOut= static method of the =Uize= base module.
-
-								..............................................
-								Uize.Data.emptyOut >> BECOMES >> Uize.emptyOut
-								..............................................
-
-								This method has been promoted to the =Uize= base module, retaining exactly the same arguments signature and behavior.
-					*/
-
-				_package.getKeys = Uize.keys;
-					/*?
-						Deprecated Features
-							Uize.Data.getKeys -- DEPRECATED 2011-11-13
-								The =Uize.Data.getKeys= static method has been deprecated in favor of the newly added =Uize.keys= static method of the =Uize= base module.
-
-								.........................................
-								Uize.Data.getKeys >> BECOMES >> Uize.keys
-								.........................................
-
-								This method has been promoted to the =Uize= base module, retaining exactly the same arguments signature and behavior.
-					*/
-
-				_package.getLookup = Uize.lookup;
-					/*?
-						Deprecated Features
-							Uize.Data.getLookup -- DEPRECATED 2011-11-13
-								The =Uize.Data.getLookup= static method has been deprecated in favor of the newly added =Uize.lookup= static method of the =Uize= base module.
-
-								.............................................
-								Uize.Data.getLookup >> BECOMES >> Uize.lookup
-								.............................................
-
-								This method has been promoted to the =Uize= base module, retaining exactly the same arguments signature and behavior.
-					*/
-
-				_package.getReverseLookup = Uize.reverseLookup;
-					/*?
-						Deprecated Features
-							Uize.Data.getReverseLookup -- DEPRECATED 2011-11-13
-								The =Uize.Data.getReverseLookup= static method has been deprecated in favor of the newly added =Uize.reverseLookup= static method of the =Uize= base module.
-
-								...........................................................
-								Uize.Data.getReverseLookup >> BECOMES >> Uize.reverseLookup
-								...........................................................
-
-								This method has been promoted to the =Uize= base module, retaining exactly the same arguments signature and behavior.
-					*/
-
-				_package.getTotalKeys = Uize.totalKeys;
-					/*?
-						Deprecated Features
-							Uize.Data.getTotalKeys -- DEPRECATED 2011-11-13
-								The =Uize.Data.getTotalKeys= static method has been deprecated in favor of the newly added =Uize.totalKeys= static method of the =Uize= base module.
-
-								...................................................
-								Uize.Data.getTotalKeys >> BECOMES >> Uize.totalKeys
-								...................................................
-
-								This method has been promoted to the =Uize= base module, retaining exactly the same arguments signature and behavior.
-					*/
-
-				_package.getValues = Uize.values;
-					/*?
-						Deprecated Features
-							Uize.Data.getValues -- DEPRECATED 2011-11-13
-								The =Uize.Data.getValues= static method has been deprecated in favor of the newly added =Uize.values= static method of the =Uize= base module.
-
-								.............................................
-								Uize.Data.getValues >> BECOMES >> Uize.values
-								.............................................
-
-								This method has been promoted to the =Uize= base module, retaining exactly the same arguments signature and behavior.
-					*/
-
-				_package.isEmpty = Uize.isEmpty;
-					/*?
-						Deprecated Features
-							Uize.Data.isEmpty -- DEPRECATED 2011-11-13
-								The =Uize.Data.isEmpty= static method has been deprecated in favor of the newly added =Uize.isEmpty= static method of the =Uize= base module.
-
-								............................................
-								Uize.Data.isEmpty >> BECOMES >> Uize.isEmpty
-								............................................
-
-								This method has been promoted to the =Uize= base module, retaining exactly the same arguments signature and behavior.
-					*/
-
-				_package.map = function (_mapper,_source,_target) {return Uize.map (_source,_mapper,_target)};
-					/*?
-						Deprecated Features
-							Uize.Data.map -- DEPRECATED 2011-11-27
-								The =Uize.Data.map= static method has been deprecated in favor of the newly added =Uize.map= static method of the =Uize= base module.
-
-								This method has been promoted to the =Uize= base module, but the arguments signature has been changed. While the deprecated =Uize.Data.map= method accepts a mapper expression or function as its first argument and an array, object, or number as its second argument, these two arguments are swapped around in the =Uize.map= method. This is the more conventional signature for =map= type methods.
-
-								INSTEAD OF...
-								.........................................................................
-								mappedARRAYorOBJ = Uize.Data.map (mapperSTRorFUNC,sourceARRAYorOBJorINT);
-								.........................................................................
-
-								USE...
-								....................................................................
-								mappedARRAYorOBJ = Uize.map (sourceARRAYorOBJorINT,mapperSTRorFUNC);
-								....................................................................
-
-								Other than the change in its arguments signature, the =Uize.map= behaves in exactly the same way as the deprecated =Uize.Data.map= method. Because the =Uize.Data.map= method has been deprecated, it will live on for about another year, continuing to behave in the same way and using the same signature as before.
-					*/
-
-				_package.min = Uize.min;
-					/*?
-						Deprecated Features
-							Uize.Data.min -- DEPRECATED 2011-11-13
-								The =Uize.Data.min= static method has been deprecated in favor of the newly added =Uize.min= static method of the =Uize= base module.
-
-								....................................
-								Uize.Data.min >> BECOMES >> Uize.min
-								....................................
-
-								This method has been promoted to the =Uize= base module, retaining exactly the same arguments signature and behavior.
-					*/
-
-				_package.max = Uize.max;
-					/*?
-						Deprecated Features
-							Uize.Data.max -- DEPRECATED 2011-11-13
-								The =Uize.Data.max= static method has been deprecated in favor of the newly added =Uize.max= static method of the =Uize= base module.
-
-								....................................
-								Uize.Data.max >> BECOMES >> Uize.max
-								....................................
-
-								This method has been promoted to the =Uize= base module, retaining exactly the same arguments signature and behavior.
-					*/
 
 		return _package;
 	}

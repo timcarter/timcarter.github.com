@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Array.Util Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Test
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Test.Uize.Array.Util',
 	builder:function () {
+		'use strict';
+
 		return Uize.Test.declare ({
 			title:'Uize.Array.Util Module Test',
 			test:[
@@ -202,7 +201,7 @@ Uize.module ({
 										[[0,0,[1,1,[2,2,[3,3,[4,4,4,4],3,3],2,2],1,1],0,0],undefined],
 										[0,0,1,1,2,2,3,3,4,4,4,4,3,3,2,2,1,1,0,0]
 									],
-									['Test that when the value null is specified for the optional depth parameter, its value is defaulted to Infinity',                                           
+									['Test that when the value null is specified for the optional depth parameter, its value is defaulted to Infinity',
 										[[0,0,[1,1,[2,2,[3,3,[4,4,4,4],3,3],2,2],1,1],0,0],null],
 										[0,0,1,1,2,2,3,3,4,4,4,4,3,3,2,2,1,1,0,0]
 									],

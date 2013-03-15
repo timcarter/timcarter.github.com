@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Button.ValueDisplay Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 7
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -29,20 +26,18 @@
 Uize.module ({
 	name:'Uize.Widget.Button.ValueDisplay',
 	builder:function (_superclass) {
-		/*** Class Constructor ***/
-			var _class = _superclass.subclass ();
+		'use strict';
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		return _superclass.subclass ({
+			stateProperties:{
 				_defaultValueDetails:'defaultValueDetails',
 				_value:'value',
 				_valueDetails:{
 					name:'valueDetails',
 					conformer:function(_valueDetails) { return _valueDetails || this._defaultValueDetails }
 				}
-			});
-
-		return _class;
+			}
+		});
 	}
 });
 

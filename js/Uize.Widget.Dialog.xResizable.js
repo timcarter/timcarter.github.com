@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Dialog.xResizable Class Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c_a" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Extension
 	importance: 6
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 80
 */
 
@@ -25,7 +22,7 @@
 
 		*DEVELOPERS:* `Chris van Rensburg`
 
-		The =Uize.Widget.Dialog.xResizable= module is an extension module that extends the =Uize.Widget.Dialog= class. In a Rich Internet Application, many dialogs will not need to be resizable by the user. Therefore, the resizability functionality is not implemented in the =Uize.Widget.Dialog= class - in order to reduce the need for loading the extra code. Instead, in order to make dialogs resizable one needs to require the =Uize.Widget.Dialog.xResizable= extension module and set the =resizable= set-get property that it adds to the =Uize.Widget.Dialog= class to =true= for any dialogs that you want to be resizable. Consider the following example...
+		The =Uize.Widget.Dialog.xResizable= module is an extension module that extends the =Uize.Widget.Dialog= class. In a Rich Internet Application, many dialogs will not need to be resizable by the user. Therefore, the resizability functionality is not implemented in the =Uize.Widget.Dialog= class - in order to reduce the need for loading the extra code. Instead, in order to make dialogs resizable one needs to require the =Uize.Widget.Dialog.xResizable= extension module and set the =resizable= state property that it adds to the =Uize.Widget.Dialog= class to =true= for any dialogs that you want to be resizable. Consider the following example...
 
 		EXAMPLE
 		............................................................................
@@ -61,7 +58,7 @@
 				This is provided that the =Uize.Widget.Dialog= module is extended before the subclasses are created. Examples of other dialog subclasses include: =Uize.Widget.Dialog.Confirm=, =Uize.Widget.Dialog.Form=, and =Uize.Widget.Dialog.Form=.
 
 			Forced Resizable Subclasses
-				A dialog subclass can be made resizable so that all newly created instances of that subclass will be resizable right off the bat. This is done by setting the value of the =resizable= set-get property to =true= on the class, as in the following example...
+				A dialog subclass can be made resizable so that all newly created instances of that subclass will be resizable right off the bat. This is done by setting the value of the =resizable= state property to =true= on the class, as in the following example...
 
 				EXAMPLE
 				.....................................................................................
@@ -88,17 +85,28 @@ Uize.module ({
 		'Uize.Node'
 	],
 	builder:function (_class) {
+		'use strict';
+
+		/*** Names for Namespaced Privates ***/
+			var
+				_privatesNamespace = 'Uize.Widget.Dialog.xResizable.',
+				_pResizer = _privatesNamespace + 'resizer',
+				_pResizerInitialized = _privatesNamespace + 'resizerInitialized',
+				_pCreateResizerIfNecessary = _privatesNamespace + 'createResizerIfNecessary',
+				_pInitializeResizerNodesIfNecessary = _privatesNamespace + 'initializeResizerNodesIfNecessary'
+			;
+
 		var _classPrototype = _class.prototype;
 
 		/*** Private Instance Methods ***/
-			_classPrototype._createResizerIfNecessary = function () {
+			_classPrototype [_pCreateResizerIfNecessary] = function () {
 				var
 					_this = this,
-					_resizer = _this._resizer
+					_resizer = _this [_pResizer]
 				;
-				if (_this._resizable && !_resizer) {
+				if (_this.resizable && !_resizer) {
 					(
-						_this._resizer = _resizer = _this.addChild (
+						_this [_pResizer] = _resizer = _this.addChild (
 							'resizer',
 							Uize.Widget.Resizer,
 							{
@@ -132,9 +140,9 @@ Uize.module ({
 									});
 									........................................................................
 
-									In the above example, notice how the =resizer= child widget is being dereferenced off the =children= property immediately after adding the dialog child widget. This is possible because the =addChild= instance method returns a reference to the child widget being added (the dialog in this case). Setting the =fixedX= set-get property of the =resizer= instance to =true= causes the dialog to be resizable only in the Y-axis (vertically).
+									In the above example, notice how the =resizer= child widget is being dereferenced off the =children= property immediately after adding the dialog child widget. This is possible because the =addChild= instance method returns a reference to the child widget being added (the dialog in this case). Setting the =fixedX= state property of the =resizer= instance to =true= causes the dialog to be resizable only in the Y-axis (vertically).
 
-									*NOTE:* For optimization, the =resizer= child widget is only created if a dialog is made resizable by setting its =resizable= set-get property to =true=. Therefore, be careful to first set a dialog to be resizable before attempting to access the =resizer= child widget for modifying its state.
+									*NOTE:* For optimization, the =resizer= child widget is only created if a dialog is made resizable by setting its =resizable= state property to =true=. Therefore, be careful to first set a dialog to be resizable before attempting to access the =resizer= child widget for modifying its state.
 						*/
 					).wire ({
 						'Changed.inDrag':function () {_this.set ({inDrag:_resizer.get ('inDrag')})},
@@ -149,7 +157,7 @@ Uize.module ({
 					});
 
 					/*** code to resync resizer position ***/
-						function _syncResizerToDialogPosition () {
+						var _syncResizerToDialogPosition = function () {
 							if (_this.isWired && _this.get ('shown')) {
 								var _rootNode = _this.getNode ();
 								if (Uize.Node.getStyle (_rootNode,'display') != 'none') {
@@ -172,7 +180,7 @@ Uize.module ({
 
 					/*** initialization ***/
 						if (_this.isWired) {
-							_this._initializeResizerNodesIfNecessary ();
+							_this [_pInitializeResizerNodesIfNecessary] ();
 							_this.get ('shown') && // sync position, if resizer created after dialog is shown
 								_syncResizerToDialogPosition ()
 							;
@@ -181,11 +189,11 @@ Uize.module ({
 				}
 			};
 
-			_classPrototype._initializeResizerNodesIfNecessary = function () {
+			_classPrototype [_pInitializeResizerNodesIfNecessary] = function () {
 				var _this = this;
-				if (_this.isWired && _this._resizable && !_this._resizerInitialized) {
-					_this._resizerInitialized = true;
-					_this._resizer.set ({
+				if (_this.isWired && _this.resizable && !_this [_pResizerInitialized]) {
+					_this [_pResizerInitialized] = true;
+					_this [_pResizer].set ({
 						areaNodes:[_this.getNode ()],
 						nodeMap:{
 							move:null,
@@ -196,21 +204,24 @@ Uize.module ({
 			};
 
 		/*** implement hook methods ***/
-			_classPrototype.atEndOfOmegaStructor = function () {this._createResizerIfNecessary ()};
-			_classPrototype.afterWireUi = function () {this._initializeResizerNodesIfNecessary ()};
+			_classPrototype.atEndOfOmegaStructor = function () {this [_pCreateResizerIfNecessary] ()};
+			_classPrototype.afterWireUi = function () {this [_pInitializeResizerNodesIfNecessary] ()};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
-				_resizable:{
+		/*** State Properties ***/
+			_class.stateProperties ({
+				resizable:{
 					name:'resizable',
 					onChange:function () {
-						var _this = this;
-						_this._createResizerIfNecessary ();
-						_this._initializeResizerNodesIfNecessary ();
-						_this._resizer && _this._resizer.set ({enabled:_this._resizable ? 'inherit' : false});
+						var
+							_this = this,
+							_resizer = _this [_pResizer]
+						;
+						_this [_pCreateResizerIfNecessary] ();
+						_this [_pInitializeResizerNodesIfNecessary] ();
+						_resizer && _resizer.set ({enabled:_this.resizable ? 'inherit' : false});
 					}
 					/*?
-						Set-get Properties
+						State Properties
 							resizable
 								A boolean, specifying whether or not the dialog should be resizable.
 

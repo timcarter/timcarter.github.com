@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.FormDialog Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -31,7 +28,7 @@ Uize.module ({
 	superclass:'Uize.Widget.Dialog',
 	required:'Uize.Widget.Form',
 	builder:function (_superclass) {
-		/*** Variables for Scruncher Optimization ***/
+		'use strict';
 
 		/*** Class Constructor ***/
 			var
@@ -86,8 +83,8 @@ Uize.module ({
 		/*** Public Methods ***/
 			_class.prototype.handleFormValue = function(_callback) { _callback() };
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_formWidgetClass:{
 					name:'formWidgetClass',
 					value:Uize.Widget.Form

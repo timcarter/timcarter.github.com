@@ -4,7 +4,7 @@
 |    /    O /   |    MODULE : Uize.Widget.Swap.Image.Cycle Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
@@ -13,11 +13,8 @@
 	type: Class
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
-
-/*ScruncherSettings Mappings="=e" LineCompacting="TRUE"*/
 
 /*?
 	Introduction
@@ -31,6 +28,8 @@
 Uize.module ({
 	name:'Uize.Widget.Swap.Image.Cycle',
 	builder:function  (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -92,8 +91,8 @@ Uize.module ({
 				this._running = _false;
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_images:{
 					name:'images',
 					value:[]

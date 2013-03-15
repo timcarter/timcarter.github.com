@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.String.Lines Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Test
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -28,7 +25,10 @@
 
 Uize.module ({
 	name:'Uize.Test.Uize.String.Lines',
+	required:'Uize.Json',
 	builder:function () {
+		'use strict';
+
 		return Uize.Test.declare ({
 			title:'Test for Uize.String.Lines Module',
 			test:[
@@ -899,10 +899,7 @@ Uize.module ({
 								'true\n' +
 								'\'hello\'\n'
 								,
-								function (_line) {
-									var blah;
-									return eval ('blah = ' + _line);
-								}
+								Uize.Json.from
 							],
 							'undefined\n' +
 							'null\n' +
@@ -1020,10 +1017,7 @@ Uize.module ({
 								'true\n' +
 								'\'hello\'\n'
 								,
-								function (_line) {
-									var blah;
-									return eval ('blah = ' + _line);
-								}
+								Uize.Json.from
 							],
 							'{}\n' +
 							'[]\n' +

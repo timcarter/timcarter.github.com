@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Data.PathsTree Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Test
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Test.Uize.Data.PathsTree',
 	builder:function () {
+		'use strict';
+
 		return Uize.Test.declare ({
 			title:'Uize.Data.PathsTree Module Test',
 			test:[
@@ -44,8 +43,8 @@ Uize.module ({
 							['Uize']
 						],
 						['Test that multiple nodes at the same level in a tree is encoded correctly, using the default delimiter',
-							{Uize:0,UizeDotCom:0},
-							['Uize','UizeDotCom']
+							{Uize:0,MyCompanySite:0},
+							['Uize','MyCompanySite']
 						],
 						['Test that a node with a single child node is encoded correctly, using the default delimiter',
 							{Uize:{Widget:0}},
@@ -56,7 +55,7 @@ Uize.module ({
 							['Uize','Uize.Node','Uize.Widget','Uize.Widget.Bar','Uize.Widget.Form']
 						],
 						['Test that a complex tree is encoded correctly',
-							{Uize:{Fade:0,Color:0,Node:0,Widget:{Bar:{Slider:0},Form:0}},UizeDotCom:{Delve:0,Page:0}},
+							{Uize:{Fade:0,Color:0,Node:0,Widget:{Bar:{Slider:0},Form:0}},MyCompanySite:{Dialog:0,Page:0}},
 							[
 								'Uize',
 								'Uize.Fade',
@@ -66,9 +65,9 @@ Uize.module ({
 								'Uize.Widget.Bar',
 								'Uize.Widget.Bar.Slider',
 								'Uize.Widget.Form',
-								'UizeDotCom',
-								'UizeDotCom.Delve',
-								'UizeDotCom.Page'
+								'MyCompanySite',
+								'MyCompanySite.Dialog',
+								'MyCompanySite.Page'
 							]
 						],
 						['Test that a custom delimiter is handled correctly',
@@ -97,8 +96,8 @@ Uize.module ({
 							{Uize:0}
 						],
 						['Test that an array with multiple elements whose values do not have a delimiter is decoded correctly to an object with multiple nodes at the same level',
-							[['Uize','UizeDotCom']],
-							{Uize:0,UizeDotCom:0}
+							[['Uize','MyCompanySite']],
+							{Uize:0,MyCompanySite:0}
 						],
 						['Test that an array that has two values, representing a root path and a subpath, is decoded correctly to a node with a single child node',
 							[['Uize','Uize.Widget']],
@@ -119,12 +118,12 @@ Uize.module ({
 									'Uize.Widget.Bar',
 									'Uize.Widget.Bar.Slider',
 									'Uize.Widget.Form',
-									'UizeDotCom',
-									'UizeDotCom.Delve',
-									'UizeDotCom.Page'
+									'MyCompanySite',
+									'MyCompanySite.Dialog',
+									'MyCompanySite.Page'
 								]
 							],
-							{Uize:{Fade:0,Color:0,Node:0,Widget:{Bar:{Slider:0},Form:0}},UizeDotCom:{Delve:0,Page:0}}
+							{Uize:{Fade:0,Color:0,Node:0,Widget:{Bar:{Slider:0},Form:0}},MyCompanySite:{Dialog:0,Page:0}}
 						],
 						['Test that a custom delimiter is handled correctly',
 							[['Uize','Uize_Node','Uize_Widget','Uize_Widget_Bar','Uize_Widget_Form'],'_'],

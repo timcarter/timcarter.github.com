@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Bar.Progress Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 7
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.Bar.Progress',
 	required:'Uize.Fade',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -70,8 +69,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_inProgress:{
 					name:'inProgress',
 					onChange:function () {
@@ -85,13 +84,13 @@ Uize.module ({
 							_this._totalProcessesTime += _nowMs - _this._startTime;
 						}
 						if (_this.isWired) {
-							function _updateShown () {
+							var _updateShown = function () {
 								if (_this._vanishTimeout) {
 									clearTimeout (_this._vanishTimeout);
 									_this._vanishTimeout = _null;
 								}
 								_this._updateUiShown ();
-							}
+							};
 							if (_this._inProgress) {
 								_this._fade.start ({duration:(_this._totalProcesses > 0 ? _this._totalProcessesTime / _this._totalProcesses : 3000) * _this._paddingFactor});
 								_updateShown ();
@@ -104,7 +103,7 @@ Uize.module ({
 					},
 					value:_false
 					/*?
-						Set-get Properties
+						State Properties
 							inProgress
 								[DOCUMENT]
 					*/
@@ -113,7 +112,7 @@ Uize.module ({
 					name:'paddingFactor',
 					value:1.5
 					/*?
-						Set-get Properties
+						State Properties
 							paddingFactor
 								[DOCUMENT]
 					*/
@@ -122,14 +121,14 @@ Uize.module ({
 					name:'vanishTime',
 					value:250
 					/*?
-						Set-get Properties
+						State Properties
 							vanishTime
 								[DOCUMENT]
 					*/
 				}
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				html:{
 					process:function (input) {

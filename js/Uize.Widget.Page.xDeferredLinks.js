@@ -4,21 +4,21 @@
 |    /    O /   |    MODULE : Uize.Widget.Page.xDeferredLinks Class Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c_a" LineCompacting="TRUE"*/
 
 Uize.module ({
 	name:'Uize.Widget.Page.xDeferredLinks',
 	required:'Uize.Node',
 	builder:function (_class) {
+		'use strict';
+
 		_class.prototype.wireDeferredLinks = function() {
 			var
 				_this = this,
-				_links = _this._deferredLinks,
+				_links = _this.deferredLinks,
 				_numLinks = _links.length,
 				_linkNo = 0
 			;
@@ -50,7 +50,7 @@ Uize.module ({
 						);
 				}
 
-				for (var _endNo = Math.min(_numLinks, _linkNo + _this._linkBatchSize); _linkNo < _endNo; _linkNo++)
+				for (var _endNo = Math.min(_numLinks, _linkNo + _this.linkBatchSize); _linkNo < _endNo; _linkNo++)
 					_wireLink(_links[_linkNo])
 				;
 
@@ -60,13 +60,13 @@ Uize.module ({
 			}) ();
 		};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
-				_deferredLinks:{
+		/*** State Properties ***/
+			_class.stateProperties ({
+				deferredLinks:{
 					name:'deferredLinks',
 					value:[]
 				},
-				_linkBatchSize:{
+				linkBatchSize:{
 					name:'linkBatchSize',
 					value:25
 				}

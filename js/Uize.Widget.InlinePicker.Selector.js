@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.InlinePicker.Selector Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=e" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 4
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -34,6 +31,8 @@ Uize.module ({
 		'Uize.Util.Coupler'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var _class = _superclass.subclass (
 				null,
@@ -45,8 +44,8 @@ Uize.module ({
 				}
 			);
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_tentativeValueNo:{	// read-only
 					name:'tentativeValueNo',
 					value:-1
@@ -61,7 +60,7 @@ Uize.module ({
 				}
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				pipedProperties:['values'],
 				valueDisplayWidgetClass:Uize.Widget.Button.ValueDisplay.Selector,

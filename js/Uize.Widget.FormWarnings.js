@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.FormWarnings Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.FormWarnings',
 	required:'Uize.Template',	// for the JST
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (),
@@ -79,8 +78,8 @@ Uize.module ({
 				_this.fire('Changed.watchedElements');
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties({
+		/*** State Properties ***/
+			_class.stateProperties({
 				_shown:{
 					name:'shown',
 					onChange:function() {

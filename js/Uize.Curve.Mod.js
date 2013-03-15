@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Curve.Mod Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 4
 	codeCompleteness: 90
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -57,6 +54,8 @@
 Uize.module ({
 	name:'Uize.Curve.Mod',
 	builder:function (_host) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function () {},

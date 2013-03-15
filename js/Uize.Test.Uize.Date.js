@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Date Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Test
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -33,6 +30,8 @@ Uize.module ({
 		'Uize.Class.Value'
 	],
 	builder:function () {
+		'use strict';
+
 		function _dateToNumber (_date) {return +_date}
 		function _dateToString (_date) {return _date + ''}
 		function _dateToIso8601String (_date) {return Uize.Date.toIso8601 (_date)}
@@ -53,6 +52,7 @@ Uize.module ({
 		var
 			_defaultDate = new Date,
 			_oneDayInMilliseconds = 24 * 60 * 60 * 1000,
+			_nowTestFudgeFactor = 10,
 
 			/*** various test dates, for use in tests for different methods ***/
 				_testDate = _newDate (2001,9,11,8,46,40),
@@ -84,10 +84,10 @@ Uize.module ({
 				title:_testTitle,
 				test:function () {
 					var
-						_now = new Date,
+						_now = Uize.now (),
 						_result = Uize.Date.resolve.apply (Uize.Date,_arguments)
 					;
-					return this.expectInstanceOf (Date,_result) && _now - _result < 10;
+					return this.expectInstanceOf (Date,_result) && _now - _result < _nowTestFudgeFactor;
 				}
 			};
 		}
@@ -112,7 +112,7 @@ Uize.module ({
 			return {
 				title:_testTitle,
 				test:function () {
-					var _now = new Date;
+					var _now = Uize.now ();
 					return this.expect (
 						_expectedValue,
 						Uize.Date.isRecent (
@@ -185,9 +185,9 @@ Uize.module ({
 						_rangeAroundNow = Uize.Date.getRangeAround (new Date,'month'),
 						_rangeAroundValue = Uize.Date.getRangeAround (_value,'month')
 					;
-					return !(
-						_rangeAroundNow.minValue - _rangeAroundValue.minValue ||
-						_rangeAroundNow.maxValue - _rangeAroundValue.maxValue
+					return (
+						_rangeAroundValue.minValue - _rangeAroundNow.minValue < _nowTestFudgeFactor &&
+						_rangeAroundValue.maxValue - _rangeAroundNow.maxValue < _nowTestFudgeFactor
 					);
 				}
 			};
@@ -491,7 +491,7 @@ Uize.module ({
 						],
 						{
 							title:'Test that now is the default when date to encode is not specfied',
-							test:function () {return Uize.Date.toIso8601 () == Uize.Date.toIso8601 (new Date ())}
+							test:function () {return Uize.Date.toIso8601 () == Uize.Date.toIso8601 (new Date)}
 						},
 						['Test that an invalid date is formatted in ISO8601 as ????-??-??',
 							NaN,
@@ -642,15 +642,30 @@ Uize.module ({
 						/*** test defaulting of the date to test for being in range ***/
 							{
 								title:'Test that date to test is defaulted to now when its value is undefined',
-								test:function () {return Uize.Date.inRange (undefined,{minValue:new Date,maxValue:new Date})}
+								test:function () {
+									return Uize.Date.inRange (
+										undefined,
+										{minValue:Uize.now (),maxValue:Uize.now () + _nowTestFudgeFactor}
+									);
+								}
 							},
 							{
 								title:'Test that date to test is defaulted to now when its value is null',
-								test:function () {return Uize.Date.inRange (null,{minValue:new Date,maxValue:new Date})}
+								test:function () {
+									return Uize.Date.inRange (
+										null,
+										{minValue:Uize.now (),maxValue:Uize.now () + _nowTestFudgeFactor}
+									);
+								}
 							},
 							{
 								title:'Test that date to test is defaulted to now when its value is an empty string',
-								test:function () {return Uize.Date.inRange ('',{minValue:new Date,maxValue:new Date})}
+								test:function () {
+									return Uize.Date.inRange (
+										'',
+										{minValue:Uize.now (),maxValue:Uize.now () + _nowTestFudgeFactor}
+									);
+								}
 							}
 					]],
 					['Uize.Date.isRecent',[

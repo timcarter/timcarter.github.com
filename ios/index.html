@@ -13,6 +13,20 @@
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function () {
+				/* application cache handling */
+				var
+					cache = window.applicationCache,
+					updateFn = function () {
+						if (cache.status === 4) {
+							cache.swapCache ();
+							window.location.reload ();
+						}
+					}
+				;
+
+				cache &&
+					cache.addEventListener ('updateready', updateFn);
+
 				alert ('this is a test');
 			});
 		</script>

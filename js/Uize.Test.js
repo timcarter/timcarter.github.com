@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=b" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 9
 	codeCompleteness: 50
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -26,7 +23,7 @@
 		*DEVELOPERS:* `Chris van Rensburg`
 
 	### In a Nutshell
-		document...
+		.
 
 */
 
@@ -39,6 +36,8 @@ Uize.module ({
 		'Uize.Util.Oop'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -108,7 +107,7 @@ Uize.module ({
 
 							NOTES
 							- compare to the =expectSameAs= instance method
-							- this method is one of the many available `Expectation Methods`
+							- this method is one of the many available `expectation methods`
 				*/
 			};
 
@@ -135,7 +134,7 @@ Uize.module ({
 
 							NOTES
 							- compare to the =expect= instance method
-							- this method is one of the many available `Expectation Methods`
+							- this method is one of the many available `expectation methods`
 				*/
 			};
 
@@ -179,7 +178,7 @@ Uize.module ({
 							.......................................................
 
 							NOTES
-							- this method is one of the many available `Expectation Methods`
+							- this method is one of the many available `expectation methods`
 				*/
 			};
 
@@ -187,7 +186,7 @@ Uize.module ({
 				_classPrototype.expectInstanceOf = function (_class,_value) {
 					return this._expectSuccess (
 						_value != _undefined &&
-						_value.constructor == (typeof _class == 'string' ? eval (_class) : _class),
+						_value.constructor == Uize.getModuleByName (_class),
 						function () {return 'instance of ' + Uize.Util.Oop.getClassName (_class)},
 						function () {return 'instance of ' + Uize.Util.Oop.getClassName (_value.constructor)}
 					);
@@ -225,7 +224,7 @@ Uize.module ({
 									So, for example, the statement =myTest.expectInstanceOf (Uize.Widget,Uize.Widget.Bar ())= would return the value =false=.
 
 								Expecting Arrays or Regular Expressions
-									While you can use the =expectInstanceOf= method to test for instances of arrays or regular expressions, there are dedicated `Expectation Methods` to test for instances of those built-in JavaScript objects.
+									While you can use the =expectInstanceOf= method to test for instances of arrays or regular expressions, there are dedicated `expectation methods` to test for instances of those built-in JavaScript objects.
 
 									To test for instances of the =Array= object, you can use the =expectArray= instance method. So, the statement =myTest.expectInstanceOf (Array,['foo','bar'])= would be equivalent to the more concise statement =myTest.expectArray (['foo','bar'])=. Similarly, the statement =myTest.expectInstanceOf (RegExp,/^\s+$/)= would be equivalent to the more concise statement =myTest.expectRegExp (/^\s+$/)=.
 
@@ -240,7 +239,7 @@ Uize.module ({
 									This is because the =expectInstanceOf= method tests to see if the =constructor= property of the value is a reference to the expected class. So, for example, while the statement ='foo' instanceof String= would produce the value =false=, the statement =myTest.expectInstanceOf (String,'foo')= would return the value =true=. This same rule applies also to number and boolean primitives. Also, both of the statements =myTest.expectInstanceOf (String,'foo')= and =myTest.expectInstanceOf (String,new String ('foo'))= would return the value =true=.
 
 								NOTES
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -267,7 +266,7 @@ Uize.module ({
 									Using the =typeof= operator, instances of JavaScript's built-in =String=, =Number=, and =Boolean= objects are all considered of type ='object'=. So, the statement =myTest.expectType ('string',new String ('foo'))= will return the value =false=, while the statement =myTest.expectType ('object',new String ('foo'))= will return the value =true=. In contrast, the statement =myTest.expectInstanceOf (String,new String ('foo'))= would return the value =true=, while the statement =myTest.expectInstanceOf (String,'foo')= would also return the value =true=.
 
 								NOTES
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -290,7 +289,7 @@ Uize.module ({
 
 								NOTES
 								- see the related =expectArrayLike= instance method
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -313,7 +312,7 @@ Uize.module ({
 
 								NOTES
 								- see the related =expectType= and =expectInstanceOf= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -341,20 +340,20 @@ Uize.module ({
 								- class modules, such as =Uize.Class=, =Uize.Fade=, =Uize.Widget=, etc.
 
 								EXAMPLE
-								................................................................................
-								myTest.expectFunction (Uize.copyInto);                           // returns true
-								myTest.expectFunction (myTest.expectFunction);                   // returns true
-								myTest.expectFunction (function (value) {alert (value)});        // returns true
-								myTest.expectFunction (new Function ('value','alert (value')));  // returns true
-								myTest.expectFunction (Date);                                    // returns true
-								myTest.expectFunction (Uize.Util);                               // returns true
-								myTest.expectFunction (Uize.Node);                               // returns true
-								myTest.expectFunction (Uize.Widget);                             // returns true
-								................................................................................
+								............................................................................
+								myTest.expectFunction (Uize.copyInto);                       // returns true
+								myTest.expectFunction (myTest.expectFunction);               // returns true
+								myTest.expectFunction (function (value) {alert (value)});    // returns true
+								myTest.expectFunction (Function ('value','alert (value')));  // returns true
+								myTest.expectFunction (Date);                                // returns true
+								myTest.expectFunction (Uize.Util);                           // returns true
+								myTest.expectFunction (Uize.Node);                           // returns true
+								myTest.expectFunction (Uize.Widget);                         // returns true
+								............................................................................
 
 								NOTES
 								- see the related =expectType= and =expectInstanceOf= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -386,7 +385,7 @@ Uize.module ({
 
 								NOTES
 								- see the related =expectType= and =expectInstanceOf= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -408,25 +407,25 @@ Uize.module ({
 									Using the =typeof= operator, instances of many of JavaScript's built-in objects (such as the =Date=, =RegExp=, =Number=, =Boolean=, and =String= objects) are considered of type ='object'= - not just instances of the built-in =Object= object. In addition, the value =null= is considered to be of type ='object'=. If you want to test specifically whether or not a value is an instance of the =Object= object, then you should use a statement like =myTest.expectInstanceOf (Object,value)=.
 
 								EXAMPLES
-								..............................................................................
-								myTest.expectObject ({});                                     // returns true
-								myTest.expectObject ({foo:'bar'});                            // returns true
-								myTest.expectObject (new Object);                             // returns true
-								myTest.expectObject ([]);                                     // returns true
-								myTest.expectObject (['foo','bar']);                          // returns true
-								myTest.expectObject (/^\s+$/);                                // returns true
-								myTest.expectObject (new Boolean (false));                    // returns true
-								myTest.expectObject (Uize.Widget.Bar.Slider ());              // returns true
-								myTest.expectObject (null);                                   // returns true
+								..........................................................................
+								myTest.expectObject ({});                                 // returns true
+								myTest.expectObject ({foo:'bar'});                        // returns true
+								myTest.expectObject (new Object);                         // returns true
+								myTest.expectObject ([]);                                 // returns true
+								myTest.expectObject (['foo','bar']);                      // returns true
+								myTest.expectObject (/^\s+$/);                            // returns true
+								myTest.expectObject (new Boolean (false));                // returns true
+								myTest.expectObject (Uize.Widget.Bar.Slider ());          // returns true
+								myTest.expectObject (null);                               // returns true
 
-								myTest.expectObject (undefined);                              // returns false
-								myTest.expectObject (function (value) {alert (value)});       // returns false
-								myTest.expectObject (new Function ('value','alert (value)');  // returns false
-								..............................................................................
+								myTest.expectObject (undefined);                          // returns false
+								myTest.expectObject (function (value) {alert (value)});   // returns false
+								myTest.expectObject (Function ('value','alert (value)');  // returns false
+								..........................................................................
 
 								NOTES
 								- see the related =expectType= and =expectInstanceOf= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -454,7 +453,7 @@ Uize.module ({
 								..............................................................
 
 								NOTES
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -477,7 +476,7 @@ Uize.module ({
 
 								NOTES
 								- see the related =expectType= and =expectInstanceOf= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -511,7 +510,7 @@ Uize.module ({
 
 								NOTES
 								- see the related =expectArray= instance method
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -604,7 +603,7 @@ Uize.module ({
 									.................................................
 
 								NOTES
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -643,7 +642,7 @@ Uize.module ({
 
 								NOTES
 								- see the related =expectNegativeNumber=, =expectPositiveNumber=, =expectNegativeInteger=, =expectPositiveInteger=, and =expectIntegerInRange= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -681,7 +680,7 @@ Uize.module ({
 									NOTES
 									- see the companion =expectPositiveNumber= instance method
 									- see the related =expectNegativeInteger=, =expectPositiveInteger=, =expectIntegerInRange=, and =expectNumberInRange= instance methods
-									- this method is one of the many available `Expectation Methods`
+									- this method is one of the many available `expectation methods`
 						*/
 					};
 
@@ -718,7 +717,7 @@ Uize.module ({
 									NOTES
 									- see the companion =expectNegativeNumber= instance method
 									- see the related =expectNegativeInteger=, =expectPositiveInteger=, =expectIntegerInRange=, and =expectNumberInRange= instance methods
-									- this method is one of the many available `Expectation Methods`
+									- this method is one of the many available `expectation methods`
 						*/
 					};
 
@@ -782,7 +781,7 @@ Uize.module ({
 									............................................................
 
 								NOTES
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -811,7 +810,7 @@ Uize.module ({
 
 								NOTES
 								- see also the more specific =expectNonEmptyArray=, =expectNonEmptyObject=, and =expectNonEmptyString= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -851,7 +850,7 @@ Uize.module ({
 								.................................................................
 
 								NOTES
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -897,7 +896,7 @@ Uize.module ({
 
 								NOTES
 								- see the related =expectNegativeNumber=, =expectPositiveNumber=, =expectNegativeInteger=, =expectPositiveInteger=, and =expectNumberInRange= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -937,7 +936,7 @@ Uize.module ({
 								NOTES
 								- see the companion =expectPositiveInteger= instance method
 								- see the related =expectNegativeNumber=, =expectPositiveNumber=, =expectIntegerInRange=, and =expectNumberInRange= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -977,7 +976,7 @@ Uize.module ({
 								NOTES
 								- see the companion =expectNegativeInteger= instance method
 								- see the related =expectNegativeNumber=, =expectPositiveNumber=, =expectIntegerInRange=, and =expectNumberInRange= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -1004,7 +1003,7 @@ Uize.module ({
 								.........................................................
 
 								NOTES
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -1038,7 +1037,7 @@ Uize.module ({
 
 								NOTES
 								- compare to the =expectNonEmpty=, =expectNonEmptyObject=, and =expectNonEmptyString= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -1078,7 +1077,7 @@ Uize.module ({
 
 								NOTES
 								- compare to the =expectNonEmpty=, =expectNonEmptyArray=, and =expectNonEmptyString= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -1109,7 +1108,7 @@ Uize.module ({
 
 								NOTES
 								- compare to the =expectNonEmpty=, =expectNonEmptyArray=, and =expectNonEmptyObject= instance methods
-								- this method is one of the many available `Expectation Methods`
+								- this method is one of the many available `expectation methods`
 					*/
 				};
 
@@ -1218,7 +1217,7 @@ Uize.module ({
 							This method is useful when providing a report for a test, especially if the test fails. The synopsis provides an indication of whether the test passed or failed, breadcrumbs to indicate where the test is in a test tree, when the test started and ended and its duration, and the reason for failure if the test failed.
 
 							NOTES
-							- see also the =reasonForFailure= and =result= set-get properties
+							- see also the =reasonForFailure= and =result= state properties
 				*/
 			};
 
@@ -1236,17 +1235,17 @@ Uize.module ({
 							myTest.stop ();
 							...............
 
-							Upon calling the =stop= method, the =stop= method will first be called on any child tests belonging to the test, after which the =inProgress= set-get property for the instance will be set to =false=. If the instance is not running its test(s) at the time that this method is called, then calling it will have no effect.
+							Upon calling the =stop= method, the =stop= method will first be called on any child tests belonging to the test, after which the =inProgress= state property for the instance will be set to =false=. If the instance is not running its test(s) at the time that this method is called, then calling it will have no effect.
 
 							NOTES
 							- see the companion =run= instance method
-							- see the related =inProgress= set-get property
+							- see the related =inProgress= state property
 				*/
 			};
 
 			_classPrototype.run = function (_callback) {
 				/* NOTE:
-					Ultimately, this code should find its way into the onChange handler for the inProgress set-get property, and then this method can be supplanted by a simple start method that only stops the test and then sets the inProgress property to true, making the interface for this class more in line with the Uize.Fade class.
+					Ultimately, this code should find its way into the onChange handler for the inProgress state property, and then this method can be supplanted by a simple start method that only stops the test and then sets the inProgress property to true, making the interface for this class more in line with the Uize.Fade class.
 				*/
 				var
 					_this = this,
@@ -1306,19 +1305,19 @@ Uize.module ({
 				if (Uize.isArray (_test)) {
 					var
 						_testLength = _test.length,
-						_testNo = -1
-					;
-					function _continue () {
-						_this.set ({_progress:(_testNo + 1) / _testLength});
-						function _setResultAndContinue (_result) {
-							_testResult = _result;
-							_continue ();
+						_testNo = -1,
+						_continue = function () {
+							_this.set ({_progress:(_testNo + 1) / _testLength});
+							function _setResultAndContinue (_result) {
+								_testResult = _result;
+								_continue ();
+							}
+							while (_this._inProgress && _testResult === _true && ++_testNo < _testLength)
+								_testResult = _test [_testNo].run (_setResultAndContinue)
+							;
+							_updateResultProperty ();
 						}
-						while (_this._inProgress && _testResult === _true && ++_testNo < _testLength)
-							_testResult = _test [_testNo].run (_setResultAndContinue)
-						;
-						_updateResultProperty ();
-					}
+					;
 					_continue ();
 				} else {
 					try {
@@ -1375,7 +1374,7 @@ Uize.module ({
 							resultBOOL = myTest.run ();
 							...........................
 
-							In the event that running of the instance's test(s) is asynchronous, the =run= method will return the value =Uize.Test.isAsync=, and the instance's =isAsync= set-get property will be set to the value =true=. For a more in-depth discussion, see the section `Asynchronous Tests` in the [[../explainers/javascript-testing-framework.html][JavaScript Testing Framework]] explainer.
+							In the event that running of the instance's test(s) is asynchronous, the =run= method will return the value =Uize.Test.isAsync=, and the instance's =isAsync= state property will be set to the value =true=. For a more in-depth discussion, see the section `Asynchronous Tests` in the [[../explainers/javascript-testing-framework.html][JavaScript Testing Framework]] explainer.
 
 							Callback Function For Asynchronous Tests
 								When the optional =callbackFUNC= parameter is specified, a callback function can be specified that will be called once running of the instance's test(s) is complete, in the event that running of the instance's test(s) is asynchronous.
@@ -1405,7 +1404,7 @@ Uize.module ({
 							.................................
 
 							NOTES
-							- see the related =log= set-get property
+							- see the related =log= state property
 				*/
 			};
 
@@ -1416,10 +1415,10 @@ Uize.module ({
 					Uize.Test.isAsync
 						A read-only special value that is used to indicate that running of a test instance's test(s) is asynchronous.
 
-						When a test instance is known to be asynchronous, the instance's =result= set-get property will be set to the value =Uize.Test.isAsync=. In this situation, the instance's =isAsync= set-get property will also be set to the value =true=. For a more in-depth discussion, see the section `Asynchronous Tests` in the [[../explainers/javascript-testing-framework.html][JavaScript Testing Framework]] explainer.
+						When a test instance is known to be asynchronous, the instance's =result= state property will be set to the value =Uize.Test.isAsync=. In this situation, the instance's =isAsync= state property will also be set to the value =true=. For a more in-depth discussion, see the section `Asynchronous Tests` in the [[../explainers/javascript-testing-framework.html][JavaScript Testing Framework]] explainer.
 
 						NOTES
-						- see the related =isAsync= and =result= set-get properties
+						- see the related =isAsync= and =result= state properties
 			*/
 
 		/*** Public Static Methods ***/
@@ -1497,9 +1496,9 @@ Uize.module ({
 								........................................
 
 								testOBJ
-									An object, being either a set of property values for the set-get properties of the =Uize.Test= class, or a reference to a =Uize.Test= subclass.
+									An object, being either a set of property values for the state properties of the =Uize.Test= class, or a reference to a =Uize.Test= subclass.
 
-									In the event that the =testOBJ= parameter's value is a set of property value, a new subclass of the =Uize.Test= class is created, and its set-get properties are initialized with the values contained in the =testOBJ= object. The value of the =test= property receives special handling (see `Resolving Subtests`).
+									In the event that the =testOBJ= parameter's value is a set of property value, a new subclass of the =Uize.Test= class is created, and its state properties are initialized with the values contained in the =testOBJ= object. The value of the =test= property receives special handling (see `Resolving Subtests`).
 
 								More Concise and Declarative
 									The =Uize.Test.declare= method allows for a more concise, declarative syntax for defining tests.
@@ -1522,7 +1521,7 @@ Uize.module ({
 									..................................................
 
 								Returns a Test Class
-									Because the =Uize.Test.declare= method returns a =Uize.Test= subclass, it can be used for declaring a child test in an array of child tests, as with all the other `Test Class Factory Methods` (see `Example 2: A Set of Tests` for an illustration of this).
+									Because the =Uize.Test.declare= method returns a =Uize.Test= subclass, it can be used for declaring a child test in an array of child tests, as with all the other `test class factory methods` (see `Example 2: A Set of Tests` for an illustration of this).
 
 								Resolving Subtests
 									If a test properties object is specified for the =testOBJ= parameter (rather than a =Uize.Test= subclass), then the value of that object's =test= property is further resolved.
@@ -1540,7 +1539,7 @@ Uize.module ({
 									});
 									..................................................
 
-									The value of the =test= set-get property in this case is a function, which will be executed when an instance of the test class is run using the =run= instance method.
+									The value of the =test= state property in this case is a function, which will be executed when an instance of the test class is run using the =run= instance method.
 
 								Example 2: A Set of Tests
 									In this example, a test class is being created that serves as a wrapper for a set of child tests.
@@ -1564,22 +1563,17 @@ Uize.module ({
 									});
 									........................................................................
 
-									The value of the =test= set-get property in this case is an array, which contains a sequence of child tests. The elements of the child tests array are resolved to test classes (see `Resolving Subtests`). In this example, the child tests array contains a mix of child tests declared in different ways: the first child test is declared using the simple object syntax, the second is declared by calling the =Uize.Test.declare= method explicitly, and the remaining child tests are declared by calling the =Uize.Test.staticPropertyTest= static method.
+									The value of the =test= state property in this case is an array, which contains a sequence of child tests. The elements of the child tests array are resolved to test classes (see `Resolving Subtests`). In this example, the child tests array contains a mix of child tests declared in different ways: the first child test is declared using the simple object syntax, the second is declared by calling the =Uize.Test.declare= method explicitly, and the remaining child tests are declared by calling the =Uize.Test.staticPropertyTest= static method.
 
 								NOTES
-								- this method is one of the many available `Test Class Factory Methods`
+								- this method is one of the many available `test class factory methods`
 					*/
 				};
 
 				_class.requiredModulesTest = function (_modules) {
 					return this.declare ({
 						title:'REQUIRED MODULES TEST: ' + _modules,
-						test:function (_continue) {
-							Uize.module ({
-								required:_modules,
-								builder:function () {_continue (true)}
-							});
-						}
+						test:function (_continue) {Uize.require (_modules,function () {_continue (true)})}
 					});
 					/*?
 						Static Methods
@@ -1614,10 +1608,10 @@ Uize.module ({
 									});
 									.............................................................
 
-									In the above example, a test class is being created for testing the =Uize.Array.Order= module, using the =Uize.Test.declare= static method (another of the `Test Class Factory Methods`). As you will notice, the very first child test in our test class is being created using the =Uize.Test.requiredModulesTest= method. This tests requiring the =Uize.Array.Order= module. If the test fails, then subsequent tests will not be performed. If the test succeeds, then the =Uize.Array.Order= module is guaranteed to be built and can be relied upon for the subsequent tests that will test the module's various features, such as its static methods.
+									In the above example, a test class is being created for testing the =Uize.Array.Order= module, using the =Uize.Test.declare= static method (another of the `test class factory methods`). As you will notice, the very first child test in our test class is being created using the =Uize.Test.requiredModulesTest= method. This tests requiring the =Uize.Array.Order= module. If the test fails, then subsequent tests will not be performed. If the test succeeds, then the =Uize.Array.Order= module is guaranteed to be built and can be relied upon for the subsequent tests that will test the module's various features, such as its static methods.
 
 								NOTES
-								- this method is one of the many available `Test Class Factory Methods`
+								- this method is one of the many available `test class factory methods`
 					*/
 				};
 
@@ -1631,14 +1625,14 @@ Uize.module ({
 						test:[
 							{
 								title:'Test that host ' + _propertyHost + ' is defined',
-								test:function () {return this.expectNonNull (eval (_propertyHost))}
+								test:function () {return this.expectNonNull (Uize.getModuleByName (_propertyHost))}
 							},
 							{
 								title:'Test that ' + _propertyFullName + ' is a ' + _expectedType,
 								test:function () {
 									return this.expectType (
 										_expectedType,
-										eval (_propertyHost) [_hostAndProperty.property]
+										Uize.getModuleByName (_propertyHost) [_hostAndProperty.property]
 									);
 								}
 							}
@@ -1683,7 +1677,7 @@ Uize.module ({
 									In the above example, a test class is being created to test for the =Uize.Test.isAsync= static property. The test class is assigned to the =StaticPropertyTestClass= variable. Then, an instance of that test class is created, assigned to the =staticPropertyTest= variable, and then run. Upon completion, the callback function is executed and the result of the test is reported in a JavaScript alert. The result is =true= (assuming something hasn't been broken in the =Uize.Test= module), since the =Uize.Test.isAsync= static property is of type ='object'=.
 
 								NOTES
-								- this method is one of the many available `Test Class Factory Methods`
+								- this method is one of the many available `test class factory methods`
 					*/
 				};
 
@@ -1701,7 +1695,7 @@ Uize.module ({
 								title:_case [0],
 								test:function () {
 									var
-										_methodHost = eval (_methodHostName),
+										_methodHost = Uize.getModuleByName (_methodHostName),
 										_arguments = this.get ('cloneArguments') ? Uize.clone (_case [1]) : _case [1]
 									;
 									return this.expect (
@@ -1790,12 +1784,12 @@ Uize.module ({
 											- =expectedResultANYTYPE= - the result that is expected to be returned by the static method when calling it with the arguments specified for the case
 
 										Asynchronous or Non-deterministic Cases
-											When a case is either asynchronous or non-deterministic (ie. you can't be guaranteed to always get the same result returned for the same argument values), then you cannot use the concise array syntax for declaring the case as you can with `Synchronous and Deterministic Cases`.
+											When a case is either asynchronous or non-deterministic (ie. you can't be guaranteed to always get the same result returned for the same argument values), then you cannot use the concise array syntax for declaring the case as you can with `synchronous and deterministic cases`.
 
-											Instead, you can use the object syntax accepted for the =testOBJ= parameter of the =Uize.Test.declare= static method, or you can provide a =Uize.Test= subclass (created by one of the `Test Class Factory Methods`, or otherwise created).
+											Instead, you can use the object syntax accepted for the =testOBJ= parameter of the =Uize.Test.declare= static method, or you can provide a =Uize.Test= subclass (created by one of the `test class factory methods`, or otherwise created).
 
 								supplementalTestPropertiesOBJ
-									When the optional =supplementalTestPropertiesOBJ= parameter is specified, then additional values for the set-get properties of the created =Uize.Test= subclass can be specified.
+									When the optional =supplementalTestPropertiesOBJ= parameter is specified, then additional values for the state properties of the created =Uize.Test= subclass can be specified.
 
 									Among other things, this allows the =title= of the test class to be specified (rather than using the automatically generated title).
 
@@ -1823,7 +1817,7 @@ Uize.module ({
 
 								NOTES
 								- see the related =Uize.Test.staticMethodsTest= static method
-								- this method is one of the many available `Test Class Factory Methods`
+								- this method is one of the many available `test class factory methods`
 					*/
 				};
 
@@ -1952,7 +1946,7 @@ Uize.module ({
 
 								NOTES
 								- see the related =Uize.Test.staticMethodTest= static method
-								- this method is one of the many available `Test Class Factory Methods`
+								- this method is one of the many available `test class factory methods`
 					*/
 				};
 
@@ -1968,7 +1962,7 @@ Uize.module ({
 								test:function (_continue) {
 									var
 										_this = this,
-										_testModuleInstance = new (eval (_testModule))
+										_testModuleInstance = Uize.getModuleByName (_testModule) ()
 									;
 									_testModuleInstance.wire (
 										'Done',
@@ -2005,7 +1999,7 @@ Uize.module ({
 								............................................................................
 
 								NOTES
-								- this method is one of the many available `Test Class Factory Methods`
+								- this method is one of the many available `test class factory methods`
 					*/
 				};
 
@@ -2052,15 +2046,15 @@ Uize.module ({
 								In the above example, a test suite test class is being created to sequence execution of a series of test modules that test various modules of the UIZE JavaScript Framework.
 
 								NOTES
-								- this method is one of the many available `Test Class Factory Methods`
+								- this method is one of the many available `test class factory methods`
 					*/
 				};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_duration:'duration',
 					/*?
-						Set-get Properties
+						State Properties
 							duration
 								A number, representing how long it took for the test instance to run, measured in milliseconds.
 
@@ -2071,34 +2065,34 @@ Uize.module ({
 					*/
 				_endTime:'endTime',
 					/*?
-						Set-get Properties
+						State Properties
 							endTime
 								An instance of JavaScript's =Date= object, that is set to the time at which running of the test instance ended.
 
 								Before a test instance has been run for the first time, the value of this property will be =undefined=. The value will also be reset to =undefined= each time the test is started, and will remain =undefined= while the test is in progress. The value will be reset to the current time each time the test ends running.
 
 								NOTES
-								- see also the companion =startTime= and =duration= set-get properties
+								- see also the companion =startTime= and =duration= state properties
 								- the initial value is =undefined=
 					*/
 				_inProgress:{
 					name:'inProgress',
 					value:_false
 					/*?
-						Set-get Properties
+						State Properties
 							inProgress
 								A boolean, indicating whether or not the test instance is busy running its test(s).
 
 								The value of this property is set to =true= each time the test is started, and is set back to =false= each time the test ends running.
 
 								NOTES
-								- see also the related =progress= set-get property
+								- see also the related =progress= state property
 								- the initial value is =false=
 					*/
 				},
 				_isAsync:'isAsync',
 					/*?
-						Set-get Properties
+						State Properties
 							isAsync
 								A boolean, indicating whether or not running the test instance's test(s) is asynchronous.
 
@@ -2110,7 +2104,7 @@ Uize.module ({
 					*/
 				_log:'log',
 					/*?
-						Set-get Properties
+						State Properties
 							log
 								An array, containing all of the messages logged using the =log Instance Method=.
 
@@ -2132,31 +2126,31 @@ Uize.module ({
 					name:'progress',
 					value:0
 					/*?
-						Set-get Properties
+						State Properties
 							progress
 								A floating point number in the range of =0= to =1=, indicating how far the test instance is in running its test(s).
 
-								Before a test instance has been run for the first time, the value of this property will be =0=. The value will also be reset to =0= each time the test is started. The value will be set to the =1= when the test ends running. During running of the test, the value will be updated periodically to reflect the progress that has been made. The =progress= is calculated by dividing the number of `Subtests` that have completed running by the total number of subtests defined in the =test= set-get property. Importantly, the value of this property does not reflect updates in the progress of individual subtests.
+								Before a test instance has been run for the first time, the value of this property will be =0=. The value will also be reset to =0= each time the test is started. The value will be set to the =1= when the test ends running. During running of the test, the value will be updated periodically to reflect the progress that has been made. The =progress= is calculated by dividing the number of `subtests` that have completed running by the total number of subtests defined in the =test= state property. Importantly, the value of this property does not reflect updates in the progress of individual subtests.
 
 								NOTES
-								- see also the related =inProgress= set-get property
+								- see also the related =inProgress= state property
 					*/
 				},
 				_reasonForFailure:'reasonForFailure',
 					/*?
-						Set-get Properties
+						State Properties
 							reasonForFailure
 								A string, providing an explanation for why the test failed, or the value =undefined= if the test has not failed.
 
-								Before a test instance has been run for the first time, the value of this property will be =undefined=. The value will also be reset to =undefined= each time the test is started, and will remain =undefined= while the test is in progress. If the test fails, the value of this property is typically set in a call to one of the `Expectation Methods`, along with the =result= set-get property being set to =false=.
+								Before a test instance has been run for the first time, the value of this property will be =undefined=. The value will also be reset to =undefined= each time the test is started, and will remain =undefined= while the test is in progress. If the test fails, the value of this property is typically set in a call to one of the `expectation methods`, along with the =result= state property being set to =false=.
 
 								NOTES
-								- see also the related =result= set-get property
+								- see also the related =result= state property
 								- the initial value is =undefined=
 					*/
 				_result:'result',
 					/*?
-						Set-get Properties
+						State Properties
 							result
 								A boolean, indicating whether or not the test passed, or the value =undefined= or =Uize.Test.isAsync=.
 
@@ -2165,19 +2159,19 @@ Uize.module ({
 								Before a test instance has been run for the first time, the value of this property will be =undefined=. The value will also be reset to =undefined= each time the test is started, and will remain =undefined= until the result is determined, or will be set to the constant value =Uize.Test.isAsync= if the test is known to be asynchronous.
 
 								NOTES
-								- see also the related =reasonForFailure= set-get property
+								- see also the related =reasonForFailure= state property
 								- the initial value is =undefined=
 					*/
 				_startTime:'startTime',
 					/*?
-						Set-get Properties
+						State Properties
 							startTime
 								An instance of JavaScript's =Date= object, that is set to the time at which running of the test instance started.
 
 								Before a test instance has been run for the first time, the value of this property will be =undefined=. The value will be reset to the current time each time the test is started.
 
 								NOTES
-								- see also the companion =endTime= and =duration= set-get properties
+								- see also the companion =endTime= and =duration= state properties
 								- the initial value is =undefined=
 					*/
 				_test:{
@@ -2200,14 +2194,14 @@ Uize.module ({
 						return _value;
 					}
 					/*?
-						Set-get Properties
+						State Properties
 							test
 								A test function, or an array of child tests where each element is an instance of a =Uize.Test= subclass.
 
 								The Simple Test Case
 									In the case of a simple test that has no child tests, the value of the =test= property should be a reference to the function that performs the test action.
 
-									This function will be executed when the test is run by calling the =run= instance method. When the function is called, it will be called as an instance method of the test instance, so it will have access to the instance for the purpose of calling any of the `Expectation Methods`, or for accessing state of the instance through its various set-get properties. The function should expect to receive a single parameter, being a continuation function that can be called in case the test is asynchronous (see the section on `Asynchronous Tests` in the [[../explainers/javascript-testing-framework.html][JavaScript Testing Framework]] explainer for more details). In the case of synchronous tests, the test function should return a boolean value, indicating whether the test passed or failed.
+									This function will be executed when the test is run by calling the =run= instance method. When the function is called, it will be called as an instance method of the test instance, so it will have access to the instance for the purpose of calling any of the `expectation methods`, or for accessing state of the instance through its various state properties. The function should expect to receive a single parameter, being a continuation function that can be called in case the test is asynchronous (see the section on `Asynchronous Tests` in the [[../explainers/javascript-testing-framework.html][JavaScript Testing Framework]] explainer for more details). In the case of synchronous tests, the test function should return a boolean value, indicating whether the test passed or failed.
 
 								The Child Tests Case
 									In the case of a test that is serving as a parent for a set of child tests, the value of the =test= property will be an array of child test instances.
@@ -2217,7 +2211,7 @@ Uize.module ({
 				},
 				_title:'title'
 					/*?
-						Set-get Properties
+						State Properties
 							title
 								A string, representing the title of the test instance.
 

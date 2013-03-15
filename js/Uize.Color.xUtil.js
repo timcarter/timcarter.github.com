@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Color.xUtil Object Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)1997-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)1997-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Extension
 	importance: 2
 	codeCompleteness: 90
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Color.xUtil',
 	required:'Uize.Array.Sort',
 	builder:function (_object) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,
@@ -108,7 +107,7 @@ Uize.module ({
 							myColor.blend ('black','white');  // myColor now #808080 (gray), encoding "name"
 							................................................................................
 
-							Color one and color two - the source colors for the blending operation - can be specified using any of the many supported `Color Encodings`...
+							Color one and color two - the source colors for the blending operation - can be specified using any of the many supported `color encodings`...
 
 							EXAMPLES
 							....................................................................................
@@ -122,7 +121,7 @@ Uize.module ({
 							myColor.blend ('#0','#f');              // myColor now #808080, encoding "#hex"
 							....................................................................................
 
-							The `Color Encodings` for color one and color two do not have to be the same...
+							The `color encodings` for color one and color two do not have to be the same...
 
 							EXAMPLES
 							..................................................................................
@@ -261,7 +260,7 @@ Uize.module ({
 							colorANYTYPE = Uize.Color.blend (color1ANYTYPE,color2ANYTYPE,blendFRACTION,encodingSTR);
 							........................................................................................
 
-							The resulting blended color can be encoded in any of the many supported `Color Encodings`, by using the optional =encodingSTR= parameter, as follows...
+							The resulting blended color can be encoded in any of the many supported `color encodings`, by using the optional =encodingSTR= parameter, as follows...
 
 							EXAMPLES
 							........................................................................
@@ -288,7 +287,7 @@ Uize.module ({
 							var myColorHex = Uize.Color.blend ('fuchsia','olive');  // myColorHex is 'c04080'
 							.................................................................................
 
-							Color one and color two - the source colors for the blending operation - can be specified using any of the many supported `Color Encodings`...
+							Color one and color two - the source colors for the blending operation - can be specified using any of the many supported `color encodings`...
 
 							EXAMPLES
 							...................................................................................
@@ -303,7 +302,7 @@ Uize.module ({
 							Uize.Color.blend ('hsl(0,0%,0%)','hsl(0,0%,100%)');  // returns 'hsl(0,0%,50%)'
 							...................................................................................
 
-							The `Color Encodings` for color one and color two do not have to be the same...
+							The `color encodings` for color one and color two do not have to be the same...
 
 							EXAMPLES
 							..........................................................................
@@ -495,7 +494,7 @@ Uize.module ({
 							colorOBJ = Uize.Color.mix (colorsARRAY);
 							........................................
 
-							Color values specified in the =colorsARRAY= array can be specified in any of the many `Color Encodings` supported by the =Uize.Color= module, so the following statement is perfectly valid...
+							Color values specified in the =colorsARRAY= array can be specified in any of the many `color encodings` supported by the =Uize.Color= module, so the following statement is perfectly valid...
 
 							EXAMPLE
 							...............................................................
@@ -523,7 +522,7 @@ Uize.module ({
 							colorOBJ = Uize.Color.mix (colorsARRAY,encodingSTR);
 							....................................................
 
-							When the optional =encodingSTR= parameter is specified, rhe resulting mixed color can be encoded in any of the many supported `Color Encodings`.
+							When the optional =encodingSTR= parameter is specified, rhe resulting mixed color can be encoded in any of the many supported `color encodings`.
 
 							EXAMPLE
 							....................................................
@@ -582,7 +581,7 @@ Uize.module ({
 				*/
 			};
 
-			var _returnTupleComponentAsIs = new Function ('tuple','componentNo','return tuple [componentNo]');
+			var _returnTupleComponentAsIs = Function ('tuple,componentNo','return tuple [componentNo]');
 			_object.sort = function (_colors,_referenceColor,_componentWeighting) {
 				if (_colors.length > 1) {
 					_componentWeighting = _ensureSettingIsTuple (_componentWeighting,1);
@@ -616,11 +615,11 @@ Uize.module ({
 						_dummyColor1Tuple = _dummyColor1.tuple,
 						_dummyColor1Component0Normalized = _getNormalizedComponent (_dummyColor1Tuple,0),
 						_dummyColor1Component1Normalized = _getNormalizedComponent (_dummyColor1Tuple,1),
-						_dummyColor1Component2Normalized = _getNormalizedComponent (_dummyColor1Tuple,2)
+						_dummyColor1Component2Normalized = _getNormalizedComponent (_dummyColor1Tuple,2),
+						_getDistanceBetweenCoords = function (_aX,_aY,_bX,_bY) {
+							return Math.sqrt ((_bX - _aX) * (_bX - _aX) + (_bY - _aY) * (_bY - _aY));
+						}
 					;
-					function _getDistanceBetweenCoords (_aX,_aY,_bX,_bY) {
-						return Math.sqrt ((_bX - _aX) * (_bX - _aX) + (_bY - _aY) * (_bY - _aY));
-					}
 					Uize.Array.Sort.sortBy (
 						_colors,
 						function (_color) {
@@ -672,7 +671,7 @@ Uize.module ({
 
 							This method sorts the colors specified by the =colorsARRAY= parameter, by how close they are to the reference color specified by the =referenceColorANYTYPE= parameter. Colors close to the head of the sorted array will be most like each other and most like the reference color, while colors towards the tail of the sorted array will be most unlike the reference color and will also tend to be most unlike one another. This will make the head of the sorted array appear more orderly, while making the tail appear more chaotic, since colors that are from the reference color may also be far from one another.
 
-							Color values in the array to sort can be specified using any of the `Color Encodings` supported by the =Uize.Color= object, but they will be sorted in the color space of the reference color, as specified by the =referenceColorANYTYPE= parameter. So, if the array of colors are specified using =sRGB= encodings and the reference color is specified using an =HSL= encoding, then the colors will be sorted in the =HSL= color space.
+							Color values in the array to sort can be specified using any of the `color encodings` supported by the =Uize.Color= object, but they will be sorted in the color space of the reference color, as specified by the =referenceColorANYTYPE= parameter. So, if the array of colors are specified using =sRGB= encodings and the reference color is specified using an =HSL= encoding, then the colors will be sorted in the =HSL= color space.
 
 							EXAMPLE
 							.......................................................................................

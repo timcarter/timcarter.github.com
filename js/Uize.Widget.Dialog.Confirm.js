@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Dialog.Confirm
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 6
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Widget.Dialog.Confirm',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_false = false,
@@ -80,8 +79,8 @@ Uize.module ({
 				_superclass.prototype.updateUi.call (this);
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_message:{
 					name:'message',
 					onChange:_classPrototype._updateUiMessage,

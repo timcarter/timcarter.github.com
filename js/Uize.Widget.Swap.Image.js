@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Swap.Image Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -33,6 +30,8 @@ Uize.module ({
 		'Uize.Node.Util'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var _Uize_Node = Uize.Node;
 
@@ -48,8 +47,8 @@ Uize.module ({
 				)
 			;
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_background:'background',
 				_height:'height',
 				_src:{
@@ -66,7 +65,7 @@ Uize.module ({
 							_nextItem.style.padding = '0px';
 							_this.prepareForNextItem (_currentItem,_nextItem);
 
-							function _loadNextImage () {
+							var _loadNextImage = function () {
 								var _image = _this._imagesLoaded [_this._src];
 								_Uize_Node.setStyle (
 									_nextItem,
@@ -107,7 +106,7 @@ Uize.module ({
 									_nextItemImg.width = _image._width;
 									_nextItemImg.height = _image._height;
 								}
-							}
+							};
 							if (_this._imagesLoaded [_this._src]) {
 								_loadNextImage ();
 							} else {
@@ -134,7 +133,7 @@ Uize.module ({
 				_width:'width'
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				html:{
 					process:function (input) {

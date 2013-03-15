@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Node.Classes Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -70,7 +67,7 @@
 			Powerful State Paradigm
 				In addition to ease of use, the =Uize.Node.Classes= module introduces a powerful, higher level construct called a state.
 
-				The `State Related Methods` that support the state paradigm make it much easier to manage the classes in the =className= property of a node to reflect application state. Consider an example where you want the CSS class "selected" to be present in the =className= property of a node with the =id= of ='recommendationsPod'= when the application variable =podIsSelected= is set to =true=, and to be absent when the variable is set to =false=. Your application will have updater code to update the =className= of the node to reflect the state of the =podIsSelected= variable. This updater code may not know or trust what the current state of the =className= property of the node might be, so it may test first to see if the "selected" class should be added or removed. You might write the code as follows...
+				The `state related methods` that support the state paradigm make it much easier to manage the classes in the =className= property of a node to reflect application state. Consider an example where you want the CSS class "selected" to be present in the =className= property of a node with the =id= of ='recommendationsPod'= when the application variable =podIsSelected= is set to =true=, and to be absent when the variable is set to =false=. Your application will have updater code to update the =className= of the node to reflect the state of the =podIsSelected= variable. This updater code may not know or trust what the current state of the =className= property of the node might be, so it may test first to see if the "selected" class should be added or removed. You might write the code as follows...
 
 				BEFORE
 				...................................................................
@@ -88,7 +85,7 @@
 				Uize.Node.Classes.setState ('recommendationsPod','selected',podIsSelected);
 				...........................................................................
 
-				This is a very simple use case, but the `State Related Methods` of the =Uize.Node.Classes= module also support more sophisticated cases.
+				This is a very simple use case, but the `state related methods` of the =Uize.Node.Classes= module also support more sophisticated cases.
 
 		Adding a Class
 			A CSS class can be added to a node's =className= property using the =Uize.Node.Classes.addClass= static method.
@@ -98,7 +95,7 @@
 			The =Uize.Node.Classes.addClass= method follows these basic rules...
 
 			+. If the =className= property is empty, then it will be set to the class being added.
-			+. If the class being added is already present in the =className= property, then the value of the =className= property will be unchanged (see important note on `Case Sensitivity`).
+			+. If the class being added is already present in the =className= property, then the value of the =className= property will be unchanged (see important note on `case sensitivity`).
 			+. If the class being added is not present but there are other classes in the =className= property, then the class being added will be appended, with a single space separating it from the other classes (if present).
 
 			To illustrate the above rules, consider the following example...
@@ -133,7 +130,7 @@
 			The =Uize.Node.Classes.removeClass= method follows these basic rules...
 
 			+. If the =className= property is empty, then it will simply remain empty.
-			+. If the class being removed is present in the =className= property, then it will be removed along with any surrounding whitespace, while leaving the trailing whitespace if the class was between two surrounding classes (see important note on `Case Sensitivity`).
+			+. If the class being removed is present in the =className= property, then it will be removed along with any surrounding whitespace, while leaving the trailing whitespace if the class was between two surrounding classes (see important note on `case sensitivity`).
 			+. If the class being removed is not present but there are other classes in the =className= property, then calling this method will have no effect.
 
 			To illustrate the above rules, consider the following example...
@@ -166,8 +163,8 @@
 			The =Uize.Node.Classes.toggleClass= method follows these basic rules...
 
 			+. If the =className= property is empty, then it will be set to the class being toggled.
-			+. If the class being toggled is not present in the node's =className= property, but there are other classes in the =className= property, then the class being toggled will be appended, with a single space separating it from the other classes (see important note on `Case Sensitivity`).
-			+. If the class being toggled is present in the =className= property, then it will be removed along with any surrounding whitespace, while leaving the trailing whitespace if the class was between two surrounding classes (see important note on `Case Sensitivity`).
+			+. If the class being toggled is not present in the node's =className= property, but there are other classes in the =className= property, then the class being toggled will be appended, with a single space separating it from the other classes (see important note on `case sensitivity`).
+			+. If the class being toggled is present in the =className= property, then it will be removed along with any surrounding whitespace, while leaving the trailing whitespace if the class was between two surrounding classes (see important note on `case sensitivity`).
 
 			To illustrate the above rules, consider the following example...
 
@@ -193,7 +190,7 @@
 		Testing For a Class
 			The presence of a CSS class in a node's =className= property can be tested for by using the =Uize.Node.Classes.hasClass= static method.
 
-			The =Uize.Node.Classes.hasClass= method will return the value =true= if the class is present, and the value =false= if the class is not present (or if the specified node does not exist). When testing for the presence of a class, matching is case sensitive (see important note on `Case Sensitivity`)
+			The =Uize.Node.Classes.hasClass= method will return the value =true= if the class is present, and the value =false= if the class is not present (or if the specified node does not exist). When testing for the presence of a class, matching is case sensitive (see important note on `case sensitivity`)
 
 			EXAMPLE HTML
 			...........................................................
@@ -259,7 +256,7 @@
 				The =Uize.Node.Classes.setState= method takes three parameters: the node (or nodes) for which state should be set, the state class or classes (see `Multiple State Classes`), and the state value. In the above usage, calling the =Uize.Node.Classes.setState= method will set the presence of the "selected" CSS class, based upon the value of the =podIsSelected= variable. If the value of =podIsSelected= is =false=, then the class will be removed. If the value of =podIsSelected= is =true=, then the class will be added.
 
 			Multiple State Classes
-				The `State Related Methods` become far more compelling and powerful when you consider their support for multiple state classes and what that means for managing CSS classes for DOM nodes.
+				The `state related methods` become far more compelling and powerful when you consider their support for multiple state classes and what that means for managing CSS classes for DOM nodes.
 
 				In the simplest use of the =Uize.Node.Classes.setState= method, the presence state of a single class can be controlled with a specified boolean value. This is in fact, however, a special case of a booean, two CSS class state where the first class (for the =false= value of the state) is an empty string and the second class (for the =true= value of the state) is the CSS class you specified. So, the following two statements are equivalent...
 
@@ -269,7 +266,7 @@
 				Uize.Node.Classes.setState ('recommendationsPod',['','selected'],podIsSelected);
 				................................................................................
 
-				So, what if a node should have one CSS class if a state's value is =false=, and a different CSS class if the state's value is =true=? This is accomplished quite easily. Consider an example where there is an =enabled= state variable in your application, whose value should be reflected in some node. When your =enabled= variable is =false=, then the node's =className= property should contain the CSS class "disabled". When your =enabled= variable is =true=, then the node's =className= property should contain the CSS class "enabled". Using the =Uize.Node.Classes.setState= method's support for `Multiple State Classes`, the update code is made quite simple, as follows...
+				So, what if a node should have one CSS class if a state's value is =false=, and a different CSS class if the state's value is =true=? This is accomplished quite easily. Consider an example where there is an =enabled= state variable in your application, whose value should be reflected in some node. When your =enabled= variable is =false=, then the node's =className= property should contain the CSS class "disabled". When your =enabled= variable is =true=, then the node's =className= property should contain the CSS class "enabled". Using the =Uize.Node.Classes.setState= method's support for `multiple state classes`, the update code is made quite simple, as follows...
 
 				STATE UPDATE WITH TWO STATE CLASSES
 				.................................................................................
@@ -292,11 +289,11 @@
 				You could reduce the above code down using some fancy tricks and avoid using the =Uize.Node.Classes.setState= method, but the =Uize.Node.Classes.setState= method makes things more semantically elegant.
 
 				More Than Two State Classes
-					The `State Related Methods` become even more compelling when you consider their support for more than two state classes.
+					The `state related methods` become even more compelling when you consider their support for more than two state classes.
 
 					There may be situations where a state is not binary, and having two CSS classes mapped to the state will not suffice. Consider the example where a DOM node may need to be styled to reflect an error level, where the first error level is no error, the second level is a non-critical warning type error, and the third level is a critical, fatal, or blocking error. In this situation, your application may have a state variable called =errorLevel=, whose value can be =0=, =1=, or =2=, and where the value =0= should be mapped to the state class =''= (empty string), the value =1= should be mapped to the state class ='warning'=, and the value =2= should be mapped to the state class ='error'=.
 
-					Fortunately, the `State Related Methods` support `Multiple State Classes` specified in array form. So, our updater code would look as follows...
+					Fortunately, the `state related methods` support `multiple state classes` specified in array form. So, our updater code would look as follows...
 
 					STATE UPDATE WITH THREE STATE CLASSES
 					....................................................................................
@@ -322,10 +319,10 @@
 
 				In the above example, the value of the =enabled= variable will determine whether the CSS class ='enabled'= or the CSS class ='disabled'= will be present in the =className= property of the node with the =id= of ='recommendationsPod'=. If the value of the =enabled= variable is =false=, then the ='enabled'= class will be removed and the ='disabled'= class will be added. Conversely, if the value of the =enabled= variable is =true=, then the ='disabled'= class will be removed and the ='enabled'= class will be added.
 
-				The =Uize.Node.Classes.setState= method, along with the other state related methods, supports `Multiple State Classes`.
+				The =Uize.Node.Classes.setState= method, along with the other state related methods, supports `multiple state classes`.
 
 			Getting State
-				As with `Setting State` for CSS classes using the =Uize.Node.Classes.setState= static method, the current value for a state can be determined from the =className= property of a node using the =Uize.Node.Classes.getState= static method.
+				As with `setting state` for CSS classes using the =Uize.Node.Classes.setState= static method, the current value for a state can be determined from the =className= property of a node using the =Uize.Node.Classes.getState= static method.
 
 				EXAMPLE
 				.......................................................................................
@@ -334,7 +331,7 @@
 
 				In the above example, the value of the =enabled= variable will be determined by whether the CSS class ='enabled'= or the CSS class ='disabled'= is present in the =className= property of the node with the =id= of ='recommendationsPod'=. If the =className= property contains the class ='disabled'=, then the =enabled= variable will be set to =false=. Conversely, if the =className= property contains the class ='enabled'=, then the =enabled= variable will be set to =true=.
 
-				The =Uize.Node.Classes.getState= method, along with the other state related methods, supports `Multiple State Classes`.
+				The =Uize.Node.Classes.getState= method, along with the other state related methods, supports `multiple state classes`.
 
 			Toggling State
 				State that is reflected with CSS classes in the =className= property of one or more DOM nodes can be toggled (or cycled, for more than two state classes) using the =Uize.Node.Classes.toggleState= static method.
@@ -346,12 +343,12 @@
 
 				In the above example, whichever of the two CSS classes ='disabled'= or ='enabled'= is present in the =className= property of the node with the =id= of ='recommendationsPod'= will be replaced with the other. So, if the =className= property contains the class ='disabled'=, then it will be replaced with the class ='enabled'=. Conversely, if the =className= property contains the class ='disabled'=, then it will be replaced with the class ='enabled'=. If the =className= property contains neither of the classes ='disabled'= or ='enabled'=, then the first of the state classes (ie. ='disabled'=) will be added.
 
-				The =Uize.Node.Classes.toggleState= method, along with the other state related methods, supports `Multiple State Classes`.
+				The =Uize.Node.Classes.toggleState= method, along with the other state related methods, supports `multiple state classes`.
 
 				Toggling State With More Than Two State Classes
 					When a state is represented by more than two state classes, then the =Uize.Node.Classes.toggleState= method will cycle through the state classes.
 
-					When cycling through `Multiple State Classes`, the =Uize.Node.Classes.toggleState= method follows these basic rules...
+					When cycling through `multiple state classes`, the =Uize.Node.Classes.toggleState= method follows these basic rules...
 
 					+. If none of the state classes are present in the node's =className= property, then the first of the state classes will be appended, with a single space separating it from the other classes (if present).
 					+. If any of the state classes other than the last of the state classes is present in the node's =className= property, then it will be replaced with the next state class in the list.
@@ -381,7 +378,7 @@
 			Removing State
 				State classes associated with a state can be removed from the =className= property of one or more DOM nodes using the =Uize.Node.Classes.removeState= static method.
 
-				Removing a state is distinct from `Setting State` and `Toggling State` - removing a state for a node makes it so that the state no longer applies for that node. When removing a state, the =Uize.Node.Classes.removeState= method follows these basic rules...
+				Removing a state is distinct from `setting state` and `toggling state` - removing a state for a node makes it so that the state no longer applies for that node. When removing a state, the =Uize.Node.Classes.removeState= method follows these basic rules...
 
 				+. If the =className= property is empty, then it will simply remain empty.
 				+. If the =className= property is not empty, but none of the state classes for the state being removed are present, then the =className= property will remain unchanged.
@@ -408,7 +405,7 @@
 				<!-- rule 3 example --> <input id="input3" type="text" class="focused required"/>
 				.................................................................................
 
-				The =Uize.Node.Classes.removeState= method, along with the other state related methods, supports `Multiple State Classes`.
+				The =Uize.Node.Classes.removeState= method, along with the other state related methods, supports `multiple state classes`.
 
 		Important Considerations
 			When working with CSS classes using the methods of the =Uize.Node.Classes= module, there are some important considerations to keep in mind.
@@ -439,7 +436,7 @@
 				<div id="detailsPod" class="SELECTED selected">
 				.............................................................
 
-				This case sensitivity rule applies equally to the `State Related Methods`.
+				This case sensitivity rule applies equally to the `state related methods`.
 
 			Whitespace Handling
 				When adding, replacing, or removing classes from the =className= property of a node, the methods of the =Uize.Node.Classes= module observe certain principles regarding whitespace.
@@ -461,6 +458,8 @@
 Uize.module ({
 	name:'Uize.Node.Classes',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function () {},
@@ -720,9 +719,9 @@ Uize.module ({
 				stateClassesSTRorARRAY
 					A comma-separated string or an array of strings, specifying a list of CSS classes that are to be mapped to a =stateBOOLorINT= type value.
 
-					Values of this type can be accepted by the `State Related Methods` (=Uize.Node.Classes.setState=, =Uize.Node.Classes.getState=, =Uize.Node.Classes.toggleState=, and =Uize.Node.Classes.removeState=). A =stateClassesSTRorARRAY= value should generally specify two or more state classes, typically specifying just two (eg. ='disabled,enabled'= or =['disabled','enabled']=).
+					Values of this type can be accepted by the `state related methods` (=Uize.Node.Classes.setState=, =Uize.Node.Classes.getState=, =Uize.Node.Classes.toggleState=, and =Uize.Node.Classes.removeState=). A =stateClassesSTRorARRAY= value should generally specify two or more state classes, typically specifying just two (eg. ='disabled,enabled'= or =['disabled','enabled']=).
 
-					In the special case where only one state class is specified (eg. ='enabled'= or =['enabled']=), it is implicit that the class specified is the second of two state classes where the first class is an empty string. Therefore, the string value ='enabled'= and the array value =['enabled']= would be equivalent to the values =',enabled'= and =['','enabled']=, respectively. This behavior provides a convenient shorthand for simple `Presence or Absence State` cases, where a specified single CSS class is to be mapped to the =true= value of a binary state (such as an enabled or selected state, for example), and where the =false= value is represented by the absence of that class.
+					In the special case where only one state class is specified (eg. ='enabled'= or =['enabled']=), it is implicit that the class specified is the second of two state classes where the first class is an empty string. Therefore, the string value ='enabled'= and the array value =['enabled']= would be equivalent to the values =',enabled'= and =['','enabled']=, respectively. This behavior provides a convenient shorthand for simple `presence or absence state` cases, where a specified single CSS class is to be mapped to the =true= value of a binary state (such as an enabled or selected state, for example), and where the =false= value is represented by the absence of that class.
 		*/
 
 		return _package;

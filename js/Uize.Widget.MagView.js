@@ -4,24 +4,21 @@
 |    /    O /   |    MODULE : Uize.Widget.MagView Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 80
 */
 
 /*
 	OPTIONAL
-		- Uize.Widget.Beam.js (only if showBeam set-get property is true)
+		- Uize.Widget.Beam.js (only if showBeam state property is true)
 */
 
 /*?
@@ -39,6 +36,8 @@ Uize.module ({
 		'Uize.Widget.ImagePort'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -128,12 +127,13 @@ Uize.module ({
 					var _magImageHighResUrl = _this._getMagImageHighResUrl (_this._magPower);
 					if (_magImageHighResUrl !== _this._displayedMagImageHighResUrl) {
 						/* NOTE: check if image in magImagePort needs to be updated */
-						function _displayHighRes (_mustDisplay) {
-							_Uize_Node.show (_this.getNode ('magImageHighRes'),_mustDisplay);
-							_this.displayNode ('magImageLowRes',!_mustDisplay);
-						}
-
-						var _magImageHighResUrlCached = _imagesCached [_magImageHighResUrl];
+						var
+							_displayHighRes = function (_mustDisplay) {
+								_Uize_Node.show (_this.getNode ('magImageHighRes'),_mustDisplay);
+								_this.displayNode ('magImageLowRes',!_mustDisplay);
+							},
+							_magImageHighResUrlCached = _imagesCached [_magImageHighResUrl]
+						;
 						if (!_magImageHighResUrlCached) {
 							/*** choose placeholder image URL to use while high res is loading ***/
 								var
@@ -166,12 +166,12 @@ Uize.module ({
 						_displayHighRes (_false);
 
 						/*** loading indicator for loading the high res image ***/
-							function _highResLoaded () {
+							var _highResLoaded = function () {
 								_this.unwireNode ('magImageHighRes');
 								_imagesCached [_magImageHighResUrl] = 1;
 								_this.displayNode ('highResLoading',_false);
 								_displayHighRes (_true);
-							}
+							};
 							_this.wireNode (
 								'magImageHighRes',
 								{
@@ -235,10 +235,10 @@ Uize.module ({
 						*/
 				}
 				if (_this._magInUse ()) {
-					function _reflectChangedMagPower () {
+					var _reflectChangedMagPower = function () {
 						_this._updateUiCalibrateDuringUse ();
 						_this._updateUiDuringUse ();
-					}
+					};
 					if (_this._fade) {
 						var _fade = _this._fade;
 						_fade.set ({
@@ -313,13 +313,13 @@ Uize.module ({
 						;
 
 					/*** wire up the mouseover and mouseout events ***/
-						function _displayMagUi (_mustDisplay) {
+						var _displayMagUi = function (_mustDisplay) {
 							_this.displayNode (
 								['magImagePortShell','highlight',_this._showBeam ? _this._beam.getNode () : _null],
 								_mustDisplay
 							);
 							_this._magShown = _mustDisplay;
-						}
+						};
 						_this.wireNode (
 							'',
 							'mouseover',
@@ -329,17 +329,19 @@ Uize.module ({
 								/*** move highlight, beam, and image port nodes to document root (if not already done) ***/
 									if (!_this._nodesMovedToRoot) {
 										_this._nodesMovedToRoot = _true;
-										var _docBody = document.body;
-										function _moveNodeToRoot (_node) {
-											_docBody.insertBefore (_node,_docBody.childNodes [0]);
-											_Uize_Node.setStyle (
-												_node,
-												{
-													zIndex:100000,
-													position:'absolute'
-												}
-											);
-										}
+										var
+											_docBody = document.body,
+											_moveNodeToRoot = function (_node) {
+												_docBody.insertBefore (_node,_docBody.childNodes [0]);
+												_Uize_Node.setStyle (
+													_node,
+													{
+														zIndex:100000,
+														position:'absolute'
+													}
+												);
+											}
+										;
 										_moveNodeToRoot (_this.getNode ('magImagePortShell'));
 										_moveNodeToRoot (_this.getNode ('highlight'));
 										_this._showBeam && _moveNodeToRoot (_this._beam.getNode ());
@@ -449,19 +451,19 @@ Uize.module ({
 						- this node is required
 
 					magImageHighRes
-						An image node whose src will be set to the value of the =magImageHighResUrl= set-get property when the mag view mode is activated.
+						An image node whose src will be set to the value of the =magImageHighResUrl= state property when the mag view mode is activated.
 
 						NOTES
 						- this node is required
 			*/
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_cursorAlignX:{
 					name:'cursorAlignX',
 					value:.5
 					/*?
-						Set-get Properties
+						State Properties
 							cursorAlignX
 								A floating point number in the range of =0= to =1=, specifying the horizontal position of the cursor in relation to the =highlight= box.
 
@@ -475,7 +477,7 @@ Uize.module ({
 					name:'cursorAlignY',
 					value:.75
 					/*?
-						Set-get Properties
+						State Properties
 							cursorAlignY
 								A floating point number in the range of =0= to =1=, specifying the vertical position of the cursor in relation to the =highlight= box.
 
@@ -487,7 +489,7 @@ Uize.module ({
 				},
 				_magImageLowResUrl:'magImageLowResUrl',
 					/*?
-						Set-get Properties
+						State Properties
 							magImageLowResUrl
 								A string, specifying the URL for the low resolution image.
 
@@ -498,7 +500,7 @@ Uize.module ({
 					name:'magImageHighResUrl',
 					onChange:_classPrototype._updateUiUrls
 						/*?
-							Set-get Properties
+							State Properties
 								magImageHighResUrl
 									A string, specifying the URL of the high resolution image, or a function that should return the URL of the high resolution image.
 
@@ -511,7 +513,7 @@ Uize.module ({
 					value:1,
 					onChange:_classPrototype._updateUiMagPower
 					/*?
-						Set-get Properties
+						State Properties
 							magPower
 								A number, specifying the current magnification power.
 
@@ -523,7 +525,7 @@ Uize.module ({
 					name:'magPowers',
 					onChange:function () {this.set ({_magPower:this._magPowers [0]})}
 					/*?
-						Set-get Properties
+						State Properties
 							magPowers
 								An array, specifying the magnification powers that should be available.
 
@@ -535,7 +537,7 @@ Uize.module ({
 					name:'resetMagPowerOnOut',
 					value:_true
 					/*?
-						Set-get Properties
+						State Properties
 							resetMagPowerOnOut
 								A boolean, specifying whether or not the current magnification power should be reset to the lowest available magnification power when the user mouses out of the image.
 

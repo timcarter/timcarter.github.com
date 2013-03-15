@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Comm.Iframe Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 50
 */
 
@@ -35,10 +32,13 @@ Uize.module ({
 		'Uize.Node'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (),
-				_classPrototype = _class.prototype
+				_classPrototype = _class.prototype,
+				_window = typeof window != 'undefined' ? window : {}
 			;
 
 		/*** General Variables ***/
@@ -60,7 +60,7 @@ Uize.module ({
 					_returnType = _request.returnType,
 					_returnTypeIsObject = _returnType == 'object'
 				;
-				handleResponse = function (_responseResult) {
+				_window.handleResponse = function (_responseResult) {
 					if (_returnTypeIsObject || _returnType == 'json')
 						_request.responseJson = Uize.clone (_responseResult)
 					;
@@ -92,11 +92,11 @@ Uize.module ({
 					'<form id="CommIframe_form" style="display:none;" target="' + _iframeId + '" method="POST" accept-charset="utf-8">' +
 						'<input id="CommIframe_params" name="params" type="hidden"/>' +
 					'</form>' +
-					'<iframe id="' + _iframeId + '" name="' + _iframeId + '" width="1" height="1" src="/z.2/js/library/Zazzle_CommIframe/blank.html" frameborder="1" style="position:absolute; visibility:hidden;" scrolling="no"></iframe>' /* NOTE: this code shouldn't make an assumption about the library being served from this place - initial src URL should */
+					'<iframe id="' + _iframeId + '" name="' + _iframeId + '" width="1" height="1" src="' + Uize.pathToResources + 'Uize_Comm_Iframe/blank.html" frameborder="1" style="position:absolute; visibility:hidden;" scrolling="no"></iframe>'
 				);
 			}
 
-			handleResponse = function () {
+			_window.handleResponse = function () {
 				/*
 					a dummy version of this function in case the user navigates back to a page using this code and a cached iframe server response tries to call this function (ie. no requests have been made yet)
 				*/

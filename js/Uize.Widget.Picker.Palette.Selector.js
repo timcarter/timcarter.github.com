@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Picker.Palette.Selector Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=f" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 4
 	codeCompleteness: 50
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -30,13 +27,15 @@ Uize.module ({
 	name:'Uize.Widget.Picker.Palette.Selector',
 	required:'Uize.Widget.Button.ValueDisplay.Selector',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
 					null,
 					function() {
 						var _this = this;
-						
+
 						function _syncValueDetails() {
 							var _valueObject = _this.getValueObject();
 
@@ -47,7 +46,7 @@ Uize.module ({
 							});
 						}
 						_this.wire('Changed.value', _syncValueDetails);
-						
+
 						_syncValueDetails();
 					}
 				),
@@ -66,13 +65,13 @@ Uize.module ({
 					}
 				);
 			};
-			
+
 			_classPrototype.handleDialogSubmit = function(_valueInfo) {
 				var
 					_this = this,
 					_undefined
 				;
-				
+
 				function _createSetObject(_propertyName) {
 					var _propertyValue = _valueInfo[_propertyName];
 					return _propertyValue !== _undefined ? Uize.pairUp(_propertyName, _propertyValue) : _undefined
@@ -85,12 +84,12 @@ Uize.module ({
 						_createSetObject('tentativeValueNo')
 					)
 				);
-				
+
 				_superclass.prototype.handleDialogSubmit.call(_this, _valueInfo);
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_tentativeValueNo:{
 					name:'tentativeValueNo',	// read-only
 					value:-1
@@ -105,7 +104,7 @@ Uize.module ({
 				}
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				pipedProperties:['values', 'valueNo', 'tentativeValueNo'],
 				selectorButtonWidgetClass:Uize.Widget.Button.ValueDisplay.Selector,

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.FormElement.Select Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 6
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -29,13 +26,15 @@
 Uize.module ({
 	name:'Uize.Widget.FormElement.Select',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
 					null,
 					function() {
 						var _this = this;
-						
+
 						_this.wire(
 							'Changed.value',
 							function() {
@@ -55,7 +54,7 @@ Uize.module ({
 		/*** Private Instance Methods ***/
 			_classPrototype._updateUiValues = function() {
 				var _this = this;
-				
+
 				if (_this.isWired) {
 					var
 						_oldValue = _this.get('value'),
@@ -70,7 +69,7 @@ Uize.module ({
 						// it wasn't deleted in case its exclusion caused another bug.
 						//_this.set({value:null});
 						_this._valueNo = -1;
-						
+
 						// iterate through the values in values object, replacing the Option nodes
 						// adding new ones if necessary
 						for (
@@ -105,7 +104,7 @@ Uize.module ({
 									selected:_selected
 								}
 							);
-							
+
 							if (_selected)
 								_valueFound = true;
 						}
@@ -117,7 +116,7 @@ Uize.module ({
 						for (var _optionNo = _optionsLength - 1; _optionNo >= _valueNo; _optionNo--)
 							_selectNode.remove(_optionNo)
 						;
-						
+
 						if (!(_valueFound && _oldValue) && _values.length)
 							_this.set({value:_values[0].name});
 					}
@@ -129,16 +128,16 @@ Uize.module ({
 				var _this = this;
 				if (!_this.isWired) {
 					_superclass.prototype.wireUi.call (_this);
-					
+
 					var
 						_values = _this._values,
 						_selectNode = _this.getNode('input')
 					;
-					
+
 					if (_values.length)	// values data exists so update the <option>s in the <select> tag
 						_this._updateUiValues();
 					else if (_selectNode && _this.get('type') == 'select-one') { // build values from <select> tag <option>s
-						// iterate through each option and add to values set-get property
+						// iterate through each option and add to values state property
 						for (
 							var
 								_value = _this.get('value'),
@@ -154,7 +153,7 @@ Uize.module ({
 								_optionText = _optionNode.text,
 								_valueObjectName = _optionValue != null ? _optionValue : _optionText
 							;
-							
+
 							_values.push({
 								name:_valueObjectName,
 								displayName:_optionText
@@ -163,7 +162,7 @@ Uize.module ({
 							if (_valueObjectName == _value)
 								_optionNode.selected = true;
 						}
-						
+
 						// set valueNo to be selectedIndex && sync up the value in case it has changed
 						(_this._valueNo = _selectNode.selectedIndex) > -1
 							&& _this.set({value:_values[_this._valueNo].name})
@@ -172,8 +171,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties({
+		/*** State Properties ***/
+			_class.stateProperties({
 				_valueNo:{	// readonly
 					name:'valueNo',
 					value:-1

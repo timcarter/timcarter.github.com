@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Page Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 7
 	codeCompleteness: 90
-	testCompleteness: 0
 	docCompleteness: 85
 */
 
@@ -43,6 +40,8 @@ Uize.module ({
 	name:'Uize.Widget.Page',
 	required:'Uize.Node',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -141,7 +140,7 @@ Uize.module ({
 
 				/*** if any widgets to adopt, require widget class modules and recurse tree to add widgets ***/
 					if (_hasChildrenToAdopt) {
-						function _traverseChildrenToAdoptTree (_childCreator,_childInitializer) {
+						var _traverseChildrenToAdoptTree = function (_childCreator,_childInitializer) {
 							function _traverseChild (_parent,_childName,_childProperties) {
 								var
 									_childChildren = _childProperties.children,
@@ -156,7 +155,7 @@ Uize.module ({
 								;
 							}
 							_traverseChildren (_this,_childrenToAdoptTree);
-						}
+						};
 
 						/*** recurse tree, determining required widget class modules ***/
 							var
@@ -173,9 +172,9 @@ Uize.module ({
 								}
 							);
 
-						Uize.module ({
-							required:_requiredModules,
-							builder:function () {
+						Uize.require (
+							_requiredModules,
+							function () {
 								_this.set ({children:_childrenToAdoptTree});
 
 								/*** recurse tree, adopting all widgets ***/
@@ -183,7 +182,9 @@ Uize.module ({
 										function (_parent,_childName,_childProperties) {
 											var _child = _parent.children [_childName];
 											if (!_child) {
-												var _widgetClass = eval (_childProperties.widgetClass || 'Uize.Widget');
+												var _widgetClass =
+													Uize.getModuleByName (_childProperties.widgetClass) || Uize.Widget
+												;
 												_child = _childName.charCodeAt (0) == 36 && _childName.charCodeAt (1) == 36
 													? _widgetClass.spawn (_childProperties,_parent)
 													: _parent.addChild (_childName,_widgetClass)
@@ -199,7 +200,7 @@ Uize.module ({
 
 								_callback ();
 							}
-						});
+						);
 					} else {
 						_callback ();
 					}
@@ -269,7 +270,7 @@ Uize.module ({
 									The =injectionParamsOBJ= object supports the following properties...
 
 									node
-										A `Node Blob`, specifying the node (or nodes) into which the loaded HTML should be injected.
+										A `node blob`, specifying the node (or nodes) into which the loaded HTML should be injected.
 
 										NOTES
 										- required
@@ -307,7 +308,7 @@ Uize.module ({
 									The =htmlParamsOBJ= may contain any number of arbitrary properties that are used by the HTML generator in generating its HTML output, so the properties supported will depend entirely upon the particular HTML generator.
 
 								loaderDirectivesOBJorCallbackFUNC
-									document...
+									.
 
 									...
 									{
@@ -321,7 +322,7 @@ Uize.module ({
 									When the value of the =loaderDirectivesOBJorCallbackFUNC= parameter is an object, the object supports the following properties...
 
 									callback
-										document...
+										.
 
 
 							Loading is Implemented Elsewhere
@@ -467,16 +468,16 @@ Uize.module ({
 						_dialogWidget.removeUi ();
 						_dialogWidgetParent.removeChild (_dialogWidgetName);
 					}
-					function _createDialogWidget () {
+					var _createDialogWidget = function () {
 						var _dialogWidgetClassName = _params.widgetClassName;
-						Uize.module ({
-							required:_dialogWidgetClassName,
-							builder:function () {
+						Uize.require (
+							_dialogWidgetClassName,
+							function (_dialogWidgetClass) {
 								(_dialogWidget = _dialogWidgetParent.children [_dialogWidgetName])
 									? _dialogWidget.set (_dialogWidgetProperties)
 									: (
 										_dialogWidget = _dialogWidgetParent.addChild (
-											_dialogWidgetName,eval (_dialogWidgetClassName),_dialogWidgetProperties
+											_dialogWidgetName,_dialogWidgetClass,_dialogWidgetProperties
 										)
 									)
 								;
@@ -485,8 +486,8 @@ Uize.module ({
 								_dialogWidget.insertOrWireUi ();
 								_showDialog (_refetch ? 'refetched' : 'initial');
 							}
-						});
-					}
+						);
+					};
 					_componentProfile
 						? _this.loadHtmlIntoNode (
 							{
@@ -532,7 +533,7 @@ Uize.module ({
 								The =paramsOBJ= parameter lets you specify parameters for the =useDialog= method, and its value should be an object that may contain the following properties...
 
 								widgetProperties
-									An object, specifying the values of set-get properties of the dialog widget that will be set on the dialog widget right before it is displayed.
+									An object, specifying the values of state properties of the dialog widget that will be set on the dialog widget right before it is displayed.
 
 									The =widgetProperties= property's value should be an object of the form...
 
@@ -555,7 +556,7 @@ Uize.module ({
 
 									- The optional "idPrefix" property lets you explicitly specify the =idPrefix= for the dialog widget. Usually you will want to just leave it up to the =useDialog= method to construct the =idPrefix= for you, based upon the =idPrefix= of the dialog widget's parent and the name of the dialog widget (as specified in the "name" property mentioned earlier).
 
-									Beyond the "name", "parent", and "idPrefix" properties, values can be specified for any of the set-get properties supported by the class of the dialog widget. This is useful for reuse of dialogs, where on repeat use you may wish to change state.
+									Beyond the "name", "parent", and "idPrefix" properties, values can be specified for any of the state properties supported by the class of the dialog widget. This is useful for reuse of dialogs, where on repeat use you may wish to change state.
 
 								component
 									An object, defining the parameters for a server side component that should be accessed - through an Ajax request - for providing the HTML markup for the dialog.
@@ -616,7 +617,7 @@ Uize.module ({
 								EXAMPLE
 								.......................................................
 								myWidget.callInherited ('useDialog') ({
-									widgetClassName:'UizeDotCom.DialogConfirm',
+									widgetClassName:'MyCompanySite.DialogConfirm',
 									widgetProperties:{
 										name:'confirmDialog',
 										title:'Are you sure?',
@@ -635,7 +636,7 @@ Uize.module ({
 								});
 								.......................................................
 
-								In the above example, the =callInherited= instance method of the widget =myWidget= is being used to get a caller for the =useDialog= instance method of the page widget. It is assumed, in this example, that =myWidget= is somewhere on a widget tree with a page widget instance at the root. The widget class =UizeDotCom.DialogConfirm= is being used for the dialog widget, and the various widget properties that are specified in the =widgetProperties= property are set-get properties of the =UizeDotCom.DialogConfirm= class. This example is essentially using a dynamically loaded dialog widget class for displaying a decorated confirmation dialog that is implemented using HTML.
+								In the above example, the =callInherited= instance method of the widget =myWidget= is being used to get a caller for the =useDialog= instance method of the page widget. It is assumed, in this example, that =myWidget= is somewhere on a widget tree with a page widget instance at the root. The widget class =MyCompanySite.DialogConfirm= is being used for the dialog widget, and the various widget properties that are specified in the =widgetProperties= property are state properties of the =MyCompanySite.DialogConfirm= class. This example is essentially using a dynamically loaded dialog widget class for displaying a decorated confirmation dialog that is implemented using HTML.
 				*/
 			};
 
@@ -750,7 +751,7 @@ Uize.module ({
 								url
 									A string, specifying the URL of the document that should be loaded into the popup window.
 
-									If no URL is specified, then a `Blank Popup Window` will be launched.
+									If no URL is specified, then a `blank popup window` will be launched.
 
 								width
 									An integer, specifying the width of the document area of the popup window (ie. *not* the outside width, so excluding browser chrome).
@@ -859,13 +860,13 @@ Uize.module ({
 				*/
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_confirmDialog:{
 					name:'confirmDialog',
 					value:{}
 					/*?
-						Set-get Properties
+						State Properties
 							confirmDialog
 								An object, allowing aspects of the confirm dialog to be configured by an application.
 
@@ -893,13 +894,13 @@ Uize.module ({
 				_dialogProperties:'dialogProperties'
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				idPrefix:'page'
 				/*?
-					Set-get Properties
+					State Properties
 						idPrefix
-							This class inherits the =idPrefix= set-get property from the =Uize.Widget= base class, but overrides the initial value to ='page'=.
+							This class inherits the =idPrefix= state property from the =Uize.Widget= base class, but overrides the initial value to ='page'=.
 
 							Therefore, an instance of the page widget that is created without specifying a value for this property will automatically get the value ='page'=. You will generally only create one instance of this widget per page.
 				*/

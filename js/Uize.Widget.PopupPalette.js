@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.PopupPalette Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 6
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 8
 */
 
@@ -34,6 +31,8 @@ Uize.module ({
 		'Uize.Widget.Button'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -216,8 +215,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_exclusive:{
 					name:'exclusive',
 					value:_true
@@ -254,13 +253,12 @@ Uize.module ({
 										_nodeToPositionAdjacentTo =
 											Uize.isFunction (_positioning)
 												? _positioning(_paletteNode)
-												: _this._selector.getNode ()
+												: _this._selector.getNode (),
+										_displayHiddenForPositioning = function (_before) {
+											_this.showNode ('palette',!_before);
+											_this.displayNode ('palette',_before);
+										}
 									;
-									function _displayHiddenForPositioning (_before) {
-										_this.showNode ('palette',!_before);
-										_this.displayNode ('palette',_before);
-									}
-
 									if (_Uize_Node.isNode(_nodeToPositionAdjacentTo)) {
 										_displayHiddenForPositioning (_true);
 										_Uize_Node.setAbsPosAdjacentTo (_paletteNode, _nodeToPositionAdjacentTo);

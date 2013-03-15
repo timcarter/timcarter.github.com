@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.InlinePicker Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2011-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2011-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 6
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 7
 */
 
@@ -31,6 +28,8 @@ Uize.module ({
 	superclass:'Uize.Widget.FormElement',
 	required:'Uize.Util.Coupler',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
@@ -38,7 +37,7 @@ Uize.module ({
 					function () {
 						var
 							_this = this,
-							
+
 							_valueWidget = _this.addChild(
 								'value',
 								_this._valueWidgetClass,
@@ -56,12 +55,12 @@ Uize.module ({
 							instances:[_this, _valueWidget],
 							properties:['value', 'valueDetails', 'tentativeValue', 'tentativeValueDetails']
 						});
-						
+
 						/** One-way sync value & value details to value display widget **/
 							function _setValueDisplayWidget(_propertyName, _propertyNameToGet) {
 								_valueDisplayWidget.set(_propertyName, _this.get(_propertyNameToGet || _propertyName))
 							}
-							
+
 							_this.wire({
 								'Changed.value':function() { _setValueDisplayWidget('value') },
 								'Changed.valueDetails':function() { _setValueDisplayWidget('valueDetails') },
@@ -74,19 +73,19 @@ Uize.module ({
 					}
 				)
 			;
-			
+
 		/*** Public Methods ***/
 			_class.prototype.updateUi = function() {
 				var _this = this;
-				
+
 				if (_this.isWired) {
 					_this.children.value.updateUi();
 					_superclass.prototype.updateUi.call(_this);
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_pipedProperties:{
 					name:'pipedProperties',
 					onChange:function() {
@@ -96,7 +95,7 @@ Uize.module ({
 							_pipedProperties = _this._pipedProperties,
 							_children = _this.children
 						;
-						
+
 						function _buildChangedEventName(_propertyName) { return 'Changed.' + _propertyName }
 						function _pipeChangedEvent(_event) {
 							var
@@ -108,7 +107,7 @@ Uize.module ({
 								&& _valueWidget.set(_propertyName, _this.get(_propertyName))
 							;
 						}
-						
+
 						/*** unwire previous piped properties ***/
 							Uize.forEach (
 								_previousPipedProperties,
@@ -129,9 +128,9 @@ Uize.module ({
 					}
 				},
 					/*?
-						Set-get Properties
+						State Properties
 							pipedProperties
-								document...
+								.
 
 								NOTES
 								- the initial value is =undefined=
@@ -149,11 +148,12 @@ Uize.module ({
 				_valueDisplayWidgetProperties:'valueDisplayWidgetProperties',
 				_valueFormatter:'valueFormatter',
 					/*?
-						Set-get Properties
+						State Properties
 							valueFormatter
-								document...
-									NOTES
-									- the initial value is =undefined=
+								.
+
+								NOTES
+								- the initial value is =undefined=
 					*/
 				_valueWidgetClass:'valueWidgetClass'
 			});

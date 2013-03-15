@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Swap.xPresets Class Extension
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -28,7 +25,7 @@
 		Using the Presets
 			The =Uize.Widget.Swap.xPresets= module exposes its swap effect presets through the =Uize.Widget.Swap.presets= static property.
 
-			Each property of the =Uize.Widget.Swap.presets= object is a swap effect preset, where the name of the property is the effect preset name, and where the value is an object containing values for various set-get properties of the =Uize.Widget.Swap= class.
+			Each property of the =Uize.Widget.Swap.presets= object is a swap effect preset, where the name of the property is the effect preset name, and where the value is an object containing values for various state properties of the =Uize.Widget.Swap= class.
 
 			Consider the value of the =Uize.Widget.Swap.presets.fadeOutFadeIn= preset...
 
@@ -47,7 +44,7 @@
 			}
 			............................
 
-			To use this preset, simply use it to set the set-get properties of an instance of a =Uize.Widget.Swap= subclass using the =set= instance method, as follows...
+			To use this preset, simply use it to set the state properties of an instance of a =Uize.Widget.Swap= subclass using the =set= instance method, as follows...
 
 			.........................................................
 			myImageSwap.set (Uize.Widget.Swap.presets.fadeOutFadeIn);
@@ -59,6 +56,8 @@
 Uize.module ({
 	name:'Uize.Widget.Swap.xPresets',
 	builder:function (_class) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,

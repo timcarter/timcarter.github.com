@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.FormElement.Text Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 7
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -31,12 +28,14 @@ Uize.module ({
 	name:'Uize.Widget.FormElement.Text',
 	required:'Uize.Node',
 	builder:function(_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_supportsPlaceholder = typeof document != 'undefined'
 					&& 'placeholder' in document.createElement('input')
 			;
-		
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass(
@@ -47,37 +46,42 @@ Uize.module ({
 						_this.wire(
 							'Changed.focused',
 							function() {
-								var
-									_focused = _this.get('focused'),
-									_placeholder = _this._placeholder,
-									_value = _this.get('value')
-								;
-
-								if (_placeholder && !_supportsPlaceholder) {
-									function _setText (_newText) { _this.isWired && _this.setNodeValue ('input', _newText) }
-
-									if (_focused && _value == _placeholder)
-										_setText ('');
-									else if (!_focused && !_value)
-										_setText (_placeholder)
-								}
-
-								if (_this.isWired && _focused) {
+								if (_this.isWired) {
 									var
-										_inputNode = _this.getNode('input'),
-										_inputNodeValue = _this.getNodeValue(_inputNode),
-										_valueLength = _inputNodeValue ? _inputNodeValue.length : 0
+										_focused = _this.get('focused'),
+										_placeholder = _this._placeholder
 									;
 
-									if (_valueLength > 0) {
-										if (_inputNode.createTextRange) {
-											var _range = _inputNode.createTextRange();
-											_range.move('character', _valueLength);
-											_range.select();
-										}
-										else if (_inputNode.setSelectionRange)
-											_inputNode.setSelectionRange(_valueLength, _valueLength)
+									if (_placeholder && !_supportsPlaceholder) {
+										var
+											_newText,
+											_value = _this.get('value')
 										;
+										if (_focused && _value == _placeholder)
+											_newText = '';
+										else if (!_focused && !_value)
+											_newText = _placeholder
+										;
+										_newText != undefined && _this.setNodeValue ('input', _newText);
+									}
+
+									if (_focused) {
+										var
+											_inputNode = _this.getNode('input'),
+											_inputNodeValue = _this.getNodeValue(_inputNode),
+											_valueLength = _inputNodeValue ? _inputNodeValue.length : 0
+										;
+
+										if (_valueLength > 0) {
+											if (_inputNode.createTextRange) {
+												var _range = _inputNode.createTextRange();
+												_range.move('character', _valueLength);
+												_range.select();
+											}
+											else if (_inputNode.setSelectionRange)
+												_inputNode.setSelectionRange(_valueLength, _valueLength)
+											;
+										}
 									}
 								}
 							}
@@ -176,7 +180,7 @@ Uize.module ({
 					if (_placeholder) {
 						if (_supportsPlaceholder)
 							_this.setNodeProperties (_input, {placeholder:_placeholder});
-						else 
+						else
 							_this.set ('value', _placeholder);
 					}
 
@@ -184,8 +188,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_placeholder:{
 					name:'placeholder|defaultValue',
 					onChange:_classPrototype._updateUiPlaceholder,

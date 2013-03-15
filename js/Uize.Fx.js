@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Fx Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 85
 */
 
@@ -46,6 +43,8 @@ Uize.module ({
 		'Uize.Color'
 	],
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function () {},
@@ -244,7 +243,7 @@ Uize.module ({
 							);
 						}
 						_updaterFunction = _updaterFunctions [_updaterFunctionId] =
-							new Function ('style',_functionChunks.join (''))
+							Function ('style',_functionChunks.join (''))
 						;
 					}
 
@@ -310,7 +309,7 @@ Uize.module ({
 							);
 							.............................
 
-							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the set-get properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
+							When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the state properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc. These property values will be set on the =Uize.Fade= instance that is created to service the fade process requested by calling this method.
 
 							VARIATION 2
 							.............................
@@ -462,7 +461,7 @@ Uize.module ({
 								This rule also applies to style properties that can have compound values, such as =textShadow=. For example, if the value of the =textShadow= property specified in the =startStylePropertiesOBJ= parameter defines three shadows, then the value of the =textShadow= property specified in the =endStylePropertiesOBJ= parameter should also define three shadows. Moreover, the structure of the corresponding shadow definitions should match between the start value and the end value. For instance, the unit used for specifying the optional blur radius should be the same for the same shadow between the start and end values for =textShadow=. Similarly, if shadow color is specified for a shadow in the start value, then shadow color should also be specified for the corresponding shadow in the end value.
 
 							fadePropertiesOBJ
-								When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the set-get properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc.
+								When the optional =fadePropertiesOBJ= parameter is specified, additional values can be specified for the state properties of the =Uize.Fade= class - such as =curve=, =quantization=, etc.
 
 								VARIATION
 								..............................

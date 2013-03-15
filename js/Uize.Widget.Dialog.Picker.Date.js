@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Dialog.Picker.Date
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=e" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 4
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 80
 */
 
@@ -35,43 +32,45 @@ Uize.module ({
 	name:'Uize.Widget.Dialog.Picker.Date',
 	required:'Uize.Widget.Calendar',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Class Constructor ***/
 			var _class = _superclass.subclass ();
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				valueWidgetClass:Uize.Widget.Calendar,
 				pipedProperties:[
 					'displayFormat',
 						/*?
-							Set-get Properties
+							State Properties
 								displayFormat
-									document...
+									.
 
 									NOTES
-									- this value of this property is piped through to the =displayFormat= set-get property of the =Uize.Widget.Calendar= value widget
+									- this value of this property is piped through to the =displayFormat= state property of the =Uize.Widget.Calendar= value widget
 									- the initial value is =undefined=
 						*/
 					'maxValue',
 						/*?
-							Set-get Properties
+							State Properties
 								minValue
-									document...
+									.
 
 									NOTES
-									- see the companion =maxValue= set-get property
-									- this value of this property is piped through to the =maxValue= set-get property of the =Uize.Widget.Calendar= value widget
+									- see the companion =maxValue= state property
+									- this value of this property is piped through to the =maxValue= state property of the =Uize.Widget.Calendar= value widget
 									- the initial value is =undefined=
 						*/
 					'minValue'
 						/*?
-							Set-get Properties
+							State Properties
 								maxValue
-									document...
+									.
 
 									NOTES
-									- see the companion =minValue= set-get property
-									- this value of this property is piped through to the =minValue= set-get property of the =Uize.Widget.Calendar= value widget
+									- see the companion =minValue= state property
+									- this value of this property is piped through to the =minValue= state property of the =Uize.Widget.Calendar= value widget
 									- the initial value is =undefined=
 						*/
 				]

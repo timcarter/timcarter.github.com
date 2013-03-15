@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Curve.Rubber Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -54,7 +51,7 @@
 				);
 				..................................................................................
 
-				In the above example, an instance of the =Uize.Widget.HoverFader= class is being added as a child widget of the page widget (which is assumed to already exist). For the =fadeIn= set-get property of the =Uize.Widget.HoverFader= instance, an elastic ease-out curve function is being supplied as a curve. For the =fadeOut= set-get property, a bounce ease-out curve function is being supplied as a curve. This will make the fade-in to the hover style have an elastic quality to it, and the fade-out to the default style have a bounce quality to it.
+				In the above example, an instance of the =Uize.Widget.HoverFader= class is being added as a child widget of the page widget (which is assumed to already exist). For the =fadeIn= state property of the =Uize.Widget.HoverFader= instance, an elastic ease-out curve function is being supplied as a curve. For the =fadeOut= state property, a bounce ease-out curve function is being supplied as a curve. This will make the fade-in to the hover style have an elastic quality to it, and the fade-out to the default style have a bounce quality to it.
 
 			VISUALIZE IT
 
@@ -68,11 +65,14 @@
 Uize.module ({
 	name:'Uize.Curve.Rubber',
 	builder:function (_host) {
-		var
-			_package = function () {},
-			_makeEasingCurveGenerators = _host.makeEasingCurveGenerators,
-			_resolve = _host.resolve
-		;
+		'use strict';
+
+		/*** Variables for Scruncher Optimization ***/
+			var
+				_package = function () {},
+				_makeEasingCurveGenerators = _host.makeEasingCurveGenerators,
+				_resolve = _host.resolve
+			;
 
 		/*** Curve Function Generators ***/
 			/*** elastic easing ***/

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Options.Tabbed.Fading Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=e" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.Options.Tabbed.Fading',
 	required:'Uize.Fade',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -84,12 +83,12 @@ Uize.module ({
 						_this._fade.stop ();
 						_this._cleanUpAfterFade ();
 					}
-					function _updateTabBodyClass (_valueNo) {
+					var _updateTabBodyClass = function (_valueNo) {
 						var _node = _valueNo > -1 ? _this.getTabBodyNode (_valueNo) : _null;
 						_this.setNodeProperties (_node,{className:_this.get ('bodyClassActive')});
 						_this.setNodeOpacity (_node,_valueNo == _currentValueNo ? 0 : 1);
 						return _node;
-					}
+					};
 					_this._nodeFadingOut = _updateTabBodyClass (_lastShownTabBodyNo);
 					_this._nodeFadingIn = _updateTabBodyClass (_currentValueNo);
 					_this._fade.start ();

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Cookie Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 20
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Cookie',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,

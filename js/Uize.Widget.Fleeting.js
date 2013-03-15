@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Fleeting Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2006-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2006-2013 UIZE
 |           |__ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 4
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.Fleeting',
 	required:'Uize.Fade',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -73,9 +72,9 @@ Uize.module ({
 				/*?
 					Implied Nodes
 						text Implied Node
-							An optional node whose contents will be replaced with the value of the =text= set-get property, if this property's value is not =null= or =undefined=.
+							An optional node whose contents will be replaced with the value of the =text= state property, if this property's value is not =null= or =undefined=.
 
-							The =innerHTML= value of the =text Implied Node= will be updated to reflect the value of the =text= set-get property whenever the value of this property is changed, is not =null= or =undefined=, and the instance is wired up.
+							The =innerHTML= value of the =text Implied Node= will be updated to reflect the value of the =text= state property whenever the value of this property is changed, is not =null= or =undefined=, and the instance is wired up.
 
 							NOTES
 							- this implied node is optional
@@ -96,7 +95,7 @@ Uize.module ({
 
 			_classPrototype.updateUi = function () {
 				var _this = this;
-				
+
 				if (_this.isWired) {
 					_this._updateUiText ();
 					_superclass.prototype.updateUi.call (_this);
@@ -118,8 +117,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_maxOpacity:{
 					name:'maxOpacity',
 					value:1
@@ -132,23 +131,23 @@ Uize.module ({
 					name:'shown',
 					onChange:function () {
 						var _this = this;
-						
+
 						if (_this.isWired) {
 							_this._shown
 								&& _this.fire ('Before Show');
-	
+
 						_this._showFade.start ({
 							startValue: _this._shown ? 0 : _this._maxOpacity,
 								endValue:_this._shown ? _this._maxOpacity : 0
 						});
-							
+
 							if (_this._shown)
 								_this._lifeTimeout = setTimeout(
 									function() { _this.set({_shown:_false}) },
 									_this._lifeSpan
 								)
 							;
-							
+
 							!_this._shown
 								&& _this.fire('After Hide');
 						}
@@ -159,11 +158,11 @@ Uize.module ({
 					name:'text',
 					onChange:_classPrototype._updateUiText
 					/*?
-						Set-get Properties
+						State Properties
 							text
 								A string, whose value will be used to set the value of the =innerHTML= property of the =text Implied Node=.
 
-								The =innerHTML= value of the =text Implied Node= will be updated to reflect the value of the =text= set-get property whenever the value of this property is changed, is not =null= or =undefined=, and the instance is wired up.
+								The =innerHTML= value of the =text Implied Node= will be updated to reflect the value of the =text= state property whenever the value of this property is changed, is not =null= or =undefined=, and the instance is wired up.
 
 								NOTES
 								- the initial value is =undefined=

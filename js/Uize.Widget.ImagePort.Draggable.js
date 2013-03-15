@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.ImagePort.Draggable Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 90
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.ImagePort.Draggable',
 	required:'Uize.Widget.Drag',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -69,7 +68,7 @@ Uize.module ({
 												)
 											});
 										} else {
-											function _calculateNewAlignValue (_axis) {
+											var _calculateNewAlignValue = function (_axis) {
 												return (
 													Uize.constrain (
 														_dragStartAlign [_axis] + _drag.eventDeltaPos [_axis] *
@@ -82,7 +81,7 @@ Uize.module ({
 														1
 													)
 												);
-											}
+											};
 											_this.set ({
 												alignX:_calculateNewAlignValue (0),
 												alignY:_calculateNewAlignValue (1)
@@ -146,8 +145,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_inDrag:{
 					name:'inDrag',
 					value:_false

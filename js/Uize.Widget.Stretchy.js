@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Stretchy Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |           |__ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -33,6 +30,8 @@ Uize.module ({
 		'Uize.Fade'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -96,29 +95,31 @@ Uize.module ({
 								}
 						});
 
-						function _showLong(){
-							_this.displayNode(_short,_false);
-							_this.displayNode(_long);
-							_longHeight = _longHeight || _Uize_Node.getCoords(_long).height;
-							_currentShownDiv = _long;
-							_this.fade.start ({
-								startValue: _shortHeight,
-								endValue: _longHeight
-							});
-						}
-						function _showShort(){
-							_currentShownDiv = _short;
-							_longHeight = _longHeight || _Uize_Node.getCoords(_long).height;
-							if( !_shortHeight ) {
-								_this.displayNode(_short);
-								_shortHeight = _Uize_Node.getCoords(_short).height;
-								_this.displayNode(_short, _false);
+						var
+							_showLong = function (){
+								_this.displayNode(_short,_false);
+								_this.displayNode(_long);
+								_longHeight = _longHeight || _Uize_Node.getCoords(_long).height;
+								_currentShownDiv = _long;
+								_this.fade.start ({
+									startValue: _shortHeight,
+									endValue: _longHeight
+								});
+							},
+							_showShort = function (){
+								_currentShownDiv = _short;
+								_longHeight = _longHeight || _Uize_Node.getCoords(_long).height;
+								if( !_shortHeight ) {
+									_this.displayNode(_short);
+									_shortHeight = _Uize_Node.getCoords(_short).height;
+									_this.displayNode(_short, _false);
+								}
+								_this.fade.start ({
+									startValue:_longHeight,
+									endValue:_shortHeight
+								});
 							}
-							_this.fade.start ({
-								startValue:_longHeight,
-								endValue:_shortHeight
-							});
-						}
+						;
 						_this.wireNode ('expand', 'click',
 							function() {
 								_this.fire ({name:'Expand', handler:_showLong}).handled || _showLong();

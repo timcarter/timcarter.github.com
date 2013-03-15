@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Population Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 50
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.Population',
 	required:'Uize.Node',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -85,50 +84,50 @@ Uize.module ({
 						var
 							_nearestPropertyPath = '',
 							_nearestPropertyValue = '',
-							_nearestPropertyIndex = _templateStrLength
-						;
-						function _findNearestPropertyName (_object,_objectPath) {
-							var _propertyIndex;
-							for (var _propertyName in _object) {
-								var
-									_propertyValue = _object [_propertyName],
-									_propertyValueIsObject = typeof _propertyValue == 'object',
-									_propertyPath = '(' + _objectPath + ' || {}) [' + _getQuotedStr (_propertyName,'\'') + ']'
-								;
-								if (_propertyValueIsObject && typeof _propertyValue.length != 'number') {
-									_findNearestPropertyName (_propertyValue,_propertyPath);
-								} else {
-									if (_propertyValueIsObject) {
-										var _subTemplateItem = _propertyValue [0];
-										_propertyIndex = _templateStr.indexOf (_subTemplateItem.OPENER_TOKEN,_index);
-										if (_propertyIndex > -1) {
-											var _closerTokenPos = _templateStr.indexOf (
-												_subTemplateItem.CLOSER_TOKEN,_propertyIndex + _subTemplateItem.OPENER_TOKEN.length
-											);
-											if (_closerTokenPos > -1) {
-												_propertyValue = _templateStr.slice (
-													_propertyIndex,_closerTokenPos + _subTemplateItem.CLOSER_TOKEN.length
-												);
-											} else {
-												_propertyIndex = -1;
-											}
-										}
+							_nearestPropertyIndex = _templateStrLength,
+							_findNearestPropertyName = function (_object,_objectPath) {
+								var _propertyIndex;
+								for (var _propertyName in _object) {
+									var
+										_propertyValue = _object [_propertyName],
+										_propertyValueIsObject = typeof _propertyValue == 'object',
+										_propertyPath = '(' + _objectPath + ' || {}) [' + _getQuotedStr (_propertyName,'\'') + ']'
+									;
+									if (_propertyValueIsObject && typeof _propertyValue.length != 'number') {
+										_findNearestPropertyName (_propertyValue,_propertyPath);
 									} else {
-										_propertyIndex = _templateStr.indexOf (_propertyValue,_index);
-									}
-									if (_propertyIndex > -1 && _propertyIndex < _nearestPropertyIndex) {
-										_nearestPropertyPath = _propertyPath;
-										_nearestPropertyValue = _propertyValue;
-										_nearestPropertyIndex = _propertyIndex;
+										if (_propertyValueIsObject) {
+											var _subTemplateItem = _propertyValue [0];
+											_propertyIndex = _templateStr.indexOf (_subTemplateItem.OPENER_TOKEN,_index);
+											if (_propertyIndex > -1) {
+												var _closerTokenPos = _templateStr.indexOf (
+													_subTemplateItem.CLOSER_TOKEN,_propertyIndex + _subTemplateItem.OPENER_TOKEN.length
+												);
+												if (_closerTokenPos > -1) {
+													_propertyValue = _templateStr.slice (
+														_propertyIndex,_closerTokenPos + _subTemplateItem.CLOSER_TOKEN.length
+													);
+												} else {
+													_propertyIndex = -1;
+												}
+											}
+										} else {
+											_propertyIndex = _templateStr.indexOf (_propertyValue,_index);
+										}
+										if (_propertyIndex > -1 && _propertyIndex < _nearestPropertyIndex) {
+											_nearestPropertyPath = _propertyPath;
+											_nearestPropertyValue = _propertyValue;
+											_nearestPropertyIndex = _propertyIndex;
+										}
 									}
 								}
 							}
-						}
+						;
 						_findNearestPropertyName (_templateItem,'obj');
 						_insertionObjects.push ({
 							_precedingText:_templateStr.slice (_index,_nearestPropertyIndex),
 							_propertyPath:_nearestPropertyPath,
-							_propertyGetter:_nearestPropertyPath ? new Function ('obj','return ' + _nearestPropertyPath) : 0,
+							_propertyGetter:_nearestPropertyPath ? Function ('obj','return ' + _nearestPropertyPath) : 0,
 							_propertyValue:_nearestPropertyValue
 						});
 						_index = _nearestPropertyIndex;
@@ -209,7 +208,7 @@ Uize.module ({
 				/*?
 					Instance Methods
 						getOutput
-							Returns a string, being the output generated using the value of the =templateStr= set-get property and the record set contained by the =items= set-get property.
+							Returns a string, being the output generated using the value of the =templateStr= state property and the record set contained by the =items= state property.
 
 							SYNTAX
 							......................................
@@ -226,7 +225,7 @@ Uize.module ({
 				/*?
 					Instance Methods
 						getHtml
-							Returns a string, being the HTML markup generated using the template HTML contained in the =templateStr= set-get property and the record set contained by the =items= set-get property.
+							Returns a string, being the HTML markup generated using the template HTML contained in the =templateStr= state property and the record set contained by the =items= state property.
 
 							SYNTAX
 							..................................
@@ -260,7 +259,7 @@ Uize.module ({
 				/*?
 					Instance Methods
 						updateUi
-							Updates the contents of the DOM node specified by the =container= set-get property, using the =getHtml= instance method to generate the new HTML markup.
+							Updates the contents of the DOM node specified by the =container= state property, using the =getHtml= instance method to generate the new HTML markup.
 
 							SYNTAX
 							.........................
@@ -268,11 +267,11 @@ Uize.module ({
 							.........................
 
 							NOTES
-							- if the =templateStr= set-get property is undefined, null, or an empty string at the time that this method first performs its action, then this property value will be set by taking the value of the =container= node's =innerHTML= property
-							- this method is called automatically whenever there is a change in the values of the =templateStr= and =items= set-get properties
-							- if the =container= set-get property is equivalent to =false=, or if the node specified by this property does not exist in the DOM, then this method will have no action
-							- if the =enabled= set-get property is equivalent to =false=, then this method will have no action
-							- this method is optimized so that if it is called repeatedly and in that time there is no change in the values of the =templateStr= or =items= set-get properties, then its action will *not* be performed repeatedly
+							- if the =templateStr= state property is undefined, null, or an empty string at the time that this method first performs its action, then this property value will be set by taking the value of the =container= node's =innerHTML= property
+							- this method is called automatically whenever there is a change in the values of the =templateStr= and =items= state properties
+							- if the =container= state property is equivalent to =false=, or if the node specified by this property does not exist in the DOM, then this method will have no action
+							- if the =enabled= state property is equivalent to =false=, then this method will have no action
+							- this method is optimized so that if it is called repeatedly and in that time there is no change in the values of the =templateStr= or =items= state properties, then its action will *not* be performed repeatedly
 				*/
 			};
 
@@ -298,7 +297,7 @@ Uize.module ({
 				/*?
 					Static Methods
 						Uize.Widget.Population.makeTemplateItem
-							Generates a template item, using the specified item and token naming scheme, that can then be used when setting the =templateItem= set-get property of an instance.
+							Generates a template item, using the specified item and token naming scheme, that can then be used when setting the =templateItem= state property of an instance.
 
 							SYNTAX
 							................................................................................
@@ -376,8 +375,8 @@ Uize.module ({
 				return _class.replaceByTemplateItem (_sourceStr,_item,_class.makeTemplateItem (_item,_tokenNaming || '{KEY}'));
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_outputPrefix:{
 					name:'outputPrefix',
 					value:''
@@ -411,7 +410,7 @@ Uize.module ({
 						this.updateUi ();
 					}
 					/*?
-						Set-get Properties
+						State Properties
 							templateStr
 								A string, representing the template that should be used when generating output in the =getOutput= and =getHtml= instance methods.
 

@@ -1,21 +1,18 @@
 /*______________
 |       ______  |   U I Z E    J A V A S C R I P T    F R A M E W O R K
 |     /      /  |   ---------------------------------------------------
-|    /    O /   |    MODULE : Uize Base Class
+|    /    O /   |    MODULE : Uize Base Module
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2003-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2003-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 10
 	codeCompleteness: 100
-	testCompleteness: 70
 	docCompleteness: 90
 */
 
@@ -27,10 +24,23 @@
 
 		Key Features
 			Utility Belt Methods
-				Value Testing Methods
-					The =Uize= module provides a number of static methods for performing commonly useful tests on values.
+				The =Uize= module provides a slew of utility belt methods that can be divided into the following categories...
 
-					- =Uize.canExtend= - tests if value can be extended with custom properties
+				Module Mechanism Methods
+					The =Uize= module provides static methods for declaring your own JavaScript modules, requiring modules, and configuring the `module loader mechanism` to suit your application environment.
+
+					- =Uize.getModuleByName= - returns a reference to the module of the specified name, or =undefined= if the module's not loaded
+					- =Uize.getPathToLibrary= - returns the relative path from the current document to the folder containing the specified JavaScript file
+					- =Uize.module= - lets you declare a JavaScript module that can be required by other JavaScript modules
+					- =Uize.moduleLoader= - loads a JavaScript module (specified by its module name)
+					- =Uize.moduleUrlResolver= - resolves the specified JavaScript module name to a URL path
+					- =Uize.require= - ensures that all of the specified modules are loaded before calling the specified callback function, loading required modules as necessary
+					- =Uize.toString= - provides summary info for the module on which the method is called
+
+				Value Testing Methods
+					The =Uize= module provides a number of static methods for performing useful tests on values.
+
+					- =Uize.canExtend= - tests if value is an object that can be extended with custom properties
 					- =Uize.inRange= - tests if value is within specified value range
 					- =Uize.isArray= - tests if value is an array
 					- =Uize.isBoolean= - tests if value is a boolean
@@ -44,11 +54,12 @@
 					- =Uize.isObject= - tests if a value is non-null and an object
 					- =Uize.isPlainObject=- tests if a value is a plain object (an instance of JavaScript's built-in =Object= object)
 					- =Uize.isPrimitive= - tests if a value is a JavaScript primitive (ie. string, number, or boolean)
+					- =Uize.isRegExp=- tests if a value is a regular expression (ie. an instance of the =RegExp= object)
 					- =Uize.isSameAs= - tests if two values are the same in a strict equality test, with support for =NaN= values
 					- =Uize.isString= - tests if a value is a string
 
 				Basic Data Utilities
-					The =Uize= module provides a number of static methods for performing basic data manipulation operations.
+					The =Uize= module provides a number of static methods for performing basic data manipulation operations that are commonly encountered.
 
 					- =Uize.clone= - clones a value, and creates deep clones of object or array type values
 					- =Uize.copyInto= - copies the values of properties from one or more source objects into a target object
@@ -71,11 +82,13 @@
 					- =Uize.values= - returns an array containing the values of the properties in an object
 
 				Iterator Methods
+					The =Uize= module provides a number of static methods for iterating over properties of objects or elements of arrays.
 
 					- =Uize.callOn= - calls a method on all values of properties in an object or elements of an array
 					- =Uize.forEach= - iterates over an array, object, or length, calling the specified iteration handler for each element or property
 
 				Useful Value Transformers
+					The =Uize= module provides some value transformer methods for transforming or resolving values in ways that are either generally useful or useful to other UIZE modules.
 
 					- =Uize.capFirstChar= - capitalizes the first character of a string
 					- =Uize.constrain= - constrains a value to a specified range
@@ -85,6 +98,7 @@
 					- =Uize.toNumber= - coerces a value to a number, with defaulting if it cannot be coerced successfully
 
 				Dummy Functions
+					The =Uize= module provides a number of dummy functions that can be supplied as placeholders in situations where function type parameters are expected.
 
 					- =Uize.nop= - performs no operation and returns no value (equivalent to returning =undefined=)
 					- =Uize.returnFalse= - always returns the value =false=
@@ -92,50 +106,220 @@
 					- =Uize.returnX= - always returns the value of the first argument, unaltered
 
 				General Utilities
+					The =Uize= module provides the following general utility methods...
 
+					- =Uize.eval= - lets you perform `quarantined code evaluation` of a JavaScript code string
+					- =Uize.getClass= - gets the class of which a specified value is an instance, or returns the value if it is a class or function
+					- =Uize.global= - returns a reference to the global object
+					- =Uize.laxEval= - lets you perform `quarantined code evaluation` of a JavaScript code string, but not in `JavaScript strict mode`
 					- =Uize.noNew= - wraps an object constructor function to make JavaScript's =new= operator optional
 					- =Uize.now= - returns the current time in milliseconds since 1970 (POSIX time)
-					- =Uize.getClass= - gets the class of which a specified value is an instance, or returns the value if it is a class or function
+					- =Uize.quarantine= - generates a quarantined version of the supplied function
+					- =Uize.resolveTransformer= - resolves the specified transformer (of any type) to a transformer function
 					- =Uize.substituteInto= - substitutes one or more substitution values into a string
 
-				Module Mechanism Methods
+			Quarantined Code Execution
+				The =Uize= module provides static methods to facilitate the quarantined execution of JavaScript code, which can be divided into two types: `quarantined code evaluation` and `quarantined nested functions`.
 
-					- =Uize.getModuleByName= - returns a reference to the module of the specified name, or =undefined= if the module's not loaded
-					- =Uize.getPathToLibrary= - returns the relative path from the current document to the folder containing the specified JavaScript file
-					- =Uize.module= - lets you declare a JavaScript module that can be required by other JavaScript modules
-					- =Uize.moduleLoader= - loads a JavaScript module (specified by its module name)
-					- =Uize.moduleUrlResolver= - resolves the specified JavaScript module name to a URL path
-					- =Uize.toString= - provides summary info for the module on which the method is called
+				What is Quarantined Code Execution?
+					Quarantined code execution is the execution of some JavaScript from within a deep local scope, but where the code being executed is executed outside of that deep scope - in a "quarantined" scope.
+
+					In the quarantined scope, the only scope that the quarantined code has access to in its scope chain is the global scope. The executed code is, thereby, quarantined from the local scope so that it cannot accidentally contaminate (or be contaminated by) the local scope, by accessing or assigning to identifiers within the local scope (or anywhere else up the local scope's scope chain).
+
+					This is best illustrated by an example...
+
+					NON-QUARANTINED
+					....................................................................................
+					function foo () {
+						var bar = 5;
+						eval ('var baz = 10; alert (bar);');  // doesn't throw error, but we'd want it to
+					}
+
+					foo ();
+					....................................................................................
+
+					In the above example, some code is being evaluated inside a function scope using JavaScript's built-in =eval= function. Now, for argument's sake, let's say that this code has a typo in it where it was supposed to access the =baz= variable that it defined, but it's actually trying to access a =bar= variable. If the surrounding scope in which the =eval= call is being made contains a =bar= variable, then the code will not produce an error as it should and will appear to work, but it will have a bug.
+
+					This kind of cross-contamination between evaluated code and a deep local scope can be alleviated by using either of the =Uize.eval= or =Uize.laxEval= methods, as follows...
+
+					QUARANTINED
+					..................................................................................
+					function foo () {
+						var bar = 5;
+						Uize.eval ('var baz = 10; alert (bar);');  // throws an error, as we would like
+					}
+
+					foo ();
+					..................................................................................
+
+					In the above example, we have replaced the use of JavaScript's built-in =eval= function with a call to the =Uize.eval= method. The code being evaluated is now evaluated in a quarantined fashion so that it no longer has access to scope inside the =foo= function, and the only scope it has access to is the global scope. In this example, the global scope does not define a =bar= variable, so the code being evaluated produces a JavaScript error as we would like and exposes the typo in the code.
+
+					Now, the global scope could always still have identifiers that could cross-contaminate with code being evaluated using the =Uize.eval= or =Uize.laxEval= methods, but the potential for such cross-contamination is much reduced, especially as you consider that the deeper and deeper you go into nested scopes, the more identifiers get "tacked" on as a result of an increasingly long scope chain. The most important thing is that the =Uize.eval= and =Uize.laxEval= methods allow you to quarantine code evaluation from the current / local scope within which the methods are called.
+
+				Quarantined Code Evaluation
+					The =Uize= module provides two static methods to facilitate quarantined evaluation of JavaScript code strings.
+
+					The general wisdom is to avoid using JavaScript's built-in =eval= function at all costs, and this is, for the most part, good advice. However, JavaScript is a dynamic language, and when you're doing more sophisticated (and risky) things with JavaScript such as dynamic code construction, it becomes useful to evaluate strings that contain JavaScript code.
+
+					Now, a risk with careless use of JavaScript's =eval= function from deep within the nested functions of your code is that you may not be intending to have the code evaluated within the scope of your deep function.
+
+					It could be a benefit to the code you're eval'ing that it has access to the scope of the function in which you're eval'ing it, but it may also be a curse in two respects...
+
+					+) the code being eval'ed may unexpectedly conflict with identifiers in your function's scope (or any scope up the scope chain)
+					+) function closures within the code being eval'ed will hang on to your function's scope state (with "interesting" memory usage implications)
+
+					To address these risks and to allow you to perform `quarantined code evaluation`, the =Uize= module provides methods for `strict mode quarantined evaluation` and `non-strict mode quarantined evaluation`.
+
+					Strict Mode Quarantined Evaluation
+						To perform `quarantined code evaluation` in `JavaScript strict mode`, the =Uize.eval= method can be used.
+
+						SYNTAX
+						..............................................
+						evalResultANYTYPE = Uize.eval (codeToEvalSTR);
+						..............................................
+
+						EXAMPLE
+						..............................................................................................
+						function foo () {
+							var bar = 5;
+							Uize.eval ('bar = 10');  // throws an error, because bar is not declared inside eval'd code
+							alert (bar);
+						}
+
+						foo ();
+						..............................................................................................
+
+						In the above example, the code being evaluated in the call to the =Uize.eval= method results in a JavaScript error being thrown. This is for two reasons:
+
+						+) the =Uize.eval= method evaluates the code in a quarantined fashion, so it doesn't have access to the =bar= variable defined in the local scope
+						+) the =Uize.eval= method evaluates code using `JavaScript strict mode`, so the code that now appears to assigning a value to a variable not declared in the global scope (the only scope that the `quarantined code evaluation` has access to) throws an error because this is not permitted in strict mode
+
+					Non-strict Mode Quarantined Evaluation
+						To perform `quarantined code evaluation` in non-strict mode, the =Uize.laxEval= method can be used.
+
+						SYNTAX
+						.................................................
+						evalResultANYTYPE = Uize.laxEval (codeToEvalSTR);
+						.................................................
+
+						EXAMPLE
+						..................................................................................................
+						function foo () {
+							var bar = 5;
+							Uize.laxEval ('bar = 10');  // doesn't throw an error, but doesn't set value of local scope bar
+							alert (bar);  // alerts "5", because the quarantined eval'd code didn't set local bar variable
+						}
+
+						foo ();
+						..................................................................................................
+
+						In the above example, the code being evaluated in the call to the =Uize.laxEval= method does not throw a JavaScript as the =Uize.eval= method would, but it still doesn't set the value of the =bar= variable in the local scope. There are two things in play here...
+
+						+) the =Uize.laxEval= method evaluates the code in a quarantined fashion, so it doesn't have access to the =bar= variable defined in the local scope
+						+) the =Uize.laxEval= method evaluates code using non-strict mode, so it allows the quarantined code to assign a value to a variable that is not declared in the quarantined code's scope chain, which has the effect of declaring =bar= as a global variable rather than throwing an error (as would be the case in strict mode)
+
+				Quarantined Nested Functions
+					To declare a function from within some deep local scope, but have that function be quarantined from the local scope, one can use the =Uize.quarantine= method.
+
+					The =Uize.quarantine= method allows you to essentially generate a quarantined version of the supplied function. When the quarantined function is then called, it won't have access to the same scope chain that the original function had access to - it will only have access to the global scope.
+
+					SYNTAX
+					...............................................................
+					quarantinedFunctionFUNC = Uize.quarantine (sourceFunctionFUNC);
+					...............................................................
+
+					The behavior of the =Uize.quarantine= method is best illustrated by an example...
+
+					EXAMPLE
+					...............................................................................................
+					var bar = 10;
+
+					function Foo () {
+						var bar = 5;
+						this.baz = function () {
+							alert (bar);
+						};
+						this.qux = Uize.quarantine (this.baz);
+					}
+
+					var myFoo = new Foo ();
+
+					myFoo.baz ();  // alerts 5, because the baz method has access to the Foo scope
+					myFoo.qux ();  // alerts 10, because it is quarantined from the Foo scope, and global bar is 10
+					...............................................................................................
+
+					In the above example, the instance method =baz= of the =Foo= object is defined inside the constructor. As a result, it has access to the =Foo= scope and the =bar= variable defined in it, and it alerts the value of local =bar= variable when it is called. Now, the =qux= instance method, on the other hand, is defined as being a quarantined version of the =baz= instance method, so it will only have access to the global scope when called.
+
+					As a result, when the =baz= method is called on the instance =myFoo=, it alerts "5", which is the value of the =bar= variable in the =Foo= scope. In contrast, when the =qux= method is called on =myFoo=, it alerts "10", which is the value of the =bar= variable in the global scope - because it is quarantined from the =Foo= scope, it only has access to the global scope and the global =bar= variable.
+
+					Benefits of Uize.quarantine Over Uize.eval or Uize.laxEval
+						The quarantining effect of the =Uize.quarantine= method can also be achieved by using either of the =Uize.eval= or =Uize.laxEval= methods, but the =Uize.quarantine= method has a few benefits over the `quarantined code evaluation` methods...
+
+						Quarantine Existing Functions
+							The =Uize.quarantine= method lets you create a quarantined version of a function that already exists.
+
+							This is something that you can't easily do with the =Uize.eval= or =Uize.laxEval= methods - you'd basically have to manually re-implement the =Uize.quarantine= method.
+
+						Easier to Write Code in Function Form
+							The =Uize.quarantine= method lets you write quarantined code using a regular function, which is just plain easier to do.
+
+							By writing quarantined code in function form, you can avoid getting caught up in the character escaping and multi-line string concatenation issues associated with constructing a JavaScript code string for evaluation. This becomes increasinly an issue as the amount of code that you want to quarantine increases and constructing the code as a string becomes increasingly cumbersome.
+
+						Code in Function Form is Scrunchable
+							Quarantined code written in function form has the benefit of being scrunchable by the scruncher (or otherwise minified by other JavaScript minifiers or code obfuscators).
+
+							Naturally, the benefits of this will be greater the larger the quarantined code is.
+
+						Some Early Error Detection
+							Quarantined code written in function form will be parsed by the JavaScript interpreter early.
+
+							Unlike the =Uize.eval= and =Uize.laxEval= methods, where the quarantined code will be evaluated at runtime and where errors in the code will only surface when the code is evaluated, the function supplied to the =Uize.quarantine= method will be parsed just like any other function, and syntax errors (and some errors relating to non-compliance with `JavaScript strict mode`) will be caught early - before the quarantined code is even executed.
+
+					Immediately Invoked Quarantined Functions
+						In cases where one wishes to execute code immediately from within some deep local scope, but where one wishes to have that code be executed in a quarantined fashion, one can call the function returned by the =Uize.quarantine= method immediately.
+
+						EXAMPLE
+						........................................
+						// code executed before quarantined code
+
+						Uize.quarantine (function () {
+							// quarantined code execution
+						}) ();
+
+						// code executed after quarantined code
+						........................................
+
+						This is just like immediate invokation of an anonymous function, except with the additional wrapper of the =Uize.quarantine= call.
 */
 
-(function () {
+Uize = (function () {
+	'use strict';
+
 	/*** Variables for Scruncher Optimization ***/
 		var
-			_package = Uize = function () {},
+			_package = function () {},
 			_undefined,
 			_typeString = 'string',
 			_typeObject = 'object',
 			_typeNumber = 'number',
 			_typeBoolean = 'boolean',
+			_typeFunction = 'function',
 			_Function = Function,
 			_Array = Array,
 			_false = false,
 			_true = true,
-			_null = null
+			_null = null,
+			_trueFlag = {},
+			_ObjectToString = Object.prototype.toString
 		;
 
 	/*** General Variables ***/
 		var
 			_uizeGuids = 0,
 			_sacredEmptyArray = [],
-			_modulePathToken = '[#modulePath]',
 			_scriptParentNode,
 			_interpreterSupportsArrayForEach = !!_Array.forEach,
-			_interpreterSupportsArrayIndexOf = !!(_Array.indexOf && _Array.lastIndexOf),
-
-			/*** for module loading mechanism ***/
-				_moduleLoadHandlers = {},
-				_modulesByName = {Uize:_package}
+			_interpreterSupportsArrayIndexOf = !!(_Array.indexOf && _Array.lastIndexOf)
 		;
 
 	/*** Utility Functions ***/
@@ -193,7 +377,7 @@
 						};
 						.................................................................
 
-						In the above example, the instance method =displayPropertyValue= is being defined for a hypothetical widget class. This method accepts a string parameter, being the name of a set-get property whose value should be displayed in the page in an implied node of the widget, and where the implied node's name is constructed from the prefix ='valueOf'= and the name of the set-get property with its first letter capitalized. Using this method to display the value of a =width= set-get property, the value of this property would be displayed in the implied node named =valueOfWidth=.
+						In the above example, the instance method =displayPropertyValue= is being defined for a hypothetical widget class. This method accepts a string parameter, being the name of a state property whose value should be displayed in the page in an implied node of the widget, and where the implied node's name is constructed from the prefix ='valueOf'= and the name of the state property with its first letter capitalized. Using this method to display the value of a =width= state property, the value of this property would be displayed in the implied node named =valueOfWidth=.
 
 						NOTES
 						- this method is implemented in the =Uize= base module rather than the =Uize.String= module because it is generally useful in many other modules and =Uize.Class= subclasses that don't otherwise want to require the entire =Uize.String= module
@@ -519,7 +703,7 @@
 			*/
 		};
 
-		Uize.mergeInto = function () {
+		_package.mergeInto = function () {
 			function _mergeInto (_targetObject,_sourceObject) {
 				var
 					_targetObjectPropertyValue,
@@ -796,7 +980,7 @@
 				var _sourceIsArray = _isArray (_source);
 				if (!_sourceIsArray || _source.length) {
 					if (typeof _iterationHandler == _typeString)
-						_iterationHandler = new _Function ('value','key','source',_iterationHandler)
+						_iterationHandler = _Function ('value,key,source',_iterationHandler)
 					;
 					if (_sourceIsArray) {
 						if (_interpreterSupportsArrayForEach && !_allArrayElements) {
@@ -807,7 +991,7 @@
 									_iterationHandler.call (_context,_source [_index],_index,_source)
 							;
 						}
-					} else if (_canExtend (_source)) {
+					} else if (_isObject (_source)) {
 						for (var _index in _source)
 							_iterationHandler.call (_context,_source [_index],_index,_source)
 						;
@@ -1082,16 +1266,215 @@
 			*/
 		};
 
+		var _resolveTransformer = _package.resolveTransformer = function (_transformer) {
+			var _typeofTransformer = typeof _transformer;
+			return (
+				_transformer == _undefined
+					? _package.returnX
+					: _typeofTransformer == _typeFunction
+						? _transformer
+						: _typeofTransformer == 'string'
+							? _Function ('value,key','return ' + _transformer)
+							: _typeofTransformer == 'object'
+								? (
+									_isRegExp (_transformer)
+										? function (_value) {return _transformer.test (_value + '')}
+										: function (_value) {
+											return _transformer.hasOwnProperty (_value) ? _transformer [_value] : _value
+										}
+								)
+								: function () {return _transformer}
+			);
+			/*?
+				Static Methods
+					Uize.resolveTransformer
+						Resolves the specified transformer to a function that can be passed two arguments, value and key, and that returns a value derived from one or both of those inputs.
+
+						SYNTAX
+						...............................................................
+						transformerFUNC = Uize.resolveTransformer (transformerANYTYPE);
+						...............................................................
+
+						The =Uize.resolveTransformer= method is intended to be used in the implementation of other methods that want to allow a transformer to be specified in several different forms (such as an expression string, for example), but always want to use the transformer as a function. An example of one such method is the =Uize.map= method, whose second argument is a mapper transformer. The =Uize.resolveTransformer= method allows such methods to be versatile in how they let transformers be specified.
+
+						EXAMPLE
+						..........................................................
+						function simpleArrayMap (array,mapper) {
+							mapper = Uize.resolveTransformer (mapper);
+							var result = [];
+							for (var elementNo = array.length; --elementNo >= 0;) {
+								result [elementNo] = mapper (array [elementNo]);
+							}
+							return result;
+						}
+						..........................................................
+
+						In the above example, we are implementing a simple array mapper function. The second argument of the function is a mapper. To allow users of the function to specify a mapper using an expression string short form, we resolve the value of the =mapper= argument using the =Uize.resolveTransformer= method and re-assign the resolved value to the =mapper= argument. Once resolved, we can now count on the mapper being a function and we can call it in the loop that processes the source array. Now a caller can call this function with a statement like =simpleArrayMap (fruits,'value.toLowerCase ()')=.
+
+						How Different Transformer Types are Resolved
+							The =Uize.resolveTransformer= method supports numerous different ways of specifying a transformer.
+
+							When a Function Type Transformer is Specified
+								When a function is specified for the =transformerANYTYPE= parameter, that function is simply returned.
+
+								The =Uize.resolveTransformer= method is used to resolve a value that could be one of several different types to something that's guaranteed to be a function. In the case where the transformer is already a function, it is considered to already be resolved and is returned as is.
+
+							When a String Type Transformer is Specified
+								When a string value is specified for the =transformerANYTYPE= parameter, a function is produced using the specified string transformer expression as the function's body, and accepting the two arguments =value= and =key=.
+
+								For example, the transformer expression string ='key + ": " + value'= would be resolved to the function =function (value,key) {return key + ': ' + value}=. In another example, the transformer expression string ='value &#42; value'= would be resolved to the function =function (value,key) {return value &#42; value}=.
+
+								The =Uize.resolveTransformer= method imposes the argument names =value= and =key= for the two arguments of the function that it produces from a transformer exprression string, so such an expression must use these reserved variable names to access the value and optional key that will be passed in by the caller of the resolved transformer.
+
+								EXAMPLE
+								........................................................
+								var squared = Uize.resolveTransformer ('value * value');
+
+								alert (squared (3));  // alerts the text "9"
+								........................................................
+
+							When a Regular Expression Transformer is Specified
+								When a regular expression is specified for the =transformerANYTYPE= parameter, a function is produced using the regular expression to test the value of its first argument for a match, returning a boolean value.
+
+								Because regular expression transformers are resolved to functions that always return =true= or =false= values, they are most suited to and most commonly used as value matchers.
+
+								EXAMPLE
+								.................................................................................
+								var isValidIdentifier = Uize.resolveTransformer (/^[_\$a-zA-Z][_\$a-zA-Z0-9]*$/);
+
+								alert (isValidIdentifier (''));         // alerts "false"
+								alert (isValidIdentifier ('fooVar'));   // alerts "true"
+								alert (isValidIdentifier ('$foo'));     // alerts "true"
+								alert (isValidIdentifier ('3rdVar'));   // alerts "false"
+								alert (isValidIdentifier ('_4thVar'));  // alerts "true"
+								.................................................................................
+
+							When an Object Type Transformer is Specified
+								When an object is specified for the =transformerANYTYPE= parameter, a function is produced using the object as a lookup for remapping the input value, but leaving the input value unchanged if it is not found in the lookup.
+
+								EXAMPLE
+								.......................................................
+								var whatFoodType = Uize.resolveTransformer ({
+									apple:'fruit',
+									banana:'fruit',
+									beet:'vegetable',
+									corn:'grain',
+									onion:'vegetable',
+									rice:'grain'
+								});
+
+								alert (whatFoodType ('apple'));   // alerts "fruit"
+								alert (whatFoodType ('onion'));   // alerts "vegetable"
+								alert (whatFoodType ('rice'));    // alerts "grain"
+								alert (whatFoodType ('burger'));  // alerts "burger"
+								.......................................................
+
+							When a Nully Transformer is Specified
+								When a nully value (ie. the value =null= or =undefined=) is specified for the =transformerANYTYPE= parameter, a function is produced that simply returns the value of its first argument unmodified.
+
+								This behavior is useful for methods that want to offer an optional transformer and wish no transformation to be performed when the optional argument is not specified, or if the values =null= or =undefined= are explicitly specified.
+
+							When a Boolean Type Transformer is Specified
+								When a boolean value is specified for the =transformerANYTYPE= parameter, a function is produced that simply returns that boolean value, regardless of the input value.
+
+								This behavior is most suited to methods that resolve matchers, and the =Uize.resolveMatcher= method takes advantage of this behavior because it uses the =Uize.resolveTransformer= method in its implementation. In cases where a transformer is serving the purpose of a matcher, the values =true= or =false= can be provided to defeat the effect of the matcher to either match all elements or no elements.
+
+							When a Number Type Transformer is Specified
+								When a number value is specified for the =transformerANYTYPE= parameter, a function is produced that simply returns that number value, regardless of the input value.
+
+						NOTES
+						- see also the related =Uize.resolveMatcher= static method
+			*/
+		};
+
+		_package.resolveMatcher = function (_matcher) {
+			return _matcher == _undefined ? _package.returnTrue : _resolveTransformer (_matcher);
+			/*?
+				Static Methods
+					Uize.resolveMatcher
+						Resolves the specified matcher to a function that can be passed two arguments, value and key, and that returns a value derived from one or both of those inputs.
+
+						SYNTAX
+						...................................................
+						matcherFUNC = Uize.resolveMatcher (matcherANYTYPE);
+						...................................................
+
+						The =Uize.resolveMatcher= method is intended to be used in the implementation of other methods that want to allow a matcher to be specified in several different forms (such as an expression string, for example), but always want to use the matcher as a function. Examples of such methods include the various methods of the =Uize.Data.Matches= module, such as the =Uize.Data.Matches.remove= method whose second argument is a matcher. The =Uize.resolveMatcher= method allows such methods to be versatile in how they let matchers be specified.
+
+						EXAMPLE
+						..........................................................
+						function findMatches (array,matcher) {
+							matcher = Uize.resolveMatcher (matcher);
+							var matches = [];
+							for (var elementNo = -1; ++elementNo < array.length;) {
+								var elementValue = array [elementNo];
+								if (matcher (elementValue)) {
+									matches.push (elementValue);
+								}
+							}
+							return matches;
+						}
+						..........................................................
+
+						In the above example, we are implementing a simple function to find the elements in an array that match a specified matcher and return those matches in a new array. The second argument of the function is a matcher. To allow users of the function to specify a matcher using an expression string short form, we resolve the value of the =matcher= argument using the =Uize.resolveMatcher= method and re-assign the resolved value to the =matcher= argument. Once resolved, we can now count on the matcher being a function and we can call it in the loop that iterates over the source array. Now a caller can call this function with statements like...
+
+						.................................................................
+						findMatches (possibleNumbers,'typeof value == "number"');
+						findMatches (possibleIdentifiers,/^[_\$a-zA-Z][_\$a-zA-Z0-9]*$/);
+						.................................................................
+
+						How Different Matcher Types are Resolved
+							The =Uize.resolveMatcher= method supports numerous different ways of specifying a matcher.
+
+							When a Function Type Matcher is Specified
+								When a function is specified for the =matcherANYTYPE= parameter, that function is simply returned.
+
+								The =Uize.resolveMatcher= method is used to resolve a value that could be one of several different types to something that's guaranteed to be a function. In the case where the matcher is already a function, it is considered to already be resolved and is returned as is.
+
+							When a String Type Matcher is Specified
+								When a string value is specified for the =matcherANYTYPE= parameter, a function is produced using the specified string matcher expression as the function's body, and accepting the two arguments =value= and =key=.
+
+								For example, the matcher expression string ='typeof value &#61;&#61; "number"'= would be resolved to the function =function (value,key) {return typeof value &#61;&#61; 'number'}=. In another example, the matcher expression string ='/name/i.test (key) && /^c/i.test (value)'= would be resolved to the function =function (value,key) {return /name/i.test (key) && /^c/i.test (value)}=.
+
+								The =Uize.resolveMatcher= method imposes the argument names =value= and =key= for the two arguments of the function that it produces from a matcher exprression string, so such an expression must use these reserved variable names to access the value and optional key that will be passed in by the caller of the resolved matcher.
+
+							When a Regular Expression Matcher is Specified
+								When a regular expression is specified for the =matcherANYTYPE= parameter, a function is produced using the regular expression to test the value of its first argument for a match, returning a boolean value.
+
+								EXAMPLE
+								.............................................................................
+								var isValidIdentifier = Uize.resolveMatcher (/^[_\$a-zA-Z][_\$a-zA-Z0-9]*$/);
+
+								alert (isValidIdentifier (''));         // alerts "false"
+								alert (isValidIdentifier ('fooVar'));   // alerts "true"
+								alert (isValidIdentifier ('$foo'));     // alerts "true"
+								alert (isValidIdentifier ('3rdVar'));   // alerts "false"
+								alert (isValidIdentifier ('_4thVar'));  // alerts "true"
+								.............................................................................
+
+							When a Nully Matcher is Specified
+								When a nully value (ie. the value =null= or =undefined=) is specified for the =matcherANYTYPE= parameter, a function is produced that always returns the value =true=.
+
+								This behavior is useful for methods that want to offer an optional matcher and wish no filtering (ie. always matching) to be performed when the optional argument is not specified, or if the values =null= or =undefined= are explicitly specified.
+
+							When a Boolean Type Matcher is Specified
+								When a boolean value is specified for the =matcherANYTYPE= parameter, a function is produced that simply returns that boolean value, regardless of the argument values.
+
+								This behavior can be useful in situations where you wish to force the matching result to be always true or false. In such cases, specifying simply a boolean value for the matcher is a convenient shorthand.
+
+						NOTES
+						- see also the related =Uize.resolveTransformer= static method
+			*/
+		};
+
 		var _map = _package.map = function (_source,_mapper,_target) {
 			if (typeof _source == _typeNumber) {
 				_source = new _Array (_source);
 				if (typeof _target != _typeObject) _target = _source;
 			}
+			_mapper = _resolveTransformer (_mapper);
 			if (typeof _target != _typeObject)
 				_target = _target === _false ? _source : _isArray (_source) ? [] : {}
-			;
-			if (typeof _mapper == _typeString)
-				_mapper = new _Function ('value','key','return ' + _mapper)
 			;
 			_forEach (
 				_source,
@@ -1488,62 +1871,6 @@
 			*/
 		};
 
-		var _getModuleByName = _package.getModuleByName = function (_moduleName) {
-			var _module;
-			return (
-				_modulesByName [_moduleName] ||
-				(_moduleName == '*' && _modulesByName) ||
-				(
-					(_module = (new _Function ('try {return ' + _moduleName + '} catch (e) {}')) ()) &&
-					(_modulesByName [_moduleName] = _module)
-				)
-			);
-			/*?
-				Static Methods
-					Uize.getModuleByName
-						Returns an object reference, being a reference to the module of the specified name, or returns the value =undefined= if no such module is defined.
-
-						SYNTAX
-						.................................................
-						moduleOBJ = Uize.getModuleByName (moduleNameSTR);
-						.................................................
-
-						EXAMPLE
-						........................................................................................
-						alert (Uize.Widget == Uize.getModuleByName ('Uize.Widget');  // displays the text "true"
-						........................................................................................
-
-						In the above example, sssuming that the =Uize.Widget= module is loaded at the time that the code is executed, the =alert= statement will display the text "true".
-
-						Graceful Failure
-							The =Uize.getModuleByName= method is designed to always fail silently when a specified module is not defined.
-
-							Take the example of a module with the name =MyNamespace.MyClass.MySubclass=. Such a module may not be defined because either =MyNamespace=, =MyNamespace.MyClass=, or =MyNamespace.MyClass.MySubclass= is not defined. Now, normally when you try to dereference =MyNamespace.MyClass.MySubclass= and =MyNamespace= is not defined, you'll get a runtime error. The =Uize.getModuleByName= method handles this and makes it always safe to resolve modules names to modules. In cases where a module path is not defined at some level, the method will simply return the value =undefined=.
-
-						VARIATION
-						..............................................
-						modulesByNameOBJ = Uize.getModuleByName ('*');
-						..............................................
-
-						When the special value ='*'= (wildcard character) is specified for the =moduleNameSTR= parameter, then the =Uize.getModuleByName= method returns an object that serves as a lookup table for all the modules that have been built, where each property's name is the name of a module and each property's value is a reference to the module.
-
-						Module name to module reference mappings are added to the object in the order in which the modules are built. Therefore, if you write a =for...in= loop to iterate through the properties of the object, then you can build up an array of the names of the modules that have been built, in the correct dependency order. And if you execute such code in a Web page, then you can build up a list of all the modules that were built for that page. If the page only loads in a few modules using =script= tags that are in the page's initial HTML, then the list resulting from executing your code will give an indication of how many additional modules were loaded in dynamically by the module loader mechanism. The list of all the modules built on a page can be used as the basis for creating a JavaScript library file (see [[../explainers/javascript-libraries.html][JavaScript Libraries]]).
-
-						EXAMPLE
-						..............................................
-						var
-							modulesByName = Uize.getModuleByName ('*'),
-							modulesBuilt = []
-						;
-						for (var moduleName in modulesByName) {
-							modulesBuilt.push (moduleName)
-						}
-						..............................................
-
-						After the above code has been executed, the =modulesBuilt= array will contain the names of all the modules that have been built, listed in the order in which they were built.
-			*/
-		};
-
 		_package.indexIn = function (_source,_value,_fromEnd,_strict) {
 			var
 				_sourceIsList = _isList (_source),
@@ -1770,7 +2097,7 @@
 			*/
 		};
 
-		var _values = _package.values = values = function (_object) {
+		var _values = _package.values = function (_object) {
 			if (_isArray (_object)) return _object;
 			var _result = [];
 			if (!_isString (_object))
@@ -1995,9 +2322,9 @@
 						................................................................
 
 						`Create a Bi-directional Lookup`
-						..........................................................................
-						reverseLookupOBJ = Uize.reverseLookup (reverseLookupOBJ,reverseLookupOBJ);
-						..........................................................................
+						............................................................
+						reverseLookupOBJ = Uize.reverseLookup (lookupOBJ,lookupOBJ);
+						............................................................
 
 						Create a Reverse Lookup From an Object
 							In the most typical usage of the =Uize.reverseLookup= method, a reverse lookup object can be created from an object.
@@ -2125,9 +2452,9 @@
 							By specifying the source hash object as also the target for the reverse lookup creation, a bi-directional lookup object can be created.
 
 							SYNTAX
-							..........................................................................
-							reverseLookupOBJ = Uize.reverseLookup (reverseLookupOBJ,reverseLookupOBJ);
-							..........................................................................
+							............................................................
+							reverseLookupOBJ = Uize.reverseLookup (lookupOBJ,lookupOBJ);
+							............................................................
 
 							EXAMPLE
 							......................................................................................
@@ -2402,11 +2729,11 @@
 
 		var _canExtend = _package.canExtend = function (_value) {
 			var _typeofValue = typeof _value;
-			return !!_value && (_typeofValue == _typeObject || _typeofValue == 'function');
+			return !!_value && (_typeofValue == _typeObject || _typeofValue == _typeFunction);
 			/*?
 				Static Methods
 					Uize.canExtend
-						Returns a boolean, indicating whether or not the specified value can be extended with custom properties.
+						Returns a boolean, indicating whether or not the specified value is an object that can be extended with custom properties.
 
 						SYNTAX
 						..............................................
@@ -2439,12 +2766,24 @@
 		};
 
 		var _isPlainObject = _package.isPlainObject = function (_value) {
-			return (
-				_value != _undefined &&
-				(_value.constructor == Object || _value.constructor.prototype.hasOwnProperty ('hasOwnProperty'))
-				/* NOTE:
-					For plain object instances that originate from a different window or IFRAME, and where the constructor will be a discrete Object object from that other context, we test if the constructor's prototype has 'hasOwnProperty' as an own property, which is only true of the Object object, unless people are screwing around with overriding basic language features like this (not so likely).
-				*/
+			var _valueConstructor = _value && _value.constructor;
+			return !!(
+				_valueConstructor &&
+				(
+					_valueConstructor == Object ||
+						/* NOTE:
+							This test only works for objects created in the current global context - not different browser windows or IFRAMEs.
+						*/
+					(
+						typeof _valueConstructor.prototype.hasOwnProperty == _typeFunction &&
+						_valueConstructor.prototype.hasOwnProperty ('hasOwnProperty')
+						/* NOTES:
+							- For plain object instances that originate from a different window or IFRAME, and where the constructor will be a discrete Object object from that other context, we test if the constructor's prototype has 'hasOwnProperty' as an own property, which is only true of the Object object, unless people are screwing around with overriding basic language features like this (not so likely).
+
+							- For Internet Explorer versions earlier than IE9, DOM nodes are weird objects that don't root off of JavaScript's built-in Object object, so their constructor prototype doesn't have a 'hasOwnProperty' method.
+						*/
+					)
+				)
 			);
 			/*?
 				Static Methods
@@ -2739,9 +3078,7 @@
 		};
 
 		var _isPrimitive = _package.isPrimitive = function (_value) {
-			if (_value == _undefined) return _false;
-			var _typeofValue = typeof _value;
-			return _typeofValue == _typeString || _typeofValue == _typeNumber || _typeofValue == _typeBoolean;
+			return _value != _undefined && !(_value instanceof _value.constructor);
 			/*?
 				Static Methods
 					Uize.isPrimitive
@@ -2773,6 +3110,44 @@
 						Uize.isPrimitive (function () {});       // returns false
 						// etc.
 						.........................................................
+
+						NOTES
+						- see also the other `value testing methods`
+			*/
+		};
+
+		var _isRegExp = _package.isRegExp = function (_value) {
+			return _ObjectToString.call (_value) == '[object RegExp]';
+			/*?
+				Static Methods
+					Uize.isRegExp
+						Returns a boolean, indicating whether or not the specified value is a regular expression (ie. an instance of JavaScript's built-in =RegExp= object).
+
+						SYNTAX
+						............................................
+						isRegExpBOOL = Uize.isRegExp (valueANYTYPE);
+						............................................
+
+						EXAMPLES
+						........................................................
+						Uize.isRegExp (/^\d+$/);                // returns true
+						Uize.isRegExp (new RegExp ('^\\d+$'));  // returns true
+
+						Uize.isRegExp (true);                   // returns false
+						Uize.isRegExp ('foo');                  // returns false
+						Uize.isRegExp (42);                     // returns false
+						Uize.isRegExp (new Boolean (true));     // returns false
+						Uize.isRegExp (new String (foo));       // returns false
+						Uize.isRegExp (new Number (42));        // returns false
+						Uize.isRegExp (null);                   // returns false
+						Uize.isRegExp (undefined);              // returns false
+						Uize.isRegExp ();                       // returns false
+						Uize.isRegExp ({foo:'bar'});            // returns false
+						Uize.isRegExp (['foo','bar']);          // returns false
+						Uize.isRegExp (Uize.Widget ());         // returns false
+						Uize.isRegExp (function () {});         // returns false
+						// etc.
+						........................................................
 
 						NOTES
 						- see also the other `value testing methods`
@@ -3227,14 +3602,14 @@
 									repeatStr ('Foo',undefined);               // returns "Foo"
 									..............................................................
 
-								Conforming Set-get Properties
-									The =Uize.toNumber= method can be specified as a conformer for a set-get property of a =Uize.Class= subclass.
+								Conforming State Properties
+									The =Uize.toNumber= method can be specified as a conformer for a state property of a =Uize.Class= subclass.
 
 									EXAMPLE
 									.......................................
 									var Rectangle = Uize.Class.subclass ();
 
-									Rectangle.registerProperties ({
+									Rectangle.stateProperties ({
 										width:{
 											conformer:Uize.toNumber,
 											value:0
@@ -3246,7 +3621,7 @@
 									});
 									.......................................
 
-									In the above example, a =Rectangle= class is being defined that has two set-get properties: =width= and =height=. For the convenience of users of the class, the =Uize.toNumber= method is set as the conformer for both the =width= and =height= properties. This means that the user of the class can set the values for these properties using values that are other than number type, and the developer of the class can write the rest of the class' code with confidence that internally the values for the properties will always be number type.
+									In the above example, a =Rectangle= class is being defined that has two state properties: =width= and =height=. For the convenience of users of the class, the =Uize.toNumber= method is set as the conformer for both the =width= and =height= properties. This means that the user of the class can set the values for these properties using values that are other than number type, and the developer of the class can write the rest of the class' code with confidence that internally the values for the properties will always be number type.
 
 									So, given the above implementation of the =Rectangle= class, we would see the following results...
 
@@ -3448,7 +3823,7 @@
 			return (
 				_instanceOrClass == _undefined
 					? _undefined
-					: typeof _instanceOrClass == 'function'
+					: typeof _instanceOrClass == _typeFunction
 						? _instanceOrClass
 						: _instanceOrClass.constructor
 			);
@@ -3595,26 +3970,166 @@
 
 						NOTES
 						- see also the =Uize.pathToResources= static property
+						- see also the other `module mechanism methods`
 			*/
 		};
 
-		var _globalEval = _package.globalEval = new _Function ('toEval','return eval (toEval)');
+		_package.global = _Function (
+			'return (function () {return this}) ()'
 			/*?
 				Static Methods
-					Uize.globalEval
-						A method that lets you eval code in the global scope.
+					Uize.global
+						Returns a reference to the global object.
 
 						SYNTAX
-						....................................................
-						evalResultANYTYPE = Uize.globalEval (codeToEvalSTR);
-						....................................................
+						...........................
+						globalOBJ = Uize.global ();
+						...........................
 
-						A risk with careless use of JavaScript's =eval= function from deep within the nested functions of your code is that you may not be intending to have the code evaluated within the scope of your deep function.
+						The =Uize.global= method should be used in situations where you need to access or assign properties on the global object, or to call methods on the global object, and where you need that code to be able to run inside a browser as well as other environments like WSH (Windows Script Host) or NodeJS.
 
-						It could be a benefit to the code you're eval'ing that it has access to the scope of the function in which you're eval'ing it. It may also be a curse in two respects: 1) the code being eval'ed may unexpectedly conflict with identifiers in your function's scope, and 2) function closures within the code being eval'ed will hang on to your function's scope state (with "interesting" memory usage implications).
+						In cases where you need to work with properties of the global object inside a browser, you would typically just reference the =window= object. However, in non-browser environments where you might run your JavaScript code, the =window= object is not applicable and usually not defined. To be entirely safe, use the =Uize.global= method - it will return the =window= object when you're running the code in a browser, and in other environments it will return their equivalent of the global object.
 
-						The =Uize.globalEval= method lets you guarantee that code you wish to be eval'ed in the global scope *is* eval'ed in the global scope.
+						EXAMPLES
+						........................................
+						// assign a value to a global property
+						Uize.global ().myGlobalProperty = 'foo';
+
+						// access a global property
+						alert (Uize.global ().myGlobalProperty);
+
+						// delete a global property
+						delete Uize.global ().myGlobalProperty;
+						........................................
+
+						If you are going to be calling the =Uize.global= method multiple times inside some code to access or assign values to global properties, you can create a local variable that is a reference to the global object. So, the above example could be re-written as...
+
+						......................................
+						var _global = Uize.global ();
+
+						// assign a value to a global property
+						_global.myGlobalProperty = 'foo';
+
+						// access a global property
+						alert (_global.myGlobalProperty);
+
+						// delete a global property
+						delete _global.myGlobalProperty;
+						......................................
+
+						Defeating Scope Chain Overrides
+							The =Uize.global= method can be useful in situations where you need to defeat an override of some identifier from the scope chain of the local scope in order to force access of the global version.
+
+							If one defines a global identifier but then is executing code from within a deep local scope, and if the identifier is overridden somewhere in the scope chain of the local scope, then a way to force access to that identifier in the global scope is to use the =Uize.global= method. Consider the following example...
+
+							EXAMPLE
+							..................................................................
+							var foo = 'global scope';
+
+							function MyObject () {
+								var foo = 'local scope';
+
+								this.alertLocalScopeFoo = function () {
+									alert (foo);
+								};
+
+								this.alertGlobalScopeFoo = function () {
+									alert (Uize.global ().foo);
+								};
+							}
+
+							var myObjectInstance = new MyObject ();
+
+							myObjectInstance.alertLocalScopeFoo ();   // alerts "local scope"
+							myObjectInstance.alertGlobalScopeFoo ();  // alerts "global scope"
+							..................................................................
+
+							In the above example, we have a global variable named =foo=. Inside the constructor of =MyObject=, we also have a local variable named =foo=. Now, for any function that is defined within the constructor's scope, the local =foo= variable will override the =foo= variable from the global scope.
+
+							So, for the =alertLocalScopeFoo= method that is being defined, when it tries to access the =foo= variable simply by its name, it gets the version from the local scope. So, in order for the =alertGlobalScopeFoo= method to actually access the =foo= from the global scope, it can use the =Uize.global= method to get a reference to the global object and then dereference =foo= as a property on that object.
 			*/
+		);
+
+		_package.eval = _Function (
+			'\'use strict\'; return eval (arguments [0])'
+			/*?
+				Static Methods
+					Uize.eval
+						Lets you perform `quarantined code evaluation` of the specified JavaScript code string, using `JavaScript strict mode`.
+
+						SYNTAX
+						..............................................
+						evalResultANYTYPE = Uize.eval (codeToEvalSTR);
+						..............................................
+
+						The =Uize.eval= method imposes `JavaScript strict mode` on the code being evaluated. If you need to evaluate code in non-strict mode, use the companion =Uize.laxEval= method. The =Uize.eval= method returns any result that was produced by the code being evaluated.
+
+						For a detailed discussion of quarantining and to see examples, consult the section `Quarantined Code Execution`.
+
+						NOTES
+						- compare to the companion =Uize.laxEval= static method
+						- compare to the related =Uize.quarantine= static method
+			*/
+		);
+
+		_package.laxEval =
+		_package.globalEval = /* DEPRECATED 2013-01-14 */
+		_Function (
+			'return eval (arguments [0])'
+			/*?
+				Static Methods
+					Uize.laxEval
+						Lets you perform `quarantined code evaluation` of the specified JavaScript code string, but not in `JavaScript strict mode`.
+
+						SYNTAX
+						.................................................
+						evalResultANYTYPE = Uize.laxEval (codeToEvalSTR);
+						.................................................
+
+						The =Uize.laxEval= method evaluates the specified code string in non-strict mode. If you would prefer to evaluate code in JavaScript strict mode, use the companion =Uize.eval= method. The =Uize.laxEval= method returns any result that was produced by the code being evaluated.
+
+						For a detailed discussion of quarantining and to see examples, consult the section `Quarantined Code Execution`.
+
+						NOTES
+						- compare to the companion =Uize.eval= static method
+						- compare to the related =Uize.quarantine= static method
+
+				Deprecated Features
+					Uize.globalEval -- DEPRECATED 2013-01-14
+						The =Uize.globalEval= static method has been deprecated in favor of the newly added =Uize.laxEval= static method.
+
+						..........................................
+						Uize.globalEval >> BECOMES >> Uize.laxEval
+						..........................................
+
+						The =Uize.laxEval= method is essentially just a renaming of the deprecated =Uize.globalEval= method and behaves in exactly the same way. The old name was deemed to be misleading.
+
+						While the =Uize.globalEval= method could be used to evaluate JavaScript code outside of the scope of the current function, that scope was actually a root level *function* defined in the global scope - the evaluated code itself could not truly be evaluated at the very root of the global scope. The spirit of the method was never so much about evaluating code in the global scope as it was about evaluating the code in a way that was quarantined from the current scope (see `Quarantined Code Evaluation`), so as not to risk side effects of local variable access and closure memory reference implications that would arise from evaluating the code within the current function's scope.
+			*/
+		);
+
+		_package.quarantine = function (_function) {
+			var
+				_functionArguments = (_function += '').slice (_function.indexOf ('(') + 1,_function.indexOf (')')),
+				_functionBody = _function.slice (_function.indexOf ('{') + 1,_function.lastIndexOf ('}'))
+			;
+			return _functionArguments ? _Function (_functionArguments,_functionBody) : _Function (_functionBody);
+			/*?
+				Static Methods
+					Uize.quarantine
+						Returns a function, being a quarantined version of the supplied function.
+
+						SYNTAX
+						...............................................................
+						quarantinedFunctionFUNC = Uize.quarantine (sourceFunctionFUNC);
+						...............................................................
+
+						For a detail discussion on this method and to see examples, consult the section `Quarantined Nested Functions`. For a more general discussion on quarantining, consult the section `Quarantined Code Execution`.
+
+						NOTES
+						- compare to the related =Uize.eval= and =Uize.laxEval= static methods
+			*/
+		};
 
 		var _isInstance = _package.isInstance = function (_value) {
 			return !!(typeof _value == _typeObject && _value && _value.constructor.subclass);
@@ -3635,7 +4150,7 @@
 			*/
 		};
 
-		_package.nop = new _Function;
+		_package.nop = _Function ();
 			/*?
 				Static Methods
 					Uize.nop
@@ -3663,7 +4178,8 @@
 						- see also the other `dummy functions`
 			*/
 
-		_package.returnFalse = new _Function ('return false');
+		_package.returnFalse = _Function (
+			'return false'
 			/*?
 				Static Methods
 					Uize.returnFalse
@@ -3688,8 +4204,10 @@
 						- see the related =Uize.nop= static method
 						- see also the other `dummy functions`
 			*/
+		);
 
-		_package.returnTrue = new _Function ('return true');
+		_package.returnTrue = _Function (
+			'return true'
 			/*?
 				Static Methods
 					Uize.returnTrue
@@ -3713,8 +4231,11 @@
 						- see also the companion =Uize.returnFalse= static method
 						- see also the other `dummy functions`
 			*/
+		);
 
-		_package.returnX = new _Function ('x','return x');
+		_package.returnX = _Function (
+			'x',
+			'return x'
 			/*?
 				Static Methods
 					Uize.returnX
@@ -3728,217 +4249,610 @@
 						NOTES
 						- see also the other `dummy functions`
 			*/
+		);
 
-		_package.module = function (_params) {
-			function _handleModuleLoaded (_module) {
-				_forEach (_moduleLoadHandlers [_module],function (_loadHandler) {_loadHandler ()});
-				delete _moduleLoadHandlers [_module];
-			}
-
- 			var
-				_name = _params.name || '',
-				_host = _name.substr (0,_name.lastIndexOf ('.')),
-				_superclass = _params.superclass || _host,
-				_required = _params.required || [],
-				_modulesToLoad = []
+		/*** Barrier object ***/
+			var
+				_Barrier = function () {
+					var _this = this;
+					_this._doneLookup = {};
+					_this._doneResults = {};
+					_this._doneHandlers = {};
+				},
+				_BarrierPrototype = _Barrier.prototype
 			;
-			_moduleLoadHandlers [_name] || (_moduleLoadHandlers [_name] = []);
-				/* NOTE:
-					If a named module is declared inline, and another module requires that module further down in the same page, then that subsequent module declaration will know to wait on the successful building of the first module, because the presence of a handlers array for a particular module is regarded as an indication that code is busy waiting on building of that module. This behavior also supports library modules, where individual modules are declared inline inside the library module.
-				*/
-			if (_isString (_required)) _required = _required.split (',');
-			_host && _required.push (_host);
-			_superclass != _host && _required.push (_superclass);
 
-			/*** determine which required modules are not already loaded ***/
+			_BarrierPrototype.done = function (_condition,_result) {
+				var
+					_this = this,
+					_doneHandlers = _this._doneHandlers [_condition]
+				;
+				_this._doneLookup [_condition] = _trueFlag;
+				_this._doneResults [_condition] = _result;
+				if (_doneHandlers) {
+					delete _this._doneHandlers [_condition];
+					for (
+						var _doneHandlerNo = -1, _doneHandlersLength = _doneHandlers.length;
+						++_doneHandlerNo < _doneHandlersLength;
+					)
+						_doneHandlers [_doneHandlerNo] (_result)
+					;
+				}
+			};
+
+			_BarrierPrototype.once = function (_conditions,_handler) {
+				var _this = this;
+				if (_isList (_conditions) && _conditions.length < 2)
+					_conditions = _conditions [0]
+				;
+				if (_conditions == _undefined) {
+					_handler ();
+				} else if (_isList (_conditions)) {
+					var
+						_results = [],
+						_conditionsLength = _conditions.length,
+						_conditionsDone = 0
+					;
+					_forEach (
+						_conditions,
+						function (_condition,_conditionNo) {
+							_this.once (
+								_condition,
+								function (_result) {
+									_results [_conditionNo] = _result;
+									(++_conditionsDone == _conditionsLength) && _handler.apply (0,_results);
+								}
+							);
+						}
+					);
+				} else {
+					_this._doneLookup [_conditions] == _trueFlag
+						? _handler (_this._doneResults [_conditions])
+						: (_this._doneHandlers [_conditions] || (_this._doneHandlers [_conditions] = [])).push (_handler)
+					;
+				}
+			};
+
+		/*** Module Mechanism ***/
+			var
+				_modulePathToken = '[#modulePath]',
+				_modulesByName = {},
+				_moduleDefinitionsClaimed = {},
+				_modulesAlreadyInvoked = {},
+				_modulesLoadedBarrier = new _Barrier ()
+			;
+
+			var _getModuleByName = _package.getModuleByName = function (_moduleName) {
+				var _module;
+				return (
+					typeof _moduleName == _typeString
+						? (
+							_modulesByName [_moduleName] ||
+							(_moduleName == '*' && _modulesByName) ||
+							(
+								(_module = _Function ('try {return ' + _moduleName + '} catch (e) {}') ()) &&
+								(_modulesByName [_moduleName] = _module)
+							)
+						)
+						: _moduleName
+				);
+				/*?
+					Static Methods
+						Uize.getModuleByName
+							Returns an object reference, being a reference to the module of the specified name, or returns the value =undefined= if no such module is defined.
+
+							SYNTAX
+							.................................................
+							moduleOBJ = Uize.getModuleByName (moduleNameSTR);
+							.................................................
+
+							EXAMPLE
+							........................................................................................
+							alert (Uize.Widget == Uize.getModuleByName ('Uize.Widget');  // displays the text "true"
+							........................................................................................
+
+							In the above example, sssuming that the =Uize.Widget= module is loaded at the time that the code is executed, the =alert= statement will display the text "true".
+
+							Graceful Failure
+								The =Uize.getModuleByName= method is designed to always fail silently when a specified module is not defined.
+
+								Take the example of a module with the name =MyNamespace.MyClass.MySubclass=. Such a module may not be defined because either =MyNamespace=, =MyNamespace.MyClass=, or =MyNamespace.MyClass.MySubclass= is not defined. Now, normally when you try to dereference =MyNamespace.MyClass.MySubclass= and =MyNamespace= is not defined, you'll get a runtime error. The =Uize.getModuleByName= method handles this and makes it always safe to resolve modules names to modules. In cases where a module path is not defined at some level, the method will simply return the value =undefined=.
+
+							VARIATION
+							..............................................
+							modulesByNameOBJ = Uize.getModuleByName ('*');
+							..............................................
+
+							When the special value ='*'= (wildcard character) is specified for the =moduleNameSTR= parameter, then the =Uize.getModuleByName= method returns an object that serves as a lookup table for all the modules that have been built, where each property's name is the name of a module and each property's value is a reference to the module.
+
+							Module name to module reference mappings are added to the object in the order in which the modules are built. Therefore, if you write a =for...in= loop to iterate through the properties of the object, then you can build up an array of the names of the modules that have been built, in the correct dependency order. And if you execute such code in a Web page, then you can build up a list of all the modules that were built for that page. If the page only loads in a few modules using =script= tags that are in the page's initial HTML, then the list resulting from executing your code will give an indication of how many additional modules were loaded in dynamically by the module loader mechanism. The list of all the modules built on a page can be used as the basis for creating a JavaScript library file (see [[../explainers/javascript-libraries.html][JavaScript Libraries]]).
+
+							EXAMPLE
+							..............................................
+							var
+								modulesByName = Uize.getModuleByName ('*'),
+								modulesBuilt = []
+							;
+							for (var moduleName in modulesByName) {
+								modulesBuilt.push (moduleName)
+							}
+							..............................................
+
+							After the above code has been executed, the =modulesBuilt= array will contain the names of all the modules that have been built, listed in the order in which they were built.
+
+							NOTES
+							- see also the other `module mechanism methods`
+				*/
+			};
+
+			var _resolveModuleDefinition = _package.resolveModuleDefinition = function (_definition) {
+				var
+					_name = _definition.name = _definition.name || '',
+					_host = _definition.host = _name.substr (0,_name.lastIndexOf ('.')),
+					_superclass = _definition.superclass = _definition.superclass || _host,
+					_required = _definition.required
+				;
+				_required = _definition.required = _isString (_required) ? _required.split (',') : _required || [];
+				_host && _required.push (_host);
+				_superclass != _host && _required.push (_superclass);
+
+				return _definition;
+				/*?
+					Static Methods
+						Uize.resolveModuleDefinition
+							Resolves the specified module definition object by defaulting its properties and expanding them as necessary, modifying and returning the original definition object.
+
+							SYNTAX
+							.........................................................................
+							moduleDefinitionOBJ = Uize.resolveModuleDefinition (moduleDefinitionOBJ);
+							.........................................................................
+
+							The =Uize.resolveModuleDefinition= method is not intended for use in general application development but is intended for specialized build processes, such as dependency tracing performed during the creation of JavaScript packages.
+
+							For an in-depth discussion of modules, consult the explainer [[../explainers/javascript-modules.html][JavaScript Modules]].
+
+							NOTES
+							- see also the other `module mechanism methods`
+				*/
+			};
+
+			_package.require = function (_modules,_callback) {
+				if (typeof _modules == _typeString)
+					_modules = [_modules]
+				;
+				_callback && _modulesLoadedBarrier.once (_modules,_callback);
 				_forEach (
-					_required,
-					function (_requiredModule) {
-						_requiredModule && !_getModuleByName (_requiredModule) && _modulesToLoad.push (_requiredModule);
+					_modules,
+					function (_module) {
+						if (_modulesAlreadyInvoked [_module] != _trueFlag) {
+							_modulesAlreadyInvoked [_module] = _trueFlag;
+							_package.moduleLoader (
+								_module,
+								function (_moduleCode) {_moduleCode && _package.laxEval (_moduleCode)}
+							)
+						}
 					}
 				);
+				/*?
+					Static Methods
+						Uize.require
+							Ensures that all of the specified modules are loaded before calling the specified callback function, loading required modules as necessary.
 
-			/*** load modules (if necessary) ***/
-				function _buildModule () {
-					var
-						_builder = _params.builder,
-						_module = _builder && _builder (_getModuleByName (_superclass))
-					;
-					_name &&
-						(new _Function ('m',_name + '=m')) (_module = _modulesByName [_name] = _module || function () {})
-					;
-					if (_isFunction (_module)) {
-						_module.moduleName = _name;
-						if (!_module.subclass)
-							/* NOTE:
-								if the module is not a Uize class (like a package or something else), assign the toString instrinsic method, because it won't be obtained by subclassing (since there is none)
-							*/
-							_module.toString = _toString
-						;
-					}
-					_handleModuleLoaded (_name);
-				}
-				var _modulesToLoadLength = _modulesToLoad.length;
-				if (_modulesToLoadLength) {
-					var _moduleLoader = _package.moduleLoader;
-					if (_moduleLoader) {
-						var _moduleToLoadNo = -1;
-						function _loadNextModule () {
-							_moduleToLoadNo++;
-							if (_moduleToLoadNo < _modulesToLoadLength) {
-								var _moduleToLoad = _modulesToLoad [_moduleToLoadNo];
-								_getModuleByName (_moduleToLoad)
-									? _loadNextModule ()
-									: _moduleLoadHandlers [_moduleToLoad]
-										? _moduleLoadHandlers [_moduleToLoad].push (_loadNextModule)
-										: _moduleLoader (
-											_moduleToLoad,
-											function (_moduleToLoadCode) {
-												if (_getModuleByName (_moduleToLoad)) {
-													_loadNextModule ();
-													/* NOTE:
-														This additional check is important, because another asynchronous chain could have resulted in this module becoming loaded in between the call to _moduleLoader and the response.
-													*/
-												} else {
-													_moduleToLoadCode && _globalEval (_moduleToLoadCode);
-													if (_getModuleByName (_moduleToLoad)) {
-														_handleModuleLoaded (_moduleToLoad);
-														_loadNextModule ();
-													} else {
-														(
-															_moduleLoadHandlers [_moduleToLoad] ||
-															(_moduleLoadHandlers [_moduleToLoad] = [])
-														).push (_loadNextModule);
-													}
-												}
-											}
-										)
-								;
-							} else {
-								_buildModule ();
-							}
-						}
-						_loadNextModule ();
-					} else {
-						/*
-							OK, so the alert is problematic at this point because there are some modules that are only used for their static methods, and in that usage the dependencies that they would have, if one was creating instances of them, do not apply, yet these dependencies are now being imposed on pages that use these modules.
+							The =Uize.require= method can be used to load required modules, as necessary, before executing code that depends on those modules being loaded.
 
-							alert (
-								'The following modules are required, but have not been loaded...\n\n' +
-								_modulesToLoad.join (', ') + '\n\n' +
-								'As a result, this application may not function correctly.'
-							);
-						*/
-						_buildModule ();
-					}
-				} else {
-					_buildModule ();
-				}
-			/*?
-				Static Methods
-					Uize.module
-						Lets you declare a module in the UIZE JavaScript Framework.
+							DIFFERENT USAGES
 
-						SYNTAX
-						......................................................................................
-						Uize.module ({
-							name:moduleNameSTR,           // omit for anonymous modules
-							superclass:superclassNameSTR, // omit for package modules, or if host is superclass
-							required:modulesSTRorARRAY,   // omit when only host and superclass are required
-							builder:builderFUNC           // omit for library modules and namespace modules
-						});
-						......................................................................................
+							`Require a Single Module`
+							..........................................
+							Uize.require (moduleNameSTR,callbackFUNC);
+							..........................................
 
-						For an in-depth discussion of modules, consult the explainer [[../explainers/javascript-modules.html][JavaScript Modules]].
+							`Require Multiple Modules`
+							.............................................
+							Uize.require (moduleNamesARRAY,callbackFUNC);
+							.............................................
 
-						NOTES
-						- see also the =Uize.moduleLoader= static method and the =Uize.moduleUrlTemplate= static property
-			*/
-		};
+							`Require Modules With No Callback`
+							...............................................
+							Uize.require (moduleNameSTRorModuleNamesARRAY);
+							...............................................
 
-		_package.moduleLoader = function (_moduleToLoad,_callback) {
-			_callback ();
-				/* NOTE:
-					by returning no code, the modules loader code sees that the module is not defined after eval'ing the empty string and is tricked into thinking that the module had further dependencies, when in actual fact a script tag was put into the page. The effect is that a callback is registered by the modules loader code so that when the module is successfully declared and built through its Uize.module call, then any stalled module loading is continued.
+							Require a Single Module
+								In the most basic usage, a single module can be required by specifying the name of the module as a string for the =moduleNameSTR= parameter.
+
+								SYNTAX
+								..........................................
+								Uize.require (moduleNameSTR,callbackFUNC);
+								..........................................
+
+								EXAMPLE 1
+								..............................
+								Uize.require (
+									'Uize.Widget.Bar.Slider',
+									function (Slider) {
+										var mySlider = Slider ({
+											minValue:-50,
+											maxValue:50,
+											value:0
+										});
+									}
+								);
+								..............................
+
+								In the above example, the =Uize.Widget.Bar.Slider= widget class module is being required. Once the =Uize.Widget.Bar.Slider= module is loaded, the =Uize.require= method will call the callback specified by the =callbackFUNC= parameter, passing a reference to =Uize.Widget.Bar.Slider= module as the callback function's first argument. In this example, we have named the argument =Slider=. You can name this argument anything you like, as long as it's a valid JavaScript identifier. If we wanted to reinforce that this argument is a reference to the =Uize.Widget.Bar.Slider= module, we could name the argument something like =Uize_Widget_Bar_Slider= or =UizeWidgetBarSlider= (depending on whether or not we like using underscores in variable names).
+
+								EXAMPLE 2
+								..............................................
+								Uize.require (
+									'Uize.Widget.Bar.Slider',
+									function () {
+										var mySlider = Uize.Widget.Bar.Slider ({
+											minValue:-50,
+											maxValue:50,
+											value:0
+										});
+									}
+								);
+								..............................................
+
+								In the above example, we are also requiring the =Uize.Widget.Bar.Slider= module. In this case, however, instead of using the reference to the module that would be passed to the callback function, we are simply ignoring this argument and referencing the =Uize.Widget.Bar.Slider= module by its name in the global scope. This is also supported.
+
+							Require Multiple Modules
+								In cases where you need to require more than one module, a list of module names can be specified as a string array for the =moduleNamesARRAY= parameter.
+
+								SYNTAX
+								.............................................
+								Uize.require (moduleNamesARRAY,callbackFUNC);
+								.............................................
+
+								EXAMPLE
+								..............................................................................
+								Uize.require (
+									[
+										'Uize.Widget.Bar.Slider',
+										'Uize.Data.Csv',
+										'Uize.Color'
+									],
+									function (
+										Uize_Widget_Bar_Slider,
+										Uize_Data_Csv,
+										Uize_Color
+									) {
+										// reference the Uize.Widget.Bar.Slider module by Uize_Widget_Bar_Slider
+										// reference the Uize.Data.Csv module by Uize_Data_Csv
+										// reference the Uize.Color module by Uize_Color
+									}
+								);
+								..............................................................................
+
+								In the above example, the three modules =Uize.Widget.Bar.Slider=, =Uize.Data.Csv=, and =Uize.Color= are being required. Once all of these modules are loaded, references to the modules are passed as arguments to the callback function, in the order in which the modules are specified in the =moduleNamesARRAY= parameter. The arguments can be named anything you like, but it helps to name them so as to clearly indicate the modules to which they are references. As with the using the =Uize.require= method to `require a single module`, the module references that would be passed as arguments to the callback function can simply be ignored in favor of referencing the modules using their names in the global scope.
+
+							Require Modules With No Callback
+								In an uncommon usage, one or more modules can be required without specifying any callback function to be called once the modules are loaded.
+
+								SYNTAX
+								...............................................
+								Uize.require (moduleNameSTRorModuleNamesARRAY);
+								...............................................
+
+								With this usage, the =Uize.require= method can be used simply to initiate loading of modules.
+
+								EXAMPLE
+								............................
+								Uize.require ([
+									'Uize.Widget.Bar.Slider',
+									'Uize.Data.Csv',
+									'Uize.Color'
+								]);
+								............................
+
+								In the above example, the three modules =Uize.Widget.Bar.Slider=, =Uize.Data.Csv=, and =Uize.Color= are being required without specifying any code that should be executed once the modules are loaded.
+
+							The callbackFUNC Parameter
+								The =callbackFUNC= parameter of the =Uize.require= method lets you specify a callback function that should be executed once all the required modules are loaded.
+
+								When the =Uize.require= method calls the specified callback function, it passes references to the required modules as arguments, in the order in which the modules are specified in the first parameter of the =Uize.require= method. Consider the following example...
+
+								EXAMPLE
+								............................................................................
+								Uize.require (
+									[
+										'MyNamespace.MyModule1',
+										'MyNamespace.MyModule2'
+									],
+									function (
+										MyNamespace_MyModule1,
+										MyNamespace_MyModule2
+									) {
+										// reference the MyNamespace.MyModule1 module by MyNamespace_MyModule1
+										// reference the MyNamespace.MyModule2 module by MyNamespace_MyModule2
+									}
+								);
+								............................................................................
+
+								In the above example, the modules =MyNamespace.MyModule1= and =MyNamespace.MyModule2= are being required. Once these modules are loaded, references to the modules are passed as arguments to the callback function. The arguments can be named anything you like, but it helps to name them so as to clearly indicate the modules to which they are references. Here, for example, we have chosen to name the first argument =MyNamespace_MyModule1=, since it will be a reference to the =MyNamespace.MyModule1= module.
+
+							Requiring Nothing
+								In cases where one specifies an empty array for the =moduleNamesARRAY= parameter, the callback function specified by the =callbackFUNC= parameter will be executed immediately, and the callback will receive no arguments.
+
+								EXAMPLE
+								................................................................................
+								Uize.require (
+									[],
+									function () {
+										// code here is executed immediately, because no modules need to be loaded
+									}
+								);
+								................................................................................
+
+								One would not deliberately write code as shown in the above example, but situations like this may arise where a list of modules that is to be required is being determined programmatically, and where in some situations a programmatically determined list may be empty. Rather than having to implement a check for such cases along with appropriate protection / conditional branching, the =Uize.require= method does the logical thing and calls the specified callback function immediately, since all requirements (none, in this case) are already satisfied. An empty list indicates that the callback code is not contingent upon anything, so it is executed straight away.
+
+							Equivalent to Anonymous Modules
+								While more concise and convenient, the =Uize.require= method is roughly equivalent to using anonymous modules.
+
+								INSTEAD OF...
+								...........................................................................................
+								Uize.module ({
+									required:[
+										'MyNamespace.MyModule1',
+										'MyNamespace.MyModule2'
+									],
+									builder:function () {
+										// code here can rely on MyNamespace.MyModule1 and MyNamespace.MyModule2 being loaded
+									}
+								});
+								...........................................................................................
+
+								USE...
+								...........................................................................................
+								Uize.require (
+									[
+										'MyNamespace.MyModule1',
+										'MyNamespace.MyModule2'
+									],
+									function () {
+										// code here can rely on MyNamespace.MyModule1 and MyNamespace.MyModule2 being loaded
+									}
+								);
+								...........................................................................................
+
+								In addition to being a little bit cleaner and more concise, as well as a bit more semantically elegant, the =Uize.require= method also supports passing references to required modules in `the callbackFUNC parameter`.
+
+							For an in-depth discussion of modules, consult the explainer [[../explainers/javascript-modules.html][JavaScript Modules]].
+
+							NOTES
+							- see also the other `module mechanism methods`
 				*/
+			};
 
-			/*** insert the script tag ***/
+			_package.module = function (_definition) {
+				var _name = _resolveModuleDefinition (_definition).name;
+				if (!_name || _moduleDefinitionsClaimed [_name] != _trueFlag) {
+					_moduleDefinitionsClaimed [_name] = _modulesAlreadyInvoked [_name] = _trueFlag;
+					var _required = _definition.required;
+					_package.require (
+						_required,
+						function () {
+							var
+								_module,
+								_builder = _definition.builder
+							;
+							if (_builder) {
+								var _requiredLookup = {};
+								for (var _requiredNo = _required.length; --_requiredNo >= 0;) {
+									var _requireModule = _required [_requiredNo];
+									_requiredLookup [_requireModule] = _modulesByName [_requireModule];
+								}
+								var _superclass = _definition.superclass;
+								_module = _superclass
+									? _builder (_modulesByName [_superclass],_requiredLookup)
+									: _builder (_requiredLookup)
+								;
+							}
+							_name &&
+								(_Function (_name + '=arguments[0]')) (
+									_module = _modulesByName [_name] = _module || function () {}
+								)
+							;
+							if (_isFunction (_module)) {
+								_module.moduleName = _name;
+								if (!_module.subclass)
+									/* NOTE:
+										if the module is not a Uize class (like a package or something else), assign the toString instrinsic method, because it won't be obtained by subclassing (since there is none)
+									*/
+									_module.toString = function () {
+										var
+											_this = this,
+											_moduleName = _getClass (_this).moduleName,
+											_isClass = _this.subclass
+										;
+										return (
+											'[' +
+												(
+													_isInstance (_this) || (!_isClass && !_moduleName)
+														? _typeObject
+														: _isClass ? 'class' : 'package'
+												) +
+												' ' + (_moduleName || 'Function') +
+											']'
+										);
+										/*?
+											Static Methods
+												Uize.toString
+													Returns a string, providing summary info for the class on which the method is called.
+
+													SYNTAX
+													......................................
+													classSummarySTR = MyClass.toString ();
+													......................................
+
+													The string returned by this method provides a summary that includes the class' name and the state of its state properties. Among other things, this method provides a convenient and lightweight way to gather information about =Uize.Class= subclasses during debugging and troubleshooting. The =Uize.toString= static intrinsic method is invoked automatically in certain contexts in order to convert a class reference to a string form, such as when alerting a class using the =alert= global function.
+
+													EXAMPLE
+													...................................
+													alert (page.children.slider.Class);
+													...................................
+
+													In the above example, if the =page= widget has a =slider= child widget that is an instance of the class =Uize.Widget.Bar.Slider=, then the output of the =alert= statement could look something like...
+
+													EXAMPLE OUTPUT
+													..................................
+													[class Uize.Widget.Bar.Slider]
+
+													built : true
+													busy : inherit
+													busyInherited : false
+													confirm : undefined
+													container : undefined
+													decimalPlacesToDisplay : undefined
+													enabled : inherit
+													enabledInherited : true
+													html : undefined
+													idPrefix : undefined
+													idPrefixConstruction : undefined
+													inDrag : false
+													increments : 1
+													inform : undefined
+													insertionMode: undefined
+													localized : undefined
+													maxValidValue : undefined
+													maxValue : 100
+													minValidValue : undefined
+													minValue : 0
+													name : undefined
+													nodeMap : undefined
+													orientation : vertical
+													parent : undefined
+													restTime : 250
+													scaleFunc : [object Function]
+													value : 0
+													valueFunc : [object Function]
+													wired : false
+													..................................
+
+													In certain contexts, providing a reference to a =Uize.Class= subclass as a parameter to some method will result in the =Uize.Class.valueOf= static intrinsic method of that class being invoked in order to coerce it to a simple value. If it is your desire to have the class summary be used rather than the class' value, then you should explicitly call the =Uize.toString= static intrinsic method, as follows...
+
+													EXAMPLE
+													........................................................................
+													Uize.Node.setInnerHtml ('classSummaryForDebug',page.children.slider.Class.toString ());
+													Uize.Node.setInnerHtml ('classCurrentValue',page.children.slider.Class);
+													........................................................................
+
+													In this example, the =classSummaryForDebug= node will contain the summary info for the =Uize.Widget.Bar.Slider= class, while the =classCurrentValue= node will just show the class' current value.
+
+													NOTES
+													- see also the other `module mechanism methods`
+										*/
+									}
+								;
+							}
+							_modulesLoadedBarrier.done (_name,_module);
+						}
+					);
+				}
+				/*?
+					Static Methods
+						Uize.module
+							Lets you declare a module in the UIZE JavaScript Framework.
+
+							SYNTAX
+							......................................................................................
+							Uize.module ({
+								name:moduleNameSTR,           // omit for anonymous modules
+								superclass:superclassNameSTR, // omit for package modules, or if host is superclass
+								required:modulesSTRorARRAY,   // omit when only host and superclass are required
+								builder:builderFUNC           // omit for library modules and namespace modules
+							});
+							......................................................................................
+
+							For an in-depth discussion of modules, consult the explainer [[../explainers/javascript-modules.html][JavaScript Modules]].
+
+							NOTES
+							- see also the =Uize.moduleLoader= static method and the =Uize.moduleUrlTemplate= static property
+							- see also the other `module mechanism methods`
+				*/
+			};
+
+			_package.module ({name:'Uize',builder:function () {return _package}});
+
+			_package.moduleLoader = function (_moduleToLoad,_callback) {
 				var _scriptNode = document.createElement ('script');
+				_scriptNode.async = true;
 				_scriptNode.type = 'text/javascript';
 				_scriptNode.src = _package.moduleUrlResolver (_moduleToLoad);
 				(_scriptParentNode || (_scriptParentNode = document.getElementsByTagName ('HEAD') [0])).appendChild (
 					_scriptNode
 				);
+				/*?
+					Static Methods
+						Uize.moduleLoader
+							Loads the specified JavaScript module (specified by its module name) and calls the specified callback function once the module has been loaded.
 
-			/*?
-				Static Methods
-					Uize.moduleLoader
-						Loads the specified JavaScript module (specified by its module name) and calls the specified callback function once the module has been loaded.
+							SYNTAX
+							...............................................
+							Uize.moduleLoader (moduleNameSTR,callbackFUNC);
+							...............................................
 
-						SYNTAX
-						...............................................
-						Uize.moduleLoader (moduleNameSTR,callbackFUNC);
-						...............................................
+							The callback specified by the =callbackFUNC= parameter is called with a single parameter that represents the code of the module specified by the =moduleNameSTR= parameter, unless the module loader loads modules by adding =script= tags to the page (in which case the callback is called with no parameters).
 
-						The callback specified by the =callbackFUNC= parameter is called with a single parameter that represents the code of the module specified by the =moduleNameSTR= parameter, unless the module loader loads modules by adding =script= tags to the page (in which case the callback is called with no parameters).
+							EXAMPLE
+							.................................................................................
+							Uize.moduleLoader = function (_moduleToLoad,_callback) {
+								_this._commObject.request ({
+									url:[_this.get ('env').service + 'getjs',{filename:_moduleToLoad + '.js'}],
+									returnType:'json',
+									requestMethod:'GET',
+									callback:function (_responseObject) {
+										_callback (_responseObject.moduleCode);
+									}
+								});
+							};
+							.................................................................................
 
-						EXAMPLE
-						.................................................................................
-						Uize.moduleLoader = function (_moduleToLoad,_callback) {
-							_this._commObject.request ({
-								url:[_this.get ('env').service + 'getjs',{filename:_moduleToLoad + '.js'}],
-								returnType:'json',
-								requestMethod:'GET',
-								callback:function (_responseObject) {
-									_callback (_responseObject.moduleCode);
-								}
-							});
-						};
-						.................................................................................
+							For an in-depth discussion of modules, consult the explainer [[../explainers/javascript-modules.html][JavaScript Modules]].
 
-						For an in-depth discussion of modules, consult the explainer [[../explainers/javascript-modules.html][JavaScript Modules]].
+							NOTES
+							- see the related =Uize.moduleUrlResolver= static method and the =Uize.moduleUrlTemplate= static property
+							- see also the other `module mechanism methods`
+				*/
+			};
 
-						NOTES
-						- see also the =Uize.module= static method
-						- see the related =Uize.moduleUrlResolver= static method and the =Uize.moduleUrlTemplate= static property
-			*/
-		};
+			_package.moduleUrlResolver = function (_moduleName) {
+				return _package.moduleUrlTemplate.replace (_modulePathToken,_moduleName + '.js');
+				/*?
+					Static Methods
+						Uize.moduleUrlResolver
+							Returns a string, representing the URL path from where the specified JavaScript module (specified by its module name) can be loaded.
 
-		_package.moduleUrlResolver = function (_moduleName) {
-			return _package.moduleUrlTemplate.replace (_modulePathToken,_moduleName + '.js');
-			/*?
-				Static Methods
-					Uize.moduleUrlResolver
-						Returns a string, representing the URL path from where the specified JavaScript module (specified by its module name) can be loaded.
+							SYNTAX
+							......................................................
+							moduleUrlSTR = Uize.moduleUrlResolver (moduleNameSTR);
+							......................................................
 
-						SYNTAX
-						......................................................
-						moduleUrlSTR = Uize.moduleUrlResolver (moduleNameSTR);
-						......................................................
+							By overriding this static method, you have the flexibility to have different types of modules load from different locations. A classic example would be loading modules of the UIZE JavaScript Framework from a shared CDN (Content Delivery Network) location, while loading modules that are in your own Web site's namespace from the same machine that serves the pages. Consider the following example...
 
-						By overriding this static method, you have the flexibility to have different types of modules load from different locations. A classic example would be loading modules of the UIZE JavaScript Framework from a shared CDN (Content Delivery Network) location, while loading modules that are in your own Web site's namespace from the same machine that serves the pages. Consider the following example...
+							EXAMPLE
+							...................................................................
+							Uize.moduleUrlResolver = function (_moduleName) {
+								return (
+									moduleName.indexOf ('MyDomain.') == 0
+										? '/js/' + _moduleName + '.js'
+										: 'http://www.some-cdn.com/uize-js/' + _moduleName + '.js'
+								);
+							};
+							...................................................................
 
-						EXAMPLE
-						...................................................................
-						Uize.moduleUrlResolver = function (_moduleName) {
-							return (
-								moduleName.indexOf ('MyDomain.') == 0
-									? '/js/' + _moduleName + '.js'
-									: 'http://www.some-cdn.com/uize-js/' + _moduleName + '.js'
-							);
-						};
-						...................................................................
+							In the above example, a custom module URL resolver is being specified. It looks at the module name, determines if the module name is in the namespace for the Web site (=MyDomain= in this example), and returns a root relative URL. Otherwise, assuming that all other modules are part of the UIZE JavaScript Framework and are stored on a CDN, it returns a URL for where the module would be located on that CDN Web site.
 
-						In the above example, a custom module URL resolver is being specified. It looks at the module name, determines if the module name is in the namespace for the Web site (=MyDomain= in this example), and returns a root relative URL. Otherwise, assuming that all other modules are part of the UIZE JavaScript Framework and are stored on a CDN, it returns a URL for where the module would be located on that CDN Web site.
+							The module URL returned by your function will be used by the built-in =Uize.moduleLoader= module loader function. If you override the built-in module loader by specifying your own value for the =Uize.moduleLoader= static method, then the =Uize.moduleUrlResolver= static method will only be applicable if your custom module loader uses this method. Similarly, the built-in =Uize.moduleUrlResolver= implementation uses the =Uize.moduleUrlTemplate= static property. So, if you supply your own custom module URL resolver by overriding the =Uize.moduleUrlResolver= static method, then it is your choice as to whether or not you use the value of the =Uize.moduleUrlTemplate= property.
 
-						The module URL returned by your function will be used by the built-in =Uize.moduleLoader= module loader function. If you override the built-in module loader by specifying your own value for the =Uize.moduleLoader= static method, then the =Uize.moduleUrlResolver= static method will only be applicable if your custom module loader uses this method. Similarly, the built-in =Uize.moduleUrlResolver= implementation uses the =Uize.moduleUrlTemplate= static property. So, if you supply your own custom module URL resolver by overriding the =Uize.moduleUrlResolver= static method, then it is your choice as to whether or not you use the value of the =Uize.moduleUrlTemplate= property.
+							For an in-depth discussion of modules, consult the explainer [[../explainers/javascript-modules.html][JavaScript Modules]].
 
-						For an in-depth discussion of modules, consult the explainer [[../explainers/javascript-modules.html][JavaScript Modules]].
-
-						NOTES
-						- see the related =Uize.moduleLoader= static method and the =Uize.moduleUrlTemplate= static property
-			*/
-		};
+							NOTES
+							- see the related =Uize.moduleLoader= static method and the =Uize.moduleUrlTemplate= static property
+							- see also the other `module mechanism methods`
+				*/
+			};
 
 		_package.pairUp = function (_firstArg) {
 			var
@@ -4041,40 +4955,54 @@
 			*/
 		};
 
-		var _escapeRegExpLiteral = _package.escapeRegExpLiteral = function (_literal) {
-			return _literal.replace (/([\^\$\|\{\}\[\]\(\)\?\.\*\+\\])/g,'\\$1');
-			/*?
-				Static Methods
-					Uize.escapeRegExpLiteral
-						Returns a string, being the specified source string escaped so that it can be used as a literal match when constructing a regular expression string.
+		var
+			_whitespaceCharLettersLookup = {
+				'\n':'n',
+				'\r':'r',
+				'\t':'t'
+			},
+			_escapeRegExpLiteral = _package.escapeRegExpLiteral = function (_literal) {
+				return (
+					_literal
+						.replace (/([\^\$\|\{\}\[\]\(\)\?\.\*\+\\])/g,'\\$1')
+						.replace (
+							/[\n\r\t]/g,
+							function (_whitespaceChar) {return '\\' + _whitespaceCharLettersLookup [_whitespaceChar]}
+						)
+				);
+				/*?
+					Static Methods
+						Uize.escapeRegExpLiteral
+							Returns a string, being the specified source string escaped so that it can be used as a literal match when constructing a regular expression string.
 
-						SYNTAX
-						......................................................................
-						escapedRegExpLiteralSTR = Uize.escapeRegExpLiteral (regExpLiteralSTR);
-						......................................................................
+							SYNTAX
+							......................................................................
+							escapedRegExpLiteralSTR = Uize.escapeRegExpLiteral (regExpLiteralSTR);
+							......................................................................
 
-						Using this method, any string can be escaped so that it can be used in creating a regular expression where that string can be matched as a literal match. Strings may sometimes contain special regular expression characters, such as the =(= (open parenthesis), =)= (close parenthesis), =.= (period), =?= (question mark), and other characters that have special meaning in the context of regular expression strings. If you wanted to use a regular expression to match a string that contained any of these special characters, then the special characters would have to be escaped. The =Uize.escapeRegExpLiteral= method takes care of this for you. Consider the following example...
+							Using this method, any string can be escaped so that it can be used in creating a regular expression where that string can be matched as a literal match. Strings may sometimes contain special regular expression characters, such as the =(= (open parenthesis), =)= (close parenthesis), =.= (period), =?= (question mark), and other characters that have special meaning in the context of regular expression strings. If you wanted to use a regular expression to match a string that contained any of these special characters, then the special characters would have to be escaped. The =Uize.escapeRegExpLiteral= method takes care of this for you. Consider the following example...
 
-						EXAMPLE
-						............................................................................
-						function replaceAllCaseInsensitive (sourceStr,toReplaceStr,replacementStr) {
-							return sourceStr.replace (
-								new RegExp (Uize.escapeRegExpLiteral (toReplaceStr),'gi'),
-								replacementStr
-							);
-						}
-						............................................................................
+							EXAMPLE
+							............................................................................
+							function replaceAllCaseInsensitive (sourceStr,toReplaceStr,replacementStr) {
+								return sourceStr.replace (
+									new RegExp (Uize.escapeRegExpLiteral (toReplaceStr),'gi'),
+									replacementStr
+								);
+							}
+							............................................................................
 
-						In the above example, we are defining a function that will replace all occurrences of a specified string within a source string with the specified replacement string, and where matching is case insensitive.
+							In the above example, we are defining a function that will replace all occurrences of a specified string within a source string with the specified replacement string, and where matching is case insensitive.
 
-						Now, the =replace= instance method of JavaScript's =String= object can accept a string as a match parameter, but when a string is specified the replacement is not case insensitive and is only for the first occurrence. So, we have to use a regular expression to specify what to replace, so that we can make use of the "g" (global) and "i" (case insensitive) regular expression switches. The problem, however, with using a regular expression is that the string to replace may contain regular expression special characters, so we can't just use it as is when creating the =RegExp= instance - we have to escape the special characters. So, we use the =Uize.escapeRegExpLiteral= method to escape the string to replace before supplying it to the =RegExp= object's constructor.
+							Now, the =replace= instance method of JavaScript's =String= object can accept a string as a match parameter, but when a string is specified the replacement is not case insensitive and is only for the first occurrence. So, we have to use a regular expression to specify what to replace, so that we can make use of the "g" (global) and "i" (case insensitive) regular expression switches. The problem, however, with using a regular expression is that the string to replace may contain regular expression special characters, so we can't just use it as is when creating the =RegExp= instance - we have to escape the special characters. So, we use the =Uize.escapeRegExpLiteral= method to escape the string to replace before supplying it to the =RegExp= object's constructor.
 
-						The =Uize.escapeRegExpLiteral= method can be used to escape any string that is to be treated as a literal match - even literals that are to be combined with other regular expression logic to form more complex regular expressions.
+							The =Uize.escapeRegExpLiteral= method can be used to escape any string that is to be treated as a literal match - even literals that are to be combined with other regular expression logic to form more complex regular expressions.
 
-						NOTES
-						- see also the other `useful value transformers`
-			*/
-		};
+							NOTES
+							- see also the other `useful value transformers`
+				*/
+			}
+		;
 
 		_package.substituteInto = function (_source,_substitutions,_tokenNaming) {
 			if (!(_source = _source == _undefined ? '' : _source + '') || _substitutions == _undefined)
@@ -4374,7 +5302,7 @@
 								'My name is Eric.'
 								..................
 
-								In the above example, the value to substitute into is an instance of a =Uize.Class= subclass. Fortunately, the =Uize.Class= base class implements a =valueOf Intrinsic Method= that returns the value of the =value= set-get property. Therefore, coercing the source to a string produces the value ='My name is [#name].'=, which is then substituted into without any trouble.
+								In the above example, the value to substitute into is an instance of a =Uize.Class= subclass. Fortunately, the =Uize.Class= base class implements a =valueOf Intrinsic Method= that returns the value of the =value= state property. Therefore, coercing the source to a string produces the value ='My name is [#name].'=, which is then substituted into without any trouble.
 
 						NOTES
 						- token names are case-sensitive
@@ -4480,7 +5408,8 @@
 			*/
 		};
 
-		_package.now = new _Function ('return ' + (Date.now ? 'Date.now()' : '+new Date'));
+		_package.now = _Function (
+			'return ' + (Date.now ? 'Date.now()' : '+new Date')
 			/*?
 				Static Methods
 					Uize.now
@@ -4508,91 +5437,7 @@
 
 						Using the above template, the value of the =duration= variable will indicate how long it took to perform the operations in the block between assigning the value for the =start= variable and the value for the =duration= variable.
 			*/
-
-		var _toString = _package.toString = function () {
-			var
-				_this = this,
-				_moduleName = _getClass (_this).moduleName,
-				_isClass = _this.subclass
-			;
-			return (
-				'[' +
-					(
-						_isInstance (_this) || (!_isClass && !_moduleName)
-							? _typeObject
-							: _isClass ? 'class' : 'package'
-					) +
-					' ' + (_moduleName || 'Function') +
-				']'
-			);
-			/*?
-				Static Methods
-					Uize.toString
-						Returns a string, providing summary info for the class on which the method is called.
-
-						SYNTAX
-						......................................
-						classSummarySTR = MyClass.toString ();
-						......................................
-
-						The string returned by this method provides a summary that includes the class' name and the state of its set-get properties. Among other things, this method provides a convenient and lightweight way to gather information about =Uize.Class= subclasses during debugging and troubleshooting. The =Uize.toString= static intrinsic method is invoked automatically in certain contexts in order to convert a class reference to a string form, such as when alerting a class using the =alert= global function.
-
-						EXAMPLE
-						...................................
-						alert (page.children.slider.Class);
-						...................................
-
-						In the above example, if the =page= widget has a =slider= child widget that is an instance of the class =Uize.Widget.Bar.Slider=, then the output of the =alert= statement could look something like...
-
-						EXAMPLE OUTPUT
-						..................................
-						[class Uize.Widget.Bar.Slider]
-
-						built : true
-						busy : inherit
-						busyInherited : false
-						confirm : undefined
-						container : undefined
-						decimalPlacesToDisplay : undefined
-						enabled : inherit
-						enabledInherited : true
-						html : undefined
-						idPrefix : undefined
-						idPrefixConstruction : undefined
-						inDrag : false
-						increments : 1
-						inform : undefined
-						insertionMode: undefined
-						localized : undefined
-						maxValidValue : undefined
-						maxValue : 100
-						minValidValue : undefined
-						minValue : 0
-						name : undefined
-						nodeMap : undefined
-						orientation : vertical
-						parent : undefined
-						restTime : 250
-						scaleFunc : [object Function]
-						value : 0
-						valueFunc : [object Function]
-						wired : false
-						..................................
-
-						In certain contexts, providing a reference to a =Uize.Class= subclass as a parameter to some method will result in the =Uize.Class.valueOf= static intrinsic method of that class being invoked in order to coerce it to a simple value. If it is your desire to have the class summary be used rather than the class' value, then you should explicitly call the =Uize.toString= static intrinsic method, as follows...
-
-						EXAMPLE
-						.......................................................................................
-						Uize.Node.setInnerHtml ('classSummaryForDebug',page.children.slider.Class.toString ());
-						Uize.Node.setInnerHtml ('classCurrentValue',page.children.slider.Class);
-						.......................................................................................
-
-						In this example, the =classSummaryForDebug= node will contain the summary info for the =Uize.Widget.Bar.Slider= class, while the =classCurrentValue= node will just show the class' current value.
-			*/
-		};
-
-	/*** Private Static Properties ***/
-		_package.moduleName = 'Uize';
+		);
 
 	/*** Public Static Properties ***/
 		_package.moduleUrlTemplate = _getPathToLibrary ('Uize.js',_modulePathToken);

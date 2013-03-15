@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Array.Order Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -40,7 +37,7 @@
 					Uize.Array.Order.reverse ([1,2,3,4,5,6,7,8]); // returns the array [8,7,6,5,4,3,2,1]
 					....................................................................................
 
-					While JavaScript's built-in =Array= object *does* provide a =reverse= instance method, the =Uize.Array.Order.reverse= method offers a `Versatile Target` facility that is lacking with the built-in =reverse= method, which always modifies the source array.
+					While JavaScript's built-in =Array= object *does* provide a =reverse= instance method, the =Uize.Array.Order.reverse= method offers a `versatile target` facility that is lacking with the built-in =reverse= method, which always modifies the source array.
 
 					For a more in-depth explanation, consult the reference for the =Uize.Array.Order.reverse= method.
 
@@ -85,6 +82,8 @@
 Uize.module ({
 	name:'Uize.Array.Order',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var _package = function () {};
 

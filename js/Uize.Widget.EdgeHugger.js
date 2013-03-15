@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.EdgeHugger Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 10
 */
 
@@ -35,6 +32,8 @@ Uize.module ({
 		'Uize.Node'
 	],
 	builder:function (_superclass) {
+		'use string';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -92,10 +91,10 @@ Uize.module ({
 				/*?
 					Implied Nodes
 						maximized Implied Node
-							document...
+							.
 
 						minimized
-							document...
+							.
 				*/
 			};
 
@@ -135,7 +134,7 @@ Uize.module ({
 							/*?
 								Implied Nodes
 									maximize
-										document...
+										.
 							*/
 						);
 						_this.wireNode (
@@ -145,7 +144,7 @@ Uize.module ({
 							/*?
 								Implied Nodes
 									minimize
-										document...
+										.
 							*/
 						);
 
@@ -180,48 +179,48 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_contentId:{
 					name:'contentId',
 					value:''
 					/*?
-						Set-get Properties
+						State Properties
 							contentId
-								document...
+								.
 					*/
 				},
 				_cookieName:'cookieName',
 					/*?
-						Set-get Properties
+						State Properties
 							cookieName
-								document...
+								.
 					*/
 				_cookiePath:{
 					name:'cookiePath',
 					value:'/'
 					/*?
-						Set-get Properties
+						State Properties
 							cookiePath
-								document...
+								.
 					*/
 				},
 				_edge:{
 					name:'edge',
 					value:'bottom' // 'top' | 'bottom' | 'left' | 'right'
 					/*?
-						Set-get Properties
+						State Properties
 							edge
-								document...
+								.
 					*/
 				},
 				_fadeProperties:{
 					name:'fadeProperties',
 					value:{duration:200,curve:Uize.Fade.celeration (0,1)}
 					/*?
-						Set-get Properties
+						State Properties
 							fadeProperties
-								document...
+								.
 					*/
 				},
 				_maximized:{
@@ -235,30 +234,30 @@ Uize.module ({
 					},
 					value:_true
 					/*?
-						Set-get Properties
+						State Properties
 							maximized
-								document...
+								.
 					*/
 				},
 				_maximizedHeight:'maximizedHeight',
 					/*?
-						Set-get Properties
+						State Properties
 							maximizedHeight
-								document...
+								.
 					*/
 				_minimizedHeight:'minimizedHeight',
 					/*?
-						Set-get Properties
+						State Properties
 							minimizedHeight
-								document...
+								.
 					*/
 				_whenToFadeOnInit:{
 					name:'whenToFadeOnInit',
 					value:'first' // 'first' | 'always' | 'never'
 					/*?
-						Set-get Properties
+						State Properties
 							whenToFadeOnInit
-								document...
+								.
 					*/
 				}
 			});

@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Tree.Menu Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2008-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2008-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 6
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.Tree.Menu',
 	required:'Uize.Node',
 	builder:function (_superclass) {
+		'use strict';
+
 		var
 			_undefined,
 			_true = true,
@@ -81,19 +80,21 @@ Uize.module ({
 						/* NOTE:
 							sure, you could have more anonymous functions in this code, but sharing a single reference across all occurrences should provide better performance
 						*/
-						function _clearDismissTimeout () {
-							if (_this._dismissTimeout)
-								_this._dismissTimeout = clearTimeout (_this._dismissTimeout)
-							;
-						}
-						function _dismiss () {
-							_clearDismissTimeout ();
-							_this.setExpandedDepth (0);
-						}
-						function _setDismissTimeout () {
-							_clearDismissTimeout ();
-							_this._dismissTimeout = setTimeout (_dismiss,_this._dismissDelay);
-						}
+						var
+							_clearDismissTimeout = function () {
+								if (_this._dismissTimeout)
+									_this._dismissTimeout = clearTimeout (_this._dismissTimeout)
+								;
+							},
+							_dismiss = function () {
+								_clearDismissTimeout ();
+								_this.setExpandedDepth (0);
+							},
+							_setDismissTimeout = function () {
+								_clearDismissTimeout ();
+								_this._dismissTimeout = setTimeout (_dismiss,_this._dismissDelay);
+							}
+						;
 						_this.wireNode (
 							_itemSpecifier + (_itemSpecifier && 'Children'),
 							{
@@ -175,8 +176,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_dismissDelay:{
 					name:'dismissDelay',
 					value:400
@@ -193,7 +194,7 @@ Uize.module ({
 				_subMenuItemCssClass:'subMenuItemCssClass'
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				html:{
 					process:function (input) {

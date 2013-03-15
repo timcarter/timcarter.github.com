@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Collection.Dynamic Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 4
 	codeCompleteness: 80
-	testCompleteness: 0
 	docCompleteness: 3
 */
 
@@ -34,6 +31,8 @@ Uize.module ({
 		'Uize.Tooltip'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_true = true,
@@ -255,7 +254,7 @@ Uize.module ({
 											_setInDrag (_false);
 											_this.displayNode ('insertionMarker',_false);
 
-											function _finishDrag () {
+											var _finishDrag = function () {
 												if (_insertPointItem && !_drag.get ('dragCancelled')) {
 													var _itemWidgets = _this.itemWidgets;
 
@@ -286,7 +285,7 @@ Uize.module ({
 														_this.fire ('Items Reordered');
 														_this._fireItemsChangedEvent ();
 												}
-											}
+											};
 											_this._confirmToDrag
 												? _this.confirm ({
 													state:'warning',
@@ -466,8 +465,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_confirmToDrag:{
 					name:'confirmToDrag',
 					value:_false

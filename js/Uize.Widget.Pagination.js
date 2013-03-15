@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Pagination Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2007-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2007-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 0
-	testCompleteness: 0
 	docCompleteness: 0
 */
 
@@ -36,7 +33,7 @@ Uize.module ({
 		'Uize.Node.Classes'
 	],
 	builder:function (_superclass) {
-		/*** Variables for Scruncher Optimization ***/
+		'use strict';
 
 		/*** Class Constructor ***/
 			var
@@ -107,15 +104,17 @@ Uize.module ({
 					);
 
 					if (_hasMultiplePages) {
-						function _enable(_pageButtonName, _mustEnable) {
-							_children[_pageButtonName].set({enabled:_mustEnable ? 'inherit' : _mustEnable})
-						}
-						function _display(_pageButtonName, _mustDisplay) {
-							_children[_pageButtonName].displayNode('', _mustDisplay)
-						}
-						function _setText(_pageButtonName, _text) {
-							_children[_pageButtonName].set({text:_text})
-						}
+						var
+							_enable = function (_pageButtonName, _mustEnable) {
+								_children[_pageButtonName].set({enabled:_mustEnable ? 'inherit' : _mustEnable})
+							},
+							_display = function (_pageButtonName, _mustDisplay) {
+								_children[_pageButtonName].displayNode('', _mustDisplay)
+							},
+							_setText = function (_pageButtonName, _text) {
+								_children[_pageButtonName].set({text:_text})
+							}
+						;
 
 						_enable('prev', _value > 1);
 						_enable('next', _value < _maxPages);
@@ -168,7 +167,9 @@ Uize.module ({
 
 				if (!_this.isWired) {
 					/*** Determine which page links exist ***/
-						function _childExists(_childName) { return !!Uize.Node.getById(_this.get('idPrefix') + '_' + _childName) }
+						var _childExists = function (_childName) {
+							return !!Uize.Node.getById(_this.get('idPrefix') + '_' + _childName);
+						};
 
 						_this._showFirstPage = _childExists('first');
 						_this._showLastPage = _childExists('last');
@@ -182,14 +183,18 @@ Uize.module ({
 					_this._showLastPage
 						&& _this._addChildButton('last', function() { _this._gotoPage(_this._calculateMaxPages()) } );
 
-					function _addPageButton (_pageNo) {
-						_this._addChildButton(
-							'page' + _pageNo,
-							function() { _this._gotoPage(_this._calculatePagesStart() + _pageNo) }
-						)
-					}
-
-					for (var _pageNo = -1; ++_pageNo < _this._numPagesToShow;)
+					for (
+						var
+							_pageNo = -1,
+							_addPageButton = function (_pageNo) {
+								_this._addChildButton(
+									'page' + _pageNo,
+									function() { _this._gotoPage(_this._calculatePagesStart() + _pageNo) }
+								)
+							}
+						;
+						++_pageNo < _this._numPagesToShow;
+					)
 						_addPageButton(_pageNo)
 					;
 
@@ -197,8 +202,8 @@ Uize.module ({
 				}
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_classSelected:{
 					name:'classSelected',
 					value:'selected'

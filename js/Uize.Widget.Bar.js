@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Bar Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2005-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2005-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 5
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 25
 */
 
@@ -32,6 +29,8 @@ Uize.module ({
 	name:'Uize.Widget.Bar',
 	required:'Uize.Node',
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_undefined,
@@ -187,17 +186,17 @@ Uize.module ({
 							[DOCUMENT]
 				*/
 
-		/*** Register Properties ***/
+		/*** State Properties ***/
 			function _conformValueAndUpdateUi () {
 				var _this = this;
 				_this.set ({_value:_this._conformValue (_this._value)});
 				_this._updateUi ();
 			}
 
-			_class.registerProperties ({
+			_class.stateProperties ({
 				_decimalPlacesToDisplay:'decimalPlacesToDisplay',
 					/*?
-						Set-get Properties
+						State Properties
 							decimalPlacesToDisplay
 								[DOCUMENT]
 					*/
@@ -206,7 +205,7 @@ Uize.module ({
 					onChange:_conformValueAndUpdateUi,
 					value:1
 					/*?
-						Set-get Properties
+						State Properties
 							increments
 								[DOCUMENT]
 					*/
@@ -216,7 +215,7 @@ Uize.module ({
 					name:'minValidValue',
 					onChange:_conformValueAndUpdateUi
 					/*?
-						Set-get Properties
+						State Properties
 							minValidValue
 								[DOCUMENT]
 					*/
@@ -226,7 +225,7 @@ Uize.module ({
 					onChange:_conformValueAndUpdateUi,
 					value:0
 					/*?
-						Set-get Properties
+						State Properties
 							minValue
 								[DOCUMENT]
 					*/
@@ -236,7 +235,7 @@ Uize.module ({
 					name:'maxValidValue',
 					onChange:_conformValueAndUpdateUi
 					/*?
-						Set-get Properties
+						State Properties
 							maxValidValue
 								[DOCUMENT]
 					*/
@@ -246,7 +245,7 @@ Uize.module ({
 					onChange:_conformValueAndUpdateUi,
 					value:100
 					/*?
-						Set-get Properties
+						State Properties
 							maxValue
 								[DOCUMENT]
 					*/
@@ -255,7 +254,7 @@ Uize.module ({
 					name:'orientation',
 					value:'vertical'
 					/*?
-						Set-get Properties
+						State Properties
 							orientation
 								[DOCUMENT]
 					*/
@@ -265,7 +264,7 @@ Uize.module ({
 					name:'scaleFunc',
 					value:function (_x) {return _x;}
 					/*?
-						Set-get Properties
+						State Properties
 							scaleFunc
 								[DOCUMENT]
 					*/
@@ -276,7 +275,7 @@ Uize.module ({
 					onChange:_classPrototype._updateUi,
 					value:0
 					/*?
-						Set-get Properties
+						State Properties
 							value
 								[DOCUMENT]
 					*/

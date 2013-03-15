@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Test.Uize.Node.Classes Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Test
 	importance: 3
 	codeCompleteness: 100
-	testCompleteness: 100
 	docCompleteness: 100
 */
 
@@ -33,6 +30,8 @@
 Uize.module ({
 	name:'Uize.Test.Uize.Node.Classes',
 	builder:function () {
+		'use strict';
+
 		function _mockNodeWithClassName (_className) {
 			/* NOTE:
 				returns an object designed to fool the Uize.Node.isNode method into thinking it's a node, so we can test the classes methods without having to have a browser or a document, allowing this test module to run in Windows Script Host or other non-browser host
@@ -58,7 +57,7 @@ Uize.module ({
 							test:function () {
 								var
 									_mockNode = _mockNodeWithClassName (_case [1]),
-									_methodHost = eval (_methodHostName),
+									_methodHost = Uize.getModuleByName (_methodHostName),
 									_arguments = _case [2]
 								;
 								_methodHost [_methodName].apply (

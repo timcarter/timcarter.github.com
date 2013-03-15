@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Node.Util Package
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2004-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2004-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Package
 	importance: 2
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 100
 */
 
@@ -29,6 +26,8 @@
 Uize.module ({
 	name:'Uize.Node.Util',
 	builder:function () {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var
 				_package = function () {},
@@ -95,7 +94,7 @@ Uize.module ({
 							..............................................
 
 							NOTES
-							- the =opacityFLOATorOBJ= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= set-get property)
+							- the =opacityFLOATorOBJ= parameter can be an object that implements a =valueOf= interface (such as an instance of a =Uize.Class= subclass that implements the =value= state property)
 							- see also the =Uize.Node.Util.getOpacityStr= static method
 				*/
 			};
@@ -143,7 +142,7 @@ Uize.module ({
 							Instead of using the =display= property, this method sets values for both the =position= and =visibility= properties. When a value of =true= is specified for the =mustShowBOOL= parameter, then the =position= property is set to =relative= and the =visibility= property is set to =inherit=. And when =false= is specified for =mustShowBOOL=, then =position= is set to =absolute= and =visibility= is set to =hidden=.
 
 							NOTES
-							- this method can operate on multiple nodes at a time. For more details, see the section on `Node Blob`
+							- this method can operate on multiple nodes at a time. For more details, see the section on `node blob`
 				*/
 			};
 

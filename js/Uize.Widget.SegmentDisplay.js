@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.SegmentDisplay Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=c" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 1
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 1
 */
 
@@ -30,6 +27,8 @@ Uize.module ({
 	name:'Uize.Widget.SegmentDisplay',
 	required:'Uize.Node.Classes',
 	builder:function (_superclass) {
+		'use strict';
+
 		var
 			_class = _superclass.subclass (),
 			_classPrototype = _class.prototype
@@ -132,13 +131,13 @@ Uize.module ({
 					###
 						Public Static Properties
 							segmentCodes
-								document...
+								.
 
 							segmentsStateToValueLookup
-								document...
+								.
 
 							valueToSegmentsStateLookup
-								document...
+								.
 				*/
 			};
 
@@ -177,8 +176,8 @@ Uize.module ({
 				);
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_cssClassSegmentOff:{
 					name:'cssClassSegmentOff',
 					value:'sevenSegSegmentOff'

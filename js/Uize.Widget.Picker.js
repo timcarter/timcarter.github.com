@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.Picker Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2009-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2009-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=d" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 6
 	codeCompleteness: 100
-	testCompleteness: 0
 	docCompleteness: 7
 */
 
@@ -41,9 +38,11 @@ Uize.module ({
 		'Uize.Node.Event'
 	],
 	builder:function (_superclass) {
+		'use strict';
+
 		/*** Variables for Scruncher Optimization ***/
 			var _null = null;
-			
+
 		/*** Class Constructor ***/
 			var
 				_class = _superclass.subclass (
@@ -112,20 +111,20 @@ Uize.module ({
 								/*?
 									Child Widgets
 										selector
-											document...
+											.
 								*/
 					}
 				),
 				_classPrototype = _class.prototype
 			;
-			
+
 		/*** Public Methods ***/
 			_classPrototype.getDialogWidgetProperties = function() { return _null };
 
 			_classPrototype.getMooringNode = function() {
 				return this.children.selector.getNode () || this.getNode ('input')
 			};
-			
+
 			_classPrototype.handleDialogSubmit = function(_valueInfo) {
 				var
 					_this = this,
@@ -148,15 +147,15 @@ Uize.module ({
 				);
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_allowManualEntry:{
 					name:'allowManualEntry',
 					value:true
 					/*?
-						Set-get Properties
+						State Properties
 							allowManualEntry
-								document...
+								.
 
 								NOTES
 								- the initial value is =true=
@@ -166,18 +165,18 @@ Uize.module ({
 				_dialogName:'dialogName',
 				_dialogWidgetClass:'dialogWidgetClass',
 					/*?
-						Set-get Properties
+						State Properties
 							dialogWidgetClass
-								document...
+								.
 
 								NOTES
 								- the initial value is =undefined=
 					*/
 				_pipedProperties:'pipedProperties',
 					/*?
-						Set-get Properties
+						State Properties
 							pipedProperties
-								document...
+								.
 
 								NOTES
 								- the initial value is =undefined=
@@ -195,15 +194,16 @@ Uize.module ({
 				},
 				_valueFormatter:'valueFormatter'
 					/*?
-						Set-get Properties
+						State Properties
 							valueFormatter
-								document...
-									NOTES
-									- the initial value is =undefined=
+								.
+
+								NOTES
+								- the initial value is =undefined=
 					*/
 			});
 
-		/*** Override Initial Values for Inherited Set-Get Properties ***/
+		/*** Override Initial Values for Inherited State Properties ***/
 			_class.set ({
 				value:_null
 			});

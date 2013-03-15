@@ -4,18 +4,15 @@
 |    /    O /   |    MODULE : Uize.Widget.SlideShow.AutoAdvance.WithSlideSelectors Class
 |   /    / /    |
 |  /    / /  /| |    ONLINE : http://www.uize.com
-| /____/ /__/_| | COPYRIGHT : (c)2010-2012 UIZE
+| /____/ /__/_| | COPYRIGHT : (c)2010-2013 UIZE
 |          /___ |   LICENSE : Available under MIT License or GNU General Public License
 |_______________|             http://www.uize.com/license.html
 */
-
-/*ScruncherSettings Mappings="=e" LineCompacting="TRUE"*/
 
 /* Module Meta Data
 	type: Class
 	importance: 2
 	codeCompleteness: 0
-	testCompleteness: 0
 	docCompleteness: 2
 */
 
@@ -30,7 +27,7 @@ Uize.module ({
 	name:'Uize.Widget.SlideShow.AutoAdvance.WithSlideSelectors',
 	required:'Uize.Widget.Options',
 	builder:function (_superclass) {
-		/*** Variables for Scruncher Optimization ***/
+		'use strict';
 
 		/*** Class Constructor ***/
 			var
@@ -79,8 +76,8 @@ Uize.module ({
 				});
 			};
 
-		/*** Register Properties ***/
-			_class.registerProperties ({
+		/*** State Properties ***/
+			_class.stateProperties ({
 				_startSlideNo:'startSlideNo' // HACK
 			});
 
