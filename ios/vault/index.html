@@ -16,6 +16,10 @@
 				margin-left:0;
 				margin-bottom:10px;
 			}
+
+			.saved-configs {
+				display:none;
+			}
 		</style>
 	</head>
 	<body>
@@ -23,6 +27,7 @@
 
 			<form>
 				<input type="text" class="span5" placeholder="service"/>
+				<select class="span5 saved-configs"></select>
 				<div class="input-append">
 					<input class="span5" type="password" placeholder="passphrase"/>
 					<button class="btn" type="button"><i class="icon-eye-open"></i></button>
@@ -37,7 +42,7 @@
 				<button type="button" class="btn span5 btn-info">Allow !@#$%</button>
 				<hr>
 				<div class="input-append">
-					<input type="password" class="span5" placeholder="generated passphrase" />
+					<input type="password" class="span5" placeholder="generated password" />
 					<button class="btn" type="button"><i class="icon-eye-open"></i></button>
 					<button class="btn" type="button"><i class="icon-share"></i></button>
 				</div>
@@ -49,20 +54,63 @@
 		<script type="text/javascript" src="../../vault/vault.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function () {
-				/* application cache handling */
 				var
+					// application cache
 					cache = window.applicationCache,
-					updateFn = function () {
+					cacheUpdateFn = function () {
 						if (cache.status === 4) {
 							cache.swapCache ();
 							window.location.reload ();
 						}
+					},
+
+					// saved configurations
+					localStorage = window.localStorage,
+					savedConfigurations = localStorage ? localStorage.getItem('savedConfigurations') : null,
+
+					// application state
+					charMode = {
+						REQUIRED:{},
+						OPTIONAL:{},
+						VERBOTEN:{} // solely for the sake of symmetry
+					},
+					configuration = { // potentially saved data, pre-loaded with defaults
+						service:'twitter',
+						length:20,
+						repetition:undefined,
+						lowerCaseChars:charMode.OPTIONAL,
+						upperCaseChars:charMode.OPTIONAL,
+						numbers:charMode.OPTIONAL,
+						separators:charMode.OPTIONAL,
+						whitespace:charMode.OPTIONAL,
+						specialChars:charMode.OPTIONAL
+					},
+					etherealConfig = { // reset every time the application reloads
+						showPassPhrase:false,
+						showPassword:false
 					}
 				;
 
 				cache &&
-					cache.addEventListener ('updateready', updateFn);
+					cache.addEventListener ('updateready', cacheUpdateFn);
 
+				// if there are saved configurations, then show the selector
+				if (savedConfigurations) {
+					var
+						selectNode = $('.saved-configs'),
+						optionMarkup = ''
+					;
+
+					$.each(
+						savedConfigurations,
+						function(savedConfiguration) {
+							optionMarkup += '<option>' + savedConfiguration.service + '</option>'
+						}
+					);
+
+					selectNode.append(optionMarkup);
+					selectNode.css({display:'block'}); // .show() sets it to inline-block
+				}
 			});
 		</script>
 	</body>
