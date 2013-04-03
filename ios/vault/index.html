@@ -20,6 +20,10 @@
 			.saved-configs {
 				display:none;
 			}
+
+			#passphrase_visible, #password_visible {
+				display:none;
+			}
 		</style>
 	</head>
 	<body>
@@ -30,6 +34,7 @@
 				<select class="span5 saved-configs"></select>
 				<div class="input-append">
 					<input id="passphrase" class="span5" type="password" placeholder="passphrase" required/>
+					<input id="passphrase_visible" class="span5" type="text" placeholder="passphrase"/>
 					<button id="showPassphrase" class="btn" type="button"><i class="icon-eye-open"></i></button>
 				</div>
 				<input id="passphraseLength" type="number" class="span5" placeholder="length"/>
@@ -43,6 +48,7 @@
 				<hr>
 				<div class="input-append">
 					<input id="password" type="password" class="span5" placeholder="generated password" />
+					<input id="password_visible" type="text" class="span5" placeholder="generated password" />
 					<button id="showPassword" class="btn" type="button"><i class="icon-eye-open"></i></button>
 					<button id="save" class="btn" type="button"><i class="icon-share"></i></button>
 				</div>
@@ -81,8 +87,6 @@
 						whitespace:charMode.OPTIONAL,
 						specialChars:charMode.OPTIONAL
 					},*/
-					showPassphrase = false,
-					showPassword = false,
 					getStoredConfigurations = function() {
 						// returns any configurations saved in local storage
 						// assumes the existence of the JSON object
@@ -163,7 +167,7 @@
 						return JSON.stringify(configuration);
 					},
 					setUiFromPassword = function(password) {
-						$('#password').val(password);
+						$('#' + getCurrentPasswordUiId()).val(password);
 					},
 					setUiFromStoredConfigs = function(configurations) {
 						var selectNode = $('.saved-configs'),
@@ -178,6 +182,9 @@
 
 						selectNode.append(optionMarkup);
 						selectNode.css({display:'block'});
+					},
+					getCurrentPasswordUiId = function() {
+						return $('#password_visible').css('display') !== 'none' ? 'password_visible' : 'password'
 					}
 				;
 
@@ -226,11 +233,25 @@
 				});
 
 				$('#showPassword').click(function() {
-					console.log('show the password')
+					var visibleElem = getCurrentPasswordUiId(),
+						invisibleElem = visibleElem === 'password_visible' ? 'password' : 'password_visible';
+
+					$('#' + invisibleElem).val($('#' + visibleElem).val());
+
+					$('#password').toggle();
+					$('#password_visible').toggle();
 				});
 
 				$('#showPassphrase').click(function() {
-					console.log('show the passphrase');
+					var visibleElem = $('#passphrase_visible').css('display') !== 'none' ? 'passphrase_visible' : 'passphrase',
+						invisibleElem = visibleElem === 'passphrase_visible' ? 'passphrase' : 'passphrase_visible';
+
+					$('#' + invisibleElem).val($('#' + visibleElem).val());
+
+					$('#' + invisibleElem).attr('required', 'required');
+					$('#' + visibleElem).removeAttr('required');
+					$('#passphrase_visible').toggle();
+					$('#passphrase').toggle();
 				});
 
 			});
