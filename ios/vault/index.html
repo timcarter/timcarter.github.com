@@ -30,21 +30,21 @@
 				<select class="span5 saved-configs"></select>
 				<div class="input-append">
 					<input id="passphrase" class="span5" type="password" placeholder="passphrase" required/>
-					<button class="btn" type="button"><i class="icon-eye-open"></i></button>
+					<button id="showPassphrase" class="btn" type="button"><i class="icon-eye-open"></i></button>
 				</div>
-				<input type="number" class="span5" placeholder="length"/>
-				<input type="number" class="span5" placeholder="max repetition"/>
-				<button type="button" class="btn span5 btn-info">a-z is: allowed</button>
-				<button type="button" class="btn span5 btn-info">A-Z is: allowed</button>
-				<button type="button" class="btn span5 btn-info">0-9 is: allowed</button>
-				<button type="button" class="btn span5 btn-info">-/_ is: allowed</button>
-				<button type="button" class="btn span5 btn-info">SPACE is: allowed</button>
-				<button type="button" class="btn span5 btn-info">!@#$% is: allowed</button>
+				<input id="passphraseLength" type="number" class="span5" placeholder="length"/>
+				<input id="repetition" type="number" class="span5" placeholder="max repetition"/>
+				<button id="lowercase" type="button" class="btn span5 btn-info">a-z is: <span id="lowercaseText">optional</span></button>
+				<button id="uppercase" type="button" class="btn span5 btn-info">A-Z is: <span id="uppercaseText">optional</span></button>
+				<button id="numbers" type="button" class="btn span5 btn-info">0-9 is: <span id="numbersText">optional</span></button>
+				<button id="separators" type="button" class="btn span5 btn-info">-/_ is: <span id="separatorsText">optional</span></button>
+				<button id="whitespace" type="button" class="btn span5 btn-info">SPACE is: <span id="whitespaceText">optional</span></button>
+				<button id="special" type="button" class="btn span5 btn-info">!@#$% is: <span id="specialText">optional</span></button>
 				<hr>
 				<div class="input-append">
-					<input type="password" class="span5" placeholder="generated password" />
-					<button class="btn" type="button"><i class="icon-eye-open"></i></button>
-					<button class="btn" type="button"><i class="icon-share"></i></button>
+					<input id="password" type="password" class="span5" placeholder="generated password" />
+					<button id="showPassword" class="btn" type="button"><i class="icon-eye-open"></i></button>
+					<button id="save" class="btn" type="button"><i class="icon-share"></i></button>
 				</div>
 			</form>
 		</div>
@@ -64,53 +64,175 @@
 						}
 					},
 
-					// saved configurations
-					localStorage = window.localStorage,
-					savedConfigurations = localStorage ? localStorage.getItem('savedConfigurations') : null,
-
 					// application state
 					charMode = {
-						REQUIRED:{},
-						OPTIONAL:{},
-						VERBOTEN:{} // solely for the sake of symmetry
+						REQUIRED:'btn-success',
+						OPTIONAL:'btn-info',
+						VERBOTEN:'btn-danger'
 					},
-					configuration = { // potentially saved data, pre-loaded with defaults
+					/*currConfiguration = { // potentially saved data, pre-loaded with defaults
 						service:'twitter',
-						length:20,
+						passphraseLength:20,
 						repetition:undefined,
-						lowerCaseChars:charMode.OPTIONAL,
-						upperCaseChars:charMode.OPTIONAL,
+						lowercase:charMode.OPTIONAL,
+						uppercase:charMode.OPTIONAL,
 						numbers:charMode.OPTIONAL,
 						separators:charMode.OPTIONAL,
 						whitespace:charMode.OPTIONAL,
 						specialChars:charMode.OPTIONAL
+					},*/
+					showPassphrase = false,
+					showPassword = false,
+					getStoredConfigurations = function() {
+						// returns any configurations saved in local storage
+						// assumes the existence of the JSON object
+						var localStorage = window.localStorage,
+							savedConfigurations = localStorage ? JSON.parse(localStorage.getItem('savedConfigurations')) : null
+						;
+
+						savedConfigurations instanceof Array ? savedConfigurations : [];
 					},
-					etherealConfig = { // reset every time the application reloads
-						showPassPhrase:false,
-						showPassword:false
+					storeConfigurations = function(configurations) {
+						// given an array of configurations, stores them in localStorage
+						var localStorage = window.localStorage;
+
+						if (localStorage)
+							localStorage.setItem('savedConfigurations', JSON.stringify(configurations));
+					},
+					saveConfiguration = function(configuration) {
+						var
+							savedConfigurations = getStoredConfigurations()
+						;
+
+						if (savedConfigurations instanceof Array)
+							savedConfigurations.push(configuration);
+
+						storeConfigurations(savedConfigurations);
+					},
+					setUiFromConfiguration = function(configuration) {
+						$.each(
+							['service', 'passphraseLength', 'repetition'],
+							function(index, value) {
+								$('#' + value).val(configuration[value])
+							}
+						);
+
+						$.each(
+							['lowercase', 'uppercase', 'numbers', 'separators', 'whitespace', 'special'],
+							function(index, value) {
+								var configValue = configuration[value], // a value of charMode.SOMETHING
+									currCharMode,
+									classesToRemove = $.map(charMode, function(key, val) {
+										if (key !== configValue)
+											return key;
+										currCharMode = val;
+										return null;
+									});
+								$('#' + value).removeClass(classesToRemove.join(' ')).addClass(configValue)
+								$('#' + value + 'Text').html(currCharMode.toLowerCase());
+							}
+						);
+					},
+					getConfigurationFromUi = function() {
+						var configuration = {};
+
+						$.each(
+							['service', 'passphraseLength', 'repetition'],
+							function(index, value) {
+								configuration[value] = $('#' + value).val()
+							}
+						);
+
+						$.each(
+							['lowercase', 'uppercase', 'numbers', 'separators', 'whitespace', 'special'],
+							function(index, value) {
+								var mode, classes = $('#' + value).attr('class');
+								for (mode in charMode) {
+									if (classes.indexOf(charMode[mode]) > -1) {
+										configuration[value] = charMode[mode];
+										break;
+									}
+								}
+							}
+						);
+
+						return configuration;
+					},
+					generatePassword = function(configuration) {
+						// dummy info for now
+						return JSON.stringify(configuration);
+					},
+					setUiFromPassword = function(password) {
+						$('#password').val(password);
+					},
+					setUiFromStoredConfigs = function(configurations) {
+						var selectNode = $('.saved-configs'),
+							optionMarkup = '';
+
+						$.each(
+							configurations,
+							function(index, configuration) {
+								optionMarkup += '<option>' + configuration.service + '</option>'
+							}
+						);
+
+						selectNode.append(optionMarkup);
+						selectNode.css({display:'block'});
 					}
 				;
 
 				cache &&
 					cache.addEventListener ('updateready', cacheUpdateFn);
 
-				// if there are saved configurations, then show the selector
-				if (savedConfigurations) {
-					var
-						selectNode = $('.saved-configs'),
-						optionMarkup = ''
-					;
+				// onclick, etc.
+				$.each(
+					['service', 'passphraseLength', 'repetition'],
+					function(index, value) {
+						$('#' + value).change(function() {
+							var configuration = getConfigurationFromUi();
 
-					$.each(
-						savedConfigurations,
-						function(savedConfiguration) {
-							optionMarkup += '<option>' + savedConfiguration.service + '</option>'
-						}
-					);
+							configuration[value] = $(this).val();
+							setUiFromConfiguration(configuration);
+							setUiFromPassword(generatePassword(configuration));
+						});
+					}
+				);
 
-					selectNode.append(optionMarkup);
-					selectNode.css({display:'block'}); // .show() sets it to inline-block
-				}
+				$.each(
+					['lowercase', 'uppercase', 'numbers', 'separators', 'whitespace', 'special'],
+					function(index, value) {
+						$('#' + value).click(function() {
+
+							var configuration = getConfigurationFromUi(),
+								currConfiguration = configuration[value];
+
+							// get new configuration for value
+							configuration[value] = charMode[
+								currConfiguration === charMode.OPTIONAL ?
+									'REQUIRED' :
+									currConfiguration === charMode.REQUIRED ?
+										'VERBOTEN' :
+										'OPTIONAL'
+							];
+
+							setUiFromConfiguration(configuration);
+							setUiFromPassword(generatePassword(configuration));
+						})
+					}
+				);
+
+				$('#save').click(function() {
+					saveConfiguration(getConfigurationFromUi())
+				});
+
+				$('#showPassword').click(function() {
+					console.log('show the password')
+				});
+
+				$('#showPassphrase').click(function() {
+					console.log('show the passphrase');
+				});
+
 			});
 		</script>
 	</body>
