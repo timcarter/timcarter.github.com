@@ -45,13 +45,16 @@
 				<button id="separators" type="button" class="btn span5 btn-info">-/_ is: <span id="separatorsText">optional</span></button>
 				<button id="whitespace" type="button" class="btn span5 btn-info">SPACE is: <span id="whitespaceText">optional</span></button>
 				<button id="special" type="button" class="btn span5 btn-info">!@#$% is: <span id="specialText">optional</span></button>
-				<hr>
+				<hr/>
 				<div class="input-append">
 					<input id="password" type="password" class="span5" placeholder="generated password" />
 					<input id="password_visible" type="text" class="span5" placeholder="generated password" />
 					<button id="showPassword" class="btn" type="button"><i class="icon-eye-open"></i></button>
 					<button id="save" class="btn" type="button"><i class="icon-share"></i></button>
 				</div>
+				<hr/>
+				<button id="delete_curr" type="button" class="btn span5 btn-warning">Delete Current Config</button>
+				<button id="delete_all" type="button" class="btn span5 btn-danger">Delete All Configs</button>
 			</form>
 		</div>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -61,6 +64,10 @@
 		<script type="text/javascript">
 			$(document).ready(function () {
 				var
+					// constants
+					CUSTOM_OPTION = '(custom)',
+					SAVED_CONFIGURATIONS = 'savedConfigurations',
+
 					// application cache
 					cache = window.applicationCache,
 					cacheUpdateFn = function () {
@@ -91,23 +98,53 @@
 						// returns any configurations saved in local storage
 						// assumes the existence of the JSON object
 						var localStorage = window.localStorage,
-							savedConfigurations = localStorage ? JSON.parse(localStorage.getItem('savedConfigurations')) : null
+							savedConfigurations = localStorage ? JSON.parse(localStorage.getItem(SAVED_CONFIGURATIONS)) : null
 						;
 
-						savedConfigurations instanceof Array ? savedConfigurations : [];
+						return savedConfigurations instanceof Array ? savedConfigurations : [];
+					},
+					reset = function() {
+					},
+					log = function(message) {
+						// this will do more stuff later
+						console.log(message);
+					},
+					deleteConfigurations = function() {
+						var localStorage = window.localStorage;
+						if (localStorage)
+							localStorage.removeItem(SAVED_CONFIGURATIONS);
+
+						setUiFromStoredConfigs();
+					},
+					deleteConfiguration = function(configuration) {
+						var newConfigurations = $.map(
+								getStoredConfigurations(),
+								function(elem, index) {
+									return elem.service !== configuration.service ? elem : null
+								}
+							);
+
+						if (newConfigurations.length) {
+							storeConfigurations(newConfigurations);
+						}
+						else
+							log('Could not find ' + configuration.service + ' in the list of configs');
 					},
 					storeConfigurations = function(configurations) {
 						// given an array of configurations, stores them in localStorage
 						var localStorage = window.localStorage;
 
 						if (localStorage)
-							localStorage.setItem('savedConfigurations', JSON.stringify(configurations));
+							localStorage.setItem(SAVED_CONFIGURATIONS, JSON.stringify(configurations));
+
+						setUiFromStoredConfigs();
 					},
 					saveConfiguration = function(configuration) {
 						var
 							savedConfigurations = getStoredConfigurations()
 						;
 
+						// TODO: overwrite services
 						if (savedConfigurations instanceof Array)
 							savedConfigurations.push(configuration);
 
@@ -169,9 +206,12 @@
 					setUiFromPassword = function(password) {
 						$('#' + getCurrentPasswordUiId()).val(password);
 					},
-					setUiFromStoredConfigs = function(configurations) {
+					setUiFromStoredConfigs = function() {
+						setUiFromConfigs(getStoredConfigurations())
+					},
+					setUiFromConfigs = function(configurations) {
 						var selectNode = $('.saved-configs'),
-							optionMarkup = '';
+							optionMarkup = '<option>' + CUSTOM_OPTION + '</option>';
 
 						$.each(
 							configurations,
@@ -180,8 +220,8 @@
 							}
 						);
 
-						selectNode.append(optionMarkup);
-						selectNode.css({display:'block'});
+						selectNode.html(optionMarkup);
+						configurations instanceof Array && configurations.length ? selectNode.show() : selectNode.hide();
 					},
 					getCurrentPasswordUiId = function() {
 						return $('#password_visible').css('display') !== 'none' ? 'password_visible' : 'password'
@@ -254,6 +294,37 @@
 					$('#passphrase').toggle();
 				});
 
+				$('.saved-configs').change(function() {
+					var requested = $(this).val();
+
+					if (requested === CUSTOM_OPTION) {
+						reset();
+					} else {
+						var
+							filteredConfigs = $.map(
+								getStoredConfigurations(),
+								function (elem, index) {
+									return elem.service === requested ? elem : null
+								}
+							),
+							configuration = filteredConfigs && filteredConfigs.length ? filteredConfigs[0] : '';
+
+						// TODO: error logging here
+						configuration && setUiFromConfiguration(configuration);
+					}
+				});
+
+				$('#delete_curr').click(function() {
+					if (window.confirm('Are you sure you want to remove this from local storage?'))
+						deleteConfiguration(getConfigurationFromUi());
+				});
+
+				$('#delete_all').click(function() {
+					if (window.confirm('Are you sure you want to delete all the configs?'))
+						deleteConfigurations();
+				});
+
+				setUiFromStoredConfigs();
 			});
 		</script>
 	</body>
