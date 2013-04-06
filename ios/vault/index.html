@@ -30,8 +30,8 @@
 		<div class="container">
 
 			<form>
-				<input id="service" type="text" class="span5" placeholder="service" required/>
 				<select class="span5 saved-configs"></select>
+				<input id="service" type="text" class="span5" placeholder="service" required/>
 				<div class="input-append">
 					<input id="passphrase" class="span5" type="password" placeholder="passphrase" required/>
 					<input id="passphrase_visible" class="span5" type="text" placeholder="passphrase"/>
@@ -173,6 +173,8 @@
 								$('#' + value + 'Text').html(currCharMode.toLowerCase());
 							}
 						);
+
+						setUiFromPassword(generatePassword(configuration));
 					},
 					getConfigurationFromUi = function() {
 						var configuration = {};
