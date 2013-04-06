@@ -1,4 +1,5 @@
 var Vault = function(settings) {
+	//console.log(settings)
   this._phrase   = settings.phrase || '';
   this._length   = settings.length || Vault.DEFAULT_LENGTH;
   this._repeat   = settings.repeat || Vault.DEFAULT_REPEAT;

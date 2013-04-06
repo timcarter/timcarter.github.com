@@ -10,6 +10,10 @@
 		<link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="../../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<style type="text/css">
+			input, button {
+				font-family: Monaco, Courier New, monospace;
+			}
+
 			form>input[type="number"], form>button[type="button"] {
 				display:block;
 				float:none;
@@ -201,9 +205,41 @@
 
 						return configuration;
 					},
+					translateCharModeToInt = function(mode) {
+						return mode === charMode.REQUIRED ? 2 :
+							mode === charMode.OPTIONAL ? undefined :
+							0
+					},
+					getPassphraseFromUi = function() {
+						return $('#passphrase').val()
+					},
 					generatePassword = function(configuration) {
-						// dummy info for now
-						return JSON.stringify(configuration);
+						/*
+							settings:{
+								phrase:'there is no cow level',
+								length:20,
+								repeat:33,
+								lower:[0-2],
+								upper:[0-2],
+								number:[0-2],
+								dash:[0-2],
+								space:[0-2],
+								symbol:[0-2]
+							}
+
+							new Vault(settings).generate(service)
+						*/
+						return new Vault({
+							phrase:getPassphraseFromUi(),
+							length:+configuration.passphraseLength,
+							repeat:+(configuration.repetition || NaN),
+							lower:translateCharModeToInt(configuration.lowercase),
+							upper:translateCharModeToInt(configuration.uppercase),
+							number:translateCharModeToInt(configuration.numbers),
+							dash:translateCharModeToInt(configuration.separators),
+							space:translateCharModeToInt(configuration.whitespace),
+							symbol:translateCharModeToInt(configuration.special)
+						}).generate(configuration.service);
 					},
 					setUiFromPassword = function(password) {
 						$('#' + getCurrentPasswordUiId()).val(password);
