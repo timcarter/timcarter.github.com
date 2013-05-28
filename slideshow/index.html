@@ -1,0 +1,318 @@
+<html>
+	<head>
+		<title>vacations</title>
+		<link href='http://fonts.googleapis.com/css?family=Arbutus+Slab' rel='stylesheet' type='text/css'>
+		<style>
+			article h2 {
+				font-size:60px;
+				margin:25px 0;
+				line-height:1em;
+			}
+
+			body {
+				font-family:'Arbutus Slab';
+				margin:0;
+				padding:0;
+				background:rgba(44, 62, 80,1.0);
+				background:rgba(149, 165, 166,1.0);
+				background:rgba(127, 140, 141,1.0);
+			}
+
+			.story {
+				padding:0;
+				margin:0 auto;
+				width:100%;
+				position:relative;
+				border-top:1px solid rgba(255,255,255,0.3);
+				border-bottom:1px solid rgba(0,0,0,0.4);
+			}
+
+			.story > span {
+				background:#2c3e50;
+				color:#7f8c8d;
+				padding:.5em;
+				margin:1em;
+				text-overflow:ellipsis;
+				position:absolute;
+			}
+
+			.pin {
+				display:none;
+				position:fixed;
+				background:#16a085;
+				bottom:0;
+				right:15px;
+				color:#ecf0f1;
+				padding:2px;
+				cursor:pointer;
+			}
+
+			.pin:hover {
+				background:#fe57a1;
+			}
+		</style>
+	</head>
+	<body>
+		<a class="pin">Top</a>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<script src="mustache.js"></script>
+		<script>
+			$('document').ready(function() {
+				var images = {
+						images:[
+							{
+								id:'cantor',
+								width:3087,
+								height:2048,
+								file:'cantor.jpg',
+								speed:8,
+								title:'Stanford 2006',
+								paragraphs:[
+									{text:'cantor'}
+								]
+							},
+							{
+								id:'canyon',
+								width:3087,
+								height:2048,
+								file:'canyon.jpg',
+								speed:4,
+								title:'Post-Graduation 2007',
+								paragraphs:[
+									{text:'las vegas'},
+									{text:'taos'},
+									{text:'new orleans'},
+									{text:'albuquerque'},
+									{text:'laguna'},
+									{text:'seattle'}
+								]
+							},
+							{
+								id:'nj',
+								width:3087,
+								height:2048,
+								file:'nj.jpg',
+								speed:8,
+								title:'New Jersey 2007',
+								paragraphs:[
+									{text:'iselin fair'}
+								]
+							},
+							{
+								id:'hakone',
+								width:1536,
+								height:1037,
+								file:'hakone.jpg',
+								speed:8,
+								title:'Asia 2008',
+								paragraphs:[
+									{text:'manila'},
+									{text:'boracay'},
+									{text:'hong kong'},
+									{text:'tokyo'},
+									{text:'hakone'}
+								]
+							},
+							{
+								id:'cordoba',
+								width:1536,
+								height:1037,
+								file:'cordoba.jpg',
+								speed:8,
+								title:'Spain 2009',
+								paragraphs:[
+									{text:'barcelona'},
+									{text:'seville'},
+									{text:'cordoba'},
+									{text:'madrid'}
+								]
+							},
+							{
+								id:'capilla',
+								width:1536,
+								height:1037,
+								file:'capilla.jpg',
+								speed:8,
+								title:'Mexico 2010',
+								paragraphs:[
+									{text:'la capilla de guadelupe'},
+									{text:'guadalajara'}
+								]
+							},
+							{
+								id:'hawaii',
+								width:1536,
+								height:1037,
+								file:'hawaii.jpg',
+								speed:8,
+								title:'Hawaii 2010',
+								paragraphs:[
+									{text:'mauna kea'}
+								]
+							},
+							{
+								id:'angkor',
+								width:1800,
+								height:1215,
+								file:'angkor.jpg',
+								speed:8,
+								title:'Asia 2011',
+								paragraphs:[
+									{text:'hong kong'},
+									{text:'singapore'},
+									{text:'angkor wat'}
+								]
+							},
+							{
+								id:'sansebastian',
+								file:'sansebastian.jpg',
+								width:1800,
+								height:1215,
+								speed:8,
+								title:'Spain 2012',
+								paragraphs:[
+									{text:'bilbao'},
+									{text:'san sebastian'}
+								]
+							},
+							{
+								id:'victoria',
+								file:'victoria.jpg',
+								width:1800,
+								height:1215,
+								speed:8,
+								title:'Cathay 2012',
+								paragraphs:[
+									{text:'victoria falls'},
+									{text:'cape town'},
+									{text:'hong kong'}
+								]
+							}
+						]
+					},
+					sectionTemplate =
+						'{{#images}}' +
+						'<section class="story" data-width="{{width}}" data-height="{{height}}" id="{{id}}" data-speed="{{speed}}" style="background: url({{file}}) 50% 0 no-repeat fixed;background-size:cover;">' +
+							'{{#logo}}' +
+							'<div class="logo" data-type="{{type}}" data-offsetY="{{offsetY}}" data-Xposition="{{xPosition}}" data-speed="{{speed}}"></div>' +
+							'{{/logo}}' +
+							'<span>' +
+								'<strong>{{title}}</strong>' +
+/*
+								'{{#paragraphs}}' +
+								'<p>{{text}}</p>' +
+								'{{/paragraphs}}' +
+*/
+							'</span>' +
+						'</section>' +
+						'{{/images}}',
+					imageTemplate =
+						'{{#images}}' +
+						'<section class="story" data-width="{{width}}" data-height="{{height}}" id="{{id}}" data-speed="{{speed}}">' +
+							'<img src="{{file}}" class="image" />' +
+							'<article class="article">' +
+								'<h2>{{title}}</h2>' +
+								'{{#paragraphs}}' +
+								'<p>{{text}}</p>' +
+								'{{/paragraphs}}' +
+							'</article>' +
+						'</section>' +
+						'{{/images}}',
+
+					recalculateHeights = function() {
+						$('section.story').each(function() {
+							var $this = $(this),
+								ratio = $this.attr('data-width') / $this.attr('data-height')
+							;
+
+							$this.css({
+								minHeight: ($this.width() / ratio) + 'px'
+							});
+						})
+					},
+					updatePinVisibility = function() {
+						if ($(window).scrollTop() && !$pin.is(':visible'))
+							$pin.fadeIn(400);
+						else if (!$(window).scrollTop() && $pin.is(':visible'))
+							$pin.fadeOut(400);
+					},
+
+					resizeTimeout
+				;
+
+				$(document.body).prepend(Mustache.render(sectionTemplate, images));
+
+				recalculateHeights();
+				$(window).resize(function() {
+					resizeTimeout && clearTimeout(resizeTimeout);
+
+					resizeTimeout = setTimeout(recalculateHeights, 0);
+				});
+
+				var $pin = $('.pin');
+				$pin.click(function() {
+					$('body').animate({scrollTop:0}, 800, 'swing')
+				});
+
+				updatePinVisibility();
+				$(window).scroll(updatePinVisibility);
+
+				$('section.story').each(function() {
+					var $self = $(this),
+						offsetCoords = $self.offset(),
+						topOffset = offsetCoords.top,
+						$window = $(window)
+					;
+
+					$window.scroll(function() {
+						var $span = $('span', $self),
+							$selfElem = $self[0],
+							$spanElem = $span[0],
+							$spanBoundingRect = $spanElem.getBoundingClientRect(),
+							$sectionBoundingRect = $selfElem.getBoundingClientRect()
+						;
+
+						// if the visible portion of the section is now less than the height
+						// and the bottom of the span is less than the height of the span + some padding
+						if ($sectionBoundingRect.bottom < $sectionBoundingRect.height && $span.css('position') !== 'fixed') {
+							$span.css({position:'fixed', top:0, left:0});
+						} else if ($sectionBoundingRect.bottom >= $sectionBoundingRect.height && $span.css('position') !== 'absolute' ){
+							$span.css({position:'absolute', top:0, left:0});
+						}
+
+/*
+						// if this section is in the viewport
+						if (
+							($window.scrollTop() + $window.height()) > (topOffset) &&
+							((topOffset + $self.height()) > $window.scrollTop())
+						) {
+
+							// Scroll the background at var speed
+							// the yPos is a negative value because we're scrolling it UP!
+							// If this element has a Y offset then add it on
+							var yPos = -($window.scrollTop() / $self.attr('data-speed')) + topOffset/4;
+
+							// Put together our final background position and move the background
+							$self.css({ backgroundPosition: '50% '+ yPos + 'px' });
+
+							// Check for other sprites in this section
+							$('.image', $self).each(function() {
+
+								// Cache the sprite
+								// Use the same calculation to work out how far to scroll the sprite
+								var $sprite = $(this),
+									yPos = -($window.scrollTop() / $sprite.attr('data-speed'))
+								;
+
+								$sprite.css({ backgroundPosition: $sprite.data('Xposition') + ' ' + (yPos + $sprite.data('offsetY')) + 'px'});
+
+							}); // sprites
+						}; // in view
+*/
+					});
+				});
+
+			});
+		</script>
+	</body>
+</html>
