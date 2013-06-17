@@ -1,0 +1,9 @@
+# Version: there is no cow level
+
+CACHE:
+index.html
+icon.png
+http://fonts.googleapis.com/css?family=Quicksand:300
+tick.ogg
+ding.ogg
+switch.wav

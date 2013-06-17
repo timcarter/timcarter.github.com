@@ -1,0 +1,451 @@
+<!DOCTYPE>
+<html manifest="ioseven.manifest" >
+	<head>
+		<title>TESTING!!!</title>
+		<link href='http://fonts.googleapis.com/css?family=Quicksand:300' rel='stylesheet' type='text/css'>
+		<style type="text/css">
+			/* icon from designmodo.com */
+			/* http://colorschemedesigner.com/#5a61Tw0w0w0w0 */
+			/* http://freesound.org/people/jorickhoofd/sounds/160052/ */
+			/* http://freesound.org/people/CJ4096/sounds/66717/ */
+			body {
+				font-family:'Quicksand', sans-serif;
+				margin:0;
+				padding:0;
+				font-size:10em;
+				color:#ecf0f1; /* clouds */
+				overflow:hidden;
+			}
+
+			.button {
+				border-radius:50%;
+				border:6px solid #ecf0f1;
+				width:300px;
+				height:300px;
+				line-height:300px;
+				text-align:center;
+			}
+
+			#main {
+				position:relative;
+				width:100%;
+				height:100%;
+				display: -webkit-box;
+				-webkit-box-pack: center;
+				-webkit-box-align: center;
+				-webkit-box-orient: vertical;
+
+				display: -moz-box;
+				-moz-box-pack: center;
+				-moz-box-align: center;
+				-moz-box-orient: vertical;
+
+				display: box;
+				box-pack: center;
+				box-align: center;
+				box-orient: vertical;
+
+				transition:background-color 100ms;
+			}
+
+			.start {
+				background-color:#d60062;
+			}
+
+			.run {
+				background-color:#8bea00;
+			}
+
+			.fin {
+				background-color:#9702a7;
+			}
+
+			.rest {
+				background-color:#f00;
+			}
+
+			#timer {
+				-webkit-transform:translatez(0);
+				-moz-transform:translatez(0);
+				-ms-transform:translatez(0);
+				-o-transform:translatez(0);
+				transform:translatez(0);
+			}
+
+			.start #timer:hover {
+				cursor:pointer;
+
+				-webkit-animation-duration:600ms;
+				-webkit-animation-name:pulse;
+				-moz-animation-duration:600ms;
+				-moz-animation-name:pulse;
+				-ms-animation-duration:600ms;
+				-ms-animation-name:pulse;
+				-o-animation-duration:600ms;
+				-o-animation-name:pulse;
+				-webkit-animation-duration:600ms;
+				-webkit-animation-name:pulse;
+			}
+
+/* {{ pulse frames */
+			@-webkit-keyframes pulse {
+				from {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+
+				50% {
+					width:350px;
+					height:350px;
+					line-height:350px;
+				}
+
+				to {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+			}
+
+			@-ms-keyframes pulse {
+				from {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+
+				50% {
+					width:350px;
+					height:350px;
+					line-height:350px;
+				}
+
+				to {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+			}
+
+			@-moz-keyframes pulse {
+				from {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+
+				50% {
+					width:350px;
+					height:350px;
+					line-height:350px;
+				}
+
+				to {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+			}
+
+			@-o-keyframes pulse {
+				from {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+
+				50% {
+					width:350px;
+					height:350px;
+					line-height:350px;
+				}
+
+				to {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+			}
+
+			@keyframes pulse {
+				from {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+
+				50% {
+					width:350px;
+					height:350px;
+					line-height:350px;
+				}
+
+				to {
+					width:300px;
+					height:300px;
+					line-height:300px;
+				}
+			}
+/* pulse frames }} */
+
+			.cellContainer {
+				list-style-type:none;
+				position:absolute;
+				bottom:0;
+				width:100%;
+				height:5%;
+				margin:0;
+				padding:0;
+
+				display: -moz-box;
+				display: -webkit-box;
+				display:box;
+
+				-moz-box-orient:horizontal;
+				-webkit-box-orient:horizontal;
+				box-orient:horizontal;
+
+				-moz-box-flex:1;
+				-moz-box-flex:1;
+				box-flex:1;
+
+				-moz-box-align:stretch;
+				-webkit-box-align:stretch;
+				box-align:stretch;
+			}
+
+			.cell {
+				width:8.333%;
+
+				transition:background-color 100ms;
+			}
+
+			.run .cell {
+				background-color:#5a9800;
+			}
+
+			.run .inprogress {
+				background-color:#bef56e;
+			}
+
+			.rest .cell {
+				background-color:#a60000;
+			}
+
+			.rest .inprogress {
+				background-color:#ff7373;
+			}
+
+			#line1, #line2 {
+				font-size:.5em;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main" class="start">
+			<div id="line1"></div>
+			<div class="button" id="timer">...</div>
+			<div id="line2"></div>
+			<ul class="cellContainer">
+				<li id="cell0" class="cell"></li>
+				<li id="cell1" class="cell"></li>
+				<li id="cell2" class="cell"></li>
+				<li id="cell3" class="cell"></li>
+				<li id="cell4" class="cell"></li>
+				<li id="cell5" class="cell"></li>
+				<li id="cell6" class="cell"></li>
+				<li id="cell7" class="cell"></li>
+				<li id="cell8" class="cell"></li>
+				<li id="cell9" class="cell"></li>
+				<li id="cell10" class="cell"></li>
+				<li id="cell11" class="cell"></li>
+			</ul>
+		</div>
+		<script>
+
+			window.onload = function() {
+				var mode = 'start',
+					unlockSound = false,
+					timerNode = document.getElementById('timer'),
+					mainNode = document.getElementById('main'),
+					line1Node = document.getElementById('line1'),
+					line2Node = document.getElementById('line2'),
+					cellNodes = [
+						document.getElementById('cell0'),
+						document.getElementById('cell1'),
+						document.getElementById('cell2'),
+						document.getElementById('cell3'),
+						document.getElementById('cell4'),
+						document.getElementById('cell5'),
+						document.getElementById('cell6'),
+						document.getElementById('cell7'),
+						document.getElementById('cell8'),
+						document.getElementById('cell9'),
+						document.getElementById('cell10'),
+						document.getElementById('cell11')
+					],
+
+					config = [
+						{line1:'Jumping', line2:'Jacks'},
+						{line1:'Wall', line2:'Sit'},
+						{line1:'Push', line2:'Up'},
+						{line1:'Ab', line2:'Crunch'},
+						{line1:'Chair', line2:'Step', switch:1},
+						{line1:'Squat'},
+						{line1:'Triceps', line2:'Dip'},
+						{line1:'Plank'},
+						{line1:'Knees', line2:'Running'},
+						{line1:'Lunge', switch:1},
+						{line1:'Push Up', line2:'Rotation', switch:1},
+						{line1:'Side', line2:'Plank', switch:1}
+					],
+					configLength = config.length,
+					curr,
+					currSwitch,
+					currIndex = 0,
+					cellClass = 'cell',
+					inprogressClasses = 'cell inprogress',
+
+					exerciseLength = 30, // 30
+					restLength = 10, // 10
+					oneSecond = 1000,
+
+					webAudio = window.AudioContext || window.webkitAudioContext,
+					context = webAudio ? new webAudio : null,
+					// [0] = tick, [1] = ding, [2] = switch
+					soundFiles = [
+						'tick.ogg',
+						'ding.ogg',
+						'switch.wav'
+					],
+					sounds = {
+						// the sounds will be stored here
+						// pre-seed so that we can just execute without checking
+						'tick':'',
+						'ding':'',
+						'switch':'',
+					},
+					soundData = [
+						new Uint8Array(new ArrayBuffer(soundFiles[0].length)),
+						new Uint8Array(new ArrayBuffer(soundFiles[1].length)),
+						new Uint8Array(new ArrayBuffer(soundFiles[2].length))
+					],
+
+					countdown = function(num) {
+						if (num) {
+							currIndex = 0;
+							timerNode.innerHTML = num--;
+							setTimeout(function() {countdown(num)}, oneSecond);
+						} else {
+							mainNode.className = mode = 'run';
+							run();
+						}
+					},
+					run = function() {
+						if (currIndex < configLength) {
+							curr = config[currIndex];
+							currSwitch = curr.switch;
+
+							line1Node.innerHTML = curr.line1;
+							line2Node.innerHTML = curr.line2 || '&nbsp;';
+							if (currIndex > 0) cellNodes[currIndex-1].className = cellClass;
+							cellNodes[currIndex].className = inprogressClasses;
+
+							runTimer(0);
+						} else {
+							timerNode.innerHTML = 'Fin';
+							mainNode.className = 'fin';
+							setTimeout(function() {
+								cellNodes[currIndex-1].className = cellClass;
+								currIndex = 0;
+								mainNode.className = mode = 'start';
+								timerNode.innerHTML = 'Go';
+							}, oneSecond*5);
+						}
+					},
+					rest = function(num) {
+						if (num < restLength) {
+							timerNode.innerHTML = restLength - num;
+							setTimeout(function() {rest(num+1)}, oneSecond);
+						} else {
+							timerNode.innerHTML = '';
+							currIndex++;
+							mainNode.className = mode = 'run';
+							run();
+						}
+					},
+					runTimer = function(num) {
+						if (num < exerciseLength) {
+							playSound('tick');
+
+							if (num === 15 && currSwitch) {
+								playSound('switch');
+							}
+
+							timerNode.innerHTML = exerciseLength - num;
+							setTimeout(function() {runTimer(num+1)}, oneSecond);
+						} else {
+							playSound('ding');
+							timerNode.innerHTML = '';
+							line1Node.innerHTML = currIndex < config.length ? config[currIndex+1].line1 : '';
+							line2Node.innerHTML = currIndex < config.length ? config[currIndex+1].line2 || '&nbsp;' : '';
+							mainNode.className = mode = 'rest';
+							rest(0);
+						}
+					},
+					init = function() {
+						timerNode.onclick = timerNode.ontouchstart = function() {
+							if (mode === 'start'){
+
+								if (!unlockSound) {
+									playSound();
+									unlockSound = true;
+								}
+
+								countdown(1); // make 7
+							}
+						};
+						timerNode.innerHTML = 'Go';
+					},
+					playSound = function(sound) {
+						if (context) {
+							var buffer = sounds[sound] || (sound === undefined ? context.createBuffer(1,1,22050) : undefined);
+							if (buffer) {
+								// html5rocks
+								var source = context.createBufferSource();
+								source.buffer = buffer;
+								source.connect(context.destination);
+								source.start(0);
+							}
+						}
+					};
+
+				// set up sounds
+				if (context) {
+
+					var numSoundFiles = -1, request = new XMLHttpRequest;
+
+					(function decode () {
+						if (++numSoundFiles < soundFiles.length) {
+							request.open('GET', soundFiles[numSoundFiles], true);
+							request.responseType = 'arraybuffer';
+							request.addEventListener(
+								'load',
+								function(event) {
+									sounds[numSoundFiles === 0 ? 'tick' : numSoundFiles === 1 ? 'ding' : 'switch'] = context.createBuffer(event.target.response, false);
+									decode();
+								},
+								false
+							);
+							request.send();
+						}
+						else {
+							init();
+						}
+					})();
+				} else init();
+			}
+		</script>
+	</body>
+</html>
