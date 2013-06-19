@@ -1,6 +1,11 @@
 <!DOCTYPE>
 <html manifest="ioseven.manifest" >
 	<head>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=0"/>
+
+		<link rel="apple-touch-icon" href="icon.png" />
 		<title>Seven</title>
 		<link href='http://fonts.googleapis.com/css?family=Quicksand:300' rel='stylesheet' type='text/css'>
 		<style type="text/css">
@@ -20,9 +25,9 @@
 			.button {
 				border-radius:50%;
 				border:6px solid #ecf0f1;
-				width:300px;
-				height:300px;
-				line-height:300px;
+				width:250px;
+				height:250px;
+				line-height:250px;
 				text-align:center;
 			}
 
@@ -90,101 +95,101 @@
 /* {{ pulse frames */
 			@-webkit-keyframes pulse {
 				from {
-					width:300px;
-					height:300px;
-					line-height:300px;
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 
 				50% {
-					width:350px;
-					height:350px;
-					line-height:350px;
-				}
-
-				to {
 					width:300px;
 					height:300px;
 					line-height:300px;
+				}
+
+				to {
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 			}
 
 			@-ms-keyframes pulse {
 				from {
-					width:300px;
-					height:300px;
-					line-height:300px;
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 
 				50% {
-					width:350px;
-					height:350px;
-					line-height:350px;
-				}
-
-				to {
 					width:300px;
 					height:300px;
 					line-height:300px;
+				}
+
+				to {
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 			}
 
 			@-moz-keyframes pulse {
 				from {
-					width:300px;
-					height:300px;
-					line-height:300px;
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 
 				50% {
-					width:350px;
-					height:350px;
-					line-height:350px;
-				}
-
-				to {
 					width:300px;
 					height:300px;
 					line-height:300px;
+				}
+
+				to {
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 			}
 
 			@-o-keyframes pulse {
 				from {
-					width:300px;
-					height:300px;
-					line-height:300px;
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 
 				50% {
-					width:350px;
-					height:350px;
-					line-height:350px;
-				}
-
-				to {
 					width:300px;
 					height:300px;
 					line-height:300px;
+				}
+
+				to {
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 			}
 
 			@keyframes pulse {
 				from {
-					width:300px;
-					height:300px;
-					line-height:300px;
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 
 				50% {
-					width:350px;
-					height:350px;
-					line-height:350px;
-				}
-
-				to {
 					width:300px;
 					height:300px;
 					line-height:300px;
+				}
+
+				to {
+					width:250px;
+					height:250px;
+					line-height:250px;
 				}
 			}
 /* pulse frames }} */
@@ -238,7 +243,8 @@
 			}
 
 			#line1, #line2 {
-				font-size:.5em;
+				font-size:.4em;
+				text-align:center;
 			}
 		</style>
 	</head>
@@ -307,16 +313,17 @@
 					cellClass = 'cell',
 					inprogressClasses = 'cell inprogress',
 
-					exerciseLength = 30, // 30
-					restLength = 10, // 10
+					exerciseLength = 2, // 30
+					restLength = 2, // 10
 					oneSecond = 1000,
 
 					webAudio = window.AudioContext || window.webkitAudioContext,
 					context = webAudio ? new webAudio : null,
+					contextDestination = context ? context.destination : null,
 					// [0] = tick, [1] = ding, [2] = switch
 					soundFiles = [
-						'tick.ogg',
-						'ding.ogg',
+						'tick.mp3',
+						'ding.mp3',
 						'switch.wav'
 					],
 					sounds = {
@@ -325,6 +332,7 @@
 						'tick':'',
 						'ding':'',
 						'switch':'',
+						'ios':context ? context.createBuffer(1,1,22050) : ''
 					},
 					soundData = [
 						new Uint8Array(new ArrayBuffer(soundFiles[0].length)),
@@ -336,7 +344,7 @@
 						if (num) {
 							currIndex = 0;
 							timerNode.innerHTML = num--;
-							setTimeout(function() {countdown(num)}, oneSecond);
+							render(function() {countdown(num)}, oneSecond);
 						} else {
 							mainNode.className = mode = 'run';
 							run();
@@ -356,7 +364,7 @@
 						} else {
 							timerNode.innerHTML = 'Fin';
 							mainNode.className = 'fin';
-							setTimeout(function() {
+							render(function() {
 								cellNodes[currIndex-1].className = cellClass;
 								currIndex = 0;
 								mainNode.className = mode = 'start';
@@ -367,7 +375,7 @@
 					rest = function(num) {
 						if (num < restLength) {
 							timerNode.innerHTML = restLength - num;
-							setTimeout(function() {rest(num+1)}, oneSecond);
+							render(function() {rest(num+1)}, oneSecond);
 						} else {
 							timerNode.innerHTML = '';
 							currIndex++;
@@ -384,12 +392,12 @@
 							}
 
 							timerNode.innerHTML = exerciseLength - num;
-							setTimeout(function() {runTimer(num+1)}, oneSecond);
+							render(function() {runTimer(num+1)}, oneSecond);
 						} else {
 							playSound('ding');
 							timerNode.innerHTML = '';
-							line1Node.innerHTML = currIndex < config.length ? config[currIndex+1].line1 : '';
-							line2Node.innerHTML = currIndex < config.length ? config[currIndex+1].line2 || '&nbsp;' : '';
+							line1Node.innerHTML = currIndex < config.length-1 ? config[currIndex+1].line1 : '';
+							line2Node.innerHTML = currIndex < config.length-1 ? config[currIndex+1].line2 || '&nbsp;' : '';
 							mainNode.className = mode = 'rest';
 							rest(0);
 						}
@@ -397,35 +405,157 @@
 					init = function() {
 						timerNode.onclick = timerNode.ontouchstart = function() {
 							if (mode === 'start'){
-
 								if (!unlockSound) {
-									playSound();
+									playSound('ios');
 									unlockSound = true;
 								}
-
-								countdown(1); // make 7
+								mode = 'countdown';
+								draw();
 							}
 						};
 						timerNode.innerHTML = 'Go';
 					},
 					playSound = function(sound) {
-						if (context) {
-							var buffer = sounds[sound] || (sound === undefined ? context.createBuffer(1,1,22050) : undefined);
-							if (buffer) {
-								// html5rocks
-								var source = context.createBufferSource();
-								source.buffer = buffer;
-								source.connect(context.destination);
-								source.start(0);
+						if (context && sounds[sound]) {
+							// html5rocks
+							var source = context.createBufferSource();
+							source.buffer = sounds[sound];
+							source.connect(contextDestination);
+							source.noteOn(0);
+						}
+					},
+
+					mode = 'start',
+					countdownDraws = 2,
+					defaultCountdown = countdownDraws * 1000,
+					currCountdown,
+					runDraws = 2,
+					defaultRun = runDraws * 1000,
+					currRun,
+					restDraws = 2,
+					defaultRest = restDraws * 1000,
+					currRest,
+					defaultFin = 5000,
+					currFin,
+					currStartPeriod = 0,
+					lastDraw = 0,
+					numDraws = 0,
+					draw = function() {
+						var currTime = new Date().getTime(),
+							elapsed = currTime - currStartPeriod,
+							keepDrawing = true;
+
+						if (mode === 'start') {
+							if (currIndex > 0) cellNodes[currIndex - 1].className = cellClass;
+							currIndex = 0;
+							mainNode.className = 'start';
+							timerNode.innerHTML = 'Go';
+							keepDrawing = false;
+						} else if (mode === 'run') {
+							if (numDraws > runDraws) {
+								var nextConfig = currIndex < config.length - 1 ? config[currIndex+1] : null;
+								playSound('ding');
+								timerNode.innerHTML = '';
+								line1Node.innerHTML = nextConfig ? nextConfig.line1 : '';
+								line2Node.innerHTML = nextConfig ? nextConfig.line2 || '&nbsp;' : '&nbsp;';
+								cellNodes[currIndex].className = cellClass;
+								if (currIndex < cellNodes.length-1) cellNodes[currIndex+1].className = inprogressClasses;
+								lastDraw = numDraws = 0;
+								mainNode.className = 'rest';
+								mode = 'rest';
+							} else if (currTime - lastDraw >= oneSecond) {
+								playSound('tick');
+								if (numDraws === runDraws/2 && currSwitch) playSound('switch');
+								timerNode.innerHTML = (runDraws - numDraws) || '';
+								lastDraw = currTime;
+								numDraws++;
+							}
+						} else if (mode === 'rest') {
+							if (numDraws > restDraws) {
+								if (currIndex < config.length-1) {
+									curr = config[++currIndex];
+									currSwitch = curr.switch;
+									line1Node.innerHTML = curr.line1;
+									line2Node.innerHTML = curr.line2 || '&nbsp;';
+									mainNode.className = 'run';
+									mode = 'run';
+									lastDraw = numDraws = 0;
+								} else {
+									timerNode.innerHTML = 'Fin';
+									line1Node.innerHTML = '';
+									line2Node.innerHTML = '';
+									mainNode.className = 'fin';
+									mode = 'fin';
+								}
+							} else if (currTime - lastDraw >= oneSecond) {
+								timerNode.innerHTML = (restDraws - numDraws) || '';
+								lastDraw = currTime;
+								numDraws++;
+							}
+						} else if (mode === 'countdown') {
+							if (numDraws > countdownDraws) {
+								currIndex = 0;
+								curr = config[currIndex];
+								currSwitch = curr.switch;
+								line1Node.innerHTML = curr.line1;
+								line2Node.innerHTML = curr.line2;
+								cellNodes[currIndex].className = inprogressClasses;
+								mainNode.className = 'run';
+								lastDraw = numDraws = 0;
+								mode = 'run';
+							} else if (currTime - lastDraw >= oneSecond){
+								timerNode.innerHTML = (countdownDraws - numDraws) || '';
+								lastDraw = currTime;
+								numDraws++;
+							}
+						} else if (mode === 'fin') {
+							if (currTime - lastDraw > oneSecond*5) {
+								lastDraw = numDraws = 0;
+								timerNode.innerHTML = 'Go';
+								line1Node.innerHTML = '';
+								line2Node.innerHTML = '';
+								currIndex = 0;
+								mainNode.className = 'start';
+								lastDraw = numDraws = 0;
+								mode = 'start';
 							}
 						}
+
+						if (keepDrawing) window.requestAnimationFrame(draw);
 					};
+
+					// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+					// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+					// requestAnimationFrame polyfill by Erik Möller
+					// fixes from Paul Irish and Tino Zijdel
+					(function() {
+						var lastTime = 0;
+						var vendors = ['ms', 'moz', 'webkit', 'o'];
+						for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+							window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+							window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+													   || window[vendors[x]+'CancelRequestAnimationFrame'];
+						}
+					 
+						if (!window.requestAnimationFrame)
+							window.requestAnimationFrame = function(callback, element) {
+								var currTime = new Date().getTime();
+								var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+								var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+								  timeToCall);
+								lastTime = currTime + timeToCall;
+								return id;
+							};
+					 
+						if (!window.cancelAnimationFrame)
+							window.cancelAnimationFrame = function(id) {
+								clearTimeout(id);
+							};
+					}());
 
 				// set up sounds
 				if (context) {
-
 					var numSoundFiles = -1, request = new XMLHttpRequest;
-
 					(function decode () {
 						if (++numSoundFiles < soundFiles.length) {
 							request.open('GET', soundFiles[numSoundFiles], true);
