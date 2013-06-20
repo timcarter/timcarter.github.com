@@ -5,12 +5,13 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=0"/>
 
-		<link rel="apple-touch-icon" href="icon.png" />
+		<link rel="apple-touch-icon-precomposed" href="icon.png" />
 		<title>Seven</title>
-		<link href='http://fonts.googleapis.com/css?family=Quicksand:300' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Quicksand:400' rel='stylesheet' type='text/css'>
 		<style type="text/css">
-			/* icon from designmodo.com */
+			/* icon from Jacob Halton at The Noun Project http://thenounproject.com/noun/doughnut/#icon-No4118 */
 			/* http://colorschemedesigner.com/#5a61Tw0w0w0w0 */
+			/* http://colorschemedesigner.com/#0r61Tw0w0w0w0 */
 			/* http://freesound.org/people/jorickhoofd/sounds/160052/ */
 			/* http://freesound.org/people/CJ4096/sounds/66717/ */
 			body {
@@ -23,12 +24,15 @@
 			}
 
 			.button {
-				border-radius:50%;
-				border:6px solid #ecf0f1;
 				width:250px;
 				height:250px;
 				line-height:250px;
 				text-align:center;
+			}
+
+			.start .button {
+				border-radius:50%;
+				border:6px solid #ecf0f1;
 			}
 
 			#main {
@@ -58,7 +62,7 @@
 			}
 
 			.run {
-				background-color:#8bea00;
+				background-color:#34cfbe;
 			}
 
 			.fin {
@@ -218,20 +222,26 @@
 				-moz-box-align:stretch;
 				-webkit-box-align:stretch;
 				box-align:stretch;
+
+				overflow:hidden;
 			}
 
 			.cell {
-				width:8.333%;
+				width:8.3333%;
 
 				transition:background-color 100ms;
 			}
 
+			.cell:last-child {
+				width:11%;
+			}
+
 			.run .cell {
-				background-color:#5a9800;
+				background-color:#009e8e;
 			}
 
 			.run .inprogress {
-				background-color:#bef56e;
+				background-color:#34cfbe;
 			}
 
 			.rest .cell {
@@ -239,7 +249,7 @@
 			}
 
 			.rest .inprogress {
-				background-color:#ff7373;
+				background-color:#f00;
 			}
 
 			#line1, #line2 {
@@ -251,8 +261,8 @@
 	<body>
 		<div id="main" class="start">
 			<div id="line1"></div>
-			<div class="button" id="timer">...</div>
 			<div id="line2"></div>
+			<div class="button" id="timer">...</div>
 			<ul class="cellContainer">
 				<li id="cell0" class="cell"></li>
 				<li id="cell1" class="cell"></li>
@@ -313,8 +323,8 @@
 					cellClass = 'cell',
 					inprogressClasses = 'cell inprogress',
 
-					exerciseLength = 2, // 30
-					restLength = 2, // 10
+					exerciseLength = 30, // 30
+					restLength = 10, // 10
 					oneSecond = 1000,
 
 					webAudio = window.AudioContext || window.webkitAudioContext,
@@ -456,7 +466,7 @@
 								var nextConfig = currIndex < config.length - 1 ? config[currIndex+1] : null;
 								playSound('ding');
 								timerNode.innerHTML = '';
-								line1Node.innerHTML = nextConfig ? nextConfig.line1 : '';
+								line1Node.innerHTML = nextConfig ? nextConfig.line1 : '&nbsp';
 								line2Node.innerHTML = nextConfig ? nextConfig.line2 || '&nbsp;' : '&nbsp;';
 								cellNodes[currIndex].className = cellClass;
 								if (currIndex < cellNodes.length-1) cellNodes[currIndex+1].className = inprogressClasses;
