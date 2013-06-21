@@ -322,9 +322,6 @@
 					currIndex = 0,
 					cellClass = 'cell',
 					inprogressClasses = 'cell inprogress',
-
-					exerciseLength = 30, // 30
-					restLength = 10, // 10
 					oneSecond = 1000,
 
 					webAudio = window.AudioContext || window.webkitAudioContext,
@@ -350,68 +347,6 @@
 						new Uint8Array(new ArrayBuffer(soundFiles[2].length))
 					],
 
-					countdown = function(num) {
-						if (num) {
-							currIndex = 0;
-							timerNode.innerHTML = num--;
-							render(function() {countdown(num)}, oneSecond);
-						} else {
-							mainNode.className = mode = 'run';
-							run();
-						}
-					},
-					run = function() {
-						if (currIndex < configLength) {
-							curr = config[currIndex];
-							currSwitch = curr.switch;
-
-							line1Node.innerHTML = curr.line1;
-							line2Node.innerHTML = curr.line2 || '&nbsp;';
-							if (currIndex > 0) cellNodes[currIndex-1].className = cellClass;
-							cellNodes[currIndex].className = inprogressClasses;
-
-							runTimer(0);
-						} else {
-							timerNode.innerHTML = 'Fin';
-							mainNode.className = 'fin';
-							render(function() {
-								cellNodes[currIndex-1].className = cellClass;
-								currIndex = 0;
-								mainNode.className = mode = 'start';
-								timerNode.innerHTML = 'Go';
-							}, oneSecond*5);
-						}
-					},
-					rest = function(num) {
-						if (num < restLength) {
-							timerNode.innerHTML = restLength - num;
-							render(function() {rest(num+1)}, oneSecond);
-						} else {
-							timerNode.innerHTML = '';
-							currIndex++;
-							mainNode.className = mode = 'run';
-							run();
-						}
-					},
-					runTimer = function(num) {
-						if (num < exerciseLength) {
-							playSound('tick');
-
-							if (num === 15 && currSwitch) {
-								playSound('switch');
-							}
-
-							timerNode.innerHTML = exerciseLength - num;
-							render(function() {runTimer(num+1)}, oneSecond);
-						} else {
-							playSound('ding');
-							timerNode.innerHTML = '';
-							line1Node.innerHTML = currIndex < config.length-1 ? config[currIndex+1].line1 : '';
-							line2Node.innerHTML = currIndex < config.length-1 ? config[currIndex+1].line2 || '&nbsp;' : '';
-							mainNode.className = mode = 'rest';
-							rest(0);
-						}
-					},
 					init = function() {
 						timerNode.onclick = timerNode.ontouchstart = function() {
 							if (mode === 'start'){
@@ -436,13 +371,13 @@
 					},
 
 					mode = 'start',
-					countdownDraws = 2,
+					countdownDraws = 7,
 					defaultCountdown = countdownDraws * 1000,
 					currCountdown,
-					runDraws = 2,
+					runDraws = 30,
 					defaultRun = runDraws * 1000,
 					currRun,
-					restDraws = 2,
+					restDraws = 10,
 					defaultRest = restDraws * 1000,
 					currRest,
 					defaultFin = 5000,
@@ -485,7 +420,7 @@
 								if (currIndex < config.length-1) {
 									curr = config[++currIndex];
 									currSwitch = curr.switch;
-									line1Node.innerHTML = curr.line1;
+									line1Node.innerHTML = curr.line1 || '&nbsp;';
 									line2Node.innerHTML = curr.line2 || '&nbsp;';
 									mainNode.className = 'run';
 									mode = 'run';
