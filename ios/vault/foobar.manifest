@@ -1,10 +1,10 @@
 CACHE MANIFEST
 
-# Version: there was one cow level
+# Version: there were two cow levels
 
 CACHE:
 index.html
-icon.png
+lock.png
 ../../vault/vault.js
 ../../vault/crypto-js-3.0.2.js
 ../../bootstrap/css/bootstrap.min.css
