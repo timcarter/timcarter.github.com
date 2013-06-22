@@ -5,7 +5,7 @@ CACHE MANIFEST
 CACHE:
 index.html
 icon.png
-http://fonts.googleapis.com/css?family=Quicksand:300
-tick.ogg
-ding.ogg
+http://fonts.googleapis.com/css?family=Quicksand:400
+tick.mp3
+ding.mp3
 switch.wav
