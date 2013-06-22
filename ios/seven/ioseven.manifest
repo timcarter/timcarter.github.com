@@ -1,11 +1,11 @@
 CACHE MANIFEST
 
-# Version: there are four cow levels
+# Version: there are five cow levels
 
 CACHE:
 index.html
 icon.png
-http://fonts.googleapis.com/css?family=Quicksand:400
+Quicksand-Regular.ttf
 tick.mp3
 ding.mp3
 switch.wav
