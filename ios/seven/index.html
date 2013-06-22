@@ -307,7 +307,7 @@
 					],
 
 					config = [
-						{line1:'Jumping', line2:'Jacks'},
+						{line1:'Jumping', line2:'Jacks', switch:1},
 						{line1:'Wall', line2:'Sit'},
 						{line1:'Push', line2:'Up'},
 						{line1:'Ab', line2:'Crunch'},
@@ -512,7 +512,13 @@
 							request.addEventListener(
 								'load',
 								function(event) {
-									sounds[numSoundFiles === 0 ? 'tick' : numSoundFiles === 1 ? 'ding' : 'switch'] = context.createBuffer(event.target.response, false);
+									var currSound = numSoundFiles === 0 ? 'tick' : numSoundFiles === 1 ? 'ding' : 'switch';
+
+									// for some reason, the "switch" sound will be returned as null
+									// and this load event will get fired four times for it. At some
+									// point, I really should figure out what's up with that.
+									if (event.target.response)
+										sounds[currSound] = context.createBuffer(event.target.response, false);
 									decode();
 								},
 								false
