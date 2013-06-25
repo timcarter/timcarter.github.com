@@ -1,11 +1,8 @@
 CACHE MANIFEST
 
-# Version: there are seven cow levels
+# Version: there are nine cow levels
 
 CACHE:
 index.html
 icon.png
 Quicksand-Regular.ttf
-tick.mp3
-ding.mp3
-switch.wav
