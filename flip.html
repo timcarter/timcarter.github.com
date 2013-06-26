@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<title>Flip</title>
+		<style type="text/css">
+			body {
+				margin:0;
+				padding:0;
+			}
+
+			#container {
+				overflow:hidden;
+				width:100%;
+				height:100%;
+				position:relative;
+			}
+
+			.half {
+				width:100%;
+				position:absolute;
+				height:50%;
+				left:0;
+				border:1px dotted black;
+				background:#fff;
+				-webkit-transform-style:preserve-3d;
+			}
+
+			#z0top, #z1top {
+				top:0;
+				-webkit-transform-origin:bottom;
+			}
+
+			#z0bottom, #z1bottom {
+				bottom:0;
+				-webkit-transform-origin:top;
+			}
+
+			#flipper {
+				position:absolute;
+				bottom:0;
+			}
+		</style>
+	</head>
+	<body>
+		<section id="container">
+			<div class="half" id="z0top">TOP TOP</div>
+			<div class="half" id="z1top">BOTTOM TOP</div>
+			<div class="half" id="z0bottom">TOP BOTTOM</div>
+			<div class="half" id="z1bottom">BOTTOM BOTTOM</div>
+		</section>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script>
+			$(function() {
+				var executing = false,
+					$container = $('#container'),
+					$containerHeight = $container.height(),
+					pageHeight = $containerHeight / 2,
+					$node
+				;
+
+				$container.mousedown(function(event) {
+					var mouseY = event.pageY;
+
+					$node = $(mouseY < pageHeight ? '#z1top' : '#z1bottom');
+
+				}).mouseup(function() {
+					var mouseY = event.pageY;
+
+					$node = null;
+				}).mousemove(function() {
+					if ($node && !executing) {
+						executing = true;
+						var mouseX = event.pageX,
+							mouseY = event.pageY,
+							degree = Math.acos(Math.abs(mouseY - pageHeight)/pageHeight) * 180 / Math.PI
+						;
+
+						$node.css(
+							'webkitTransform',
+							'rotateX(' + degree + 'deg)'
+						);
+						executing = false;
+					}
+				})
+				$('#z1bottom').on('mousedown', function() {mousing = true})
+							.on('mouseup', function() {mousing=false})
+							.mousemove(function(event) {
+							});
+			});
+		</script>
+	</body>
+</html>
