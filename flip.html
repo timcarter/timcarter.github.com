@@ -101,6 +101,7 @@
 
 					$node = $(mouseY < pageHeight ? '#a' : '#b');
 
+					event.preventDefault();
 				}).bind('touchleave mouseout', function() {
 					var mouseY = event.pageY;
 
@@ -121,6 +122,7 @@
 							'webkitTransform',
 							'rotateX(' + degree + 'deg)'
 						);
+						event.preventDefault();
 						executing = false;
 					}
 				});
