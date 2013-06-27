@@ -96,20 +96,20 @@
 					$node
 				;
 
-				$container.mousedown(function(event) {
+				$container.bind('touchstart mousedown', function(event) {
 					var mouseY = event.pageY;
 
 					$node = $(mouseY < pageHeight ? '#a' : '#b');
 
-				}).mouseout(function() {
+				}).bind('touchleave mouseout', function() {
 					var mouseY = event.pageY;
 
 					$node = null;
-				}).mouseup(function() {
+				}).bind('touchend mouseup', function() {
 					var mouseY = event.pageY;
 
 					$node = null;
-				}).mousemove(function() {
+				}).bind('touchmove mousemove', function() {
 					if ($node && !executing) {
 						executing = true;
 						var mouseX = event.pageX,
@@ -123,11 +123,7 @@
 						);
 						executing = false;
 					}
-				})
-				$('#z1bottom').on('mousedown', function() {mousing = true})
-							.on('mouseup', function() {mousing=false})
-							.mousemove(function(event) {
-							});
+				});
 			});
 		</script>
 	</body>
