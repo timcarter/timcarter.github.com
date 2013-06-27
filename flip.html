@@ -1,10 +1,18 @@
 <html>
 	<head>
 		<title>Flip</title>
+		<link href='http://fonts.googleapis.com/css?family=Gentium+Basic:400' rel='stylesheet' type='text/css' />
 		<style type="text/css">
 			body {
+				font-family: 'Gentium Basic';
+				font-size:2em;
 				margin:0;
 				padding:0;
+				cursor:hand;
+
+				-moz-user-select:none;
+				-webkit-user-select:none;
+				user-select:none;
 			}
 
 			#container {
@@ -22,14 +30,29 @@
 				border:1px dotted black;
 				background:#fff;
 				-webkit-transform-style:preserve-3d;
+				overflow:hidden;
 			}
 
-			#z0top, #z1top {
+			.content {
+				width:100%;
+				height:200%;
+				position:relative;
+			}
+
+			#a .content, #c .content {
+				top:0;
+			}
+
+			#b .content, #d .content {
+				top:-100%;
+			}
+
+			#a, #c {
 				top:0;
 				-webkit-transform-origin:bottom;
 			}
 
-			#z0bottom, #z1bottom {
+			#b, #d {
 				bottom:0;
 				-webkit-transform-origin:top;
 			}
@@ -42,10 +65,26 @@
 	</head>
 	<body>
 		<section id="container">
-			<div class="half" id="z0top">TOP TOP</div>
-			<div class="half" id="z1top">BOTTOM TOP</div>
-			<div class="half" id="z0bottom">TOP BOTTOM</div>
-			<div class="half" id="z1bottom">BOTTOM BOTTOM</div>
+			<div class="half" id="c">
+				<div class="content">
+					Prior to colonial rule, geopolitical circumstances differed in Taiwan and Korea. Taiwan was a young backwater province within the Qing dynasty while Korea was undergoing a transformation from a dynastic state that was a Qing tributary to a modernized, Qing-independent nation-state. This geopolitical distinction is important because it plays a role in differentiating Korean elite responses from those of the Taiwanese. The Korea that existed, in the words of Andre Schmid, “between Empires,” saw the development of a national identity that was not seen in Taiwan until during Japanese colonial rule. This development of national identity, as well as the overall process of creating a modern (with all the additional adjectives that normally entails) nation-state, was a shared experience for many of the Korean colonial elites, who either grew up or participated in such nation-building. For instance, Yun Chi-ho was a founder of the Independence Club and the Tongnip sinmun, the first Korean-language newspaper. He was a direct participant in the initial Korean nation-building process and frequently had access to the ears of influential figures in government and the (still theoretically absolute) monarchy. Taiwan, on the other hand, was still a distant Qing province far from Peking, where discourses on a modern Han identity were just being formed by thinkers such as Kang Youwei, Yan Fu, and Liang Qizhao. Although there is evidence of a seminal Taiwanese identity—some Taiwanese responded to the Shimonoseki Treaty by forming a Taiwanese nation—in the period before Japanese occupation, there is little evidence of modern nation-state formation. Transportation and communication infrastructure, organized island-wide educational systems, and other stereotypical trappings of a nation-state were not evident in Taiwan until after a Japanese colonial government was established. Furthermore, the lack of a significant interregnum between Qing and Japanese rule in Taiwan contrasts with the ten-year period when Korea was not a Qing vassal state and not a Japanese protectorate either. This ten-year interregnum in Korean history allowed a pseudo-colonial modernity to develop in which Korea maintained the trappings of a developing modern society although its sovereignty was questionable in light of Russian and Japanese intrigues concerning its monarchy.
+				</div>
+			</div>
+			<div class="half" id="a">
+				<div class="content">
+					A study of the responses to Japanese imperial rule in its occupied territories resists efforts to group them into singular phenomena. Responses to rule in occupied Korea cannot be lumped together with responses to rule in Taiwan without losing essential characteristics of both. Similarly, responses to Japanese rule in Seoul cannot be combined with those from Pusan, responses from the urban poor cannot be unified with responses from colonial elites, and responses from yangban elites cannot be grouped with responses from intellectual elites without losing key characteristics that distinguish those responses in the first place. Such an resistance highlights the importance of the local experience and of individual interactions within the Japanese Empire in crafting colonial attitudes towards it. However, while we cannot create a single template which we can apply to the multitude of colonial responses, we can analyze common themes that existed as a result of shared experiences. For example, native Korean and Taiwanese populations were subject to similar sets of educational policies that were designed and implemented by the respective Japanese colonial governments. An acknowledgement of a diverse array of colonial responses to these policies is not incompatible with a study of similarities within many Taiwanese responses vis a vis Korean responses, or even similarities between both sets. In this essay, I intend to analyze Korean and Taiwanese elite reactions to Japanese educational policy, keeping in mind how their reactions may have converged and diverged as a result of experiences common throughout the Empire and circumstances specific to each colony. I will demonstrate the variety in discourse among a small—though well-documented—subgroup in colonial society while showing how and why commonalities and differences existed. In particular, I will show how the pre-colonial situation in both colonies affected elite response, tying together the intra-colonial responses while differentiating inter-colonial. 
+				</div>
+			</div>
+			<div class="half" id="d">
+				<div class="content">
+					Prior to colonial rule, geopolitical circumstances differed in Taiwan and Korea. Taiwan was a young backwater province within the Qing dynasty while Korea was undergoing a transformation from a dynastic state that was a Qing tributary to a modernized, Qing-independent nation-state. This geopolitical distinction is important because it plays a role in differentiating Korean elite responses from those of the Taiwanese. The Korea that existed, in the words of Andre Schmid, “between Empires,” saw the development of a national identity that was not seen in Taiwan until during Japanese colonial rule. This development of national identity, as well as the overall process of creating a modern (with all the additional adjectives that normally entails) nation-state, was a shared experience for many of the Korean colonial elites, who either grew up or participated in such nation-building. For instance, Yun Chi-ho was a founder of the Independence Club and the Tongnip sinmun, the first Korean-language newspaper. He was a direct participant in the initial Korean nation-building process and frequently had access to the ears of influential figures in government and the (still theoretically absolute) monarchy. Taiwan, on the other hand, was still a distant Qing province far from Peking, where discourses on a modern Han identity were just being formed by thinkers such as Kang Youwei, Yan Fu, and Liang Qizhao. Although there is evidence of a seminal Taiwanese identity—some Taiwanese responded to the Shimonoseki Treaty by forming a Taiwanese nation—in the period before Japanese occupation, there is little evidence of modern nation-state formation. Transportation and communication infrastructure, organized island-wide educational systems, and other stereotypical trappings of a nation-state were not evident in Taiwan until after a Japanese colonial government was established. Furthermore, the lack of a significant interregnum between Qing and Japanese rule in Taiwan contrasts with the ten-year period when Korea was not a Qing vassal state and not a Japanese protectorate either. This ten-year interregnum in Korean history allowed a pseudo-colonial modernity to develop in which Korea maintained the trappings of a developing modern society although its sovereignty was questionable in light of Russian and Japanese intrigues concerning its monarchy.
+				</div>
+			</div>
+			<div class="half" id="b">
+				<div class="content">
+					A study of the responses to Japanese imperial rule in its occupied territories resists efforts to group them into singular phenomena. Responses to rule in occupied Korea cannot be lumped together with responses to rule in Taiwan without losing essential characteristics of both. Similarly, responses to Japanese rule in Seoul cannot be combined with those from Pusan, responses from the urban poor cannot be unified with responses from colonial elites, and responses from yangban elites cannot be grouped with responses from intellectual elites without losing key characteristics that distinguish those responses in the first place. Such an resistance highlights the importance of the local experience and of individual interactions within the Japanese Empire in crafting colonial attitudes towards it. However, while we cannot create a single template which we can apply to the multitude of colonial responses, we can analyze common themes that existed as a result of shared experiences. For example, native Korean and Taiwanese populations were subject to similar sets of educational policies that were designed and implemented by the respective Japanese colonial governments. An acknowledgement of a diverse array of colonial responses to these policies is not incompatible with a study of similarities within many Taiwanese responses vis a vis Korean responses, or even similarities between both sets. In this essay, I intend to analyze Korean and Taiwanese elite reactions to Japanese educational policy, keeping in mind how their reactions may have converged and diverged as a result of experiences common throughout the Empire and circumstances specific to each colony. I will demonstrate the variety in discourse among a small—though well-documented—subgroup in colonial society while showing how and why commonalities and differences existed. In particular, I will show how the pre-colonial situation in both colonies affected elite response, tying together the intra-colonial responses while differentiating inter-colonial. 
+				</div>
+			</div>
 		</section>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 		<script>
@@ -60,8 +99,12 @@
 				$container.mousedown(function(event) {
 					var mouseY = event.pageY;
 
-					$node = $(mouseY < pageHeight ? '#z1top' : '#z1bottom');
+					$node = $(mouseY < pageHeight ? '#a' : '#b');
 
+				}).mouseout(function() {
+					var mouseY = event.pageY;
+
+					$node = null;
 				}).mouseup(function() {
 					var mouseY = event.pageY;
 
