@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vault</title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="icon.png" />
+
+    <!-- Include the compiled Ratchet CSS -->
+    <link href="../../ratchet-v2.0.2/css/ratchet.css" rel="stylesheet">
+    <style type="text/css">
+        .segmented-control.content-padded {
+            margin:4px;
+        }
+        .segmented-control .control-optional.active {
+            background-color:#3071a9;
+            color:#fff;
+        }
+        .segmented-control .control-required.active {
+            background-color:#5cb85c;
+            color:#fff;
+        }
+        .segmented-control .control-prohibited.active {
+            background-color:#d9534f;
+            color:#fff;
+        }
+
+        .input-row + .table-view {
+            margin-bottom:0;
+            border-top:none;
+        }
+
+        #visible-passphrase {
+            display:none;
+        }
+
+        .bar-footer {
+            padding:0;
+        }
+
+        .bar-footer .input-row {
+            border-bottom:none;
+        }
+    </style>
+
+    <!-- Include the compiled Ratchet JS -->
+    <script src="../../ratchet-v2.0.2/js/ratchet.js"></script>
+  </head>
+  <body>
+
+    <!-- Make sure all your bars are the first things in your <body> -->
+    <header class="bar bar-nav">
+      <h1 class="title">Vault</h1>
+    </header>
+    <div class="bar bar-standard bar-footer">
+        <div class="input-group">
+            <div class="input-row">
+                <label for="password">Password</label>
+                <input id="password" type="text" readonly="true" autocorrect="off" autocapitalize="off" placeholder="foobar"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
+    <div class="content">
+        <form action="" class="input-group">
+            <div class="input-row">
+                <label for="passphrase">Passphrase</label>
+                <input id="passphrase" type="password" placeholder="correct horse battery staple" required />
+            </div>
+            <div class="table-view">
+                <div class="table-view-cell">
+                    <span id="visible-passphrase-prompt">Toggle to see passphrase</span>
+                    <span id="visible-passphrase">correct horse battery staple</span>
+                    <div class="toggle">
+                        <div class="toggle-handle"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-row">
+                <label for="service">Service</label>
+                <input id="service" type="text" autocorrect="off" autocapitalize="off" placeholder="racebanyon@stanford.edu" required />
+            </div>
+            <div class="input-row">
+                <label for="passphraseLength">Length</label>
+                <input id="passphraseLength" type="number" placeholder="42"/>
+            </div>
+            <div class="input-row">
+                <label for="repetition">Repetition</label>
+                <input id="repetition" type="number" placeholder="100000"/>
+            </div>
+            <div class="input-row">
+                <label>a-z</label>
+                <div class="content-padded segmented-control">
+                    <a class="control-item control-optional active">optional</a>
+                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-prohibited">prohibited</a>
+                </div>
+            </div>
+            <div class="input-row">
+                <label>A-Z</label>
+                <div class="content-padded segmented-control">
+                    <a class="control-item control-optional active">optional</a>
+                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-prohibited">prohibited</a>
+                </div>
+            </div>
+            <div class="input-row">
+                <label>0-9</label>
+                <div class="content-padded segmented-control">
+                    <a class="control-item control-optional active">optional</a>
+                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-prohibited">prohibited</a>
+                </div>
+            </div>
+            <div class="input-row">
+                <label>-/_</label>
+                <div class="content-padded segmented-control">
+                    <a class="control-item control-optional active">optional</a>
+                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-prohibited">prohibited</a>
+                </div>
+            </div>
+            <div class="input-row">
+                <label>SPACE</label>
+                <div class="content-padded segmented-control">
+                    <a class="control-item control-optional active">optional</a>
+                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-prohibited">prohibited</a>
+                </div>
+            </div>
+            <div class="input-row">
+                <label>!@#$%</label>
+                <div class="content-padded segmented-control">
+                    <a class="control-item control-optional active">optional</a>
+                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-prohibited">prohibited</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+  </body>
+</html>
