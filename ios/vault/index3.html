@@ -50,6 +50,7 @@
     </style>
 
     <!-- Include the compiled Ratchet JS -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="../../ratchet-v2.0.2/js/ratchet.js"></script>
   </head>
   <body>
@@ -74,7 +75,7 @@
                 <label for="passphrase">Passphrase</label>
                 <input id="passphrase" type="password" placeholder="correct horse battery staple" required />
             </div>
-            <div class="table-view">
+            <!-- <div class="table-view">
                 <div class="table-view-cell">
                     <span id="visible-passphrase-prompt">Toggle to see passphrase</span>
                     <span id="visible-passphrase">correct horse battery staple</span>
@@ -82,7 +83,7 @@
                         <div class="toggle-handle"></div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="input-row">
                 <label for="service">Service</label>
                 <input id="service" type="text" autocorrect="off" autocapitalize="off" placeholder="racebanyon@stanford.edu" required />
@@ -95,56 +96,122 @@
                 <label for="repetition">Repetition</label>
                 <input id="repetition" type="number" placeholder="100000"/>
             </div>
-            <div class="input-row">
+            <div class="input-row" id="lower">
                 <label>a-z</label>
                 <div class="content-padded segmented-control">
-                    <a class="control-item control-optional active">optional</a>
-                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-required active">required</a>
+                    <a class="control-item control-optional">optional</a>
                     <a class="control-item control-prohibited">prohibited</a>
                 </div>
             </div>
-            <div class="input-row">
+            <div class="input-row" id="upper">
                 <label>A-Z</label>
                 <div class="content-padded segmented-control">
-                    <a class="control-item control-optional active">optional</a>
-                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-required active">required</a>
+                    <a class="control-item control-optional">optional</a>
                     <a class="control-item control-prohibited">prohibited</a>
                 </div>
             </div>
-            <div class="input-row">
+            <div class="input-row" id="number">
                 <label>0-9</label>
                 <div class="content-padded segmented-control">
-                    <a class="control-item control-optional active">optional</a>
-                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-required active">required</a>
+                    <a class="control-item control-optional">optional</a>
                     <a class="control-item control-prohibited">prohibited</a>
                 </div>
             </div>
-            <div class="input-row">
+            <div class="input-row" id="dash">
                 <label>-/_</label>
                 <div class="content-padded segmented-control">
-                    <a class="control-item control-optional active">optional</a>
-                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-required active">required</a>
+                    <a class="control-item control-optional">optional</a>
                     <a class="control-item control-prohibited">prohibited</a>
                 </div>
             </div>
-            <div class="input-row">
+            <div class="input-row" id="space">
                 <label>SPACE</label>
                 <div class="content-padded segmented-control">
-                    <a class="control-item control-optional active">optional</a>
-                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-required active">required</a>
+                    <a class="control-item control-optional">optional</a>
                     <a class="control-item control-prohibited">prohibited</a>
                 </div>
             </div>
-            <div class="input-row">
+            <div class="input-row" id="symbol">
                 <label>!@#$%</label>
                 <div class="content-padded segmented-control">
-                    <a class="control-item control-optional active">optional</a>
-                    <a class="control-item control-required">required</a>
+                    <a class="control-item control-required active">required</a>
+                    <a class="control-item control-optional">optional</a>
                     <a class="control-item control-prohibited">prohibited</a>
                 </div>
             </div>
         </form>
     </div>
+    <script type="text/javascript" src="../../vault/crypto-js-3.0.2.js"></script>
+    <script type="text/javascript" src="../../vault/vault.js"></script>
+    <script>
+        $(function() {
+            var $passphrase = $('#passphrase'),
+                $passphraseLength = $('#passphraseLength'),
+                $repetition = $('#repetition'),
+                $lower = $('#lower'),
+                $upper = $('#upper'),
+                $number = $('#number'),
+                $dash = $('#dash'),
+                $space = $('#space'),
+                $symbol = $('#symbol'),
+                $service = $('#service'),
+                generatePassword = function(configuration) {
+                    console.log(configuration);
+                    return new Vault({
+                        phrase:configuration.passphrase,
+                        length:configuration.passphraseLength,
+                        repeat:configuration.repeat,
+                        lower:configuration.lower,
+                        upper:configuration.upper,
+                        number:configuration.number,
+                        dash:configuration.dash,
+                        space:configuration.space,
+                        symbol:configuration.symbol
+                    }).generate(configuration.service);
+                },
+                setPasswordUi = function(password) {
+                    $('#password').val(password);
+                },
+                getValueForTroggle = function($elem) {
+                    return $elem.find('.control-required').hasClass('active') ? 2 :
+                            $elem.find('.control-optional').hasClass('active') ? 1 :
+                            0;
+                },
+                getPasswordFromUi = function() {
+                    var service = $service.val();
 
+                    if (!service) return '';
+
+                    var
+                        configuration = {
+                            passphrase:$passphrase.val(),
+                            passphraseLength:+$passphraseLength.val(),
+                            repetition:+$repetition.val() || NaN,
+                            lower:getValueForTroggle($lower),
+                            upper:getValueForTroggle($upper),
+                            number:getValueForTroggle($number),
+                            dash:getValueForTroggle($dash),
+                            space:getValueForTroggle($space),
+                            symbol:getValueForTroggle($symbol),
+                            service:$service.val()
+                        }
+                    ;
+                    return generatePassword(configuration);
+                },
+                updateUi = function() {
+                    var newPassword = getPasswordFromUi();
+                    setPasswordUi(getPasswordFromUi() || 'Invalid Configuration');
+                }
+            ;
+
+            $('#lower .control-item, #upper .control-item, #dash .control-item, #space .control-item, #symbol .control-item').click(updateUi);
+            $('#passphrase, #passphraseLength, #repetition, #service').change(updateUi);
+        });
+    </script>
   </body>
 </html>
