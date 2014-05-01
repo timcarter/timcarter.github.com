@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <title>Coupons for Marci</title>
+        <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <style type="text/css">
+            body {
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .container {
+                margin:auto 25%;
+            }
+
+            .coupon {
+                width:17em;
+                height:17em;
+                text-align:center;
+                padding:3em;
+                margin:1em;
+                border-radius:1em;
+                -webkit-border-radius:1em;
+                -moz-border-radius:1em;
+                float:left;
+                position:relative;
+            }
+
+            .coupon:nth-child(even), .coupon:nth-child(even) > .cover {
+                background-color:#78cabd;
+                color:#fff;
+            }
+
+            .coupon:nth-child(odd), .coupon:nth-child(odd) > .cover {
+                background:#f8bd00;
+                color:#000;
+            }
+
+            .cover {
+                position:absolute;
+                left:0;
+                top:0;
+                right:0;
+                bottom:0;
+                -webkit-transition:all 500ms;
+                -moz-transition:all 500ms;
+                transition:all 500ms;
+                border-radius:1em;
+                -webkit-border-radius:1em;
+                -moz-border-radius:1em;
+                cursor:pointer;
+                text-align:center;
+                padding-top:10em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="coupon" data-date="5/1/2014" data-idx="0">
+                test
+                <div class="cover">Thursday</div>
+            </div>
+            <div class="coupon" data-date="5/2/2014" data-idx="1">
+                <div class="cover">Friday</div>
+            </div>
+            <div class="coupon" data-date="5/3/2014" data-idx="2">
+                <div class="cover">Saturday</div>
+            </div>
+            <div class="coupon" data-date="5/4/2014" data-idx="3">
+                <div class="cover">Sunday</div>
+            </div>
+            <div class="coupon" data-date="5/5/2014" data-idx="4">
+                <div class="cover">Monday</div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="/marci.js"></script>
+    </body>
+</html>
