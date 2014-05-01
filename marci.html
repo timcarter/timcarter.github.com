@@ -35,14 +35,15 @@
             }
 
             .cover {
+                opacity:1;
                 position:absolute;
                 left:0;
                 top:0;
                 right:0;
                 bottom:0;
-                -webkit-transition:all 500ms;
-                -moz-transition:all 500ms;
-                transition:all 500ms;
+                -webkit-transition:all 1s;
+                -moz-transition:all 1s;
+                transition:all 1s;
                 border-radius:1em;
                 -webkit-border-radius:1em;
                 -moz-border-radius:1em;
@@ -50,24 +51,32 @@
                 text-align:center;
                 padding-top:10em;
             }
+
+            .txt {
+                margin-top:10em;
+            }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="coupon" data-date="5/1/2014" data-idx="0">
-                test
+                <div class="txt"></div>
                 <div class="cover">Thursday</div>
             </div>
             <div class="coupon" data-date="5/2/2014" data-idx="1">
+                <div class="txt"></div>
                 <div class="cover">Friday</div>
             </div>
             <div class="coupon" data-date="5/3/2014" data-idx="2">
+                <div class="txt"></div>
                 <div class="cover">Saturday</div>
             </div>
             <div class="coupon" data-date="5/4/2014" data-idx="3">
+                <div class="txt"></div>
                 <div class="cover">Sunday</div>
             </div>
             <div class="coupon" data-date="5/5/2014" data-idx="4">
+                <div class="txt"></div>
                 <div class="cover">Monday</div>
             </div>
             <div style="clear:both;"></div>

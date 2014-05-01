@@ -13,7 +13,7 @@ $(function() {
         var $this = $(this);
 
         if (new Date($this.data('date')) <= Date.now()) {
-            $this.text(coupons[$this.data('idx')]);
+            $this.find('.txt').text(coupons[$this.data('idx')]);
             $this.find('.cover').css('opacity', 0);
         } else {
             alert('No cheating!');
