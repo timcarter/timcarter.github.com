@@ -12,7 +12,7 @@ $(function() {
     $('.coupon').click(function() {
         var $this = $(this);
 
-        if ($this.data('date') <= Date.now()) {
+        if (new Date($this.data('date')) <= Date.now()) {
             $this.text(coupons[$this.data('idx')]);
             $this.find('.cover').css('opacity', 0);
         } else {
