@@ -51,6 +51,7 @@
 
     <!-- Include the compiled Ratchet JS -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="../../ratchet-v2.0.2/js/fingerblast.js"></script>
     <script src="../../ratchet-v2.0.2/js/ratchet.js"></script>
   </head>
   <body>
@@ -161,7 +162,6 @@
                 $symbol = $('#symbol'),
                 $service = $('#service'),
                 generatePassword = function(configuration) {
-                    console.log(configuration);
                     return new Vault({
                         phrase:configuration.passphrase,
                         length:configuration.passphraseLength,
@@ -179,7 +179,7 @@
                 },
                 getValueForTroggle = function($elem) {
                     return $elem.find('.control-required').hasClass('active') ? 2 :
-                            $elem.find('.control-optional').hasClass('active') ? 1 :
+                            $elem.find('.control-optional').hasClass('active') ? undefined :
                             0;
                 },
                 getPasswordFromUi = function() {
@@ -201,6 +201,7 @@
                             service:$service.val()
                         }
                     ;
+
                     return generatePassword(configuration);
                 },
                 updateUi = function() {
@@ -209,6 +210,7 @@
                 }
             ;
 
+            $('.segmented-control .control-item').each(function() {new FingerBlast(this);});
             $('#lower .control-item, #upper .control-item, #dash .control-item, #space .control-item, #symbol .control-item').click(updateUi);
             $('#passphrase, #passphraseLength, #repetition, #service').change(updateUi);
         });
