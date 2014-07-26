@@ -29,6 +29,34 @@
 				background-color:#d60062; /* red */
             }
 
+            /* anniversary colors */
+            .c10 { background-color:silver; }
+            .c11 { background-color:#40e0d0; } /* turquoise */
+            .c12 { background-color:#eae6ca; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; } /* oyster white */
+            .c13 { background-color:#e5aa70; } /* fawn */
+            .c14 { background-color:#fffff0; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; } /* ivory */
+            .c15 { background-color:#e0115f; } /* ruby red */
+            .c16 { background-color:silver; }
+            .c17 { background-color:yellow; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; }
+            .c18 { background-color:blue; }
+            .c19 { background-color:#cd7f32; } /* bronze */
+            .c20 { background-color:#50c878; } /* emerald green (or white) */
+            .c21 { background-color:orange; }
+            .c22 { background-color:green; }
+            .c23 { background-color:silver; }
+            .c24 { background-color:lavender; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; }
+            .c25 { background-color:silver; }
+            .c30 { background-color:green; }
+            .c35 { background-color:coral; }
+            .c40 { background-color:#e0115f; } /* ruby red */
+            .c45 { background-color:red; } /* sapphire red? */
+            .c50 { background-color:#ffd700; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; } /* gold */
+            .c55 { background-color:#50c878; } /* emerald green (or white) */
+            .c60 { background-color:#fafbf5; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; } /* diamond white */
+            .c65 { background-color:#87ceeb; } /* sky blue */
+            .c70 { background-color:#e5e4e2; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; } /* platinum */
+            .c75 { background-color:#fafbf5; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; } /* diamond white */
+
 			#main {
 				position:relative;
 				width:100%;
@@ -64,8 +92,40 @@
             years = now.getYear() - then.getYear(),
             months = now.getMonth() - then.getMonth(),
             days = now.getDate() - then.getDate(),
-            res = ''
+            res = '',
+            specialAnniversaries = {
+               10:1,
+               11:1,
+               12:1,
+               13:1,
+               14:1,
+               15:1,
+               16:1,
+               17:1,
+               18:1,
+               19:1,
+               20:1,
+               21:1,
+               22:1,
+               23:1,
+               24:1,
+               25:1,
+               30:1,
+               35:1,
+               40:1,
+               45:1,
+               50:1,
+               55:1,
+               60:1,
+               65:1,
+               70:1,
+               75:1
+            }
         ;
+
+        window.testColors = function(x) {
+            document.getElementsByTagName("body")[0].className = 'c' + x;
+        };
 
         if (days < 0) {
             var thisMonth = now.getMonth();
@@ -96,7 +156,9 @@
         document.getElementById("display").innerHTML = res;
 
         if (!days) document.getElementsByTagName("body")[0].className = "anniversary";
-
+        if (!days && !months && years in specialAnniversaries) {
+            document.getElementsByTagName("body")[0].className = 'c' + years;
+        }
     </script>
 </html>
 
