@@ -29,6 +29,16 @@
 				</code>
 			</pre>
 			<button onclick="testInnerHTMLOnce();" class="btn btn-inverse">test setting the innerHTML once</button>
+			<pre>
+				<code>
+					var stringBuilder = [];
+					for (var i = numIterations; --i >= 0;) {
+						stringBuilder.push('&lt;div&gt;&lt;/div&gt;');
+					}
+					randomDiv.innerHTML = stringBuilder.join('');
+				</code>
+			</pre>
+			<button onclick="testInnerHTMLArrayOnce();" class="btn btn-inverse">test setting the innerHTML with an array once</button>
 			<p>
 			<div class="well well-large">
 				<h3>running commentary and results:</h3>
@@ -62,6 +72,17 @@
 							stringBuilder += '<div></div>';
 						}
 						test_div.innerHTML += stringBuilder;
+						var end = new Date;
+						log ('info', 'ending test; duration was ' + ((end - start) / 1000) + ' seconds');
+					},
+					testInnerHTMLArrayOnce = function() {
+						log('info', 'starting test of innerHTML one-time array joining; running ' + numIterations + 'x.');
+						var start = new Date;
+						var stringBuilder = [];
+						for (var i = numIterations; --i >= 0;) {
+							stringBuilder.push('<div></div>');
+						}
+						test_div.innerHTML = stringBuilder.join('');
 						var end = new Date;
 						log ('info', 'ending test; duration was ' + ((end - start) / 1000) + ' seconds');
 					}/*,
