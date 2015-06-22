@@ -86,54 +86,82 @@
 		</div>
     </body>
     <script>
-        var then = new Date("September 24 2004"),
-            now = new Date,
-            //now = new Date("January 1 2013"),
-            years = now.getYear() - then.getYear(),
-            months = now.getMonth() - then.getMonth(),
-            days = now.getDate() - then.getDate(),
-            res = '',
+        var previous = '',
+            isSetting = false,
+            numFrames = 0,
+            then = new Date("September 24 2004"),
+            thenYear = then.getYear(),
+            thenMonth = then.getMonth(),
+            thenDate = then.getDate(),
             isSpecial = function(year) {
                 return (year >= 10 && year <= 25) || (year > 25 && year <= 75 && !(year % 5));
+            },
+            body = document.getElementsByTagName('body')[0],
+            display = document.getElementById('display'),
+            setTime = function() {
+                var
+                    now = new Date,
+                    //now = new Date("January 1 2013"),
+                    years = now.getYear() - thenYear,
+                    months = now.getMonth() - thenMonth,
+                    days = now.getDate() - thenDate,
+                    res = ''
+                ;
+
+                /*window.testColors = function(x) {
+                    document.getElementsByTagName("body")[0].className = 'c' + x;
+                };*/
+
+                if (days < 0) {
+                    var thisMonth = now.getMonth();
+                    months--;
+                    days = now.getDate() +
+                        (thisMonth === 9 || thisMonth === 4 || thisMonth === 6 || thisMonth === 11 ? // 30 days hath September, April, June, and November
+                            6 :
+                            (thisMonth !== 2 ?
+                                7 : // all the rest hath 31
+                                (now.getYear() % 4 ? // except for February
+                                    4 : // which has 28
+                                    5 // and 29 in a leap year
+                                )
+                            )
+                        )
+                    ;
+                }
+                if (months < 0) {
+                    years--;
+                    months = now.getMonth() + (12 - thenMonth - +(now.getDate() < thenDate));
+                }
+
+                res += years + ' years';
+
+                if (months) res += ", " + months + " month" + (months > 1 ? "s" : "");
+                if (days) res += ", " + days + " day" + (days > 1 ? "s" : "");
+
+                if (previous !== res) {
+                    previous = res;
+                    display.innerHTML = res;
+
+                    if (!days) body.className = "anniversary";
+                    if (!days && !months && isSpecial(years)) {
+                        body.className = 'c' + years;
+                    }
+                }
+            },
+            trySetTime = function() {
+                if (--numFrames <= 0 && !isSetting) {
+                    isSetting = true;
+                    setTime();
+                    // TODO: set numFrames = 60 * the number of seconds remaining in the day
+                    numFrames = 60;
+                    isSetting = false;
+                }
+
+                requestAnimationFrame(trySetTime);
             }
         ;
 
-        window.testColors = function(x) {
-            document.getElementsByTagName("body")[0].className = 'c' + x;
-        };
-
-        if (days < 0) {
-            var thisMonth = now.getMonth();
-            months--;
-            days = now.getDate() +
-                (thisMonth === 9 || thisMonth === 4 || thisMonth === 6 || thisMonth === 11 ? // 30 days hath September, April, June, and November
-                    6 :
-                    (thisMonth !== 2 ?
-                        7 : // all the rest hath 31
-                        (now.getYear() % 4 ? // except for February
-                            4 : // which has 28
-                            5 // and 29 in a leap year
-                        )
-                    )
-                )
-            ;
-        }
-        if (months < 0) {
-            years--;
-            months = now.getMonth() + (12 - then.getMonth() - +(now.getDate() < then.getDate()));
-        }
-
-        res += years + ' years';
-
-        if (months) res += ", " + months + " month" + (months > 1 ? "s" : "");
-        if (days) res += ", " + days + " day" + (days > 1 ? "s" : "");
-
-        document.getElementById("display").innerHTML = res;
-
-        if (!days) document.getElementsByTagName("body")[0].className = "anniversary";
-        if (!days && !months && isSpecial(years)) {
-            document.getElementsByTagName("body")[0].className = 'c' + years;
-        }
+        trySetTime();
     </script>
 </html>
 
