@@ -1,0 +1,99 @@
+<html ng-app="app">
+    <head>
+        <title>Black Sheep Wall</title>
+        <style type="text/css">
+            body {
+                font-family: sans-serif;
+            }
+
+            ul {
+                list-style-type: none;
+            }
+
+            ul:after {
+                clear: left;
+            }
+
+            li { 
+                float: left;
+                padding-right: 15px;
+                margin-top: 40px;
+                display:none;
+            }
+
+            li:last-child {
+                padding-right: 0;
+            }
+
+            .notifications {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                background-color: #21ce99;
+                height: 100px;
+                color: #fff;
+                margin: 0;
+                display:none;
+            }
+
+            .close {
+                color: #fff;
+                position: absolute;
+                right: 0;
+                top: 0;
+                height: 100%;
+                background:none;
+                border: none;
+                cursor: pointer;
+                font-size: 2em;
+            }
+        </style>
+    </head>
+    <body>
+        <ul class="notifications">
+            <li><i class="icon">#</i>something for nothing</li>
+            <li><i class="icon">#</i>food for thought</li>
+            <button class="close">x</button>
+        </ul>
+        <notification-banner></notification-banner>
+        <script id="notification-banner-template" type="text/template">
+            <div>there is no cow level</div>
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>
+            setTimeout(function() {
+                var reveal = function(elems) {
+                        if (elems.length) {
+                            $(elems.shift()).slideDown('slow', function() {reveal(elems);});
+                        }
+                    }
+                ;
+
+
+                reveal($('.notifications').toArray().concat($('li').toArray()));
+
+            }, 5000);
+            angular.module('app', [])
+                .directive(
+                    'notificationBanner',
+                    function() {
+
+                        var preLink = function preLink($scope, $el, $attrs) {
+                            console.log('hello mom');
+                        };
+
+                        return {
+                            restrict: 'E',
+                            template: document.getElementById('notification-banner-template').innerHTML,
+                            link: {
+                                pre: preLink
+                            },
+                            replace: true
+                        }
+                    }
+                );
+        </script>
+    </body>
+</html>
