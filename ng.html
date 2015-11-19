@@ -66,7 +66,7 @@
             setTimeout(function() {
                 var reveal = function(elems) {
                         if (elems.length) {
-                            $(elems.shift()).slideDown('slow', function() {reveal(elems);});
+                            $(elems.shift()).slideDown('fast', function() {reveal(elems);});
                         }
                     }
                 ;
